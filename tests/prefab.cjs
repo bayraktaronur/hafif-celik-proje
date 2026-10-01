@@ -305,6 +305,34 @@ async function test(name,fn){try{await fn();console.log('PASS '+name);results.pu
   const t=fixture();t.s[0].pnlCfg={dizi:[62.75,62.75,125.5,125.5,125.5,62.75],explicit:true};t.n.push({id:'t1',x:62.75,y:0},{id:'t2',x:62.75,y:251});t.s.push({id:'branch',n1:'t1',n2:'t2',k:6,kSabit:true});await load(t);
   const before=await page.evaluate(()=>Studio.snapshot());assert.equal(await page.evaluate(()=>{Prefab.select('e101',0);return Prefab.merge(1);}),false);assert.equal(await page.evaluate(()=>Studio.snapshot()),before);
  });
+ await test('Selected halves at T become full panel with U, preserving branch door, quantities and history',async()=>{
+  for(const rotate of [false,true])for(const k of [6,10]){
+   const t=fixture();t.s[0].pnlCfg={dizi:[62.75,62.75,125.5,125.5,125.5,62.75],explicit:true};t.n.push({id:'t1',x:62.75,y:0},{id:'t2',x:62.75,y:251});t.s.push({id:'branch',n1:'t1',n2:'t2',k,kSabit:true});t.e.push({id:'door',segId:'branch',tip_:'kapi',en:80,yuk:205,t:.4,ad:'Kapı'});
+   if(rotate){t.n=t.n.map(n=>({...n,x:n.y,y:n.x}));t.catiYon='dikey';}
+   t.settings.panelDrawMode='mixed';
+   await load(t);await page.locator('#selectionMode').selectOption('panel');
+   const before=await page.evaluate(()=>({nodes:JSON.stringify(G.nodes),door:JSON.stringify(G.elemanlar),trusses:JSON.stringify(makasAnaliz()),branch:JSON.stringify(getSeg('branch')),bag:pfAnaliz().bag.map(b=>b.tip)}));
+   assert.equal(await page.evaluate(()=>pfAnaliz().bag.find(b=>b.nid==='t1').tip),'H3');
+   const opposite=await widths('e103');await clickPanel('e101',0);await clickPanel('e101',1,'Control');
+   assert.equal(await page.locator('#mergeSelectedPanels').isEnabled(),true);await page.locator('#mergeSelectedPanels').click();
+   assert.deepEqual(await widths('e101'),[125.5,125.5,125.5,125.5,62.75]);assert.deepEqual(await widths('e103'),opposite);
+   const after=await page.evaluate(()=>({nodes:JSON.stringify(G.nodes),door:JSON.stringify(G.elemanlar),trusses:JSON.stringify(makasAnaliz()),branch:JSON.stringify(getSeg('branch')),joint:pfAnaliz().bag.find(b=>b.nid==='t1'),bag:pfAnaliz().bag.map(b=>b.tip)}));
+   for(const key of ['nodes','door','trusses','branch'])assert.equal(after[key],before[key],key);
+   assert.equal(after.joint.tip,'U');assert.equal(after.joint.k,String(k));near(after.joint.pos,62.75);
+   assert.equal(after.bag.filter(x=>x==='U').length,before.bag.filter(x=>x==='U').length+1);assert.equal(after.bag.filter(x=>x==='H3').length,before.bag.filter(x=>x==='H3').length-1);
+   await page.evaluate(()=>geriAl());assert.equal(await page.evaluate(()=>pfAnaliz().bag.find(b=>b.nid==='t1').tip),'H3');await page.evaluate(()=>ileriAl());
+   const saved=await page.evaluate(()=>Studio.state());await load(saved);assert.equal(await page.evaluate(()=>pfAnaliz().bag.find(b=>b.nid==='t1').tip),'U');
+  }
+ });
+ await test('Selected merge rejects four-way connection and openings without changing model',async()=>{
+  for(const withOpening of [false,true]){
+   const t=fixture();t.s[0].pnlCfg={dizi:[62.75,62.75,125.5,125.5,125.5,62.75],explicit:true};t.n.push({id:'t1',x:62.75,y:0},{id:'t2',x:62.75,y:251});t.s.push({id:'branch',n1:'t1',n2:'t2',k:6,kSabit:true});
+   if(withOpening)t.e.push({id:'window',segId:'e101',tip_:'pencere',en:30,yuk:100,t:15/564.75});
+   else{t.n.push({id:'t3',x:62.75,y:-251});t.s.push({id:'branch2',n1:'t1',n2:'t3',k:6,kSabit:true});}
+   await load(t);await page.locator('#selectionMode').selectOption('panel');await clickPanel('e101',0);await clickPanel('e101',1,'Control');
+   assert.equal(await page.locator('#mergeSelectedPanels').isEnabled(),false);const snapshot=await page.evaluate(()=>Studio.snapshot());assert.equal(await page.evaluate(()=>Prefab.mergeSelected()),false);assert.equal(await page.evaluate(()=>Studio.snapshot()),snapshot);
+  }
+ });
  await test('Production direction rejects incompatible panels without resizing the frame',async()=>{
   const d=fixture();d.settings={panelDrawMode:'mixed'};d.n=[{id:'a',x:0,y:0},{id:'b',x:1004,y:0},{id:'c',x:1004,y:1139.5},{id:'d',x:0,y:1139.5}];d.s=d.n.map((n,i)=>({id:'w'+i,n1:n.id,n2:d.n[(i+1)%4].id,k:10,kSabit:true}));await load(d);
   const before=await page.evaluate(()=>Studio.snapshot());assert.equal(await page.evaluate(()=>catiYonAyarla('dikey')),false);assert.equal(await page.evaluate(()=>Studio.snapshot()),before);

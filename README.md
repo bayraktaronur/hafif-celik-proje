@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.4
+# Prefabrikten Plan Studio · 5.9.5
+
+5.9.5: Çoklu panel birleştirmede iki 62,75 cm yarım panelin ortasındaki tek dik T kolu, 125,5 cm tam panele çektirme U ile bağlanabilir. Ortadaki üçlü H bağlantısı çizimde ve metrajda gelen duvar kalınlığındaki U bağlantısına dönüşür; ana duvar geometrisi, gelen kapılı duvar, kapı, karşı paneller ve makas konumları korunur. Dörtlü bağlantılar, merkez dışı birleşimler ve seçili panellerin kendi kapı/pencere açıklıkları bu dönüşümde engellenir. Otomatik panel toparlama mevcut T bağlantılarını kendiliğinden dönüştürmez; dönüşüm yalnız açık panel seçimiyle yapılır.
 
 5.9.4: Panel seçiminde Ctrl + tık (Mac: Cmd + tık) seçime panel ekler/çıkarır; Shift + tık aynı duvarda aralık seçer. Seçilen paneller vurgulanır ve toplam boyları gösterilir. **Panelleri birleştir** yalnız aynı duvardaki bitişik iki boş yarım/kısaltılmış paneli birleştirir; karşı duvarlar ve makaslar korunur. Kapı/pencere veya duvar bağlantısı bulunan, bitişik olmayan ya da farklı hatlardaki seçimlerde neden gösterilir. İşlem geri alınabilir. Önceki/sonraki yön düğmeleri yerine açık panel seçimi kullanılır.
 

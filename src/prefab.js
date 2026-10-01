@@ -26,18 +26,31 @@
     if(b.index!==a.index+1)return 'Seçilen paneller bitişik olmalı.';
     if(a.panel.w>PF.YARIM+EPS||b.panel.w>PF.YARIM+EPS)return 'İki yarım veya kısaltılmış panel seçin; her panel en fazla 62,75 cm olmalı.';
     if(openings(a.run).some(o=>o.a<b.panel.b-EPS&&o.b>a.panel.a+EPS))return 'Seçilen panellerde kapı veya pencere var; birleştirilemez.';
-    if(!mergeable(a.run,a.panel,b.panel))return 'İki panel arasındaki duvar bağlantısı kaldırılamaz.';
+    if(!mergeable(a.run,a.panel,b.panel)&&!centeredUJoint(a.run,a.panel,b.panel))return 'Bu bağlantı birleştirilemez. Çektirme U için iki yarım panelin ortasında tek bir dik T kolu olmalı; dörtlü bağlantı korunur.';
     return '';
+  }
+  function centeredUJoint(run,p,q){
+    if(Math.abs(p.w-PF.YARIM)>EPS||Math.abs(q.w-PF.YARIM)>EPS)return false;
+    const node=run.nodes.find(n=>Math.abs(n.pos-p.b)<EPS);if(!node)return false;
+    const edges=G.segs.filter(s=>s.n1===node.nid||s.n2===node.nid);
+    if(edges.length!==3||edges.some(s=>s.tip==='veranda'))return false;
+    const branches=edges.filter(s=>!run.items.some(it=>it.seg.id===s.id));
+    if(branches.length!==1)return false;
+    const s=branches[0],a=getNode(s.n1),b=getNode(s.n2),len=Math.hypot(b.x-a.x,b.y-a.y);
+    return len>EPS&&Math.abs(((b.x-a.x)*run.ux+(b.y-a.y)*run.uy)/len)<.001;
   }
   function mergeSelected(){
     const list=selection(),error=mergeSelectionError(list);
     if(error){Studio.toast(error,true);return false;}
     const [a,b]=list.slice().sort((a,b)=>a.index-b.index);
-    return operation(()=>{
+    const convertU=centeredUJoint(a.run,a.panel,b.panel);
+    const ok=operation(()=>{
       const items=pieces(a.run);items.splice(a.index,2,{w:a.panel.w+b.panel.w,key:'merged'});
       const result=rebuildLayout(a.run,items,{moveOpenings:false,local:true});
       return{...result,selected:ref(a.run,result.next[a.index])};
     });
+    if(ok&&convertU)Studio.toast('Tam panel oluşturuldu; ortadaki T bağlantısı çektirme U oldu. Kapılı duvar yerinde korundu.');
+    return ok;
   }
   function linked(run,A=pfAnaliz()){
     if(G.panelSync===false||!run.makasParalel||!axis(run))return[run];
@@ -226,6 +239,7 @@
     if(selected.length>1){
       const error=mergeSelectionError(selected),total=selected.reduce((sum,s)=>sum+s.panel.w,0);
       $('sbSelIc').innerHTML='<div class="panel-card-title"><strong>'+selected.length+' panel seçili</strong></div><p class="panel-help">Toplam '+fmtCm(total)+' cm · '+selected.map(s=>esc(s.panel.no||'Panel')).join(' + ')+'</p><button id="mergeSelectedPanels" class="sib" onclick="Prefab.mergeSelected()" '+(error?'disabled':'')+'>Panelleri birleştir</button><p class="panel-help">'+esc(error||'Yalnız seçilen iki panel birleşir. Karşı duvarlar ve makas aksları değişmez.')+'</p><p class="panel-help">Ctrl + tık: ekle / çıkar · Shift + tık: aralık seç · Normal tık: tek panel</p>';
+      if(!error){const [a,b]=selected.slice().sort((a,b)=>a.index-b.index);if(centeredUJoint(a.run,a.panel,b.panel))$('sbSelIc').insertAdjacentHTML('beforeend','<p class="panel-help"><b>Çektirme U bağlantısı</b><br>İki yarım panel tek 125,5 cm panel olur. Ortadaki üçlü H yerine, gelen duvar kalınlığında çektirme U hesaplanır. Gelen duvar ve kapı yerinde kalır.</p>');}
       return;
     }
     $('sbSelIc').innerHTML='<div class="panel-card-title"><span>'+esc(p.no||'Panel')+'</span><strong>'+({tam:'Tam panel',yarim:'Yarım panel',ozel:'Özel panel'}[p.tip])+'</strong></div>'+
@@ -511,5 +525,5 @@
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.4';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.5';syncUI();draw();
 })();
