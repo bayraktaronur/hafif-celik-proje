@@ -1,0 +1,34 @@
+const path=require('node:path');
+let pw;try{pw=require('playwright');}catch{pw=require(path.resolve(path.dirname(process.execPath),'../node_modules/playwright'));}
+const {chromium}=pw;
+const {pathToFileURL}=require('node:url');
+const fs=require('node:fs');
+(async()=>{
+ const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const page=await browser.newPage({viewport:{width:1536,height:960},deviceScaleFactor:1});
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
+ await page.goto(pathToFileURL(require('node:path').resolve('plan_cizim.html')).href);
+ await page.waitForTimeout(1000);
+ fs.mkdirSync('artifacts',{recursive:true});
+ await page.screenshot({path:'artifacts/01-workspace.png'});
+ console.log('Initial',await page.evaluate(()=>({studio:typeof Studio,canvas:[cv.width,cv.height],rooms:G.rooms.length,ids:[...document.querySelectorAll('[id]')].map(e=>e.id).filter((id,i,a)=>a.indexOf(id)!==i)})));
+ await page.getByRole('button',{name:'Örnek planı aç',exact:true}).click();
+ await page.waitForTimeout(400);
+ await page.screenshot({path:'artifacts/02-steel-demo.png'});
+ console.log('Steel',await page.evaluate(()=>({rooms:G.rooms.map(r=>({area:r.area,net:odaIcGeometri(r)?.alan})),issues:Studio.issues()})));
+ await page.locator('#sistemSel').selectOption('prefabrik');
+ await page.waitForTimeout(400);
+ await page.getByRole('button',{name:/Plan kontrolü/}).click();
+ await page.waitForTimeout(3600);
+ await page.screenshot({path:'artifacts/03-prefab-analysis.png'});
+ console.log('Prefab',await page.evaluate(()=>({rooms:G.rooms.length,panels:panelMetraj(),issues:Studio.issues()})).then(r=>({rooms:r.rooms,panels:{dis:r.panels.dis,ic:r.panels.ic,bag:r.panels.bag},issues:r.issues})));
+ console.log('Errors',errors);
+ await page.getByRole('button',{name:'Özellikler',exact:true}).click();
+ await page.evaluate(()=>{G.secili=G.elemanlar[0];G.seciliTip='eleman';updateSidebar();draw();});
+ await page.screenshot({path:'artifacts/04-properties.png'});
+ await page.setViewportSize({width:1280,height:800});
+ await page.evaluate(()=>Studio.fit());
+ await page.waitForTimeout(150);
+ await page.screenshot({path:'artifacts/05-compact.png'});
+ await browser.close();if(errors.length)process.exitCode=1;
+})().catch(e=>{console.error(e);process.exit(1);});

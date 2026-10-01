@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Plan Studio · Prefabrikten</title><link rel="stylesheet" href="src/legacy.css"><link rel="stylesheet" href="src/studio.css"></head>
+<body>
+<header class="app-header">
+ <a class="identity" href="#" aria-label="Plan Studio"><span class="brand-mark">P<span></span></span><span><strong>PLAN STUDIO</strong><small>PREFABRİKTEN / TASARIM ATÖLYESİ</small></span></a>
+ <div class="project-title"><input id="projectName" aria-label="Proje adı" value="Yeni proje" maxlength="100" onchange="Studio.rename(this.value)"><span id="saveState">Yerel çalışma</span></div>
+ <div class="header-actions"><button class="tb" onclick="yeniPlan()" title="Yeni proje">＋ Yeni</button><label class="tb file-btn">Aç<input id="fi" type="file" accept=".json" onchange="dosyaYukle(event)"></label><button class="tb" onclick="planKaydet()" title="Ctrl+S">Kaydet <kbd>⌃S</kbd></button><button class="tb primary" onclick="pngIndir()">PNG çıktı ↗</button></div>
+</header>
+<nav class="workspace-bar" aria-label="Çalışma alanı"><div class="workspace-tab active"><span class="status-dot"></span> Kat planı <span class="version">01</span></div><span class="workspace-description">Prefabrik & hafif çelik tasarım</span><div class="workspace-actions"><button class="tb" onclick="metrajAc()">Metraj listesi</button><button class="tb" id="hcBtn" onclick="hafifCeligeAktar()">Hafif çelik aktarımı ↗</button></div></nav>
+<div class="main studio-main">
+  <div class="sidebar" id="projectSidebar">
+    <div class="sb">
+      <div class="sb-t">Proje ayarları</div>
+      <div class="sr"><span class="sl">Kat yük. (cm)</span><input class="si" type="number" id="katYuk" value="280"></div>
+      <div class="sr"><span class="sl">Dış yük. (cm)</span><input class="si" type="number" id="disYuk" value="320"></div>
+      <div class="sr"><span class="sl">Alçıpan fire %</span><input class="si" type="number" id="fireYuzde" value="10" onchange="Studio.projectField('fire',this.value)"></div>
+      <button class="sib" id="dimRestore" style="display:none;margin-top:6px" onclick="dimHepsiniGeriGetir()">↺ Ölçüleri sıfırla</button>
+    </div>
+    <div class="sb" id="sbSel" style="display:none">
+      <div class="sb-t">✏ Seçili</div>
+      <div id="sbSelIc"></div>
+    </div>
+    <div class="sb">
+      <div class="sb-t">Mimari özet</div>
+      <div class="sr"><span class="sl">Konut tipi</span><span class="sv" id="stOda">—</span></div>
+      <div class="architectural-note">Yatak odası + salon</div>
+      <div id="roomProgram" class="room-program"></div>
+      <div id="roomProgramNote" class="architectural-note"></div>
+      <div class="sr"><span class="sl">Kapalı alan · aks</span><span class="sv" id="stAlan">0 m²</span></div>
+      <div class="sr" id="verandaAreaRow" hidden><span class="sl">Veranda · aks</span><span class="sv" id="stVerandaAlan">0 m²</span></div>
+    </div>
+    <div class="sb" id="optBox" style="display:none">
+      <div class="sb-t">Üretim ve kaplama</div>
+      <div id="optIc" style="font-size:11px"></div>
+    </div>
+    <div class="sb" id="panelBox" style="display:none">
+      <div class="sb-t">Panel metrajı</div>
+      <div id="panelMet" style="font-size:11px"></div>
+      <button class="sib p" onclick="metrajAc()" style="margin-top:6px">📋 Detaylı metraj listesi</button>
+    </div>
+    <div class="sb">
+      <div class="sb-t">Mekânlar</div>
+      <div id="odaListe"><span style="font-size:11px;color:#484f58">Kapalı alan çizince oda oluşur</span></div>
+    </div>
+    <div class="sb">
+      <div class="sb-t">Çizim rehberi</div>
+      <div style="font-size:10px;color:#6a7a9a;line-height:1.6">
+        <b>Duvar çiz:</b> D tuşu → başlangıca ve bitişe tıkla. Çizmeye devam etmek için tekrar tıkla.<br>
+        <b>Köşe:</b> Var olan düğüme (sarı) snap yap → otomatik birleşir.<br>
+        <b>Oda:</b> Kapalı alan oluşunca otomatik algılanır.<br>
+        <b>Kapı/Pencere:</b> K veya P → duvara tıkla.<br>
+        <b>Shift:</b> Yatay/dikey kilitle.
+      </div>
+    </div>
+  </div>
+
+<section class="drawing-area" aria-label="Çizim çalışma alanı">
+ <div class="tool-ribbon" role="toolbar" aria-label="Çizim araçları">
+ <div class="tool-group"><button class="t on" id="t-sec" onclick="setTool('sec')"><span>↖</span>Seç<kbd>S</kbd></button><button class="t" id="t-duvar" onclick="setTool('duvar')"><span>▰</span>Duvar<kbd>D</kbd></button><button class="t" id="t-veranda" onclick="setTool('veranda')"><span>┄</span>Veranda<kbd>V</kbd></button><button class="t" id="t-kapi" onclick="setTool('kapi')"><span>◩</span>Kapı<kbd>K</kbd></button><button class="t" id="t-pencere" onclick="setTool('pencere')"><span>⊞</span>Pencere<kbd>P</kbd></button></div>
+ <div class="tool-group history-tools"><button class="icon-btn" id="undoBtn" onclick="geriAl()" title="Geri al · Ctrl+Z" aria-label="Geri al">↶</button><button class="icon-btn" id="redoBtn" onclick="ileriAl()" title="İleri al · Ctrl+Y" aria-label="İleri al">↷</button><button class="icon-btn danger" onclick="seciliSil()" title="Seçileni sil · Delete" aria-label="Seçileni sil">⌫</button></div>
+ </div>
+ <div class="context-ribbon"><span class="ribbon-caption">DUVAR</span><span>Kalınlık · cm</span><div id="dkList"></div><button class="text-btn" onclick="topluKalinlik()">Toplu düzenle</button><span class="flex-spacer"></span><span id="systemHint">Serbest profil yerleşimi</span></div>
+ <div class="cwrap" id="cwrap"><canvas id="cv" aria-label="İki boyutlu kat planı"></canvas>
+  <div class="canvas-heading"><span class="eyebrow">MODEL ALANI</span><span id="canvasSystem">Hafif çelik</span></div>
+  <div class="canvas-legend"><span><i class="legend-wall"></i>Duvar</span><span><i class="legend-opening"></i>Açıklık</span><span id="legendPanel"><i class="legend-panel"></i>Panel eki</span></div>
+  <div id="emptyState" class="empty-state"><div class="plan-glyph">⌜<span>＋</span>⌟</div><span class="eyebrow">İLK ÇİZGİDEN ÜRETİME</span><h1>Yapınızı planlayın.</h1><p>Yapı sistemini seçin, duvarları çizin.<br>Odalar ve metrajlar planınızla birlikte oluşur.</p><div><button class="tb primary" onclick="setTool('duvar')">Duvar çizmeye başla <kbd>D</kbd></button><button class="tb" onclick="Studio.demo()">Örnek planı aç</button></div><small>Panel modülleri, birleşimler ve açıklıklar tek modelde.</small></div>
+  <div class="lock-ind" id="lockInd">Eksen kilitli · Shift</div>
+  <div class="view-controls"><button onclick="Studio.zoom(-1)" aria-label="Uzaklaştır">−</button><span id="zoomValue">100%</span><button onclick="Studio.zoom(1)" aria-label="Yakınlaştır">＋</button><i></i><button class="fit-btn" onclick="Studio.fit()" title="Planı ekrana sığdır · Home">Ekrana sığdır</button></div>
+  <div class="stbar" id="stbar"></div><div id="toast" role="status" aria-live="polite"></div>
+ </div>
+ <footer class="drafting-bar"><button class="t son" id="snapG-btn" onclick="toggleSnap()">Izgara</button><select class="ss" id="gridSel" aria-label="Izgara aralığı" onchange="G.gridCm=+this.value;draw()"><option value="1">1 cm</option><option value="5">5 cm</option><option value="10" selected>10 cm</option><option value="25">25 cm</option><option value="50">50 cm</option><option value="100">100 cm</option></select><button class="t son" id="snapW-btn" onclick="toggleSnapW()">Yakalama</button><button class="t" id="orthoBtn" onclick="Studio.ortho()" title="Dik çizim · F8">Dik çizim</button><span id="shiftLbl"></span><span class="flex-spacer"></span><span id="infoR">X 0 · Y 0 cm</span></footer>
+</section>
+<aside class="inspector"><div class="inspector-tabs"><button id="propertiesTab" class="active" onclick="Studio.tab('properties')">Özellikler</button><button id="analysisTab" onclick="Studio.tab('analysis')">Plan kontrolü <span id="issueCount">0</span></button></div><div class="inspector-scroll"><div id="propertiesPane"><div id="selectionEmpty" class="selection-empty"><span class="selection-symbol">↖</span><h3>Modeli düzenleyin</h3><p>Özelliklerini görmek için bir duvar, açıklık veya oda seçin.</p><span class="selection-help">Shift + tık ile çoklu duvar seçimi</span></div><div id="selectionHost"></div><div class="sb"><div class="sb-t">Görünüm</div><div class="view-options"><button class="t son" id="pnlNoBtn" onclick="pnlEtiketToggle()">Panel no.</button><button class="t" id="catiBtn" onclick="catiYonCevir()">Makas yönü</button><button class="t" id="olcuBtn" onclick="olcuModuCevir()">Ölçüler</button><button class="t son" id="makasBtn" onclick="makasToggle()">Makas</button></div></div><div class="sb"><div class="sb-t">Hassas yerleşim</div><label class="field-label" for="yakalaSel">Prefabrik duvar yakalama</label><select class="si full" id="yakalaSel" onchange="G.duvarYakala=this.value;draw()"><option value="kilit">H birleşimi / panel ortası</option><option value="serbest">Serbest · 5 cm</option></select><div class="sr" style="margin-top:12px"><label class="sl" for="elStepSel">Açıklık adımı</label><select class="si" id="elStepSel" onchange="G.elStep=+this.value"><option value="1">1 cm</option><option value="5" selected>5 cm</option><option value="10">10 cm</option></select></div></div></div><div id="analysisPane" hidden><div class="analysis-intro"><span class="eyebrow">MODEL DOĞRULAMA</span><h3>Çizim tutarlılığı</h3><p>Duvar, açıklık ve panel uyumunu kontrol edin.</p><button class="tb" onclick="Studio.analyze()">Kontrolü yenile ↻</button></div><div id="analysisResults"></div><p class="analysis-note">Bu kontrol geometrik uyum ve metraj içindir. Taşıyıcı kapasite, deprem ve yük hesabı içermez.</p></div></div><div class="inspector-footer"><span class="status-dot"></span><span>Ölçü birimi <strong>santimetre</strong></span><span>v5.1</span></div></aside>
+</div>
+<div id="recoveryBanner" class="recovery-banner" hidden><span>Bu tarayıcıda kaydedilmiş bir çalışma bulundu.</span><button onclick="Studio.recover()">Çalışmayı geri getir</button><button onclick="Studio.dismissRecovery()">Kapat</button></div>
+<!-- TOPLU KALINLIK -->
+<div class="mbg" id="mbgK">
+  <div class="modal">
+    <h3>📐 Toplu Kalınlık Değiştir</h3>
+    <div class="mf"><label>Yeni kalınlık (cm)</label>
+      <select id="topluK" style="width:100%;background:#1a2030;border:1px solid #2a3050;border-radius:4px;color:#eee;font-size:13px;padding:5px">
+        <option value="6">6 cm</option><option value="8">8 cm</option><option value="10">10 cm</option>
+        <option value="12">12 cm</option><option value="14" selected>14 cm</option><option value="15">15 cm</option>
+        <option value="18">18 cm</option><option value="20">20 cm</option>
+      </select></div>
+    <div class="mf"><label>Hangi segmentler?</label>
+      <select id="topluH" style="width:100%;background:#1a2030;border:1px solid #2a3050;border-radius:4px;color:#eee;font-size:13px;padding:5px">
+        <option value="hepsi">Tüm segmentler</option>
+        <option value="sec">Sadece seçili</option>
+      </select></div>
+    <div class="mbtns">
+      <button class="mok" onclick="topluKalinlikUygula()">✓ Uygula</button>
+      <button class="mcancel" onclick="document.getElementById('mbgK').classList.remove('open')">İptal</button>
+    </div>
+  </div>
+</div>
+<!-- MODAL -->
+<div class="mbg" id="mbg">
+  <div class="modal">
+    <h3 id="mTitle">Kapı Ekle</h3>
+    <div class="mf"><label>Ad</label><input type="text" id="mAd"></div>
+    <div class="mf"><label>Genişlik (cm)</label><input type="number" id="mEn" min="20" max="600"></div>
+    <div class="mf"><label>Yükseklik (cm)</label><input type="number" id="mYuk"></div>
+    <div class="mf" id="mTipRow"><label>Kapı tipi</label>
+      <select id="mTip" onchange="mTipDegis()"><option value="ic">İç kapı</option><option value="dis">Dış kapı</option><option value="surme">Sürgülü</option><option value="cift">Çift kanatlı</option></select></div>
+    <div class="mf" id="mYonRow"><label>Açılma</label>
+      <select id="mYon"><option value="ic">İçe (odaya doğru)</option><option value="dis">Dışa</option></select></div>
+    <div class="mf" id="mMenRow"><label>Menteşe tarafı (kapıya açıldığı taraftan bakınca)</label>
+      <select id="mMen"><option value="sol">Sol</option><option value="sag">Sağ</option></select></div>
+    <div id="mKapiNot" style="font-size:10px;color:#8b949e;margin:-2px 0 6px">Ekledikten sonra kapının üstündeki ⇅ ⇄ oklarıyla yönü değiştirebilirsiniz.</div>
+    <div class="mf" id="mPenRow" style="display:none"><label>Pencere tipi</label>
+      <select id="mPenTip"><option value="surme">Sürgülü</option><option value="cift-kanat">Çift kanatlı</option><option value="tek-kanat">Tek kanatlı</option><option value="sabit">Sabit</option><option value="vasistas">Vasistas</option></select></div>
+    <div class="mbtns">
+      <button class="mok" onclick="modalOk()">✓ Ekle</button>
+      <button class="mcancel" onclick="document.getElementById('mbg').classList.remove('open')">İptal</button>
+    </div>
+  </div>
+</div>
+<!-- ÇATI MAKASI YÖNÜ -->
+<div class="mbg" id="mbgCati">
+  <div class="modal" style="min-width:340px">
+    <h3>🏠 Çatı makası yönü</h3>
+    <div style="font-size:11px;color:#8b949e;margin-bottom:10px;line-height:1.5">Makas yönü köşe direklerini ve panel dizilimini belirler.<br>Sonradan araç çubuğundaki 🏠 düğmesiyle tek tıkla değiştirebilirsiniz.</div>
+    <div style="display:flex;gap:10px">
+      <button class="mok" style="flex:1;padding:14px 8px;font-size:14px" onclick="catiSecildi('yatay')">→<br><span style="font-size:11px;font-weight:500">Yatay (soldan sağa)</span></button>
+      <button class="mok" style="flex:1;padding:14px 8px;font-size:14px;background:#1f6feb" onclick="catiSecildi('dikey')">↓<br><span style="font-size:11px;font-weight:500">Dikey (yukarıdan aşağı)</span></button>
+    </div>
+  </div>
+</div>
+<!-- METRAJ -->
+<style>
+.mt{border-collapse:collapse;width:100%;font-size:12px}
+.mt th{color:#8b949e;font-weight:600;text-align:left;padding:4px 6px;border-bottom:1px solid #2a3050}
+.mt td{padding:4px 6px;border-bottom:1px solid #1c2233;color:#dfe6ee}
+.mt .mg td{color:#58a6ff;font-weight:700;padding-top:10px;border-bottom:1px solid #2a3050;font-size:11px;letter-spacing:.3px}
+</style>
+<div class="mbg" id="mbgMet">
+  <div class="modal" style="min-width:460px;max-width:620px;max-height:82vh;display:flex;flex-direction:column">
+    <h3>📋 Metraj Listesi</h3>
+    <div id="metrajIc" style="overflow:auto;flex:1"></div>
+    <div class="mbtns" style="margin-top:10px">
+      <button class="mok" onclick="metrajCSV()">⬇ Excel (CSV)</button>
+      <button class="mok" onclick="metrajYazdir()" style="background:#1f6feb">🖨 Yazdır</button>
+      <button class="mcancel" onclick="document.getElementById('mbgMet').classList.remove('open')">Kapat</button>
+    </div>
+  </div>
+</div>
+<!-- ODA RENAME -->
+<div class="mbg" id="mbgOda">
+  <div class="modal">
+    <h3>🏠 Oda Bilgileri</h3>
+    <div class="mf"><label>Oda Tipi</label>
+      <select id="odaTip">
+        <option value="">— Seçilmedi —</option>
+        <option value="salon">Salon</option>
+        <option value="salon_mutfak">Salon + Mutfak</option>
+        <option value="mutfak">Mutfak</option>
+        <option value="oturma">Oturma Odası</option>
+        <option value="yatak">Yatak Odası</option>
+        <option value="cocuk">Çocuk Odası</option>
+        <option value="ebeveyn">Ebeveyn Odası</option>
+        <option value="banyo">Banyo</option>
+        <option value="ebanyo">Ebeveyn Banyo</option>
+        <option value="wc">WC / Tuvalet</option>
+        <option value="hol">Hol / Koridor</option>
+        <option value="giris">Giriş</option>
+        <option value="veranda">Veranda</option>
+        <option value="depo">Depo / Kiler</option>
+        <option value="garaj">Garaj</option>
+      </select>
+    </div>
+    <div class="mf"><label>Özel ad (isteğe bağlı — boşsa tip adı görünür, ör. "Salon")</label><input type="text" id="odaAd" placeholder="ör. Misafir Odası"></div>
+    <div class="mbtns">
+      <button class="mok" onclick="odaKaydet()">✓ Kaydet</button>
+      <button class="mcancel" onclick="document.getElementById('mbgOda').classList.remove('open')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="src/prefab.css"><link rel="stylesheet" href="src/roof.css"><script src="src/roof-core.js"></script><script src="src/project.js"></script><script src="src/engine.js"></script><script src="src/studio.js"></script><script src="src/prefab.js"></script><script src="src/modular.js"></script><script src="src/opening-catalog.js"></script><script src="src/windows.js"></script><script src="src/fixtures.js"></script><script src="src/roof.js"></script><script src="src/roof-workflow.js"></script></body></html>

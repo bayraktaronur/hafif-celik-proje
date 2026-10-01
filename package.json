@@ -1,0 +1,14 @@
+{
+  "name": "prefabrikten-plan-studio",
+  "version": "5.9.3",
+  "private": true,
+  "description": "Prefabrik panel ve hafif çelik kat planı çalışma alanı",
+  "scripts": {
+    "start": "node tools/serve.cjs",
+    "build": "node tools/build.cjs",
+    "test": "node tests/run.cjs && node tests/prefab.cjs && node tests/fixtures.cjs && node tests/roof.cjs && node tests/architecture.cjs && node tests/roof-directions.cjs && node tests/veranda-joins.cjs && node tests/roof-layers.cjs && node tests/roof-plan-body.cjs && node tests/roof-workflow.cjs && node tests/roof-child-u.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.55.0"
+  }
+}
