@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.8
+# Prefabrikten Plan Studio · 5.9.9
+
+5.9.9: Seç aracında oda etiketine veya odanın boş alanına çift tıklayınca hızlı oda türü seçicisi açılır. Salon, yatak odası, mutfak ve diğer türlere tek tıkla sınıflandırma uygulanır ve pencere kapanır. Özel ad alanı korunur; yalnız isim değiştirmek için Özel adı uygula kullanılır. Esc değişiklik yapmadan kapatır, Ctrl+Z işlemi geri alır. Etiketler gizliyken oda içinden seçim ve mevcut etiket sürükleme davranışı korunur.
 
 5.9.8: H ekleri, üçlü/dörtlü bağlantılar, çektirme U ve köşe direkleri tüm görünümlerde ve PNG çıktısında daima çizilir; gizleme tikleri kaldırılmıştır. Eski dosyalardaki gizleme tercihleri bu bağlantıları gizlemez. Müşteri sunumunda kapı/pencere etiketi ad yerine en/yükseklik (ör. 80/205) gösterir. Nesnelerin kayıtlı adları korunur; isim görünüm filtresi kaldırılmıştır.
 

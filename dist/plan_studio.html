@@ -252,6 +252,7 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 @media(max-width:1400px){.tool-ribbon .t kbd{display:none}.tool-ribbon .t{padding:7px 6px}.tool-ribbon .history-tools{gap:0}.tool-ribbon #selectionMode{max-width:102px}}
 .snap-targets{border:1px solid #344456;border-radius:6px;margin:12px 0;padding:10px;display:grid;gap:9px}.snap-targets legend{font-size:11px;color:#8edfc1;padding:0 5px}.snap-targets label{display:flex;gap:7px;align-items:center;font-size:11px;cursor:pointer}.snap-targets input{accent-color:#8edfc1}.snap-targets .panel-help{margin:0}
 .view-filter-grid{display:grid;gap:9px;margin:12px 0}.view-filter-grid label{display:flex;gap:8px;align-items:center;font-size:12px}.view-filter-grid input{accent-color:#69d6b2}#viewFilters summary{cursor:pointer;font-size:12px}#quickViewPreset{max-width:155px}
+.room-type-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 18px}.room-type-picker .sib{margin:0;min-height:38px;white-space:normal}.room-type-picker [aria-pressed="true"]{border-color:#69d6b2;background:#194238}.room-type-picker button:focus-visible{outline:2px solid #69d6b2;outline-offset:2px}#mbgOda .mf[hidden]{display:none}@media(max-width:520px){.room-type-picker{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 </style><style>
 #roofDialog{position:fixed;inset:0;margin:auto;width:min(1660px,97vw);height:94vh;max-width:none;max-height:none;padding:0;border:1px solid #394859;border-radius:12px;background:#111a24;color:#d8e2ee;box-shadow:0 20px 100px #0009;font:13px system-ui,sans-serif}
@@ -4920,7 +4921,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.8',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.9',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),fixtures:clone(G.fixtures||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5767,7 +5768,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.8';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.9';syncUI();draw();
 })();
 
 </script><script>
@@ -6539,6 +6540,28 @@ window.OpeningCatalog=(function(){
   const direction=document.getElementById('catiBtn');direction.parentElement.previousElementSibling.textContent='Üretim yönü';
   const drawBase=window.draw;window.draw=function(){drawBase();sync();};
   window.ViewFilters={preset,set,current};sync();draw();
+})();
+
+</script><script>
+/* Fast room classification using the existing model and undo transaction. */
+(function(){
+  'use strict';
+  const modal=document.getElementById('mbgOda'),select=document.getElementById('odaTip'),name=document.getElementById('odaAd');
+  const grid=document.createElement('div');grid.id='roomTypePicker';grid.className='room-type-picker';grid.setAttribute('role','group');grid.setAttribute('aria-label','Oda türü seç');
+  for(const option of select.options){
+    const button=document.createElement('button');button.type='button';button.className='sib';button.dataset.roomType=option.value;button.textContent=option.value?option.textContent:'Türü temizle';
+    button.onclick=()=>{select.value=option.value;odaKaydet();cv.focus();};grid.append(button);
+  }
+  const help=document.createElement('p');help.className='panel-help';help.textContent='Oda türüne tıkla: hemen uygula. Esc: vazgeç. Ctrl+Z: geri al.';
+  select.closest('.mf').hidden=true;select.closest('.mf').before(help,grid);
+  const custom=name.closest('.mf');custom.querySelector('label').textContent='Özel ad (isteğe bağlı)';
+  modal.querySelector('.mok').textContent='Özel adı uygula';
+  const original=window.openOdaModal;
+  window.openOdaModal=function(room){
+    original(room);
+    grid.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.roomType===(room.tip||''))));
+    const selected=grid.querySelector('[aria-pressed="true"]');if(selected)selected.focus();
+  };
 })();
 
 </script></body></html>
