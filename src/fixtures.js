@@ -57,7 +57,7 @@
    const origin=moving.f,dx=p.x-origin.x,dy=p.y-origin.y;
    return Math.abs(dx)>=Math.abs(dy)?{x:p.x,y:origin.y}:{x:origin.x,y:p.y};
  }
- function movePoint(e){const p=point(e);if(draft)return p;const raw={x:p.x+(moving?.dx||0),y:p.y+(moving?.dy||0)};if(moving)moving.last=raw;return constrainMove(raw,e.shiftKey);}
+ function movePoint(e){const p=point(e);if(draft)return p;const raw={x:p.x+(moving?.dx||0),y:p.y+(moving?.dy||0)};if(moving)moving.last=raw;const constrained=constrainMove(raw,e.shiftKey);return moving?.f.kind==='fridge'&&!e.shiftKey&&window.Kitchen?Kitchen.snapFixture(moving.f,constrained):constrained;}
  function stop(e){e.preventDefault();e.stopImmediatePropagation();}
  function select(f){G.secili=f;G.seciliTip='fixture';G.selSegs=[];updateSidebar();draw();}
  function change(fn){if(G.seciliTip!=='fixture'||!G.secili)return;Studio.edit(()=>fn(G.secili));}

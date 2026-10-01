@@ -41,15 +41,35 @@
  function select(c){G.secili=c;G.seciliTip='counter';G.selSegs=[];updateSidebar();draw();}
  function inside(p,points){let yes=false;for(let i=0,j=points.length-1;i<points.length;j=i++){const a=points[i],b=points[j];if((a.y>p.y)!==(b.y>p.y)&&p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x)yes=!yes;}return yes;}
  function stop(e){e.preventDefault();e.stopImmediatePropagation();}
- window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;const r=cv.getBoundingClientRect(),p=toCm(e.clientX-r.left,e.clientY-r.top);if(G.tool==='counter'){stop(e);wall=pick(p);if(!wall){Studio.toast('Yatay veya dikey duvarın oda tarafına yakın tıklayın.',true);return;}setTool('sec');$('counterOffset').value=0;$('counterLength').value=Math.min(300,wall.hi-wall.lo);$('counterReturn').value='none';$('counterReturnLength').value=180;refresh();dialog.showModal();return;}if(G.tool==='sec'&&!Fixtures.hit(p)){const c=(G.counters||[]).slice().reverse().find(c=>inside(p,c.points));if(c){stop(e);select(c);}}},true);
+ window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;const r=cv.getBoundingClientRect(),p=toCm(e.clientX-r.left,e.clientY-r.top);if(G.tool==='counter'){stop(e);wall=pick(p);if(!wall){Studio.toast('Yatay veya dikey duvarın oda tarafına yakın tıklayın.',true);return;}setTool('sec');$('counterOffset').value=0;$('counterLength').value=Math.min(300,wall.hi-wall.lo);$('counterReturn').value='none';$('counterReturnLength').value=180;refresh();dialog.showModal();return;}if(G.tool==='sec'&&!Fixtures.hit(p)){const c=(G.counters||[]).slice().reverse().find(c=>effective(c).contains(p));if(c){stop(e);select(c);}}},true);
  const baseDraw=drawElemanlar;window.drawElemanlar=function(){
-   function paint(c,color){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.beginPath();c.points.forEach((p,i)=>{const q=toCv(p.x,p.y);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();ctx.stroke();ctx.restore();}
+   function paint(c,color){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.beginPath();for(const e of effective(c).edges){const a=toCv(e.a.x,e.a.y),b=toCv(e.b.x,e.b.y);ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);}ctx.stroke();ctx.restore();}
    (G.counters||[]).forEach(c=>paint(c,!TH.export&&G.seciliTip==='counter'&&G.secili?.id===c.id?'#ffd469':TH.wall));
    if(preview&&!TH.export){paint(preview,'#8ee4c6');const p=toCv(preview.points[0].x,preview.points[0].y);ctx.save();ctx.fillStyle='#8ee4c6';ctx.font='12px sans-serif';ctx.fillText('Başlangıç',p.x+6,p.y-8);ctx.restore();}baseDraw();
  };
  const baseSidebar=updateSidebar;window.updateSidebar=function(){baseSidebar();if(G.seciliTip==='counter'&&G.secili){$('sbSel').style.display='block';$('sbSelIc').innerHTML='<div class="sb-t">Mutfak tezgâhı</div><p>60 cm derinlik · '+(G.secili.points.length===4?'Düz':'L')+'</p><p>Duvar değişirse tezgâhı yeniden yerleştirin. Ocak ve evye ayrı nesnelerdir.</p><button class="sib" id="counterDelete">Tezgâhı sil</button>';$('counterDelete').onclick=remove;}};
  function remove(){if(G.seciliTip==='counter')Studio.edit(()=>{G.counters=G.counters.filter(c=>c.id!==G.secili.id);});}
  window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||dialog.open||menu.open)return;if(G.tool==='counter'&&e.key==='Escape'){stop(e);setTool('sec');}else if(G.seciliTip==='counter'&&e.key==='Delete'){stop(e);remove();}},true);
- function snapFixture(f,p){if(!['hob','sink'].includes(f.kind))return p;let best=null;for(const c of G.counters||[])for(const r of c.runs){const a=r.angle*Math.PI/180,u={x:Math.cos(a),y:Math.sin(a)},v={x:-u.y,y:u.x},q={x:p.x-r.x,y:p.y-r.y},along=dot(q,u),across=dot(q,v);if(r.length<f.w||Math.abs(across)>35||Math.abs(along)>r.length/2)continue;const point=add(r,u,Math.max(-(r.length-f.w)/2,Math.min((r.length-f.w)/2,along)));if(!best||Math.hypot(point.x-p.x,point.y-p.y)<best.distance)best={...point,angle:r.angle,distance:Math.hypot(point.x-p.x,point.y-p.y)};}return best?{x:best.x,y:best.y,angle:best.angle}:p;}
- window.Kitchen={pick,make,inside,snapFixture,cancel:()=>{preview=null;wall=null;dialog.close();menu.close();}};
+ function effective(c){return CounterCut.difference(c.points,(G.fixtures||[]).filter(f=>f.kind==='fridge').map(CounterCut.footprint));}
+ function inward(c,index){
+   const r=c.runs[index],a=r.angle*Math.PI/180,v={x:-Math.sin(a),y:Math.cos(a)};
+   // Old saved counters have no explicit wall normal. Recover it from the outline.
+   const reference=index===0?{x:r.x-(c.points[0].x+c.points[1].x)/2,y:r.y-(c.points[0].y+c.points[1].y)/2}:{x:c.runs[0].x-r.x,y:c.runs[0].y-r.y};
+   return dot(reference,v)>=0?v:{x:-v.x,y:-v.y};
+ }
+ function snapFixture(f,p){
+   if(!['hob','sink','fridge'].includes(f.kind))return p;
+   const fridge=f.kind==='fridge';let best=null;
+   for(const c of G.counters||[])for(const [index,r] of c.runs.entries()){
+     const a=r.angle*Math.PI/180,u={x:Math.cos(a),y:Math.sin(a)},v=inward(c,index),q={x:p.x-r.x,y:p.y-r.y},along=dot(q,u),across=dot(q,v);
+     if(r.length<f.w||Math.abs(across)>40||Math.abs(along)>r.length/2+(fridge?f.w/2+15:0))continue;
+     const point=add(add(r,u,Math.max(-(r.length-f.w)/2,Math.min((r.length-f.w)/2,along))),v,fridge?(f.d-60)/2:0);
+     const angle=fridge?(Math.atan2(-v.x,v.y)*180/Math.PI+360)%360:r.angle;
+     // A removed countertop area is not a valid sink/hob placement target.
+     if(!fridge){const poly=CounterCut.footprint({...f,...point,angle});if((G.fixtures||[]).some(g=>g.kind==='fridge'&&CounterCut.difference(poly,[CounterCut.footprint(g)]).area<f.w*f.d-.01))continue;}
+     const distance=Math.hypot(point.x-p.x,point.y-p.y);if(!best||distance<best.distance)best={...point,angle,distance};
+   }
+   return best?{x:best.x,y:best.y,angle:best.angle}:p;
+ }
+ window.Kitchen={pick,make,inside,snapFixture,effective,cancel:()=>{preview=null;wall=null;dialog.close();menu.close();}};
 })();

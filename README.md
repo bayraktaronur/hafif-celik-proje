@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.11
+# Prefabrikten Plan Studio · 5.9.12
+
+5.9.12: Buzdolabı ilk yerleştirmede ve normal sürükleme/Taşı işleminde yakındaki tezgâhın yönüne ve arka kenarına otomatik hizalanır; ön yüz oda tarafındadır. 70 cm derinlik, 60 cm tezgâhtan 10 cm taşar. Shift ile taşıma mevcut eksen kilidini korur. Buzdolabının tezgâhla örtüşen gerçek taban alanı, düz veya L tezgâh sınırından çıkarılır; buzdolabı taşınınca/silinince eski alan geri gelir. Ana tezgâh sınırı ve buzdolabı kayıtları korunur; kesilmiş sınır aynı kayıtlardan türetilir, seçim ve PNG de bu sınırı kullanır. Geri alma ve JSON tekrar açma desteklenir. Eski buzdolaplarının konumu kendiliğinden değiştirilmez; yeni hizalamayı uygulamak için tezgâha yakın taşıyın.
 
 5.9.11: Mutfak menüsünden duvarın oda tarafına tıklayarak 60 cm derinlikte düz veya L tezgâh oluşturulur. Başlangıç boşluğu, ana kol ve dönüş uzunluğu girilir; önizleme başlangıç ucunu gösterir. Derinlik duvar iç yüzünden alınır, L köşesi tek sınırdır; duvar boyunu aşma ve kapı açıklığına taşma engellenir. Ocak (60 × 50), evye (46 × 46) ve buzdolabı (75 × 70) boyutlarında ölçüsüz plan sembolleri eklendi. Ocak/evye ilk yerleştirmede yakındaki tezgâh kolunun ortasına ve yönüne hizalanır; buzdolabı serbest yerleşir. Tezgâha tıklayınca seçilir, sağ panelden veya Delete ile silinir. Kaydet/aç, yerel yedek, geri al/ileri al ve PNG desteklenir. Tezgâh ve ürünler bağımsız plan nesneleridir: duvar değişirse tezgâh yeniden yerleştirilmelidir; bağlı hareket, 3B dolap, tesisat ve üretim metrajı henüz yoktur.
 
