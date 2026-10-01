@@ -15,14 +15,15 @@
    if(geo.kenar.some(k=>Math.abs(k.e.ux*k.e.uy)>.001))throw Error('Otomatik öneri şu anda yatay/dikey duvarlı odalar içindir.');
    const walls=G.segs.map(s=>{const a=getNode(s.n1),b=getNode(s.n2);return foot({x:(a.x+b.x)/2,y:(a.y+b.y)/2,w:Math.hypot(a.x-b.x,a.y-b.y),d:s.k,angle:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI});});
    const doors=[],windows=[],entries=[];
-   for(const o of G.elemanlar){const edge=geo.kenar.find(k=>k.e.seg?.id===o.segId)?.e;if(!edge)continue;const s=getSeg(o.segId),a=getNode(s.n1),b=getNode(s.n2),x=a.x+(b.x-a.x)*o.t,y=a.y+(b.y-a.y)*o.t,depth=o.tip_==='kapi'?Math.max(90,o.en+10):45;
+   for(const o of G.elemanlar){const edge=geo.kenar.find(k=>k.e.seg?.id===o.segId)?.e;if(!edge)continue;const s=getSeg(o.segId),a=getNode(s.n1),b=getNode(s.n2),L=Math.hypot(b.x-a.x,b.y-a.y),t=o.t+o.en/(2*L),x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t,depth=o.tip_==='kapi'?Math.max(90,o.en+10):45;
      const f={x:x+edge.nx*(edge.k/2+depth/2),y:y+edge.ny*(edge.k/2+depth/2),w:o.en+20,d:depth,angle:(Math.atan2(-edge.nx,edge.ny)*180/Math.PI+360)%360};
      (o.tip_==='kapi'?doors:windows).push(foot(f));if(o.tip_==='kapi')entries.push({x:x+edge.nx*(edge.k/2+50),y:y+edge.ny*(edge.k/2+50)});
    }
    const existing=G.fixtures||[],counters=G.counters||[];
+   if(existing.some(f=>doors.some(d=>overlap(foot(f),d)))||counters.some(c=>doors.some(d=>overlap(c.points,d))))throw Error('Mevcut yerleşimde kapı önünü kapatan ürün veya tezgâh var. Önce bu parçayı taşıyın; mevcut eşyalar otomatik taşınmaz.');
    return {poly,edges:geo.kenar.map((k,i)=>({e:k.e,a:geo.poly[i*2],b:geo.poly[i*2+1],L:k.L})),walls,doors,windows,entries,existing,obstacles:[...walls,...existing.map(foot),...counters.map(c=>c.points)],room};
  }
- function valid(f,placed,ctx){const p=foot(f),reserved=reserves(f);return contained(p,ctx.poly)&&reserved.every(r=>contained(r,ctx.poly))&&!ctx.obstacles.some(o=>overlap(p,o)||reserved.some(r=>overlap(r,o)))&&!ctx.doors.some(o=>overlap(p,o))&&(!['wardrobe','coatCabinet','tvUnit','bedSingle','bedDouble','sofa2','sofa3','armchair'].includes(f.kind)||!ctx.windows.some(o=>overlap(p,o)))&&!placed.some(g=>overlap(p,foot(g))||reserves(g).some(r=>overlap(p,r))||reserved.some(r=>overlap(r,foot(g))));}
+ function valid(f,placed,ctx){const p=foot(f),reserved=reserves(f);return contained(p,ctx.poly)&&reserved.every(r=>contained(r,ctx.poly))&&!ctx.obstacles.some(o=>overlap(p,o)||reserved.some(r=>overlap(r,o)))&&!ctx.doors.some(o=>overlap(p,o))&&(!['wardrobe','coatCabinet','tvUnit','sofa2','sofa3','armchair'].includes(f.kind)||!ctx.windows.some(o=>overlap(p,o)))&&!placed.some(g=>overlap(p,foot(g))||reserves(g).some(r=>overlap(p,r))||reserved.some(r=>overlap(r,foot(g))));}
  function candidates(kind,ctx,variant,anchor,size){const [w,d]=size||cat[kind].sizes[0],out=[];
    for(let j=0;j<ctx.edges.length;j++){const edge=ctx.edges[(j+variant)%ctx.edges.length],e=edge.e;if(edge.L<w+4)continue;const fractions=[.5,.25,.75,0,1];for(const t of fractions){const along=w/2+2+(edge.L-w-4)*t;out.push({kind,w,d,...{x:edge.a.x+e.ux*along+e.nx*(d/2+2),y:edge.a.y+e.uy*along+e.ny*(d/2+2)},angle:(Math.atan2(-e.nx,e.ny)*180/Math.PI+360)%360,mirror:false});}}
    if(anchor&&kind==='coffeeTable')return [0,-50,50].map(x=>({kind,w,d,...local(anchor,x,anchor.d/2+75+d/2),angle:anchor.angle,mirror:false}));

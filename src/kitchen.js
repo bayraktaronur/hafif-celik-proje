@@ -31,7 +31,7 @@
    const angle=(Math.atan2(w.u.y,w.u.x)*180/Math.PI+360)%360;
    const runs=[{...world([length/2,30]),angle,length}];if(side!=='none')runs.push({...world([side==='start'?30:length-30,ret/2]),angle:(Math.atan2(w.v.y,w.v.x)*180/Math.PI+360)%360,length:ret});
    // Door openings are reserved space; never place a counter through them.
-   for(const e of G.elemanlar.filter(e=>e.tip_==='kapi')){let a,b;if(e.segId===w.s.id){a=start;b=end;}else if(side!=='none'&&e.segId===neighbor.s.id){const atStart=neighbor.s.n1===w.s.n1||neighbor.s.n1===w.s.n2;a=atStart?w.s.k/2:neighbor.L-w.s.k/2-ret;b=atStart?w.s.k/2+ret:neighbor.L-w.s.k/2;}else continue;const s=getSeg(e.segId),A=getNode(s.n1),B=getNode(s.n2),pos=e.t*Math.hypot(B.x-A.x,B.y-A.y);if(pos+e.en/2>a+.01&&pos-e.en/2<b-.01)throw Error('Tezgâh kapı açıklığıyla çakışıyor; boşluk veya uzunluğu değiştirin.');}
+   for(const e of G.elemanlar.filter(e=>e.tip_==='kapi')){let a,b;if(e.segId===w.s.id){a=start;b=end;}else if(side!=='none'&&e.segId===neighbor.s.id){const atStart=neighbor.s.n1===w.s.n1||neighbor.s.n1===w.s.n2;a=atStart?w.s.k/2:neighbor.L-w.s.k/2-ret;b=atStart?w.s.k/2+ret:neighbor.L-w.s.k/2;}else continue;const s=getSeg(e.segId),A=getNode(s.n1),B=getNode(s.n2),pos=e.t*Math.hypot(B.x-A.x,B.y-A.y)+e.en/2;if(pos+e.en/2>a+.01&&pos-e.en/2<b-.01)throw Error('Tezgâh kapı açıklığıyla çakışıyor; boşluk veya uzunluğu değiştirin.');}
    return {id:'counter-'+crypto.randomUUID(),points:points.map(world),runs};
  }
  function form(){return make(wall,+$('counterOffset').value,+$('counterLength').value,$('counterReturn').value,+$('counterReturnLength').value);}
