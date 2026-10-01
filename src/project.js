@@ -1,6 +1,7 @@
 /* Project schema and geometry checks. Shared by the browser and Node tests. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PlanProject=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
+  const furniture=typeof FurnitureCatalog!=='undefined'?FurnitureCatalog:require('./furniture-catalog.js');
   const DEFAULT_OPTIONS={h:280,dis:10,ic:6,alciDuvar:'yok',cephe:'yok',plaka:'40x250',bindirme:3,cepheFire:5,cati:'besik',egim:33,sacak:30,trapezEn:100,kaplama:'trapez',osb:false,catiFire:5,suRulo:75,suBindirme:10,parcaBoy:200,parcaBind:10,vidaM2:5,inisAralik:10,aksAcik:false};
   const fail=message=>{throw new Error(message);};
   const finite=(x,min,max)=>typeof x==='number'&&Number.isFinite(x)&&x>=min&&x<=max;
@@ -49,8 +50,9 @@
       if(e.ad!==undefined&&typeof e.ad!=='string')fail('Açıklık adı metin olmalı.');
     }
     for(const f of d.fixtures){
-      if(!['wallwc','wc','basin','vanity','shower','washer','hob','sink','fridge'].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
+      if(!['wallwc','wc','basin','vanity','shower','washer','hob','sink','fridge',...Object.keys(furniture.items)].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
     }
+    for(const f of d.fixtures)if(f.locked!==undefined&&typeof f.locked!=='boolean')fail('Tefriş kilidi geçersiz.');
     for(const c of d.counters){
       if(!Array.isArray(c.points)||![4,6].includes(c.points.length)||c.points.some(p=>!p||!finite(p.x,-1e7,1e7)||!finite(p.y,-1e7,1e7)))fail('Tezgâh sınırı geçersiz.');
       if(!Array.isArray(c.runs)||c.runs.length!==(c.points.length===4?1:2)||c.runs.some(r=>!r||!finite(r.x,-1e7,1e7)||!finite(r.y,-1e7,1e7)||!finite(r.angle,0,359)||!finite(r.length,60,1e7)))fail('Tezgâh kolları geçersiz.');
