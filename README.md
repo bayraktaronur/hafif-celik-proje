@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.7
+# Prefabrikten Plan Studio · 5.9.8
+
+5.9.8: H ekleri, üçlü/dörtlü bağlantılar, çektirme U ve köşe direkleri tüm görünümlerde ve PNG çıktısında daima çizilir; gizleme tikleri kaldırılmıştır. Eski dosyalardaki gizleme tercihleri bu bağlantıları gizlemez. Müşteri sunumunda kapı/pencere etiketi ad yerine en/yükseklik (ör. 80/205) gösterir. Nesnelerin kayıtlı adları korunur; isim görünüm filtresi kaldırılmıştır.
 
 5.9.7: Görünüm tikleri doğrudan açıktır. Müşteri sunumu kapı/pencere isimlerini ve bölme duvarlarının ana duvara bağlandığı hizalar arasındaki mimari ölçü zincirlerini gösterir. Zincirin uçları dış yüzler, ara noktaları bölme akslarıdır; net oda iç ölçüsü değildir. Toplam dış ölçüler ayrı sırada kalır. Panel ölçüleri ve bölme hizası ölçüleri bağımsız tiklenebilir; birlikte açıkken ayrı sıralara yerleşir. Panel ölçülerini kapatmak bölme hizası ve dış toplam ölçülerini açar; bunlar ayrıca kapatılabilir. İsimler ve kapı/pencere boyutları ayrı filtrelerdir. Model ve metraj değişmez.
 

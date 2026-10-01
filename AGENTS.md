@@ -12,3 +12,4 @@ https://github.com/bayraktaronur/hafif-celik-proje
 - Parolaları, erişim anahtarlarını, `.env` dosyalarını, bağımlılık klasörlerini ve geçici çıktıları depoya ekleme.
 - Tarayıcıda saklanan çizimler Git tarafından taşınmaz. Kullanıcı çizimlerini iki bilgisayarda açmak istediğinde uygulamanın dışa aktarma/kaydetme yöntemini kontrol et ve çizim dosyaları için ayrıca kayıt düzeni belirle.
 - Diğer bilgisayarda ilk kurulumu yaparken mevcut yedeği koru; depoyu ayrı bir klasöre klonla ve Codex'te o klasörü aç.
+- Görünüm kuralı: H panel ekleri, üçlü/dörtlü birleşimler, çektirme U ve köşe direklerini hiçbir sunum/filtrede gizleme. Müşteri sunumundaki kapı/pencere etiketleri en/yükseklik ölçüleridir (ör. 80/205); nesne adı değildir.

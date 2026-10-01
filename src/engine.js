@@ -430,7 +430,7 @@ function panelMetraj(){
   M.A=A;
   return M;
 }
-function planVisible(key){return !G.viewFilters||G.viewFilters[key]!==false;}
+function planVisible(key){if(key==='panelJoints'||key==='connections')return true;return !G.viewFilters||G.viewFilters[key]!==false;}
 function drawPanels(){
   if(!isPref())return;
   var s=sc(),A=pfAnaliz();
@@ -455,7 +455,7 @@ function drawPanels(){
       var col=p.acik?null:(p.tip==='yarim'?TH.pnlYarim:p.tip==='ozel'?TH.pnlOzel:null);
       if(col&&planVisible('panelColors')){var p1=P(p.a,0),p2=P(p.b,0);ctx.strokeStyle=col;ctx.lineWidth=wpx;ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();}
       // derz
-      if(i>0&&planVisible('panelJoints')){
+      if(i>0){
         // H profil: yalnız duvar kalınlığı içinde — ek çizgisi + iç yüzlere yaslanan kısa başlıklar (I/H görünümü)
         var wp=h*2*s,ins=Math.min(0.8,wp*0.08)/s;           // yüzden hafif içeride
         var c1=P(p.a,h-ins),c2=P(p.a,-h+ins);
@@ -485,7 +485,6 @@ function drawPanels(){
   {
     A.bag.forEach(function(b){
       if(b.tip==='H')return;
-      if(b.tip!=='kose'&&!(G.viewFilters?planVisible('connections'):G.pnlEtiket))return;
       var nd=b.nid?getNode(b.nid):null;if(!nd)return;
       var c=toCv(nd.x,nd.y),R=Math.max(6,Math.min(10,5+s*2));
       if(b.cornerPost){c.x+=b.postUx*R*2.2;c.y+=b.postUy*R*2.2;}
@@ -2520,8 +2519,7 @@ function drawElemanlar(){
     else drawKapi(e,ex,ey,aci,seg.k,isSel);
   });
   // Draw dimensions last so neighbouring opening symbols cannot paint over them.
-  var showNames=!!G.viewFilters?.openingNames;
-  if(!planVisible('openings')&&!showNames)return;
+  if(!planVisible('openings'))return;
   var labels=[];
   G.elemanlar.forEach(function(e){
     var seg=getSeg(e.segId);if(!seg)return;
@@ -2530,7 +2528,7 @@ function drawElemanlar(){
     var ux=dx/L,uy=dy/L,mid=e.t*L+e.en/2,p=toCv(a.x+ux*mid,a.y+uy*mid);
     var angle=Math.atan2(dy,dx);if(angle>Math.PI/2||angle<=-Math.PI/2)angle+=Math.PI;
     var side=-segRoomSide(seg,mid)||(e.tip_==='kapi'?-kapiYan(e):1);
-    var text=[showNames?(e.ad||e.catalogId||(e.tip_==='kapi'?'Kapı':'Pencere')):'',planVisible('openings')?fmtCm(e.en)+'/'+fmtCm(e.yuk):''].filter(Boolean).join(' · '),font=TH.export?11:10;
+    var text=fmtCm(e.en)+'/'+fmtCm(e.yuk),font=TH.export?11:10;
     ctx.save();ctx.font='600 '+font+'px '+FF;ctx.textAlign='center';ctx.textBaseline='middle';
     var w=ctx.measureText(text).width+6,h=font+4,cx,cy,box;
     for(var row=0;row<4;row++){
