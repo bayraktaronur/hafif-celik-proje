@@ -20,12 +20,12 @@
     const d=JSON.parse(JSON.stringify(input));
     if(d.sistem&&!['celik','prefabrik'].includes(d.sistem))fail('Bilinmeyen yapı sistemi.');
     d.sistem=d.sistem||'celik';
-    for(const k of ['n','s','e','r','fixtures']){
+    for(const k of ['n','s','e','r','fixtures','counters']){
       if(d[k]===undefined)d[k]=[];
       if(!Array.isArray(d[k])||d[k].length>20000)fail('Geçersiz veya aşırı büyük nesne listesi: '+k);
     }
     const all=new Set();
-    for(const o of [...d.n,...d.s,...d.e,...d.r,...d.fixtures]){
+    for(const o of [...d.n,...d.s,...d.e,...d.r,...d.fixtures,...d.counters]){
       if(!o||typeof o!=='object'||typeof o.id!=='string'||!/^[-a-zA-Z0-9_]{1,80}$/.test(o.id))fail('Geçersiz nesne kimliği.');
       if(all.has(o.id))fail('Tekrarlanan nesne kimliği: '+o.id);all.add(o.id);
     }
@@ -49,7 +49,11 @@
       if(e.ad!==undefined&&typeof e.ad!=='string')fail('Açıklık adı metin olmalı.');
     }
     for(const f of d.fixtures){
-      if(!['wallwc','wc','basin','vanity','shower','washer'].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
+      if(!['wallwc','wc','basin','vanity','shower','washer','hob','sink','fridge'].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
+    }
+    for(const c of d.counters){
+      if(!Array.isArray(c.points)||![4,6].includes(c.points.length)||c.points.some(p=>!p||!finite(p.x,-1e7,1e7)||!finite(p.y,-1e7,1e7)))fail('Tezgâh sınırı geçersiz.');
+      if(!Array.isArray(c.runs)||c.runs.length!==(c.points.length===4?1:2)||c.runs.some(r=>!r||!finite(r.x,-1e7,1e7)||!finite(r.y,-1e7,1e7)||!finite(r.angle,0,359)||!finite(r.length,60,1e7)))fail('Tezgâh kolları geçersiz.');
     }
     for(const r of d.r){
       if(!Array.isArray(r.nodeIds)||r.nodeIds.some(id=>!nodes.has(id)))fail('Oda düğümleri geçersiz.');

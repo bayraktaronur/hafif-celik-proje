@@ -1,8 +1,8 @@
 /* Free-standing sanitary fixtures: centimetres, independent of panel snapping. */
 (function(){
  'use strict';
- const names={wallwc:'Gömme klozet',wc:'Takım klozet',basin:'Ayaklı lavabo',vanity:'Dolaplı lavabo',shower:'Duş kabini',washer:'Çamaşır makinesi'};
- const standard={basin:{w:44.52,d:38.97},wallwc:{w:36.07,d:57.61},wc:{w:36.07,d:65.98},washer:{w:60,d:60}};
+ const names={wallwc:'Gömme klozet',wc:'Takım klozet',basin:'Ayaklı lavabo',vanity:'Dolaplı lavabo',shower:'Duş kabini',washer:'Çamaşır makinesi',hob:'Ocak',sink:'Mutfak evyesi',fridge:'Buzdolabı'};
+ const standard={basin:{w:44.52,d:38.97},wallwc:{w:36.07,d:57.61},wc:{w:36.07,d:65.98},washer:{w:60,d:60},hob:{w:60,d:50},sink:{w:46,d:46},fridge:{w:75,d:70}};
  const $=id=>document.getElementById(id);let draft=null,ghost=null,moving=null,step=1,handles=[];
  G.fixtures=G.fixtures||[];
  const button=document.createElement('button');button.className='t';button.id='t-fixture';button.textContent='♧ Vitrifiye ekle';button.onclick=open;document.querySelector('.tool-group').append(button);
@@ -19,6 +19,11 @@
  function symbol(c,f,x,y,s,color){c.save();c.translate(x,y);c.rotate(f.angle*Math.PI/180);c.scale(f.mirror?-s:s,s);c.translate(-f.w/2,-f.d/2);c.strokeStyle=color;c.lineWidth=1.2/s;c.fillStyle=TH.opening;const w=f.w,d=f.d;
  const rect=(x,y,w,h)=>{c.strokeRect(x,y,w,h);};const line=(x,y,a,b)=>{c.beginPath();c.moveTo(x,y);c.lineTo(a,b);c.stroke();};const ellipse=(x,y,rx,ry)=>{c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.stroke();};
  if(f.kind==='shower'){rect(0,0,w,d);rect(3,3,w-6,d-6);ellipse(w-8,8,2,2);line(w-11,11,w-24,24);line(w-12,8,w-25,8);line(w-8,12,w-8,25);}
+ else if(f.kind==='hob'){
+   rect(0,0,w,d);for(const x of [w*.32,w*.77])for(const y of [d*.25,d*.75]){ellipse(x,y,8,8);ellipse(x,y,4,4);line(x-6,y-6,x-3,y-3);line(x+3,y+3,x+6,y+6);}for(let i=0;i<4;i++)ellipse(6,12+i*8,1.5,1.5);
+ }
+ else if(f.kind==='sink'){rect(0,0,w,d);rect(2,2,w-4,d-4);rect(4,4,w-8,d-8);ellipse(w/2,d/2,1.5,1.5);line(w-4,7,w-4,-3);line(w-4,-3,w-10,-3);}
+ else if(f.kind==='fridge'){rect(0,0,w,d);line(0,d-3,w,d-3);rect(5,d,3,1.5);}
  else if(f.kind==='washer'){
    rect(0,0,w,d);line(0,d-8,w,d-8);rect(5,d-6,13,4);ellipse(w-8,d-4,2,2);
    // Keep the label readable through rotation and mirroring; no dimension labels.
@@ -45,14 +50,14 @@
  c.restore();}
  function local(f,p){const a=-f.angle*Math.PI/180,dx=p.x-f.x,dy=p.y-f.y;return {x:dx*Math.cos(a)-dy*Math.sin(a),y:dx*Math.sin(a)+dy*Math.cos(a)};}
  function hit(p){return (G.fixtures||[]).slice().reverse().find(f=>{const q=local(f,p);return Math.abs(q.x)<=f.w/2&&Math.abs(q.y)<=f.d/2;});}
- function point(e){const r=cv.getBoundingClientRect();const p=toCm(e.clientX-r.left,e.clientY-r.top);return {x:step?Math.round(p.x):p.x,y:step?Math.round(p.y):p.y};}
+ function point(e){const r=cv.getBoundingClientRect();const p=toCm(e.clientX-r.left,e.clientY-r.top);const q={x:step?Math.round(p.x):p.x,y:step?Math.round(p.y):p.y};return draft&&window.Kitchen?Kitchen.snapFixture(draft,q):q;}
  // Constrain the preview and the committed position around the original centre.
  function constrainMove(p,shift){
    if(!moving||!shift)return {...p};
    const origin=moving.f,dx=p.x-origin.x,dy=p.y-origin.y;
    return Math.abs(dx)>=Math.abs(dy)?{x:p.x,y:origin.y}:{x:origin.x,y:p.y};
  }
- function movePoint(e){const p=point(e);const raw={x:p.x+(moving?.dx||0),y:p.y+(moving?.dy||0)};if(moving)moving.last=raw;return constrainMove(raw,e.shiftKey);}
+ function movePoint(e){const p=point(e);if(draft)return p;const raw={x:p.x+(moving?.dx||0),y:p.y+(moving?.dy||0)};if(moving)moving.last=raw;return constrainMove(raw,e.shiftKey);}
  function stop(e){e.preventDefault();e.stopImmediatePropagation();}
  function select(f){G.secili=f;G.seciliTip='fixture';G.selSegs=[];updateSidebar();draw();}
  function change(fn){if(G.seciliTip!=='fixture'||!G.secili)return;Studio.edit(()=>fn(G.secili));}
@@ -67,5 +72,5 @@
  window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||dialog.open)return;if(G.seciliTip!=='fixture'&&!draft&&!moving)return;if(e.key==='Shift'&&moving?.last){ghost=constrainMove(moving.last,true);draw();}else if(e.key==='Escape'){stop(e);draft=ghost=moving=null;setTool('sec');}else if(e.key.toLowerCase()==='r'||e.key.toLowerCase()==='m'){stop(e);transform(e.key.toLowerCase()==='r'?'rotate':'mirror');}else if(e.key==='Delete'){stop(e);remove();}},true);
  window.addEventListener('keyup',e=>{if(e.key==='Shift'&&moving?.last){ghost=constrainMove(moving.last,false);draw();}},true);
  function remove(){change(f=>{G.fixtures=G.fixtures.filter(x=>x.id!==f.id);});}
- window.Fixtures={open,cancel,snap:value=>{step=+value===1?1:0;},resize:()=>{if(standard[G.secili?.kind])return;const w=+$('fixtureEditW').value,d=+$('fixtureEditD').value;if(w<1||w>500||d<1||d>500||!Number.isFinite(w+d)){Studio.toast('En ve derinlik 1–500 cm arasında olmalı.',true);return;}change(f=>Object.assign(f,{w,d}));},rotate:()=>transform('rotate'),mirror:()=>transform('mirror'),remove,move:()=>{if(G.seciliTip==='fixture'){moving={f:G.secili,dx:0,dy:0};setTool('fixture-move');}},hit};
+ window.Fixtures={open,openKind:kind=>{$('fixtureKind').value=kind;open();},cancel,snap:value=>{step=+value===1?1:0;},resize:()=>{if(standard[G.secili?.kind])return;const w=+$('fixtureEditW').value,d=+$('fixtureEditD').value;if(w<1||w>500||d<1||d>500||!Number.isFinite(w+d)){Studio.toast('En ve derinlik 1–500 cm arasında olmalı.',true);return;}change(f=>Object.assign(f,{w,d}));},rotate:()=>transform('rotate'),mirror:()=>transform('mirror'),remove,move:()=>{if(G.seciliTip==='fixture'){moving={f:G.secili,dx:0,dy:0};setTool('fixture-move');}},hit};
 })();

@@ -598,12 +598,12 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
     const d=JSON.parse(JSON.stringify(input));
     if(d.sistem&&!['celik','prefabrik'].includes(d.sistem))fail('Bilinmeyen yapı sistemi.');
     d.sistem=d.sistem||'celik';
-    for(const k of ['n','s','e','r','fixtures']){
+    for(const k of ['n','s','e','r','fixtures','counters']){
       if(d[k]===undefined)d[k]=[];
       if(!Array.isArray(d[k])||d[k].length>20000)fail('Geçersiz veya aşırı büyük nesne listesi: '+k);
     }
     const all=new Set();
-    for(const o of [...d.n,...d.s,...d.e,...d.r,...d.fixtures]){
+    for(const o of [...d.n,...d.s,...d.e,...d.r,...d.fixtures,...d.counters]){
       if(!o||typeof o!=='object'||typeof o.id!=='string'||!/^[-a-zA-Z0-9_]{1,80}$/.test(o.id))fail('Geçersiz nesne kimliği.');
       if(all.has(o.id))fail('Tekrarlanan nesne kimliği: '+o.id);all.add(o.id);
     }
@@ -627,7 +627,11 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
       if(e.ad!==undefined&&typeof e.ad!=='string')fail('Açıklık adı metin olmalı.');
     }
     for(const f of d.fixtures){
-      if(!['wallwc','wc','basin','vanity','shower','washer'].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
+      if(!['wallwc','wc','basin','vanity','shower','washer','hob','sink','fridge'].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
+    }
+    for(const c of d.counters){
+      if(!Array.isArray(c.points)||![4,6].includes(c.points.length)||c.points.some(p=>!p||!finite(p.x,-1e7,1e7)||!finite(p.y,-1e7,1e7)))fail('Tezgâh sınırı geçersiz.');
+      if(!Array.isArray(c.runs)||c.runs.length!==(c.points.length===4?1:2)||c.runs.some(r=>!r||!finite(r.x,-1e7,1e7)||!finite(r.y,-1e7,1e7)||!finite(r.angle,0,359)||!finite(r.length,60,1e7)))fail('Tezgâh kolları geçersiz.');
     }
     for(const r of d.r){
       if(!Array.isArray(r.nodeIds)||r.nodeIds.some(id=>!nodes.has(id)))fail('Oda düğümleri geçersiz.');
@@ -4921,15 +4925,15 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.10',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
-      n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),fixtures:clone(G.fixtures||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
+    return {v:'5',revision:'5.9.11',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+      n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
   }
   function snapshot(){return JSON.stringify(state());}
   function resetInteraction(){
     G.selPanels=[];G.panelAnchor=null;
-    if(window.Fixtures)Fixtures.cancel();
+    if(window.Fixtures)Fixtures.cancel();if(window.Kitchen)Kitchen.cancel();
     delete G.drawRejectReason;
     G.drawing=false;G.drawChain=false;G.drawStart=null;G.drawPreviewPt=null;G.numBuf='';G.dragging=false;G.dragNodeId=null;G.dragMidSeg=null;G.dragMidMode=null;G.dragEleman=null;G.wallDrag=null;G.dimDrag=null;G.lblDrag=null;G.panning=false;G.snapPt=null;G.snapNodeId=null;G.secili=null;G.seciliTip=null;G.seciliDimRow=null;G.selSegs=[];G.shiftLock=false;G.altKey=false;G.lockAxis=null;
     $('lockInd').style.display='none';$('shiftLbl').textContent='';
@@ -4941,7 +4945,7 @@ updateStatus();
     restoring=true;
     try{
       resetInteraction();
-      G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.fixtures=clone(d.fixtures||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
+      G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
@@ -5007,7 +5011,7 @@ updateStatus();
     try{
       pushH();mutate();if(geometry)normalizeGraph();detectRooms();
       const errors=newErrors(before,state());if(errors.length)throw Error(errors[0].message);
-      if(selected){G.secili=({node:G.nodes,seg:G.segs,eleman:G.elemanlar,room:G.rooms,fixture:G.fixtures,dim:G.segs}[selectedType]||[]).find(o=>o.id===selected)||null;G.seciliTip=G.secili?selectedType:null;}
+      if(selected){G.secili=({node:G.nodes,seg:G.segs,eleman:G.elemanlar,room:G.rooms,fixture:G.fixtures,counter:G.counters,dim:G.segs}[selectedType]||[]).find(o=>o.id===selected)||null;G.seciliTip=G.secili?selectedType:null;}
       updateSidebar();draw();return true;
     }catch(e){apply(before);G.hist=h;future=f;toast(e.message,true);return false;}
   }
@@ -5768,7 +5772,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.10';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.11';syncUI();draw();
 })();
 
 </script><script>
@@ -6031,8 +6035,8 @@ window.OpeningCatalog=(function(){
 /* Free-standing sanitary fixtures: centimetres, independent of panel snapping. */
 (function(){
  'use strict';
- const names={wallwc:'Gömme klozet',wc:'Takım klozet',basin:'Ayaklı lavabo',vanity:'Dolaplı lavabo',shower:'Duş kabini',washer:'Çamaşır makinesi'};
- const standard={basin:{w:44.52,d:38.97},wallwc:{w:36.07,d:57.61},wc:{w:36.07,d:65.98},washer:{w:60,d:60}};
+ const names={wallwc:'Gömme klozet',wc:'Takım klozet',basin:'Ayaklı lavabo',vanity:'Dolaplı lavabo',shower:'Duş kabini',washer:'Çamaşır makinesi',hob:'Ocak',sink:'Mutfak evyesi',fridge:'Buzdolabı'};
+ const standard={basin:{w:44.52,d:38.97},wallwc:{w:36.07,d:57.61},wc:{w:36.07,d:65.98},washer:{w:60,d:60},hob:{w:60,d:50},sink:{w:46,d:46},fridge:{w:75,d:70}};
  const $=id=>document.getElementById(id);let draft=null,ghost=null,moving=null,step=1,handles=[];
  G.fixtures=G.fixtures||[];
  const button=document.createElement('button');button.className='t';button.id='t-fixture';button.textContent='♧ Vitrifiye ekle';button.onclick=open;document.querySelector('.tool-group').append(button);
@@ -6049,6 +6053,11 @@ window.OpeningCatalog=(function(){
  function symbol(c,f,x,y,s,color){c.save();c.translate(x,y);c.rotate(f.angle*Math.PI/180);c.scale(f.mirror?-s:s,s);c.translate(-f.w/2,-f.d/2);c.strokeStyle=color;c.lineWidth=1.2/s;c.fillStyle=TH.opening;const w=f.w,d=f.d;
  const rect=(x,y,w,h)=>{c.strokeRect(x,y,w,h);};const line=(x,y,a,b)=>{c.beginPath();c.moveTo(x,y);c.lineTo(a,b);c.stroke();};const ellipse=(x,y,rx,ry)=>{c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.stroke();};
  if(f.kind==='shower'){rect(0,0,w,d);rect(3,3,w-6,d-6);ellipse(w-8,8,2,2);line(w-11,11,w-24,24);line(w-12,8,w-25,8);line(w-8,12,w-8,25);}
+ else if(f.kind==='hob'){
+   rect(0,0,w,d);for(const x of [w*.32,w*.77])for(const y of [d*.25,d*.75]){ellipse(x,y,8,8);ellipse(x,y,4,4);line(x-6,y-6,x-3,y-3);line(x+3,y+3,x+6,y+6);}for(let i=0;i<4;i++)ellipse(6,12+i*8,1.5,1.5);
+ }
+ else if(f.kind==='sink'){rect(0,0,w,d);rect(2,2,w-4,d-4);rect(4,4,w-8,d-8);ellipse(w/2,d/2,1.5,1.5);line(w-4,7,w-4,-3);line(w-4,-3,w-10,-3);}
+ else if(f.kind==='fridge'){rect(0,0,w,d);line(0,d-3,w,d-3);rect(5,d,3,1.5);}
  else if(f.kind==='washer'){
    rect(0,0,w,d);line(0,d-8,w,d-8);rect(5,d-6,13,4);ellipse(w-8,d-4,2,2);
    // Keep the label readable through rotation and mirroring; no dimension labels.
@@ -6075,14 +6084,14 @@ window.OpeningCatalog=(function(){
  c.restore();}
  function local(f,p){const a=-f.angle*Math.PI/180,dx=p.x-f.x,dy=p.y-f.y;return {x:dx*Math.cos(a)-dy*Math.sin(a),y:dx*Math.sin(a)+dy*Math.cos(a)};}
  function hit(p){return (G.fixtures||[]).slice().reverse().find(f=>{const q=local(f,p);return Math.abs(q.x)<=f.w/2&&Math.abs(q.y)<=f.d/2;});}
- function point(e){const r=cv.getBoundingClientRect();const p=toCm(e.clientX-r.left,e.clientY-r.top);return {x:step?Math.round(p.x):p.x,y:step?Math.round(p.y):p.y};}
+ function point(e){const r=cv.getBoundingClientRect();const p=toCm(e.clientX-r.left,e.clientY-r.top);const q={x:step?Math.round(p.x):p.x,y:step?Math.round(p.y):p.y};return draft&&window.Kitchen?Kitchen.snapFixture(draft,q):q;}
  // Constrain the preview and the committed position around the original centre.
  function constrainMove(p,shift){
    if(!moving||!shift)return {...p};
    const origin=moving.f,dx=p.x-origin.x,dy=p.y-origin.y;
    return Math.abs(dx)>=Math.abs(dy)?{x:p.x,y:origin.y}:{x:origin.x,y:p.y};
  }
- function movePoint(e){const p=point(e);const raw={x:p.x+(moving?.dx||0),y:p.y+(moving?.dy||0)};if(moving)moving.last=raw;return constrainMove(raw,e.shiftKey);}
+ function movePoint(e){const p=point(e);if(draft)return p;const raw={x:p.x+(moving?.dx||0),y:p.y+(moving?.dy||0)};if(moving)moving.last=raw;return constrainMove(raw,e.shiftKey);}
  function stop(e){e.preventDefault();e.stopImmediatePropagation();}
  function select(f){G.secili=f;G.seciliTip='fixture';G.selSegs=[];updateSidebar();draw();}
  function change(fn){if(G.seciliTip!=='fixture'||!G.secili)return;Studio.edit(()=>fn(G.secili));}
@@ -6097,7 +6106,64 @@ window.OpeningCatalog=(function(){
  window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||dialog.open)return;if(G.seciliTip!=='fixture'&&!draft&&!moving)return;if(e.key==='Shift'&&moving?.last){ghost=constrainMove(moving.last,true);draw();}else if(e.key==='Escape'){stop(e);draft=ghost=moving=null;setTool('sec');}else if(e.key.toLowerCase()==='r'||e.key.toLowerCase()==='m'){stop(e);transform(e.key.toLowerCase()==='r'?'rotate':'mirror');}else if(e.key==='Delete'){stop(e);remove();}},true);
  window.addEventListener('keyup',e=>{if(e.key==='Shift'&&moving?.last){ghost=constrainMove(moving.last,false);draw();}},true);
  function remove(){change(f=>{G.fixtures=G.fixtures.filter(x=>x.id!==f.id);});}
- window.Fixtures={open,cancel,snap:value=>{step=+value===1?1:0;},resize:()=>{if(standard[G.secili?.kind])return;const w=+$('fixtureEditW').value,d=+$('fixtureEditD').value;if(w<1||w>500||d<1||d>500||!Number.isFinite(w+d)){Studio.toast('En ve derinlik 1–500 cm arasında olmalı.',true);return;}change(f=>Object.assign(f,{w,d}));},rotate:()=>transform('rotate'),mirror:()=>transform('mirror'),remove,move:()=>{if(G.seciliTip==='fixture'){moving={f:G.secili,dx:0,dy:0};setTool('fixture-move');}},hit};
+ window.Fixtures={open,openKind:kind=>{$('fixtureKind').value=kind;open();},cancel,snap:value=>{step=+value===1?1:0;},resize:()=>{if(standard[G.secili?.kind])return;const w=+$('fixtureEditW').value,d=+$('fixtureEditD').value;if(w<1||w>500||d<1||d>500||!Number.isFinite(w+d)){Studio.toast('En ve derinlik 1–500 cm arasında olmalı.',true);return;}change(f=>Object.assign(f,{w,d}));},rotate:()=>transform('rotate'),mirror:()=>transform('mirror'),remove,move:()=>{if(G.seciliTip==='fixture'){moving={f:G.secili,dx:0,dy:0};setTool('fixture-move');}},hit};
+})();
+
+</script><script>
+/* Kitchen plan geometry, in centimetres. Countertops remain independent of walls. */
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);let wall=null,preview=null;
+ G.counters=G.counters||[];
+ const button=document.createElement('button');button.id='t-kitchen';button.className='t';button.textContent='Mutfak';document.querySelector('.tool-group').append(button);
+ const menu=document.createElement('dialog');menu.id='kitchenMenu';menu.innerHTML='<h3>Mutfak</h3><button class="sib" id="counterStart">Tezgâh çiz · düz / L</button><button class="sib" data-product="hob">Ocak</button><button class="sib" data-product="sink">Evye</button><button class="sib" data-product="fridge">Buzdolabı</button><button class="sib" data-close>Kapat</button>';
+ const dialog=document.createElement('dialog');dialog.id='counterDialog';dialog.innerHTML='<h3>Tezgâh · 60 cm derinlik</h3><p>Seçtiğiniz duvar yüzünden içeri doğru çizilir. Başlangıç ucu planda işaretlidir.</p><form><label>Başlangıçtan boşluk (cm)<input id="counterOffset" type="number" min="0" step="0.5" value="0" required></label><label>Ana kol uzunluğu (cm)<input id="counterLength" type="number" min="60" step="0.5" required></label><label>Biçim<select id="counterReturn"><option value="none">Düz</option><option value="start">L · başlangıç ucundan dön</option><option value="end">L · bitiş ucundan dön</option></select></label><label id="counterReturnLabel">Dönüş kolu toplam uzunluğu (cm)<input id="counterReturnLength" type="number" min="60" step="0.5" value="180"></label><p id="counterError" role="alert" style="color:#ffb58f"></p><button class="sib" type="submit">Tezgâhı ekle</button><button class="sib" type="button" data-close>İptal</button></form>';
+ for(const d of [menu,dialog]){d.style.cssText='background:#192334;color:#c5d6e6;border:1px solid #40566b;border-radius:12px;padding:24px;width:360px;max-height:85vh;overflow:auto';document.body.append(d);d.querySelector('[data-close]').onclick=()=>{d.close();preview=null;draw();};}
+ dialog.querySelectorAll('input,select').forEach(e=>e.style.cssText='display:block;width:100%;padding:8px;margin:6px 0 12px;background:#101b29;color:#d6e6ef;border:1px solid #40566b');
+ button.onclick=()=>menu.showModal();menu.querySelectorAll('[data-product]').forEach(b=>b.onclick=()=>{menu.close();Fixtures.openKind(b.dataset.product);});
+ $('counterStart').onclick=()=>{menu.close();setTool('counter');Studio.toast('Tezgâhın geleceği duvarın oda tarafına, duvara yakın tıklayın.');};
+ const add=(a,b,k=1)=>({x:a.x+b.x*k,y:a.y+b.y*k}),dot=(a,b)=>a.x*b.x+a.y*b.y;
+ function pick(p){let best=null;for(const s of G.segs){if(s.tip==='veranda')continue;const a=getNode(s.n1),b=getNode(s.n2),dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(L<60||Math.min(Math.abs(dx),Math.abs(dy))>.01)continue;const u={x:dx/L,y:dy/L},v={x:-u.y,y:u.x},q={x:p.x-a.x,y:p.y-a.y},t=dot(q,u),side=dot(q,v);if(t<0||t>L||Math.abs(side)>s.k/2+25)continue;if(!best||Math.abs(side)<best.distance)best={s,a,b,u,v:side>=0?v:{x:-v.x,y:-v.y},L,distance:Math.abs(side)};}if(!best)return null;
+   function neighbor(id){return G.segs.filter(s=>s.id!==best.s.id&&s.tip!=='veranda'&&(s.n1===id||s.n2===id)).map(s=>{const a=getNode(id),b=getNode(s.n1===id?s.n2:s.n1),q={x:b.x-a.x,y:b.y-a.y};return {s,q,L:Math.hypot(q.x,q.y)};}).find(o=>Math.abs(dot(o.q,best.u))<.01&&dot(o.q,best.v)>60);}
+   best.left=neighbor(best.s.n1);best.right=neighbor(best.s.n2);best.lo=best.left?best.left.s.k/2:0;best.hi=best.L-(best.right?best.right.s.k/2:0);return best;
+ }
+ function make(w,offset,length,side,ret){
+   if(![offset,length,ret].every(Number.isFinite)||offset<0||length<60||offset+length>w.hi-w.lo+.01)throw Error('Kullanılabilir duvar uzunluğu '+fmtCm(w.hi-w.lo)+' cm. Boşluk + ana kol bu sınırı aşmamalı; ana kol en az 60 cm olmalı.');
+   const start=w.lo+offset,end=start+length,neighbor=side==='start'?w.left:w.right;
+   if(side!=='none'){
+     if(!neighbor)throw Error('Bu uçta oda tarafına dönen dik duvar yok.');
+     if(side==='start'&&offset>.01||side==='end'&&Math.abs(end-w.hi)>.01)throw Error('L dönüşü için ana kol seçilen köşeye kadar uzanmalı.');
+     // Leave room for the far wall if one meets the return endpoint.
+     const far=neighbor.s.n1===w.s.n1||neighbor.s.n1===w.s.n2?neighbor.s.n2:neighbor.s.n1;
+     const trim=Math.max(0,...G.segs.filter(s=>s.id!==neighbor.s.id&&(s.n1===far||s.n2===far)).map(s=>s.k/2));
+     if(ret<=60||ret>neighbor.L-w.s.k/2-trim)throw Error('Dönüş kolu 60 cm’den uzun olmalı ve dik duvara sığmalı.');
+   }
+   const origin=add(add(w.a,w.u,start),w.v,w.s.k/2),world=([x,y])=>add(add(origin,w.u,x),w.v,y);
+   const points=side==='none'?[[0,0],[length,0],[length,60],[0,60]]:side==='start'?[[0,0],[length,0],[length,60],[60,60],[60,ret],[0,ret]]:[[0,0],[length,0],[length,ret],[length-60,ret],[length-60,60],[0,60]];
+   const angle=(Math.atan2(w.u.y,w.u.x)*180/Math.PI+360)%360;
+   const runs=[{...world([length/2,30]),angle,length}];if(side!=='none')runs.push({...world([side==='start'?30:length-30,ret/2]),angle:(Math.atan2(w.v.y,w.v.x)*180/Math.PI+360)%360,length:ret});
+   // Door openings are reserved space; never place a counter through them.
+   for(const e of G.elemanlar.filter(e=>e.tip_==='kapi')){let a,b;if(e.segId===w.s.id){a=start;b=end;}else if(side!=='none'&&e.segId===neighbor.s.id){const atStart=neighbor.s.n1===w.s.n1||neighbor.s.n1===w.s.n2;a=atStart?w.s.k/2:neighbor.L-w.s.k/2-ret;b=atStart?w.s.k/2+ret:neighbor.L-w.s.k/2;}else continue;const s=getSeg(e.segId),A=getNode(s.n1),B=getNode(s.n2),pos=e.t*Math.hypot(B.x-A.x,B.y-A.y);if(pos+e.en/2>a+.01&&pos-e.en/2<b-.01)throw Error('Tezgâh kapı açıklığıyla çakışıyor; boşluk veya uzunluğu değiştirin.');}
+   return {id:'counter-'+crypto.randomUUID(),points:points.map(world),runs};
+ }
+ function form(){return make(wall,+$('counterOffset').value,+$('counterLength').value,$('counterReturn').value,+$('counterReturnLength').value);}
+ function refresh(){ $('counterReturnLabel').hidden=$('counterReturn').value==='none';try{preview=form();$('counterError').textContent='';}catch(e){preview=null;$('counterError').textContent=e.message;}draw();}
+ dialog.oninput=refresh;dialog.onchange=refresh;dialog.addEventListener('close',()=>{preview=null;draw();});
+ dialog.querySelector('form').onsubmit=e=>{e.preventDefault();try{const c=form();if(Studio.edit(()=>G.counters.push(c))){dialog.close();select(c);}}catch(err){$('counterError').textContent=err.message;}};
+ function select(c){G.secili=c;G.seciliTip='counter';G.selSegs=[];updateSidebar();draw();}
+ function inside(p,points){let yes=false;for(let i=0,j=points.length-1;i<points.length;j=i++){const a=points[i],b=points[j];if((a.y>p.y)!==(b.y>p.y)&&p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x)yes=!yes;}return yes;}
+ function stop(e){e.preventDefault();e.stopImmediatePropagation();}
+ window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;const r=cv.getBoundingClientRect(),p=toCm(e.clientX-r.left,e.clientY-r.top);if(G.tool==='counter'){stop(e);wall=pick(p);if(!wall){Studio.toast('Yatay veya dikey duvarın oda tarafına yakın tıklayın.',true);return;}setTool('sec');$('counterOffset').value=0;$('counterLength').value=Math.min(300,wall.hi-wall.lo);$('counterReturn').value='none';$('counterReturnLength').value=180;refresh();dialog.showModal();return;}if(G.tool==='sec'&&!Fixtures.hit(p)){const c=(G.counters||[]).slice().reverse().find(c=>inside(p,c.points));if(c){stop(e);select(c);}}},true);
+ const baseDraw=drawElemanlar;window.drawElemanlar=function(){
+   function paint(c,color){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.beginPath();c.points.forEach((p,i)=>{const q=toCv(p.x,p.y);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();ctx.stroke();ctx.restore();}
+   (G.counters||[]).forEach(c=>paint(c,!TH.export&&G.seciliTip==='counter'&&G.secili?.id===c.id?'#ffd469':TH.wall));
+   if(preview&&!TH.export){paint(preview,'#8ee4c6');const p=toCv(preview.points[0].x,preview.points[0].y);ctx.save();ctx.fillStyle='#8ee4c6';ctx.font='12px sans-serif';ctx.fillText('Başlangıç',p.x+6,p.y-8);ctx.restore();}baseDraw();
+ };
+ const baseSidebar=updateSidebar;window.updateSidebar=function(){baseSidebar();if(G.seciliTip==='counter'&&G.secili){$('sbSel').style.display='block';$('sbSelIc').innerHTML='<div class="sb-t">Mutfak tezgâhı</div><p>60 cm derinlik · '+(G.secili.points.length===4?'Düz':'L')+'</p><p>Duvar değişirse tezgâhı yeniden yerleştirin. Ocak ve evye ayrı nesnelerdir.</p><button class="sib" id="counterDelete">Tezgâhı sil</button>';$('counterDelete').onclick=remove;}};
+ function remove(){if(G.seciliTip==='counter')Studio.edit(()=>{G.counters=G.counters.filter(c=>c.id!==G.secili.id);});}
+ window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||dialog.open||menu.open)return;if(G.tool==='counter'&&e.key==='Escape'){stop(e);setTool('sec');}else if(G.seciliTip==='counter'&&e.key==='Delete'){stop(e);remove();}},true);
+ function snapFixture(f,p){if(!['hob','sink'].includes(f.kind))return p;let best=null;for(const c of G.counters||[])for(const r of c.runs){const a=r.angle*Math.PI/180,u={x:Math.cos(a),y:Math.sin(a)},v={x:-u.y,y:u.x},q={x:p.x-r.x,y:p.y-r.y},along=dot(q,u),across=dot(q,v);if(r.length<f.w||Math.abs(across)>35||Math.abs(along)>r.length/2)continue;const point=add(r,u,Math.max(-(r.length-f.w)/2,Math.min((r.length-f.w)/2,along)));if(!best||Math.hypot(point.x-p.x,point.y-p.y)<best.distance)best={...point,angle:r.angle,distance:Math.hypot(point.x-p.x,point.y-p.y)};}return best?{x:best.x,y:best.y,angle:best.angle}:p;}
+ window.Kitchen={pick,make,inside,snapFixture,cancel:()=>{preview=null;wall=null;dialog.close();menu.close();}};
 })();
 
 </script><script>
