@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.15
+# Prefabrikten Plan Studio · 5.9.16
+
+5.9.16: Tefriş yerleştirme ve taşıma sırasında yakındaki ürünlerin dış kenarlarına ve merkezlerine ekran mesafesine göre hizalama eklenmiştir. Geçici kesikli kılavuzlar yalnız çalışma görünümündedir. Yerleştirme penceresi ve seçili ürün panelindeki Kenar / merkez hizalama tikiyle kapatılabilir (oturum ayarı). Alt + sürükle ürünü özgün ölçü/dönüş/aynalama bilgileriyle yeni kimlik altında kopyalar; asıl ürün korunur. Kilitli üründen alınan kopya kilitsizdir. Alt + yalnız tıklama kopya oluşturmaz; Esc vazgeçer. Sağ panelde Kopyala düğmesiyle tıklayarak yerleştirme de vardır. Shift taşımanın sabit eksenini korur. Tezgâha bağlı ilk yerleştirme ve buzdolabı arka hizalaması önceliklidir. Tek adım geri al/ileri al ve JSON kaydı test edilmiştir.
 
 5.9.15: Otomatik yerleşimde açıklık başlangıcı olan t değeri artık merkez gibi kullanılmaz; kapı/pencere merkezi t × duvar boyu + açıklık eni / 2 ile hesaplanır. Kapının tüm açıklığı ve oda tarafındaki kanat/geçiş alanı ürünlerden korunur. Aynı düzeltme tezgâhın kapı çakışma kontrolüne uygulandı. Yatak ve komodin pencere önünde yerleşebilir; gardırop gibi yüksek ürünlerde pencere kısıtı sürer. Mevcut ürün veya tezgâh kapı önünü kapatıyorsa öneri oluşturulmadan açık uyarı verilir, kayıtlı eşyalar kendiliğinden taşınmaz. Dört duvar yönünde kapının uzak kenarı, pencere önünde yatak/komodin, mevcut çakışmalar ve tezgâh sınırı test edildi.
 

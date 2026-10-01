@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict'),path=require('path');let pw;try{pw=require('playwright')}catch{pw=require(path.resolve(path.dirname(process.execPath),'../node_modules/playwright'))}
+(async()=>{const b=await pw.chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'}),p=await b.newPage({viewport:{width:1600,height:1100}}),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(require('url').pathToFileURL(path.resolve('dist/plan_studio.html')).href);
+ await p.evaluate(()=>Studio.loadProject({v:'5',n:[{id:'a',x:0,y:0},{id:'b',x:800,y:0},{id:'c',x:800,y:600},{id:'d',x:0,y:600}],s:[{id:'ab',n1:'a',n2:'b',k:10},{id:'bc',n1:'b',n2:'c',k:10},{id:'cd',n1:'c',n2:'d',k:10},{id:'da',n1:'d',n2:'a',k:10}],e:[],r:[],fixtures:[{id:'chair',kind:'armchair',w:80,d:85,x:150,y:150,angle:90,mirror:true,locked:true}]}));
+ const at=async(x,y)=>p.evaluate(({x,y})=>{const r=cv.getBoundingClientRect(),a=toCv(x,y);return {x:r.left+a.x,y:r.top+a.y};},{x,y});
+ const click=async(x,y)=>{const a=await at(x,y);await p.mouse.click(a.x,a.y);};
+ const drag=async(from,to,keys=[],cancel=false)=>{const a=await at(...from),b=await at(...to);for(const k of keys)await p.keyboard.down(k);await p.mouse.move(a.x,a.y);await p.mouse.down();await p.mouse.move(b.x,b.y,{steps:5});if(cancel)await p.keyboard.press('Escape');await p.mouse.up();for(const k of keys.slice().reverse())await p.keyboard.up(k);};
+ const source=await p.evaluate(()=>({...G.fixtures[0]}));await drag([150,150],[300,154],['Alt']);let fixtures=await p.evaluate(()=>G.fixtures);assert.equal(fixtures.length,2);assert.deepEqual(fixtures[0],source);assert.notEqual(fixtures[1].id,source.id);assert.equal(fixtures[1].y,150);assert.equal(fixtures[1].angle,90);assert.equal(fixtures[1].mirror,true);assert.equal(fixtures[1].locked,false);
+ await p.evaluate(()=>geriAl());assert.equal(await p.evaluate(()=>G.fixtures.length),1);await p.evaluate(()=>ileriAl());assert.equal(await p.evaluate(()=>G.fixtures.length),2);
+ const n=await p.evaluate(()=>G.fixtures.length);await drag([300,150],[440,155],['Alt','Shift']);assert.equal(await p.evaluate(()=>G.fixtures.length),n+1);assert.equal(await p.evaluate(()=>G.fixtures.at(-1).y),150);
+ await drag([440,150],[530,220],['Alt'],true);assert.equal(await p.evaluate(()=>G.fixtures.length),n+1);
+ await p.keyboard.down('Alt');await click(150,150);await p.keyboard.up('Alt');assert.equal(await p.evaluate(()=>G.fixtures.length),n+1);
+ // Normal dragging moves one item; disabled alignment retains raw placement.
+ await p.evaluate(()=>Fixtures.align(false));await drag([300,150],[310,154]);assert.equal(await p.evaluate(()=>G.fixtures.length),n+1);assert.ok(Math.abs((await p.evaluate(()=>G.fixtures[1].y))-154)<=1);assert.notEqual(await p.evaluate(()=>G.fixtures[1].y),150);
+ await p.evaluate(()=>{G.fixtures=[{id:'bed',kind:'bedDouble',w:166,d:215,x:600,y:300,angle:0,mirror:false}];G.secili=null;G.seciliTip=null;Fixtures.align(true);draw();});
+ await p.evaluate(()=>Fixtures.openKind('nightstand'));await p.locator('#fixtureDialog button[type=submit]').click();const a=await at(465,216);await p.mouse.move(a.x,a.y);await p.screenshot({path:'artifacts/fixture-align-5.9.16.png'});await p.mouse.click(a.x,a.y);
+ assert.equal(await p.evaluate(()=>G.fixtures[1].y-G.fixtures[1].d/2),192.5);
+ // Sidebar copy supports click-to-place and serializes cleanly without guides.
+ await p.evaluate(()=>Fixtures.copy());await click(740,215);assert.equal(await p.evaluate(()=>G.fixtures.length),3);assert.equal(await p.evaluate(()=>new Set(G.fixtures.map(f=>f.id)).size),3);
+ const saved=await p.evaluate(()=>Studio.state());await p.evaluate(d=>Studio.loadProject(d),saved);assert.deepEqual(await p.evaluate(()=>G.fixtures),saved.fixtures);assert.equal(await p.evaluate(()=>G.segs.length),4);
+ assert.deepEqual(errors,[]);console.log('PASS Alt copy, source and metadata preservation, locked source, center/edge snapping, placement/move, disable, Shift, Escape, Alt click, undo/redo and JSON');await b.close();})().catch(e=>{console.error(e);process.exit(1)});
