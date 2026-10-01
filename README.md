@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.6
+# Prefabrikten Plan Studio · 5.9.7
+
+5.9.7: Görünüm tikleri doğrudan açıktır. Müşteri sunumu kapı/pencere isimlerini ve bölme duvarlarının ana duvara bağlandığı hizalar arasındaki mimari ölçü zincirlerini gösterir. Zincirin uçları dış yüzler, ara noktaları bölme akslarıdır; net oda iç ölçüsü değildir. Toplam dış ölçüler ayrı sırada kalır. Panel ölçüleri ve bölme hizası ölçüleri bağımsız tiklenebilir; birlikte açıkken ayrı sıralara yerleşir. Panel ölçülerini kapatmak bölme hizası ve dış toplam ölçülerini açar; bunlar ayrıca kapatılabilir. İsimler ve kapı/pencere boyutları ayrı filtrelerdir. Model ve metraj değişmez.
 
 5.9.6: Üst araç çubuğundan ve sağ panelden Müşteri sunumu, Çizim · sade, Panel / montaj detayı, Makas yerleşimi ve Tüm detaylar görünümleri seçilebilir. Görünüm filtreleri oda yazılarını, dış/iç toplam ölçüleri, ölçü zincirlerini, açıklık ölçülerini, panel numara/renk/eklerini, bağlantı işaretlerini ve makasları bağımsız yönetir. Filtreler yalnız çizimi etkiler; geometri, metraj, üretim yönü ve yakalama ayarları değişmez. PNG aynı filtreleri kullanır; JSON kaydı ve geri alma görünüm ayarlarını korur. Eski dosyalar mevcut görünürlükleriyle açılır. Panel / montaj detayı mevcut plan gösterimidir, yeni bir imalat veya montaj dosyası üretmez.
 

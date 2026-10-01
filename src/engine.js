@@ -2520,7 +2520,8 @@ function drawElemanlar(){
     else drawKapi(e,ex,ey,aci,seg.k,isSel);
   });
   // Draw dimensions last so neighbouring opening symbols cannot paint over them.
-  if(!planVisible('openings'))return;
+  var showNames=!!G.viewFilters?.openingNames;
+  if(!planVisible('openings')&&!showNames)return;
   var labels=[];
   G.elemanlar.forEach(function(e){
     var seg=getSeg(e.segId);if(!seg)return;
@@ -2529,7 +2530,7 @@ function drawElemanlar(){
     var ux=dx/L,uy=dy/L,mid=e.t*L+e.en/2,p=toCv(a.x+ux*mid,a.y+uy*mid);
     var angle=Math.atan2(dy,dx);if(angle>Math.PI/2||angle<=-Math.PI/2)angle+=Math.PI;
     var side=-segRoomSide(seg,mid)||(e.tip_==='kapi'?-kapiYan(e):1);
-    var text=fmtCm(e.en)+'/'+fmtCm(e.yuk),font=TH.export?11:10;
+    var text=[showNames?(e.ad||e.catalogId||(e.tip_==='kapi'?'Kapı':'Pencere')):'',planVisible('openings')?fmtCm(e.en)+'/'+fmtCm(e.yuk):''].filter(Boolean).join(' · '),font=TH.export?11:10;
     ctx.save();ctx.font='600 '+font+'px '+FF;ctx.textAlign='center';ctx.textBaseline='middle';
     var w=ctx.measureText(text).width+6,h=font+4,cx,cy,box;
     for(var row=0;row<4;row++){
@@ -2800,8 +2801,15 @@ function drawDimsPanel(){
         _dimUc=0;
       }
     }
+    var archPts=[C0].concat((r.birlesim||[]).filter(function(p){return p>C0+.3&&p<C1-.3;})).concat([C1]);
+    var archChain=!!G.viewFilters?.architecturalDims&&archPts.length>2&&!(zincirVar&&aks)&&!dimGizli(o,'zincir');
+    if(archChain){
+      var archOff=off1+(zincirVar?22:0);
+      _dimRow={row:'zincir',meta:meta,off:archOff};
+      for(var j=0;j<archPts.length-1;j++)_dimLine(a.x,a.y,r.ux,r.uy,sx,sy,archPts[j],archPts[j+1],archOff,wallPx,fmtCm(archPts[j+1]-archPts[j]),baseCol,false);
+    }
     if(!dimGizli(o,'toplam')){
-      var offT=zincirVar?off1+20:off1;
+      var offT=off1+(zincirVar?22:0)+(archChain?22:0);
       _dimRow={row:'toplam',meta:meta,off:offT};
       _dimLine(a.x,a.y,r.ux,r.uy,sx,sy,C0,C1,offT,wallPx,fmtCm(C1-C0),dimSel&&G.seciliDimRow==='toplam'?'#58a6ff':baseCol,true);
     }
