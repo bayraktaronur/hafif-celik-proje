@@ -13,7 +13,32 @@
     return index<0?null:{run:r,panel:r.slots[index],index};
   }
   function ref(r,p){return{id:'panel_'+r.owner.id+'_'+fmtCm(p.a),ownerId:r.owner.id,a:p.a,b:p.b};}
-  function select(r,p){G.secili=ref(r,p);G.seciliTip='panel';G.selSegs=[];G.dragging=false;G.snapPt=null;updateSidebar();draw();}
+  function select(r,p){G.selPanels=[ref(r,p)];G.secili=ref(r,p);G.seciliTip='panel';G.selSegs=[];G.dragging=false;G.snapPt=null;updateSidebar();draw();}
+  function selection(){
+    if(G.seciliTip!=='panel'||!G.secili)return[];
+    const refs=G.selPanels?.some(p=>p.id===G.secili.id)?G.selPanels:[G.secili];
+    return refs.map(p=>resolve(p)).filter(Boolean);
+  }
+  function mergeSelectionError(list=selection()){
+    if(list.length!==2)return 'Birleştirmek için Ctrl + tık ile iki panel seçin.';
+    if(list[0].run.owner.id!==list[1].run.owner.id)return 'Paneller aynı duvar hattında olmalı.';
+    const [a,b]=list.slice().sort((a,b)=>a.index-b.index);
+    if(b.index!==a.index+1)return 'Seçilen paneller bitişik olmalı.';
+    if(a.panel.w>PF.YARIM+EPS||b.panel.w>PF.YARIM+EPS)return 'İki yarım veya kısaltılmış panel seçin; her panel en fazla 62,75 cm olmalı.';
+    if(openings(a.run).some(o=>o.a<b.panel.b-EPS&&o.b>a.panel.a+EPS))return 'Seçilen panellerde kapı veya pencere var; birleştirilemez.';
+    if(!mergeable(a.run,a.panel,b.panel))return 'İki panel arasındaki duvar bağlantısı kaldırılamaz.';
+    return '';
+  }
+  function mergeSelected(){
+    const list=selection(),error=mergeSelectionError(list);
+    if(error){Studio.toast(error,true);return false;}
+    const [a,b]=list.slice().sort((a,b)=>a.index-b.index);
+    return operation(()=>{
+      const items=pieces(a.run);items.splice(a.index,2,{w:a.panel.w+b.panel.w,key:'merged'});
+      const result=rebuildLayout(a.run,items,{moveOpenings:false,local:true});
+      return{...result,selected:ref(a.run,result.next[a.index])};
+    });
+  }
   function linked(run,A=pfAnaliz()){
     if(G.panelSync===false||!run.makasParalel||!axis(run))return[run];
     const a=axis(run),comp=_bilesenler(),c=comp[run.nodes[0].nid],lo=origin(run)+run.s0,hi=origin(run)+run.L-run.s1;
@@ -184,10 +209,10 @@
       if(p&&d<=Math.max(p.k/2,7/sc())&&(!best||d<best.d))best={d,tip:'panel',obj:ref(r,p)};});
     return best||base.hitTestAll(px,py);
   };
-  window.drawPanels=function(){base.drawPanels();syncUI();if(G.seciliTip!=='panel'||!isPref())return;const hit=resolve();if(!hit)return;const {run:r,panel:p}=hit;
+  window.drawPanels=function(){base.drawPanels();syncUI();if(G.seciliTip!=='panel'||!isPref())return;for(const {run:r,panel:p} of selection()){
     const a=toCv(r.ax+r.ux*p.a,r.ay+r.uy*p.a),b=toCv(r.ax+r.ux*p.b,r.ay+r.uy*p.b);
     ctx.save();ctx.strokeStyle='#69d6b2';ctx.lineWidth=Math.max(6,p.k*sc()+6);ctx.globalAlpha=.45;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.globalAlpha=1;ctx.lineWidth=2;const nx=-r.uy*(p.k*sc()/2+4),ny=r.ux*(p.k*sc()/2+4);ctx.beginPath();ctx.moveTo(a.x+nx,a.y+ny);ctx.lineTo(b.x+nx,b.y+ny);ctx.lineTo(b.x-nx,b.y-ny);ctx.lineTo(a.x-nx,a.y-ny);ctx.closePath();ctx.stroke();ctx.restore();
-  };
+  }};
   window.updateSidebar=function(){
     base.updateSidebar();
     if(isPref()&&G.seciliTip==='seg'&&G.secili){
@@ -197,6 +222,12 @@
     if(G.seciliTip!=='panel')return;const found=resolve();if(!found){G.secili=null;G.seciliTip=null;base.updateSidebar();return;}
     const {run,panel:p,index}=found,peers=linked(run).length,els=openings(run).filter(o=>o.a>=p.a-EPS&&o.b<=p.b+EPS),half=Math.abs(p.w-PF.YARIM)<.1;
     $('sbSel').style.display='block';$('selectionEmpty').hidden=true;
+    const selected=selection();
+    if(selected.length>1){
+      const error=mergeSelectionError(selected),total=selected.reduce((sum,s)=>sum+s.panel.w,0);
+      $('sbSelIc').innerHTML='<div class="panel-card-title"><strong>'+selected.length+' panel seçili</strong></div><p class="panel-help">Toplam '+fmtCm(total)+' cm · '+selected.map(s=>esc(s.panel.no||'Panel')).join(' + ')+'</p><button id="mergeSelectedPanels" class="sib" onclick="Prefab.mergeSelected()" '+(error?'disabled':'')+'>Panelleri birleştir</button><p class="panel-help">'+esc(error||'Yalnız seçilen iki panel birleşir. Karşı duvarlar ve makas aksları değişmez.')+'</p><p class="panel-help">Ctrl + tık: ekle / çıkar · Shift + tık: aralık seç · Normal tık: tek panel</p>';
+      return;
+    }
     $('sbSelIc').innerHTML='<div class="panel-card-title"><span>'+esc(p.no||'Panel')+'</span><strong>'+({tam:'Tam panel',yarim:'Yarım panel',ozel:'Özel panel'}[p.tip])+'</strong></div>'+
       '<div class="sr"><span class="sl">Panel boyu</span><span class="sv">'+fmtCm(p.w)+' cm</span></div><div class="sr"><span class="sl">Kalınlık</span><span class="sv">'+p.k+' cm</span></div>'+
       '<div class="sr"><span class="sl">Açıklık</span><span class="sv">'+(els.length?esc(els.map(o=>o.e.ad||o.e.tip_).join(', ')):'Yok')+'</span></div>'+
@@ -204,12 +235,12 @@
       '<button class="sib" onclick="Prefab.split()" '+(Math.abs(p.w-PF.PANEL)>.1?'disabled':'')+'>Tam → 2 yarım panel</button>'+
       '<div class="panel-help"><b>Yalnız bu duvarda yer değiştir</b><br>Komşu iki boş panel yer değiştirir. Karşı duvar ve makas aksları sabit kalır.</div><div class="panel-actions"><button class="sib" onclick="Prefab.swapLocal(-1)" '+(!index?'disabled':'')+'>← Yerel değiştir</button><button class="sib" onclick="Prefab.swapLocal(1)" '+(index===run.slots.length-1?'disabled':'')+'>Yerel değiştir →</button></div>'+
       '<div class="panel-help"><b>Bu konumda tam panel oluştur</b><br>Seçili panel ve komşusunun toplamı korunur. Yalnız bu hat değişir; makaslar sabit kalır. Özel kalan ölçüsü Plan kontrolünde gösterilir.</div><div class="panel-actions"><button class="sib" onclick="Prefab.makeFull(-1)" '+(!index?'disabled':'')+'>← Önceki komşuyla</button><button class="sib" onclick="Prefab.makeFull(1)" '+(index===run.slots.length-1?'disabled':'')+'>Sonraki komşuyla →</button></div>'+
-      (p.w<=PF.YARIM+EPS?'<div class="panel-actions"><button class="sib" onclick="Prefab.merge(-1)">← Panel birleştir</button><button class="sib" onclick="Prefab.merge(1)">Panel birleştir →</button></div>':'')+
+      '<p class="panel-help">Birleştirmek için Ctrl + tık ile komşu paneli de seçin. Shift + tık aradaki panelleri seçer.</p>'+
       '<label class="panel-sync"><input type="checkbox" '+(G.panelSync!==false?'checked':'')+' onchange="G.panelSync=this.checked;updateSidebar();draw()"> Karşı hatların H noktalarını eşleştir</label>'+
       '<p class="panel-help">'+(run.makasParalel?peers+' hat birlikte düzenlenir. Kapı/pencere kendi paneliyle taşınır; makas aksları korunur.':'Bu duvar makas mesnet hattı yönünde değil; yalnız seçili hat düzenlenir.')+'</p>'+
       '<button class="sib d" onclick="Prefab.remove()">Bu paneli'+(els.length?' ve açıklığını':'')+' kaldır</button><p class="panel-help">Kaldırma yalnız bu duvarda fiziksel boşluk açar; kapalı oda sınırı değişebilir.</p>';
   };
-  window.seciliSil=function(){if(isPref()&&G.seciliTip==='panel')remove();else base.seciliSil();};
+  window.seciliSil=function(){if(isPref()&&G.seciliTip==='panel'){if(selection().length>1){Studio.toast('Silmek için tek panel seçin.',true);return;}remove();}else base.seciliSil();};
   window.panelTersCevir=function(){
     if(!isPref()||G.seciliTip!=='seg'){base.panelTersCevir();return;}
     const r=pfRunOf(G.secili)?.run;if(r)Studio.edit(()=>rebuildLayout(r,pieces(r).reverse()));
@@ -383,6 +414,23 @@
     draw();
   }
   cv.addEventListener('mousedown',e=>{
+    if(e.button===0&&isPref()&&G.tool==='sec'&&G.selectionMode==='panel'){
+      const box=cv.getBoundingClientRect(),hit=hitTestAll(e.clientX-box.left,e.clientY-box.top);
+      if(hit?.tip==='panel'){
+        e.preventDefault();e.stopImmediatePropagation();cv.focus();
+        const current=selection().map(s=>ref(s.run,s.panel)),found=resolve(hit.obj),anchor=resolve(G.panelAnchor);
+        let next;
+        if(e.shiftKey&&anchor&&found&&anchor.run.owner.id===found.run.owner.id){
+          const lo=Math.min(anchor.index,found.index),hi=Math.max(anchor.index,found.index);
+          next=found.run.slots.slice(lo,hi+1).map(p=>ref(found.run,p));
+        }else if(e.ctrlKey||e.metaKey||e.shiftKey){next=current.some(p=>p.id===hit.obj.id)?current.filter(p=>p.id!==hit.obj.id):current.concat(hit.obj);}
+        else next=[hit.obj];
+        if(!e.shiftKey)G.panelAnchor=hit.obj;
+        G.selPanels=next;G.secili=next.at(-1)||null;G.seciliTip=next.length?'panel':null;G.selSegs=[];G.dragging=false;G.snapPt=null;
+        updateSidebar();draw();return;
+      }
+      G.selPanels=[];G.panelAnchor=null;
+    }
     if(e.button!==0||!isPref()||!cizimAraci())return;
     const b=cv.getBoundingClientRect();snapPoint(e.clientX-b.left,e.clientY-b.top);
     if(G._snapBlocked){e.preventDefault();e.stopImmediatePropagation();Studio.toast('Bu H/panel merkezi başlangıçla aynı eksende değil. Başlangıcı hizalayın veya Serbest yakalamayı açın.',true);}
@@ -445,9 +493,9 @@
     });
     return [...groups.values()].sort((a,b)=>a.grup.localeCompare(b.grup,'tr')).concat([...lengths.values()].map(r=>({...r,adet:Math.round(r.adet*100)/100})),original.filter(r=>!r.grup.startsWith('Paneller —')&&r.grup!=='Duvar uzunlukları'));
   };
-  window.Prefab={resolve,linked,swap,swapLocal,split,merge,makeFull,fitWideWindow,remove,issues,rebuildLayout,snapTargets,trussMove,trussSelect,
+  window.Prefab={resolve,linked,swap,swapLocal,split,merge,mergeSelected,makeFull,fitWideWindow,remove,issues,rebuildLayout,snapTargets,trussMove,trussSelect,
     select(ownerId,index){const r=pfAnaliz().runs.find(r=>r.owner.id===ownerId||r.items.some(it=>it.seg.id===ownerId));if(r?.slots[index])select(r,r.slots[index]);},
-    mode(value){G.selectionMode=value;G.secili=null;G.seciliTip=null;G.selSegs=[];setTool('sec');updateSidebar();draw();}
+    mode(value){G.selectionMode=value;G.secili=null;G.seciliTip=null;G.selPanels=[];G.panelAnchor=null;G.selSegs=[];setTool('sec');updateSidebar();draw();}
   };
   G.selectionMode=G.selectionMode||'wall';G.panelSync=G.panelSync!==false;G.freeSnapStep=G.freeSnapStep||5;G.opt.dis=G.opt.dis||10;PF.DIS=G.opt.dis;
   const mode=document.createElement('select');mode.id='selectionMode';mode.className='ss';mode.setAttribute('aria-label','Seçim türü');mode.innerHTML='<option value="wall">Duvar seçimi</option><option value="panel">Panel seçimi</option>';mode.onchange=()=>Prefab.mode(mode.value);$('t-sec').after(mode);
@@ -463,5 +511,5 @@
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.3';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.4';syncUI();draw();
 })();

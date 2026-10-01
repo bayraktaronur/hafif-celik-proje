@@ -10,6 +10,28 @@ async function test(name,fn){try{await fn();console.log('PASS '+name);results.pu
  const page=await browser.newPage({viewport:{width:1536,height:960}}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());await page.goto(pathToFileURL(path.resolve('plan_cizim.html')).href);
  const load=async d=>page.evaluate(d=>Studio.loadProject(d),d||fixture());
  const widths=async id=>page.evaluate(id=>pfRunOf(getSeg(id)).run.slots.map(p=>p.w),id);
+ const clickPanel=async(owner,index,key)=>{
+  const point=await page.evaluate(({owner,index})=>{const r=pfRunOf(getSeg(owner)).run,p=r.slots[index],v=toCv(r.ax+r.ux*(p.a+p.b)/2,r.ay+r.uy*(p.a+p.b)/2),box=cv.getBoundingClientRect();return{x:v.x+box.left,y:v.y+box.top};},{owner,index});
+  if(key)await page.keyboard.down(key);await page.mouse.click(point.x,point.y);if(key)await page.keyboard.up(key);
+ };
+ await test('Ctrl selects panels and merge is local, preserves trusses, undo and JSON',async()=>{
+  await load();await page.evaluate(()=>{Prefab.select('e101',1);Prefab.split();});await page.locator('#selectionMode').selectOption('panel');
+  const opposite=await widths('e103'),trusses=await page.evaluate(()=>makasAnaliz().makaslar.map(m=>m.pos));
+  await clickPanel('e101',1);await clickPanel('e101',2,'Control');
+  assert.match(await page.locator('#sbSelIc').innerText(),/2 panel seçili/);assert.equal(await page.locator('#mergeSelectedPanels').isEnabled(),true);
+  await page.locator('#mergeSelectedPanels').click();assert.deepEqual(await widths('e101'),[125.5,125.5,125.5,125.5,62.75]);assert.deepEqual(await widths('e103'),opposite);
+  assert.deepEqual(await page.evaluate(()=>makasAnaliz().makaslar.map(m=>m.pos)),trusses);assert.equal(await page.evaluate(()=>G.panelSync),true);
+  await page.evaluate(()=>geriAl());assert.deepEqual(await widths('e101'),opposite);assert.equal(await page.evaluate(()=>G.selPanels.length),0);
+  await page.evaluate(()=>ileriAl());const d=await page.evaluate(()=>Studio.state());await load(d);assert.deepEqual(await widths('e101'),[125.5,125.5,125.5,125.5,62.75]);
+ });
+ await test('Ctrl toggle, Shift range, nonadjacent and different-wall rejection',async()=>{
+  await load();await page.locator('#selectionMode').selectOption('panel');await clickPanel('e101',0);await clickPanel('e101',2,'Control');
+  assert.match(await page.locator('#sbSelIc').innerText(),/bitişik olmalı/);assert.equal(await page.locator('#mergeSelectedPanels').isEnabled(),false);
+  await clickPanel('e101',2,'Control');assert.equal(await page.evaluate(()=>G.selPanels.length),1);
+  await clickPanel('e101',0);await clickPanel('e101',2,'Shift');assert.match(await page.locator('#sbSelIc').innerText(),/3 panel seçili/);
+  await clickPanel('e101',0);await clickPanel('e103',0,'Control');assert.match(await page.locator('#sbSelIc').innerText(),/aynı duvar/);
+  const before=await page.evaluate(()=>Studio.snapshot());assert.equal(await page.evaluate(()=>Prefab.mergeSelected()),false);assert.equal(await page.evaluate(()=>Studio.snapshot()),before);
+ });
  await test('Exterior and interior 6/10/15 settings validate and persist',async()=>{for(const dis of [6,10,15])for(const ic of [6,10,15]){const d=fixture();d.opt.dis=dis;d.opt.ic=ic;Project.validate(d);await load(d);assert.equal(await page.evaluate(()=>PF.DIS),dis);assert.equal(await page.evaluate(()=>PF.IC),ic);assert.equal(await page.evaluate(()=>G.segs[0].k),dis);}});
  await test('Bulk exterior and interior filters preserve veranda and other walls',async()=>{
   const d=fixture();d.n.push({id:'e5',x:251,y:0},{id:'e6',x:251,y:512},{id:'e7',x:564.75,y:650},{id:'e8',x:0,y:650});d.s.push({id:'e105',n1:'e5',n2:'e6',k:6},{id:'e106',n1:'e3',n2:'e7',k:10,tip:'veranda'},{id:'e107',n1:'e7',n2:'e8',k:10,tip:'veranda'},{id:'e108',n1:'e8',n2:'e4',k:10,tip:'veranda'});await load(d);

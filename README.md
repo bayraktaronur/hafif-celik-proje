@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.3
+# Prefabrikten Plan Studio · 5.9.4
+
+5.9.4: Panel seçiminde Ctrl + tık (Mac: Cmd + tık) seçime panel ekler/çıkarır; Shift + tık aynı duvarda aralık seçer. Seçilen paneller vurgulanır ve toplam boyları gösterilir. **Panelleri birleştir** yalnız aynı duvardaki bitişik iki boş yarım/kısaltılmış paneli birleştirir; karşı duvarlar ve makaslar korunur. Kapı/pencere veya duvar bağlantısı bulunan, bitişik olmayan ya da farklı hatlardaki seçimlerde neden gösterilir. İşlem geri alınabilir. Önceki/sonraki yön düğmeleri yerine açık panel seçimi kullanılır.
 
 5.9.3: Ana köşeye yakın U bağlantısında yan saçak ortak kenarda sınırlandırılır; çift offset nedeniyle geçerli bağlantı reddedilmez. Dört adımlı çizim rehberi, nokta sayısına göre etkinleşen Çatıyı oluştur ve Son çizim noktasını sil düğmeleri eklendi.
 
