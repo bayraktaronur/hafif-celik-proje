@@ -34,6 +34,22 @@ for(const [kind,w,d,x] of [['basin',44.52,38.97,210],['wallwc',36.07,57.61,275],
 await p.evaluate(()=>{G.secili=null;G.seciliTip=null;draw();});await p.screenshot({path:'artifacts/standard-fixtures.png'});
 const noLabels=await p.evaluate(()=>{const text=[],old=ctx.fillText;ctx.fillText=function(t,...args){text.push(t);return old.call(this,t,...args);};drawElemanlar();ctx.fillText=old;return text;});assert.deepEqual(noLabels,[]);
 const labelSide=await p.evaluate(()=>{G.elemanlar.push({id:'window-test',tip_:'pencere',segId:'s1',t:.2,en:80,yuk:125});const points=[],old=ctx.fillText;ctx.fillText=function(t,x,y){if(t==='80/125'){const m=this.getTransform();points.push(m.f);}return old.call(this,t,x,y);};draw();ctx.fillText=old;return {y:points[0],wall:toCv(0,0).y*(devicePixelRatio||1)};});assert.ok(labelSide.y<labelSide.wall);
+// Washer uses physical dimensions without dimension text and survives file reload.
+await p.click('#t-fixture');await p.selectOption('#fixtureKind','washer');
+assert.equal(await p.locator('#fixtureWidth').isVisible(),false);
+await p.locator('#fixtureDialog button[type=submit]').click();
+const washerAt=await p.evaluate(()=>{const r=cv.getBoundingClientRect(),a=toCv(220,210);return {x:r.left+a.x,y:r.top+a.y};});
+await p.mouse.click(washerAt.x,washerAt.y);
+const washer=await p.evaluate(()=>G.fixtures.at(-1));assert.equal(washer.kind,'washer');assert.equal(washer.w,60);assert.equal(washer.d,60);
+await p.evaluate(()=>{Fixtures.rotate();Fixtures.mirror();});
+const washerSaved=await p.evaluate(()=>Studio.state());await p.evaluate(d=>Studio.loadProject(d),washerSaved);
+assert.deepEqual(await p.evaluate(()=>Studio.state().fixtures),washerSaved.fixtures);
+const washerText=await p.evaluate(()=>{G.secili=null;G.seciliTip=null;const labels=[],old=ctx.fillText;ctx.fillText=function(t,...a){if(t==='Ç.M'){const m=this.getTransform();labels.push({t,a:m.a,b:m.b,c:m.c,d:m.d});}return old.call(this,t,...a);};draw();ctx.fillText=old;return labels;});
+assert.equal(washerText.length,1);assert.ok(washerText[0].a>0&&washerText[0].d>0);assert.ok(Math.abs(washerText[0].b)<1e-8&&Math.abs(washerText[0].c)<1e-8);
+await p.screenshot({path:'artifacts/washer-5.9.10.png'});
+await p.evaluate(()=>{G.secili=G.fixtures.at(-1);G.seciliTip='fixture';Fixtures.remove();geriAl();});
+assert.equal(await p.evaluate(()=>G.fixtures.at(-1).kind),'washer');
+assert.equal(await p.evaluate(()=>G.segs.length),4);
 assert.deepEqual(errors,[]);
 console.log('PASS fixture placement, physical size, rotation, mirror, drag, undo/redo, persistence, delete and PNG');await b.close();})().catch(e=>{console.error(e);process.exit(1)});
 

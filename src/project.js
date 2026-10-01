@@ -49,7 +49,7 @@
       if(e.ad!==undefined&&typeof e.ad!=='string')fail('Açıklık adı metin olmalı.');
     }
     for(const f of d.fixtures){
-      if(!['wallwc','wc','basin','vanity','shower'].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
+      if(!['wallwc','wc','basin','vanity','shower','washer'].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
     }
     for(const r of d.r){
       if(!Array.isArray(r.nodeIds)||r.nodeIds.some(id=>!nodes.has(id)))fail('Oda düğümleri geçersiz.');

@@ -1,8 +1,8 @@
 /* Free-standing sanitary fixtures: centimetres, independent of panel snapping. */
 (function(){
  'use strict';
- const names={wallwc:'Gömme klozet',wc:'Takım klozet',basin:'Ayaklı lavabo',vanity:'Dolaplı lavabo',shower:'Duş kabini'};
- const standard={basin:{w:44.52,d:38.97},wallwc:{w:36.07,d:57.61},wc:{w:36.07,d:65.98}};
+ const names={wallwc:'Gömme klozet',wc:'Takım klozet',basin:'Ayaklı lavabo',vanity:'Dolaplı lavabo',shower:'Duş kabini',washer:'Çamaşır makinesi'};
+ const standard={basin:{w:44.52,d:38.97},wallwc:{w:36.07,d:57.61},wc:{w:36.07,d:65.98},washer:{w:60,d:60}};
  const $=id=>document.getElementById(id);let draft=null,ghost=null,moving=null,step=1,handles=[];
  G.fixtures=G.fixtures||[];
  const button=document.createElement('button');button.className='t';button.id='t-fixture';button.textContent='♧ Vitrifiye ekle';button.onclick=open;document.querySelector('.tool-group').append(button);
@@ -19,6 +19,12 @@
  function symbol(c,f,x,y,s,color){c.save();c.translate(x,y);c.rotate(f.angle*Math.PI/180);c.scale(f.mirror?-s:s,s);c.translate(-f.w/2,-f.d/2);c.strokeStyle=color;c.lineWidth=1.2/s;c.fillStyle=TH.opening;const w=f.w,d=f.d;
  const rect=(x,y,w,h)=>{c.strokeRect(x,y,w,h);};const line=(x,y,a,b)=>{c.beginPath();c.moveTo(x,y);c.lineTo(a,b);c.stroke();};const ellipse=(x,y,rx,ry)=>{c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.stroke();};
  if(f.kind==='shower'){rect(0,0,w,d);rect(3,3,w-6,d-6);ellipse(w-8,8,2,2);line(w-11,11,w-24,24);line(w-12,8,w-25,8);line(w-8,12,w-8,25);}
+ else if(f.kind==='washer'){
+   rect(0,0,w,d);line(0,d-8,w,d-8);rect(5,d-6,13,4);ellipse(w-8,d-4,2,2);
+   // Keep the label readable through rotation and mirroring; no dimension labels.
+   c.save();c.translate(w/2,d/2-2);c.scale(f.mirror?-1:1,1);c.rotate(-f.angle*Math.PI/180);
+   c.fillStyle=color;c.font='bold 12px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('Ç.M',0,0);c.restore();
+ }
  else if(f.kind==='vanity'){rect(0,0,w,d);ellipse(w/2,d*.54,Math.min(w*.38,d*.42),d*.43);ellipse(w/2,d*.57,Math.min(w*.33,d*.37),d*.35);ellipse(w/2,d*.25,1.5,1.5);ellipse(w/2,d*.48,2,2);}
  else if(f.kind==='basin'){
    // Tapered back, rounded bowl and curved inner lip from the supplied plan.

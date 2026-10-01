@@ -627,7 +627,7 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
       if(e.ad!==undefined&&typeof e.ad!=='string')fail('Açıklık adı metin olmalı.');
     }
     for(const f of d.fixtures){
-      if(!['wallwc','wc','basin','vanity','shower'].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
+      if(!['wallwc','wc','basin','vanity','shower','washer'].includes(f.kind)||!finite(f.x,-1e7,1e7)||!finite(f.y,-1e7,1e7)||!finite(f.w,1,500)||!finite(f.d,1,500)||!finite(f.angle,0,359)||typeof f.mirror!=='boolean')fail('Vitrifiye ölçüsü veya konumu geçersiz.');
     }
     for(const r of d.r){
       if(!Array.isArray(r.nodeIds)||r.nodeIds.some(id=>!nodes.has(id)))fail('Oda düğümleri geçersiz.');
@@ -4921,7 +4921,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.9',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.10',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),fixtures:clone(G.fixtures||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5768,7 +5768,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.9';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.10';syncUI();draw();
 })();
 
 </script><script>
@@ -6031,8 +6031,8 @@ window.OpeningCatalog=(function(){
 /* Free-standing sanitary fixtures: centimetres, independent of panel snapping. */
 (function(){
  'use strict';
- const names={wallwc:'Gömme klozet',wc:'Takım klozet',basin:'Ayaklı lavabo',vanity:'Dolaplı lavabo',shower:'Duş kabini'};
- const standard={basin:{w:44.52,d:38.97},wallwc:{w:36.07,d:57.61},wc:{w:36.07,d:65.98}};
+ const names={wallwc:'Gömme klozet',wc:'Takım klozet',basin:'Ayaklı lavabo',vanity:'Dolaplı lavabo',shower:'Duş kabini',washer:'Çamaşır makinesi'};
+ const standard={basin:{w:44.52,d:38.97},wallwc:{w:36.07,d:57.61},wc:{w:36.07,d:65.98},washer:{w:60,d:60}};
  const $=id=>document.getElementById(id);let draft=null,ghost=null,moving=null,step=1,handles=[];
  G.fixtures=G.fixtures||[];
  const button=document.createElement('button');button.className='t';button.id='t-fixture';button.textContent='♧ Vitrifiye ekle';button.onclick=open;document.querySelector('.tool-group').append(button);
@@ -6049,6 +6049,12 @@ window.OpeningCatalog=(function(){
  function symbol(c,f,x,y,s,color){c.save();c.translate(x,y);c.rotate(f.angle*Math.PI/180);c.scale(f.mirror?-s:s,s);c.translate(-f.w/2,-f.d/2);c.strokeStyle=color;c.lineWidth=1.2/s;c.fillStyle=TH.opening;const w=f.w,d=f.d;
  const rect=(x,y,w,h)=>{c.strokeRect(x,y,w,h);};const line=(x,y,a,b)=>{c.beginPath();c.moveTo(x,y);c.lineTo(a,b);c.stroke();};const ellipse=(x,y,rx,ry)=>{c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.stroke();};
  if(f.kind==='shower'){rect(0,0,w,d);rect(3,3,w-6,d-6);ellipse(w-8,8,2,2);line(w-11,11,w-24,24);line(w-12,8,w-25,8);line(w-8,12,w-8,25);}
+ else if(f.kind==='washer'){
+   rect(0,0,w,d);line(0,d-8,w,d-8);rect(5,d-6,13,4);ellipse(w-8,d-4,2,2);
+   // Keep the label readable through rotation and mirroring; no dimension labels.
+   c.save();c.translate(w/2,d/2-2);c.scale(f.mirror?-1:1,1);c.rotate(-f.angle*Math.PI/180);
+   c.fillStyle=color;c.font='bold 12px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('Ç.M',0,0);c.restore();
+ }
  else if(f.kind==='vanity'){rect(0,0,w,d);ellipse(w/2,d*.54,Math.min(w*.38,d*.42),d*.43);ellipse(w/2,d*.57,Math.min(w*.33,d*.37),d*.35);ellipse(w/2,d*.25,1.5,1.5);ellipse(w/2,d*.48,2,2);}
  else if(f.kind==='basin'){
    // Tapered back, rounded bowl and curved inner lip from the supplied plan.

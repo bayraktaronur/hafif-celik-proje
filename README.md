@@ -1,4 +1,8 @@
-# Prefabrikten Plan Studio · 5.9.9
+# Prefabrikten Plan Studio · 5.9.10
+
+5.9.10: Vitrifiye ekle menüsüne sabit 60 × 60 cm çamaşır makinesi eklendi. Plan ve PNG üzerinde yalnız Ç.M etiketi görünür. Taşıma, döndürme, aynalama, geri alma ve JSON kaydı mevcut donatı sistemiyle çalışır. Bu sembol tesisat hattı üretmez.
+
+Planlanan mutfak: Tezgâh duvarın oda tarafındaki iç yüzünden 60 cm derinlikle oluşturulacak; düz ve L kollar tek köşe ile birleşecek. Ocak 60 × 50 cm, evye 46 × 46 cm; referanstaki 75 × 70 cm parça buzdolabı olarak yorumlanmıştır. Ürün ölçüleri geometride tutulacak, plana ölçü etiketi eklenmeyecek. Mutfak araçları henüz uygulanmadı.
 
 5.9.9: Seç aracında oda etiketine veya odanın boş alanına çift tıklayınca hızlı oda türü seçicisi açılır. Salon, yatak odası, mutfak ve diğer türlere tek tıkla sınıflandırma uygulanır ve pencere kapanır. Özel ad alanı korunur; yalnız isim değiştirmek için Özel adı uygula kullanılır. Esc değişiklik yapmadan kapatır, Ctrl+Z işlemi geri alır. Etiketler gizliyken oda içinden seçim ve mevcut etiket sürükleme davranışı korunur.
 
