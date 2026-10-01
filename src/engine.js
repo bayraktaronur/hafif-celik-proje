@@ -430,6 +430,7 @@ function panelMetraj(){
   M.A=A;
   return M;
 }
+function planVisible(key){return !G.viewFilters||G.viewFilters[key]!==false;}
 function drawPanels(){
   if(!isPref())return;
   var s=sc(),A=pfAnaliz();
@@ -452,9 +453,9 @@ function drawPanels(){
       var h=p.k/2,wpx=p.k*s;
       // tip tonu
       var col=p.acik?null:(p.tip==='yarim'?TH.pnlYarim:p.tip==='ozel'?TH.pnlOzel:null);
-      if(col){var p1=P(p.a,0),p2=P(p.b,0);ctx.strokeStyle=col;ctx.lineWidth=wpx;ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();}
+      if(col&&planVisible('panelColors')){var p1=P(p.a,0),p2=P(p.b,0);ctx.strokeStyle=col;ctx.lineWidth=wpx;ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();}
       // derz
-      if(i>0){
+      if(i>0&&planVisible('panelJoints')){
         // H profil: yalnız duvar kalınlığı içinde — ek çizgisi + iç yüzlere yaslanan kısa başlıklar (I/H görünümü)
         var wp=h*2*s,ins=Math.min(0.8,wp*0.08)/s;           // yüzden hafif içeride
         var c1=P(p.a,h-ins),c2=P(p.a,-h+ins);
@@ -484,7 +485,7 @@ function drawPanels(){
   {
     A.bag.forEach(function(b){
       if(b.tip==='H')return;
-      if(!G.pnlEtiket&&b.tip!=='kose')return;
+      if(b.tip!=='kose'&&!(G.viewFilters?planVisible('connections'):G.pnlEtiket))return;
       var nd=b.nid?getNode(b.nid):null;if(!nd)return;
       var c=toCv(nd.x,nd.y),R=Math.max(6,Math.min(10,5+s*2));
       if(b.cornerPost){c.x+=b.postUx*R*2.2;c.y+=b.postUy*R*2.2;}
@@ -2431,6 +2432,7 @@ function drawRooms(){
       var tile=30*sc(),left=Math.min.apply(null,pts.map(function(p){return p.x;})),right=Math.max.apply(null,pts.map(function(p){return p.x;})),top=Math.min.apply(null,pts.map(function(p){return p.y;})),bottom=Math.max.apply(null,pts.map(function(p){return p.y;}));
       if(tile>=4){ctx.beginPath();for(var tx=left;tx<=right;tx+=tile){ctx.moveTo(tx,top);ctx.lineTo(tx,bottom);}for(var ty=top;ty<=bottom;ty+=tile){ctx.moveTo(left,ty);ctx.lineTo(right,ty);}ctx.stroke();}ctx.restore();
     }
+    if(!planVisible('rooms'))return;
     // Etiket: oda içi etiket noktası + kullanıcı ofseti (cm)
     var lp=toCv((room.lx!==undefined?room.lx:0)+(room.lblDx||0),(room.ly!==undefined?room.ly:0)+(room.lblDy||0));
     if(room.lx===undefined){lp={x:pts.reduce(function(s,p){return s+p.x;},0)/pts.length,y:pts.reduce(function(s,p){return s+p.y;},0)/pts.length};}
@@ -2518,6 +2520,7 @@ function drawElemanlar(){
     else drawKapi(e,ex,ey,aci,seg.k,isSel);
   });
   // Draw dimensions last so neighbouring opening symbols cannot paint over them.
+  if(!planVisible('openings'))return;
   var labels=[];
   G.elemanlar.forEach(function(e){
     var seg=getSeg(e.segId);if(!seg)return;
@@ -2763,6 +2766,7 @@ function drawDimsPanel(){
   G._dimHits=[];
   A.runs.forEach(function(r){
     var o=r.owner,a={x:r.ax,y:r.ay},L=r.L;if(L*s<18)return;
+    if(!planVisible(r.dis?'outerDims':'innerDims'))return;
     var els=[];r.items.forEach(function(it){G.elemanlar.forEach(function(e){if(e.segId===it.seg.id)els.push(e);});});
     var nx=-r.uy,ny=r.ux,side=o.dimSide||dimAutoSide(o,els.filter(function(e){return e.segId===o.id;}));
     // hattın normali segmentin normaliyle ters olabilir (hat yönü kanonik) → dış tarafı segmente göre bul
@@ -2783,7 +2787,7 @@ function drawDimsPanel(){
       if(Math.abs(C1-pts[pts.length-1])>0.3)pts.push(C1);
     }
     var meta={segId:o.id,side:side,sx:sx,sy:sy,wallPx:wallPx};
-    var zincirVar=pts.length>2&&!dimGizli(o,'zincir');
+    var zincirVar=planVisible('chains')&&pts.length>2&&!dimGizli(o,'zincir');
     if(zincirVar){
       _dimRow={row:'zincir',meta:meta,off:off1};
       var cc=dimSel&&G.seciliDimRow==='zincir'?'#58a6ff':baseCol;
@@ -2808,7 +2812,7 @@ function drawDimsPanel(){
     var m=0;G.segs.forEach(function(o){if(o.tip==='veranda'||o===sg||(o.n1!==nid&&o.n2!==nid))return;if(!isParallel(o,sg))m=Math.max(m,o.k/2);});return m;
   }
   G.segs.forEach(function(sg){
-    if(sg.tip!=='veranda'||dimGizli(sg,'toplam'))return;
+    if(sg.tip!=='veranda'||dimGizli(sg,'toplam')||!planVisible('outerDims'))return;
     var p=getNode(sg.n1),q=getNode(sg.n2);if(!p||!q)return;var L=dist(p.x,p.y,q.x,q.y);if(L*s<18)return;
     var ux=(q.x-p.x)/L,uy=(q.y-p.y)/L,side=sg.dimSide||dimAutoSide(sg,[]);
     var d0=verUcPay(sg.n1,sg),d1=L-verUcPay(sg.n2,sg),off=Math.max(sg.k*s/2+10,sg.k*s/2+16+(sg.dimOff||0)*s);
@@ -2822,6 +2826,7 @@ function drawDims(){
   var s=sc();
   G._dimHits=[];
   G.segs.forEach(function(seg){
+    if(!planVisible(seg.dis||seg.tip==='veranda'?'outerDims':'innerDims'))return;
     var a=getNode(seg.n1),b=getNode(seg.n2);if(!a||!b)return;
     var L=dist(a.x,a.y,b.x,b.y);if(L<1||L*s<18)return;
     var ux=(b.x-a.x)/L,uy=(b.y-a.y)/L,nx=-uy,ny=ux;
@@ -2833,7 +2838,7 @@ function drawDims(){
     var selSeg=isSegSel(seg.id);
     var dimSel=G.seciliTip==='dim'&&G.secili&&G.secili.id===seg.id;
     var baseCol=selSeg?'#58a6ff':DIM.txt;
-    var hasChain=els.length&&!dimGizli(seg,'zincir');
+    var hasChain=planVisible('chains')&&els.length&&!dimGizli(seg,'zincir');
     var totHidden=dimGizli(seg,'toplam');
     var meta={segId:seg.id,side:side,sx:sx,sy:sy,wallPx:wallPx};
     if(hasChain){

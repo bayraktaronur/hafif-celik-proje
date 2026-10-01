@@ -71,6 +71,10 @@
     d.catiYon=d.catiYon||'yatay';
     d.projectName=typeof d.projectName==='string'?d.projectName.slice(0,100):'İçe aktarılan proje';
     const settings=d.settings||{};d.settings={};
+    if(settings.viewFilters&&typeof settings.viewFilters==='object'){
+      d.settings.viewFilters={};
+      for(const k of ['grid','rooms','openings','outerDims','innerDims','chains','panelColors','panelJoints','connections'])if(typeof settings.viewFilters[k]==='boolean')d.settings.viewFilters[k]=settings.viewFilters[k];
+    }
     if(['mixed','full','half','exception'].includes(settings.panelDrawMode))d.settings.panelDrawMode=settings.panelDrawMode;
     if(settings.trussOverrides!==undefined){
       if(!Array.isArray(settings.trussOverrides)||settings.trussOverrides.length>2000)fail('Geçersiz makas konumları.');

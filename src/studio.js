@@ -11,10 +11,10 @@
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.5',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.6',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),fixtures:clone(G.fixtures||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
-      settings:{moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
+      settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
   }
   function snapshot(){return JSON.stringify(state());}
   function resetInteraction(){
@@ -35,7 +35,7 @@
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
-      original.setSistem(d.sistem,true);Object.assign(G,{defaultK:isPref()?PF.DIS:14,snapGrid:true,snapWall:true,elStep:5,duvarYakala:'h',panelDrawMode:'mixed',moduleAxisSnap:true,trussOverrides:[],snapTargets:{},moveAlign:false,moveModule:false,pnlEtiket:true,makasGoster:true,olcuModu:'panel',ortho:false,inputUnit:'panel',selectionMode:'wall',panelSync:true,freeSnapStep:5},d.settings||{});
+      original.setSistem(d.sistem,true);Object.assign(G,{viewFilters:null,defaultK:isPref()?PF.DIS:14,snapGrid:true,snapWall:true,elStep:5,duvarYakala:'h',panelDrawMode:'mixed',moduleAxisSnap:true,trussOverrides:[],snapTargets:{},moveAlign:false,moveModule:false,pnlEtiket:true,makasGoster:true,olcuModu:'panel',ortho:false,inputUnit:'panel',selectionMode:'wall',panelSync:true,freeSnapStep:5},d.settings||{});
       $('gridSel').value=String(G.gridCm);$('elStepSel').value=String(G.elStep);$('yakalaSel').value=G.duvarYakala;
       const ids=[...G.nodes,...G.segs,...G.elemanlar,...G.rooms].map(o=>Number(/^e(\d+)$/.exec(o.id)?.[1]||0));
       ID=Math.max(ID,...ids,0)+1;
@@ -214,6 +214,7 @@
   window.drawBg=function(W,H){
     let g=G.gridCm*sc();while(g<12)g*=5;if(!Number.isFinite(g)||g<=0)return;
     ctx.fillStyle='#101b29';ctx.fillRect(0,0,W,H);
+    if(!planVisible('grid'))return;
     ctx.strokeStyle='#1b2b3d';ctx.lineWidth=.6;
     for(let x=((G.pan.x%g)+g)%g;x<W;x+=g){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
     for(let y=((G.pan.y%g)+g)%g;y<H;y+=g){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}

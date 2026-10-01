@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.5
+# Prefabrikten Plan Studio · 5.9.6
+
+5.9.6: Üst araç çubuğundan ve sağ panelden Müşteri sunumu, Çizim · sade, Panel / montaj detayı, Makas yerleşimi ve Tüm detaylar görünümleri seçilebilir. Görünüm filtreleri oda yazılarını, dış/iç toplam ölçüleri, ölçü zincirlerini, açıklık ölçülerini, panel numara/renk/eklerini, bağlantı işaretlerini ve makasları bağımsız yönetir. Filtreler yalnız çizimi etkiler; geometri, metraj, üretim yönü ve yakalama ayarları değişmez. PNG aynı filtreleri kullanır; JSON kaydı ve geri alma görünüm ayarlarını korur. Eski dosyalar mevcut görünürlükleriyle açılır. Panel / montaj detayı mevcut plan gösterimidir, yeni bir imalat veya montaj dosyası üretmez.
 
 5.9.5: Çoklu panel birleştirmede iki 62,75 cm yarım panelin ortasındaki tek dik T kolu, 125,5 cm tam panele çektirme U ile bağlanabilir. Ortadaki üçlü H bağlantısı çizimde ve metrajda gelen duvar kalınlığındaki U bağlantısına dönüşür; ana duvar geometrisi, gelen kapılı duvar, kapı, karşı paneller ve makas konumları korunur. Dörtlü bağlantılar, merkez dışı birleşimler ve seçili panellerin kendi kapı/pencere açıklıkları bu dönüşümde engellenir. Otomatik panel toparlama mevcut T bağlantılarını kendiliğinden dönüştürmez; dönüşüm yalnız açık panel seçimiyle yapılır.
 
