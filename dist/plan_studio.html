@@ -4957,7 +4957,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.13',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.14',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5804,7 +5804,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.13';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.14';syncUI();draw();
 })();
 
 </script><script>
@@ -6741,7 +6741,7 @@ window.OpeningCatalog=(function(){
    return {poly,edges:geo.kenar.map((k,i)=>({e:k.e,a:geo.poly[i*2],b:geo.poly[i*2+1],L:k.L})),walls,doors,windows,entries,existing,obstacles:[...walls,...existing.map(foot),...counters.map(c=>c.points)],room};
  }
  function valid(f,placed,ctx){const p=foot(f),reserved=reserves(f);return contained(p,ctx.poly)&&reserved.every(r=>contained(r,ctx.poly))&&!ctx.obstacles.some(o=>overlap(p,o)||reserved.some(r=>overlap(r,o)))&&!ctx.doors.some(o=>overlap(p,o))&&(!['wardrobe','coatCabinet','tvUnit','bedSingle','bedDouble','sofa2','sofa3','armchair'].includes(f.kind)||!ctx.windows.some(o=>overlap(p,o)))&&!placed.some(g=>overlap(p,foot(g))||reserves(g).some(r=>overlap(p,r))||reserved.some(r=>overlap(r,foot(g))));}
- function candidates(kind,ctx,variant,anchor){const [w,d]=cat[kind].sizes[0],out=[];
+ function candidates(kind,ctx,variant,anchor,size){const [w,d]=size||cat[kind].sizes[0],out=[];
    for(let j=0;j<ctx.edges.length;j++){const edge=ctx.edges[(j+variant)%ctx.edges.length],e=edge.e;if(edge.L<w+4)continue;const fractions=[.5,.25,.75,0,1];for(const t of fractions){const along=w/2+2+(edge.L-w-4)*t;out.push({kind,w,d,...{x:edge.a.x+e.ux*along+e.nx*(d/2+2),y:edge.a.y+e.uy*along+e.ny*(d/2+2)},angle:(Math.atan2(-e.nx,e.ny)*180/Math.PI+360)%360,mirror:false});}}
    if(anchor&&kind==='coffeeTable')return [0,-50,50].map(x=>({kind,w,d,...local(anchor,x,anchor.d/2+75+d/2),angle:anchor.angle,mirror:false}));
    if(anchor&&kind==='nightstand')return [-1,1].map(sign=>({kind,w,d,...local(anchor,sign*(anchor.w/2+w/2+8),-anchor.d/2+d/2),angle:anchor.angle,mirror:false}));
@@ -6769,6 +6769,55 @@ window.OpeningCatalog=(function(){
    const placed=[],missing=[];for(const kind of kinds){if(ctx.existing.some(f=>f.kind===kind&&inside(f,ctx.poly)))continue;const anchor=placed.find(f=>f.kind.startsWith('bed')||f.kind==='sofa3')||ctx.existing.find(f=>(f.kind.startsWith('bed')||f.kind==='sofa3')&&inside(f,ctx.poly));const f=candidates(kind,ctx,variant,anchor).find(f=>valid(f,placed,ctx)&&circulation(ctx,[...placed,f]));if(f)placed.push(f);else missing.push(cat[kind].name);}
    return {fixtures:placed,counters:[],missing};
  }
+ // Search the bedroom as a group; do not commit to the first bed before trying wardrobes.
+ function bedroom(ctx,options){
+   const owned=ctx.existing.filter(f=>inside(f,ctx.poly)),existingBed=owned.find(f=>['bedSingle','bedDouble'].includes(f.kind)),existingWard=owned.find(f=>f.kind==='wardrobe');
+   const kind=options.bed==='single'||(!options.bed&&ctx.room.tip==='cocuk')?'bedSingle':'bedDouble';
+   const walls=(kind,size)=>{
+     const [w,d]=size,out=candidates(kind,ctx,0,null,size);
+     for(const edge of ctx.edges){const e=edge.e;if(edge.L<w+4)continue;
+       const offsets=[w/2+2,edge.L-w/2-2];
+       // Add opening/obstacle edges and room-specific bed side clearances to the anchors.
+       for(const poly of [...ctx.doors,...ctx.windows,...owned.map(foot)]){const ts=poly.map(p=>(p.x-edge.a.x)*e.ux+(p.y-edge.a.y)*e.uy);offsets.push(Math.min(...ts)-w/2-2,Math.max(...ts)+w/2+2);}
+       if(kind.startsWith('bed'))offsets.push(w/2+52,edge.L-w/2-52,w/2+65,edge.L-w/2-65);
+       for(const t of offsets)if(t>=w/2+2&&t<=edge.L-w/2-2)out.push({kind,w,d,x:edge.a.x+e.ux*t+e.nx*(d/2+2),y:edge.a.y+e.uy*t+e.ny*(d/2+2),angle:(Math.atan2(-e.nx,e.ny)*180/Math.PI+360)%360,mirror:false});
+     }
+     const seen=new Set();return out.filter(f=>{const k=[f.x,f.y,f.angle].map(x=>Math.round(x*100)).join('/');if(seen.has(k))return false;seen.add(k);return valid(f,[],ctx);});
+   };
+   const beds=existingBed?[existingBed]:cat[kind].sizes.flatMap(s=>walls(kind,s));
+   const wardrobes=existingWard?[existingWard]:[...cat.wardrobe.sizes].sort((a,b)=>b[0]-a[0]).flatMap(s=>walls('wardrobe',s));
+   const modes=options.nightstands&&options.nightstands!=='all'?[options.nightstands]:['both','left','right','none'],plans=[],seen=new Set();
+   const fits=(f,group)=>valid(f,group,ctx)&&!owned.some(g=>reserves(g).some(r=>overlap(foot(f),r)));
+   for(const bed of beds){
+     const base=existingBed?[]:[bed],scenarios=new Set();
+     for(const mode of modes)for(const leftSize of cat.nightstand.sizes)for(const rightSize of cat.nightstand.sizes){
+       let stands=[],failed=false;const signs=mode==='both'?[-1,1]:mode==='left'?[-1]:mode==='right'?[1]:[];
+       for(const sign of signs){
+         const a=bed.angle*Math.PI/180;
+         const already=owned.some(f=>{if(f.kind!=='nightstand')return false;const dx=f.x-bed.x,dy=f.y-bed.y,x=dx*Math.cos(a)+dy*Math.sin(a),y=-dx*Math.sin(a)+dy*Math.cos(a);return Math.sign(x)===sign&&Math.abs(x)<bed.w/2+100&&Math.abs(y+bed.d/2)<90;});if(already)continue;
+         const [w,d]=sign<0?leftSize:rightSize,f={kind:'nightstand',w,d,...local(bed,sign*(bed.w/2+w/2+8),-bed.d/2+d/2),angle:bed.angle,mirror:false};
+         if(!fits(f,[...base,...stands])){failed=true;break;}stands.push(f);
+       }
+       if(failed)continue;const scenario=mode+JSON.stringify(stands);if(scenarios.has(scenario))continue;scenarios.add(scenario);
+       // Fit each wardrobe against the whole bed + bedside-table combination.
+       const group=[...base,...stands],wardKeys=new Set();let found=false;
+       for(const wardrobe of wardrobes){const k=wardrobe.w+'/'+wardrobe.angle;if(wardKeys.has(k)||(!existingWard&&!fits(wardrobe,group)))continue;
+         const placed=existingWard?group:[...base,wardrobe,...stands];if(!circulation(ctx,placed))continue;found=true;wardKeys.add(k);record(placed,wardrobe,mode,signs.length);if(wardKeys.size>=6)break;
+       }
+       if(!found&&circulation(ctx,group))record(group,null,mode,signs.length);
+     }
+   }
+   function record(placed,wardrobe,mode,count){
+     if(!placed.length)return;const key=JSON.stringify(placed.map(f=>[f.kind,f.w,f.d,f.x,f.y,f.angle]));if(seen.has(key))return;seen.add(key);
+     const labels={both:'İki komodin',left:'Sol komodin',right:'Sağ komodin',none:'Komodinsiz'};
+     plans.push({fixtures:placed,counters:[],missing:wardrobe?[]:['Gardırop: katalog ölçüleri, kapı/pencere ve kullanım boşluklarıyla uygun yer bulunamadı.'],roomId:ctx.room.id,nightstandMode:mode,layoutLabel:labels[mode]+(wardrobe?' · Gardırop '+wardrobe.w+' × '+wardrobe.d+' cm':' · Gardırop sığmadı'),rank:(wardrobe?10000:0)+count*1000+(wardrobe?.w||0)});
+   }
+   // A complete wardrobe solution always outranks an incomplete bedroom.
+   const complete=plans.some(p=>!p.missing.length),pool=plans.filter(p=>!complete||!p.missing.length).sort((a,b)=>b.rank-a.rank),result=[];
+   for(const mode of modes){const p=pool.find(p=>p.nightstandMode===mode);if(p)result.push(p);}
+   for(const p of pool){if(result.length>=8)break;if(!result.includes(p)&&!result.some(q=>q.nightstandMode===p.nightstandMode&&JSON.stringify(q.fixtures)===JSON.stringify(p.fixtures)))result.push(p);}
+   return result;
+ }
  function kitchen(ctx,variant,shape){
    for(let i=0;i<ctx.edges.length;i++){const edge=ctx.edges[(i+variant)%ctx.edges.length],e=edge.e,w=Kitchen.pick({x:(e.a.x+e.b.x)/2+e.nx*(e.k/2+2),y:(e.a.y+e.b.y)/2+e.ny*(e.k/2+2)});if(!w||w.hi-w.lo<320)continue;
      for(const side of shape==='L'?['start','end']:['none'])try{
@@ -6785,6 +6834,7 @@ window.OpeningCatalog=(function(){
    if(['banyo','ebanyo','wc'].includes(room.tip))throw Error('Banyo ve WC otomatik yerleşimi bu sürümde kapalı.');
    if(!['yatak','ebeveyn','cocuk','salon','oturma','salon_mutfak','hol','giris','mutfak'].includes(room.tip))throw Error('Önce odanın türünü yatak odası, salon, mutfak veya giriş olarak belirleyin.');
    const ctx=context(room),plans=[],keys=new Set();
+   if(['yatak','ebeveyn','cocuk'].includes(room.tip))return bedroom(ctx,options);
    for(let i=0;i<Math.min(ctx.edges.length,8);i++){const p=room.tip==='mutfak'||options.zone==='kitchen'?kitchen(ctx,i,options.shape||'straight'):furniture(ctx,i,options.bed||(room.tip==='cocuk'?'single':'double'));if(!p.fixtures.length)continue;const key=JSON.stringify(p.fixtures.map(f=>[f.kind,f.x,f.y,f.angle]));if(keys.has(key))continue;keys.add(key);plans.push({...p,roomId:room.id});}
    plans.sort((a,b)=>a.missing.length-b.missing.length);return plans.slice(0,4);
  }
@@ -6796,21 +6846,21 @@ window.OpeningCatalog=(function(){
  'use strict';const $=id=>document.getElementById(id),cat=FurnitureCatalog.items;let plans=[],index=0,baseline='',busy=false;
  const button=document.createElement('button');button.id='t-furniture';button.className='t';button.textContent='Tefriş';document.querySelector('.tool-group').append(button);
  const menu=document.createElement('dialog');menu.id='furnitureMenu';menu.innerHTML='<h3>Tefriş</h3><button class="sib" id="furnitureAuto">Odaya göre otomatik yerleşim</button><p>Elle yerleştirmek için bir ürün seçin. Ölçüler ürünün dıştan dışa kapladığı alandır.</p><div id="furnitureCatalog" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"></div><button class="sib" data-close>Kapat</button>';
- const auto=document.createElement('dialog');auto.id='furnitureAutoDialog';auto.innerHTML='<h3>Otomatik tefriş · önizleme</h3><label>Oda<select id="furnitureRoom"></select></label><label id="furnitureBedLabel">Yatak<select id="furnitureBed"><option value="double">Çift kişilik</option><option value="single">Tek kişilik</option></select></label><label id="furnitureZoneLabel">Bölüm<select id="furnitureZone"><option value="living">Oturma bölümü</option><option value="kitchen">Mutfak bölümü</option></select></label><label id="furnitureShapeLabel">Tezgâh<select id="furnitureShape"><option value="straight">Düz</option><option value="L">L</option></select></label><p>Mevcut eşyalar korunur. Kapı önü, pencere erişimi ve 60 cm geçiş arayan öneriler sunulur. Sığmayan parçalar listelenir; Uygula demeden plan değişmez.</p><button class="sib" id="furnitureGenerate">Yerleşim öner</button><p id="furnitureResult" role="status"></p><canvas id="furniturePreview" width="680" height="390" style="width:100%;background:#101b29;border-radius:8px"></canvas><p id="furnitureMissing"></p><button class="sib" id="furnitureNext">Diğer alternatif</button><button class="sib" id="furnitureApply">Uygula</button><button class="sib" data-close>Vazgeç</button>';
+ const auto=document.createElement('dialog');auto.id='furnitureAutoDialog';auto.innerHTML='<h3>Otomatik tefriş · önizleme</h3><label>Oda<select id="furnitureRoom"></select></label><label id="furnitureBedLabel">Yatak<select id="furnitureBed"><option value="double">Çift kişilik</option><option value="single">Tek kişilik</option></select></label><label id="furnitureNightstandsLabel">Komodin düzeni<select id="furnitureNightstands"><option value="all">Tüm seçenekleri değerlendir</option><option value="both">İki komodin</option><option value="left">Yatağın solunda</option><option value="right">Yatağın sağında</option><option value="none">Komodinsiz</option></select></label><label id="furnitureZoneLabel">Bölüm<select id="furnitureZone"><option value="living">Oturma bölümü</option><option value="kitchen">Mutfak bölümü</option></select></label><label id="furnitureShapeLabel">Tezgâh<select id="furnitureShape"><option value="straight">Düz</option><option value="L">L</option></select></label><p>Mevcut eşyalar korunur. Kapı önü, pencere erişimi ve 60 cm geçiş arayan öneriler sunulur. Sığmayan parçalar listelenir; Uygula demeden plan değişmez.</p><button class="sib" id="furnitureGenerate">Yerleşim öner</button><p id="furnitureResult" role="status"></p><canvas id="furniturePreview" width="680" height="390" style="width:100%;background:#101b29;border-radius:8px"></canvas><p id="furnitureMissing"></p><button class="sib" id="furnitureNext">Diğer alternatif</button><button class="sib" id="furnitureApply">Uygula</button><button class="sib" data-close>Vazgeç</button>';
  for(const d of [menu,auto]){d.style.cssText='background:#192334;color:#c5d6e6;border:1px solid #40566b;border-radius:12px;padding:20px;margin:auto;width:min(720px,90vw);max-height:88vh;overflow:auto';document.body.append(d);d.querySelector('[data-close]').onclick=()=>d.close();d.querySelectorAll('select').forEach(e=>e.style.cssText='display:block;width:100%;padding:8px;margin:6px 0 10px;background:#101b29;color:#d6e6ef;border:1px solid #40566b');}
  for(const [kind,item] of Object.entries(cat)){const b=document.createElement('button');b.className='sib';b.dataset.furniture=kind;b.style.height='110px';const canvas=document.createElement('canvas');canvas.width=180;canvas.height=70;b.append(canvas,document.createElement('br'),document.createTextNode(item.name));$('furnitureCatalog').append(b);const [w,d]=item.sizes[0];Fixtures.symbol(canvas.getContext('2d'),{kind,w,d,angle:0,mirror:false},90,35,Math.min(140/w,62/d),'#c5d6e6');b.onclick=()=>{menu.close();Fixtures.openKind(kind);};}
  button.onclick=()=>menu.showModal();$('furnitureAuto').onclick=()=>{menu.close();openAuto();};
- function settings(){const room=G.rooms.find(r=>r.id===$('furnitureRoom').value),type=room?.tip;$('furnitureBedLabel').hidden=!['yatak','ebeveyn','cocuk'].includes(type);$('furnitureZoneLabel').hidden=type!=='salon_mutfak';$('furnitureShapeLabel').hidden=type!=='mutfak'&&!(type==='salon_mutfak'&&$('furnitureZone').value==='kitchen');return room;}
+ function settings(){const room=G.rooms.find(r=>r.id===$('furnitureRoom').value),type=room?.tip;$('furnitureBedLabel').hidden=!['yatak','ebeveyn','cocuk'].includes(type);$('furnitureNightstandsLabel').hidden=$('furnitureBedLabel').hidden;$('furnitureZoneLabel').hidden=type!=='salon_mutfak';$('furnitureShapeLabel').hidden=type!=='mutfak'&&!(type==='salon_mutfak'&&$('furnitureZone').value==='kitchen');return room;}
  function clear(){plans=[];index=0;$('furnitureApply').disabled=true;$('furnitureNext').disabled=true;$('furnitureResult').textContent='Seçenekleri belirleyip Yerleşim öner düğmesine basın.';$('furnitureMissing').textContent='';$('furniturePreview').getContext('2d').clearRect(0,0,680,390);}
  function openAuto(room){$('furnitureRoom').replaceChildren();for(const r of G.rooms.filter(r=>!['banyo','ebanyo','wc'].includes(r.tip))){const o=document.createElement('option');o.value=r.id;o.textContent=roomLabel(r);$('furnitureRoom').append(o);}if(room)$('furnitureRoom').value=room.id;const selected=settings();$('furnitureBed').value=selected?.tip==='cocuk'?'single':'double';clear();auto.showModal();}
- for(const id of ['furnitureRoom','furnitureBed','furnitureZone','furnitureShape'])$(id).onchange=()=>{settings();if(id==='furnitureRoom')$('furnitureBed').value=settings()?.tip==='cocuk'?'single':'double';clear();};
- $('furnitureGenerate').onclick=async()=>{if(busy)return;const room=settings();if(!room){$('furnitureResult').textContent='Önce kapalı bir oda çizin ve türünü belirleyin.';return;}busy=true;clear();$('furnitureGenerate').disabled=true;$('furnitureResult').textContent='Yerleşimler ve geçişler kontrol ediliyor…';await new Promise(r=>setTimeout(r,30));try{baseline=Studio.snapshot();plans=FurnitureLayout.propose(room,{bed:$('furnitureBed').value,shape:$('furnitureShape').value,zone:room.tip==='salon_mutfak'?$('furnitureZone').value:undefined});index=0;if(!plans.length){$('furnitureResult').textContent='Bu ölçüler ve mevcut eşyalarla uygun öneri bulunamadı. Elle yerleşim veya daha küçük ürün ölçüsü kullanabilirsiniz.';}else render();}catch(e){$('furnitureResult').textContent=e.message;}finally{busy=false;$('furnitureGenerate').disabled=false;}};
+ for(const id of ['furnitureRoom','furnitureBed','furnitureZone','furnitureShape','furnitureNightstands'])$(id).onchange=()=>{settings();if(id==='furnitureRoom')$('furnitureBed').value=settings()?.tip==='cocuk'?'single':'double';clear();};
+ $('furnitureGenerate').onclick=async()=>{if(busy)return;const room=settings();if(!room){$('furnitureResult').textContent='Önce kapalı bir oda çizin ve türünü belirleyin.';return;}busy=true;clear();$('furnitureGenerate').disabled=true;$('furnitureResult').textContent='Yerleşimler ve geçişler kontrol ediliyor…';await new Promise(r=>setTimeout(r,30));try{baseline=Studio.snapshot();plans=FurnitureLayout.propose(room,{bed:$('furnitureBed').value,nightstands:$('furnitureNightstands').value,shape:$('furnitureShape').value,zone:room.tip==='salon_mutfak'?$('furnitureZone').value:undefined});index=0;if(!plans.length){$('furnitureResult').textContent='Bu ölçüler ve mevcut eşyalarla uygun öneri bulunamadı. Elle yerleşim veya daha küçük ürün ölçüsü kullanabilirsiniz.';}else render();}catch(e){$('furnitureResult').textContent=e.message;}finally{busy=false;$('furnitureGenerate').disabled=false;}};
  function render(){const plan=plans[index],room=G.rooms.find(r=>r.id===plan.roomId);if(!plan||!room)return;const ctx=FurnitureLayout.context(room),canvas=$('furniturePreview'),c=canvas.getContext('2d'),x0=Math.min(...ctx.poly.map(p=>p.x)),y0=Math.min(...ctx.poly.map(p=>p.y)),w=Math.max(...ctx.poly.map(p=>p.x))-x0,h=Math.max(...ctx.poly.map(p=>p.y))-y0,s=Math.min(620/w,330/h),ox=(680-w*s)/2,oy=(390-h*s)/2;
    c.clearRect(0,0,680,390);function poly(points,color,fill){c.beginPath();points.forEach((p,i)=>{const x=ox+(p.x-x0)*s,y=oy+(p.y-y0)*s;i?c.lineTo(x,y):c.moveTo(x,y);});c.closePath();c.strokeStyle=color;c.lineWidth=1.5;if(fill){c.fillStyle=fill;c.fill();}c.stroke();}
    poly(ctx.poly,'#b6cddd');ctx.doors.forEach(p=>poly(p,'#d69d65','#d69d6518'));ctx.windows.forEach(p=>poly(p,'#6caccc'));
    (G.counters||[]).forEach(a=>{if(FurnitureLayout.overlap(a.points,ctx.poly))poly(a.points,'#71879a');});plan.counters.forEach(a=>{const shape=CounterCut.difference(a.points,[...(G.fixtures||[]),...plan.fixtures].filter(f=>f.kind==='fridge').map(CounterCut.footprint));c.beginPath();for(const e of shape.edges){c.moveTo(ox+(e.a.x-x0)*s,oy+(e.a.y-y0)*s);c.lineTo(ox+(e.b.x-x0)*s,oy+(e.b.y-y0)*s);}c.strokeStyle='#77d9b8';c.stroke();});
    for(const [items,color] of [[G.fixtures||[],'#71879a'],[plan.fixtures,'#a6f5d6']])for(const f of items){if(CounterCut.inside(f,ctx.poly))Fixtures.symbol(c,f,ox+(f.x-x0)*s,oy+(f.y-y0)*s,s,color);}
-   $('furnitureResult').textContent='Alternatif '+(index+1)+' / '+plans.length+' · '+plan.fixtures.length+' ürün'+(plan.counters.length?' + tezgâh':'');$('furnitureMissing').textContent=plan.missing.length?'Yerleştirilemeyenler: '+plan.missing.join(', ')+'. Bu alternatif yalnız görünen ürünleri ekler.':'Seçili gruptaki ürünler yerleşti. Gri: mevcut · Yeşil: öneri · Turuncu: kapı önü.';$('furnitureApply').disabled=false;$('furnitureNext').disabled=plans.length<2;
+   $('furnitureResult').textContent='Alternatif '+(index+1)+' / '+plans.length+' · '+plan.fixtures.length+' ürün'+(plan.layoutLabel?' · '+plan.layoutLabel:'')+(plan.counters.length?' + tezgâh':'');$('furnitureMissing').textContent=plan.missing.length?'Yerleştirilemeyenler: '+plan.missing.join(', ')+'. Bu alternatif yalnız görünen ürünleri ekler.':'Seçili gruptaki ürünler yerleşti. Gri: mevcut · Yeşil: öneri · Turuncu: kapı önü.';$('furnitureApply').disabled=false;$('furnitureNext').disabled=plans.length<2;
  }
  $('furnitureNext').onclick=()=>{index=(index+1)%plans.length;render();};
  $('furnitureApply').onclick=()=>{const p=plans[index];if(!p)return;if(Studio.snapshot()!==baseline){clear();$('furnitureResult').textContent='Plan değişti; güncel çizim için yeniden öneri oluşturun.';return;}if(Studio.edit(()=>{G.fixtures.push(...p.fixtures.map(f=>({...f,id:'fixture-'+crypto.randomUUID()})));G.counters.push(...p.counters.map(c=>({...c,id:'counter-'+crypto.randomUUID()})));})){auto.close();Studio.toast('Tefriş eklendi. Ctrl+Z tüm yerleşimi tek adımda geri alır.');}};
