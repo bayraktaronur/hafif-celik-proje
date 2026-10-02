@@ -146,3 +146,8 @@ Kullanıcı makas altına gelmeyen dış H'nin kulaksız–dübelli olduğunu do
 ## 3 Ekim 2026 — Ev PC — 5.9.31 / DEV-022
 
 Kullanıcı iç H'nin her zaman dübelsiz, makas altında kulaklı ve makas dışında kulaksız olduğunu onayladı. Temel dört kulak/dübel sınıfı tamamlandı; mesnet/veri belirsizliği kulak için bilinmiyor kalır. Kontrol taslağı21/2/12/1 sınıf adetleri üretti (sırasıyla kulaklı-dübelli, kulaksız-dübelli, kulaklı-dübelsiz, kulaksız-dübelsiz; üçlü H dahil). tests/loading-h.cjs ve loading-list.cjs geçti. Mevcut müşteri çizimi değişmedi. Net boy/profil ve Excel farkları devam eder; sevk taslağı onaylanmış reçete değildir. Rapor: analizler/2026-10-03-h-kulak-dubel.md.
+
+
+## 3 Ekim 2026 — Ev PC — Tuna H karşılaştırması
+
+Kaynak Excel B23:D28 yeniden okundu, hash doğrulandı.5.9.31 kontrol JSON hesabı yeniden üretildi. Toplam36/36 eşit fakat21 bağlantının kulak sınıfı farklı: dış standart8, dış üçlü1, iç standart8, iç üçlü4. Aynı aks/hat ile fiziksel makasa giriş ayrımı nedeniyle mevcut2B sınıflandırmanın fazla kulaklı saymış olabileceği saptandı; kesin kök neden/onay olarak sunulmadı. Bağlantı bazlı rapor analizler/2026-10-03-tuna-h-excel-karsilastirma.md. DEV-022 fiziksel temas kontrolü açık; DEV-006/011 devam. Kod/Excel/canlı çizim değişmedi, sürüm5.9.31.

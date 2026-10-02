@@ -190,3 +190,8 @@ Tuna kontrol dosyası: H18 + üçlü H3 kulaklı–dübelli; H2 kulaksız–düb
 Kullanıcı onayı: iç duvar H'leri her zaman dübelsiz; makas altında kulaklı, dışında kulaksız. Böylece dört temel sınıfın kuralı tamamlandı ve programa işlendi. Makas verisi yok/mesnet belirsizse kulak kararı bekler; dübel dış duvar işaretinden belirlenir. H, üçlü H ve dörtlü H ailesi kapsamda; U/köşe için kural varsayılmaz.
 
 Tuna kontrol dosyası, üçlüler dahil:21 kulaklı–dübelli,2 kulaksız–dübelli,12 kulaklı–dübelsiz,1 kulaksız–dübelsiz. Kaynak Excel farkları, net profil/kesim boyu ve sevk reçeteleri hâlâ açık (DEV-006/011/012/021); DEV-022 temel kulak/dübel kuralı tamamlandı, fiziksel makas uyumu kontrolü sürer. tests/loading-h.cjs ve loading-list.cjs başarılı. Kullanıcı çizimi ve takip dışı JSON korunmuştur. [Ayrıntı](analizler/2026-10-03-h-kulak-dubel.md).
+
+
+## Tuna H–Excel karşılaştırması / DEV-006 ve DEV-022
+
+[Rapor](analizler/2026-10-03-tuna-h-excel-karsilastirma.md):36/36 toplam eşit; standart dış20/iç9, üçlü dış3/iç4 eşit. Excel kulaklı12/kulaksız24, program33/3. Dış8 standart+1 üçlü farkı makasla aynı doğrultudaki duvarlarda; iç8 standart+4 üçlü de programda kulaklı, Excel'de kulaksız. **2B makas aks eşleşmesi fiziksel H'nin makasa girdiğini kanıtlamaz.** DEV-022 temel tarifleri kayıtlı ama fiziksel temas koşulu doğrulaması açık; üst/alt cephe ve iç bölme örnekleri kullanıcıyla doğrulanmalı. Kod/sürüm5.9.31 değişmedi, Excel ve müşteri çizimi değiştirilmedi. Rapor bağlantı kimlikleri ve kaynak hash'lerini içerir.
