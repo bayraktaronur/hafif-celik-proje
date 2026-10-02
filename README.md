@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.29
+# Prefabrikten Plan Studio · 5.9.30
+
+5.9.30: Kullanıcı kuralıyla makas altına gelmeyen dış duvar H bağlantıları kulaksız–dübelli sınıflandırılır. Makas verisi/mesneti belirsizse kontrol bekler; iç duvar kuralları henüz tamamlanmadı.
 
 5.9.29: Yükleme listesinde makas altında H kulaklı, dış duvardaysa ayrıca dübelli sınıflandırılır. Makas açıklığı ve yerel dış duvar kontrol edilir; tanımlanmamış diğer H kuralları bekler. [Sonuçlar ve açık farklar](analizler/2026-10-03-h-kulak-dubel.md).
 

@@ -18,9 +18,9 @@
  function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; çatı, tesisat ve sarf otomatik hesaplanmaz.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Sevk taslağı','Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', ')])].map(r=>r.map(cell).join(';')).join('\r\n');}
  function classifyH(point,trusses,exterior){
   const hits=trusses.filter(m=>{const axis=m.axis,cross=axis==='x'?'y':'x';return ['x','y'].includes(axis)&&Math.abs(point[axis]-m.pos)<.6&&point[cross]>=m.a-.6&&point[cross]<=m.b+.6;});
-  const supported=hits.filter(m=>m.supported!==false);
-  return {ear:supported.length?true:null,dowel:supported.length&&exterior?true:null,
-   label:supported.length?(exterior?'Kulaklı · dübelli':'Kulaklı · dübel kararı bekliyor'):(hits.length?'Makas mesnet kontrolü gerekli':'Kulak / dübel kuralı bekliyor'),
+  const supported=hits.filter(m=>m.supported!==false),outside=exterior&&trusses.length>0&&!hits.length;
+  return {ear:supported.length?true:outside?false:null,dowel:exterior&&(supported.length||outside)?true:null,
+   label:supported.length?(exterior?'Kulaklı · dübelli':'Kulaklı · dübel kararı bekliyor'):(hits.length?'Makas mesnet kontrolü gerekli':outside?'Kulaksız · dübelli':'Kulak / dübel kuralı bekliyor'),
    matches:hits.map(m=>({no:m.no,axis:m.axis,pos:m.pos,a:m.a,b:m.b,zoneId:m.zoneId||'',supported:m.supported!==false}))};
  }
  return {validate,build,csv,fingerprint,classifyH};

@@ -20,3 +20,10 @@ Toplam33 kulaklı eşleşme; bunların21'i dış duvarda,12'si iç duvarda.3 H'd
 Kontroller: tests/loading-h.cjs iki yön, açıklık dışı, eksen dışı, mesnet belirsizliği, iç H dübelinin bilinmiyor kalması ve makas taşınınca karar geçersizleşmesi; tests/loading-list.cjs mevcut sayım/kayıt/CSV/geri alma regresyonları. Plan geometrisi değiştirilmez.
 
 Sıradaki kararlar: makas altında olmayan H ve dış duvar H dübel kuralı; iç duvar dübel durumu; makasın başlangıç/bitiş akslarında ve iç bölmelerde fiziksel olarak H'ye giriş koşulları. DEV-006/011/012/021 açık.
+
+
+## 5.9.30 ek kararı
+
+Kullanıcı makas altına gelmeyen dış duvar H'lerinin kulaksız–dübelli olduğunu onayladı. Mevcut makas verisinde eşleşme bulunmayan dış H için ear=false, dowel=true atanır. Makas listesi yoksa veya temas eden makasın mesneti belirsizse olumlu sınıflandırma yapılmaz. İç H hakkında ek kural varsayılmaz.
+
+Tuna kontrol planındaki önceki3 belirsiz standart H'nin2'si dış kulaksız–dübelli sınıfına geçti;1 iç H kural bekliyor. Diğer adetler aynı. Bu, eski Excel standart H kulaksız–dübelli10 adediyle uyuşmuyor; fark açık kalır. Kontrol: tests/loading-h.cjs ve tests/loading-list.cjs geçti. Model ve kaynak dosyalar değiştirilmedi.

@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.29 makas altındaki H için kulak/dübel sınıflandırması.
+Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.30 dış duvarda makas altına gelmeyen H kulaksız–dübelli.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -15,7 +15,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.29; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Aktarım: program 5.9.30; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Aktarım: program 5.9.29; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.29**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.30**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -176,3 +176,10 @@ Sonraki adım: Tuna'nın 49 geometrik yuva/47 ürün farkını panel kesim-stok 
 | DEV-022 | Makas altındaki H kulak/dübel sınıflandırması | Verilen iki kural uygulandı/test edildi. İç H dübel ve makas dışı H kuralları açık; stok/net boy reçetesi tamamlanmadı. |
 
 [Rapor](analizler/2026-10-03-h-kulak-dubel.md). Makas altında H kulaklı; dış duvarda ayrıca dübelli. İçte dübelsiz veya makas dışında kulaksız varsayılmaz. Tuna kontrol taslağında21 dış kulaklı/dübelli,12 iç kulaklı,3 belirsiz H bağlantısı; H/üçlü ayrımı raporda. Mevcut otomatik makaslara göre sonuç; Excel ile farklar açık. Kullanıcı canlı planı değiştirilmedi. Diğer açık işler korunur.
+
+
+## 5.9.30 — Dış H kuralı / DEV-022 devamı
+
+Kullanıcı onayı: makas altına gelmeyen dış duvar H'leri **kulaksız–dübelli**. Programda işlendi. Makas verisi yoksa veya eşleşen makasın mesneti belirsizse otomatik kulaksız denmez. İç H dübel ve makas dışında kalan iç H kuralları hâlâ açık.
+
+Tuna kontrol dosyası: H18 + üçlü H3 kulaklı–dübelli; H2 kulaksız–dübelli; H8 + üçlü H4 kulaklı/dübel bekliyor; H1 iç bağlantı kural bekliyor. Excel farkları çözülmedi. tests/loading-h.cjs ve loading-list.cjs başarılı. Canlı çizim değiştirilmedi; takip dışı JSON korundu. DEV-006/011/012/021 ve kalan DEV-022 kuralları devam eder.
