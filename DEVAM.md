@@ -93,3 +93,10 @@ Bu düzen sohbetleri birleştirmez; proje bilgisinin sohbetten bağımsız taş�
 - DEV-013 tamamlandı: Metin (T), çok satırlı açıklama, 2–100 cm boyut, 0–359 derece açı; tıkla yerleştir, sürükle taşı, çift tıkla düzenle, Delete/özelliklerden sil. JSON ve tarayıcı yedeği, geri/ileri alma, PNG ve ekrana sığdır desteği var. Metinler metrajdan bağımsızdır.
 - Kullanıcı 1690/Profilden panoyu 1660 mm kabul etmemizi istedi. Bu açıklama bekleyen konu kapandı; ayrı Profilden pano türü gereksinimi çıkarılmayacak. Kaynak DWG ve mevcut planlar otomatik değiştirilmedi. Karar analizler/2026-10-02-imalat-onaylari.json içinde.
 - Kontroller: yeni metin etkileşim/kayıt/PNG testleri başarılı; temel31/31, prefab77/77. Sürüm5.9.20. DEV-012 genel üretim motoru, DEV-006 ürün eşleme, DEV-011 mesnet kontrolleri açık.
+
+## 2 Ekim 2026 — 5.9.21 Veranda net ölçü düzenleme / DEV-014
+
+- DEV-014 tamamlandı: yatay/dikey mevcut veranda ölçüsüne çift tık veya Özellikler > Net ölçüyü düzenle. Gerçek duvar yüzü payları düşülmüş net santimetre girişi; başlangıç/bitiş/merkez sabit seçenekleri. Bağlı dik veranda kenarları birlikte taşınır.
+- Ev düğümleri/duvarları/açıklıkları korunur. Bağlı yan kenar evde sabit kaldığında gerekli dik kademe, uygulanmadan önce dialogda bildirilir. Ev duvarı üzerine binen, kesişen, sıfırlanan veya ters dönen sınırlar reddedilir. Merkez sabit geometrik olarak mümkün değilse uygulanmaz; eğik veranda bu komutun kapsamında değildir. Direk/kiriş/çatı imalatı otomatik güncellenmez.
+- Testler: tests/veranda.cjs içinde Tuna net69,5→100 derinlik,507→550 genişlik, bağımsız dikdörtgende merkez sabit, kademe kaldırarak eski genişliğe dönüş, duvar/açıklık koruma, çakışma reddi, gerçek ölçü çift tıklama, geri/ileri alma, oda korunması ve JSON yeniden açma başarılı. Temel31/31, prefab77/77 ve metin testleri geçti; bağımsız HTML üretildi.
+- Sürüm5.9.21. Canlı kullanıcı sayfasına müdahale edilmedi. DEV-012 genel üretim motoru, DEV-006 ve DEV-011 açık kalır.

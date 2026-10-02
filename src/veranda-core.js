@@ -1,0 +1,26 @@
+/* Orthogonal veranda boundary editing; building walls are immutable. */
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.VerandaCore=api;})(globalThis,function(){
+ const EPS=.001,copy=x=>JSON.parse(JSON.stringify(x));
+ function axis(a,b){if(Math.abs(a.y-b.y)<EPS)return 'x';if(Math.abs(a.x-b.x)<EPS)return 'y';throw Error('Bu işlem yatay/dikey veranda sınırları içindir.');}
+ function allowance(d,s,id){const n=new Map(d.n.map(n=>[n.id,n])),a=n.get(s.n1),b=n.get(s.n2),ax=axis(a,b);let v=0;for(const q of d.s){if(q.tip==='veranda'||(q.n1!==id&&q.n2!==id))continue;const c=n.get(q.n1),e=n.get(q.n2);if(Math.abs(c[ax]-e[ax])<EPS)v=Math.max(v,q.k/2);}return v;}
+ function measure(d,id){const s=d.s.find(s=>s.id===id);if(!s||s.tip!=='veranda')throw Error('Bir veranda sınırı seçin.');const a=d.n.find(n=>n.id===s.n1),b=d.n.find(n=>n.id===s.n2);axis(a,b);return Math.hypot(a.x-b.x,a.y-b.y)-allowance(d,s,s.n1)-allowance(d,s,s.n2);}
+ function resize(input,id,value,fixed){
+  if(!Number.isFinite(value)||value<1||value>100000)throw Error('Net ölçü 1–100000 cm arasında olmalı.');
+  if(!['start','end','center'].includes(fixed))throw Error('Sabit taraf seçin.');
+  const d=copy(input),s=d.s.find(s=>s.id===id);const old=measure(d,id),nodes=new Map(d.n.map(n=>[n.id,n])),a=nodes.get(s.n1),b=nodes.get(s.n2),ax=axis(a,b),other=ax==='x'?'y':'x',sign=Math.sign(b[ax]-a[ax]),delta=(value-old)*sign;
+  if(Math.abs(delta)<EPS)return {state:d,steps:0};
+  const locked=new Set(d.s.filter(q=>q.tip!=='veranda').flatMap(q=>[q.n1,q.n2])),moves=new Map(),affected=new Set([s.id]);
+  function propagate(start,shift){if(Math.abs(shift)<EPS)return;const queue=[start];for(let i=0;i<queue.length;i++){const nid=queue[i];if(moves.has(nid)){if(Math.abs(moves.get(nid)-shift)>EPS)throw Error('Bağlı veranda sınırları bu ölçüyle çelişiyor.');continue;}moves.set(nid,shift);if(locked.has(nid)){if(nid===start)throw Error('Seçilen hareketli uç ev duvarına bağlı. Ev tarafını sabit seçin.');continue;}for(const q of d.s.filter(q=>q.tip==='veranda'&&(q.n1===nid||q.n2===nid))){const qa=nodes.get(q.n1),qb=nodes.get(q.n2);if(axis(qa,qb)===other){affected.add(q.id);queue.push(q.n1===nid?q.n2:q.n1);}}}}
+  propagate(s.n1,fixed==='end'?-delta:fixed==='center'?-delta/2:0);propagate(s.n2,fixed==='start'?delta:fixed==='center'?delta/2:0);
+  let serial=0,steps=0;const ids=new Set([...d.n,...d.s,...d.e,...d.r,...(d.annotations||[]),...(d.fixtures||[]),...(d.counters||[])].map(o=>o.id));const uid=()=>{let id;do{id='ver-edit-'+(++serial)}while(ids.has(id));ids.add(id);return id;};
+  for(const [nid,shift] of moves){const n=nodes.get(nid);if(locked.has(nid)){const clone={...n,id:uid(),[ax]:n[ax]+shift};d.n.push(clone);nodes.set(clone.id,clone);for(const q of d.s.filter(q=>affected.has(q.id)&&q.tip==='veranda')){if(q.n1===nid)q.n1=clone.id;if(q.n2===nid)q.n2=clone.id;}const connector={id:uid(),n1:nid,n2:clone.id,k:s.k,tip:'veranda',dis:false,verandaTransition:true};d.s.push(connector);affected.add(connector.id);steps++;}else n[ax]+=shift;}
+  for(const q of d.s){if(q.tip==='veranda'&&(moves.has(q.n1)||moves.has(q.n2)))affected.add(q.id);}
+  for(const q of [...d.s]){if(!q.verandaTransition||q.id===id)continue;const p=nodes.get(q.n1),r=nodes.get(q.n2);if(Math.hypot(p.x-r.x,p.y-r.y)>EPS)continue;const keep=locked.has(q.n2)?q.n2:q.n1,drop=keep===q.n1?q.n2:q.n1;if(locked.has(drop))throw Error('Ev bağlantıları birleştirilemez.');d.s=d.s.filter(x=>x.id!==q.id);for(const edge of d.s){if(edge.n1===drop)edge.n1=keep;if(edge.n2===drop)edge.n2=keep;}d.n=d.n.filter(n=>n.id!==drop);nodes.delete(drop);}
+ const oldNodes=new Map(input.n.map(n=>[n.id,n]));for(const q of d.s.filter(q=>q.tip==='veranda')){const p=nodes.get(q.n1),r=nodes.get(q.n2);axis(p,r);if(Math.hypot(p.x-r.x,p.y-r.y)<EPS)throw Error('Bu ölçü bir veranda kenarını sıfırlıyor.');const before=input.s.find(x=>x.id===q.id);if(before&&affected.has(q.id)){const u=oldNodes.get(before.n1),v=oldNodes.get(before.n2),qa=axis(u,v);if((v[qa]-u[qa])*(r[qa]-p[qa])<=0)throw Error('Bu ölçü veranda kenarını ters çeviriyor.');}}
+  function intersects(p,q,r,t){const ux=q.x-p.x,uy=q.y-p.y,vx=t.x-r.x,vy=t.y-r.y,den=ux*vy-uy*vx,dx=r.x-p.x,dy=r.y-p.y;if(Math.abs(den)>EPS){const a=(dx*vy-dy*vx)/den,b=(dx*uy-dy*ux)/den;return a>=-EPS&&a<=1+EPS&&b>=-EPS&&b<=1+EPS;}if(Math.abs(dx*uy-dy*ux)>EPS)return false;const k=Math.abs(ux)>Math.abs(uy)?'x':'y';return Math.min(Math.max(p[k],q[k]),Math.max(r[k],t[k]))-Math.max(Math.min(p[k],q[k]),Math.min(r[k],t[k]))>EPS;}
+  for(let i=0;i<d.s.length;i++)for(let j=i+1;j<d.s.length;j++){const u=d.s[i],v=d.s[j];if(!affected.has(u.id)&&!affected.has(v.id))continue;const p=nodes.get(u.n1),q=nodes.get(u.n2),r=nodes.get(v.n1),t=nodes.get(v.n2);if(!intersects(p,q,r,t))continue;const common=[u.n1,u.n2].some(n=>n===v.n1||n===v.n2);const cross=(q.x-p.x)*(t.y-r.y)-(q.y-p.y)*(t.x-r.x);if(common&&Math.abs(cross)>EPS)continue;throw Error('Yeni sınır bir duvar veya veranda kenarıyla çakışıyor. Diğer sabit tarafı ya da farklı ölçüyü seçin.');}
+  if(Math.abs(measure(d,id)-value)>.01)throw Error('Net ölçü korunamadı; işlem uygulanmadı.');
+  return {state:d,steps};
+ }
+ return {measure,resize};
+});

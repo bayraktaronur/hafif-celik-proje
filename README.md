@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.20
+# Prefabrikten Plan Studio · 5.9.21
+
+5.9.21: Mevcut veranda ölçüsüne çift tıklayarak veya özelliklerden net ölçü düzenleme; başlangıç/bitiş/merkez sabit seçenekleri. Bağlı dik sınırlar birlikte taşınır, ev duvarları korunur. Ev bağlantısında gerekli dik kademe önceden bildirilir; çakışan veya ters dönen kenarlar reddedilir. Geri alma ve JSON desteği.
 
 5.9.20: Metin (T) komutu ile çok satırlı plan notu ekleme, boyut/açı seçimi, sürükleyerek taşıma, çift tıkla düzenleme ve silme. Metinler JSON, yerel kurtarma, geri/ileri alma ve PNG çıktısında korunur; imalat metrajına katılmaz.
 

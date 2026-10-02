@@ -4958,7 +4958,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.20',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.21',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5806,7 +5806,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.20';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.21';syncUI();draw();
 })();
 
 </script><script>
@@ -6946,6 +6946,51 @@ window.OpeningCatalog=(function(){
  window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||document.querySelector('dialog[open]'))return;if(e.key==='Escape'&&(draft||moving)){stop(e);cancel();setTool('sec');}else if(e.key==='Delete'&&G.seciliTip==='annotation'){stop(e);remove();}else if(e.key.toLowerCase()==='t'&&!e.ctrlKey&&!e.altKey&&!e.metaKey){stop(e);open();}},true);
  window.addEventListener('blur',()=>{moving=ghost=null;draw();});
  window.TextNotes={open,cancel,bounds:()=>G.annotations.flatMap(corners)};
+})();
+
+</script><script>
+/* Orthogonal veranda boundary editing; building walls are immutable. */
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.VerandaCore=api;})(globalThis,function(){
+ const EPS=.001,copy=x=>JSON.parse(JSON.stringify(x));
+ function axis(a,b){if(Math.abs(a.y-b.y)<EPS)return 'x';if(Math.abs(a.x-b.x)<EPS)return 'y';throw Error('Bu işlem yatay/dikey veranda sınırları içindir.');}
+ function allowance(d,s,id){const n=new Map(d.n.map(n=>[n.id,n])),a=n.get(s.n1),b=n.get(s.n2),ax=axis(a,b);let v=0;for(const q of d.s){if(q.tip==='veranda'||(q.n1!==id&&q.n2!==id))continue;const c=n.get(q.n1),e=n.get(q.n2);if(Math.abs(c[ax]-e[ax])<EPS)v=Math.max(v,q.k/2);}return v;}
+ function measure(d,id){const s=d.s.find(s=>s.id===id);if(!s||s.tip!=='veranda')throw Error('Bir veranda sınırı seçin.');const a=d.n.find(n=>n.id===s.n1),b=d.n.find(n=>n.id===s.n2);axis(a,b);return Math.hypot(a.x-b.x,a.y-b.y)-allowance(d,s,s.n1)-allowance(d,s,s.n2);}
+ function resize(input,id,value,fixed){
+  if(!Number.isFinite(value)||value<1||value>100000)throw Error('Net ölçü 1–100000 cm arasında olmalı.');
+  if(!['start','end','center'].includes(fixed))throw Error('Sabit taraf seçin.');
+  const d=copy(input),s=d.s.find(s=>s.id===id);const old=measure(d,id),nodes=new Map(d.n.map(n=>[n.id,n])),a=nodes.get(s.n1),b=nodes.get(s.n2),ax=axis(a,b),other=ax==='x'?'y':'x',sign=Math.sign(b[ax]-a[ax]),delta=(value-old)*sign;
+  if(Math.abs(delta)<EPS)return {state:d,steps:0};
+  const locked=new Set(d.s.filter(q=>q.tip!=='veranda').flatMap(q=>[q.n1,q.n2])),moves=new Map(),affected=new Set([s.id]);
+  function propagate(start,shift){if(Math.abs(shift)<EPS)return;const queue=[start];for(let i=0;i<queue.length;i++){const nid=queue[i];if(moves.has(nid)){if(Math.abs(moves.get(nid)-shift)>EPS)throw Error('Bağlı veranda sınırları bu ölçüyle çelişiyor.');continue;}moves.set(nid,shift);if(locked.has(nid)){if(nid===start)throw Error('Seçilen hareketli uç ev duvarına bağlı. Ev tarafını sabit seçin.');continue;}for(const q of d.s.filter(q=>q.tip==='veranda'&&(q.n1===nid||q.n2===nid))){const qa=nodes.get(q.n1),qb=nodes.get(q.n2);if(axis(qa,qb)===other){affected.add(q.id);queue.push(q.n1===nid?q.n2:q.n1);}}}}
+  propagate(s.n1,fixed==='end'?-delta:fixed==='center'?-delta/2:0);propagate(s.n2,fixed==='start'?delta:fixed==='center'?delta/2:0);
+  let serial=0,steps=0;const ids=new Set([...d.n,...d.s,...d.e,...d.r,...(d.annotations||[]),...(d.fixtures||[]),...(d.counters||[])].map(o=>o.id));const uid=()=>{let id;do{id='ver-edit-'+(++serial)}while(ids.has(id));ids.add(id);return id;};
+  for(const [nid,shift] of moves){const n=nodes.get(nid);if(locked.has(nid)){const clone={...n,id:uid(),[ax]:n[ax]+shift};d.n.push(clone);nodes.set(clone.id,clone);for(const q of d.s.filter(q=>affected.has(q.id)&&q.tip==='veranda')){if(q.n1===nid)q.n1=clone.id;if(q.n2===nid)q.n2=clone.id;}const connector={id:uid(),n1:nid,n2:clone.id,k:s.k,tip:'veranda',dis:false,verandaTransition:true};d.s.push(connector);affected.add(connector.id);steps++;}else n[ax]+=shift;}
+  for(const q of d.s){if(q.tip==='veranda'&&(moves.has(q.n1)||moves.has(q.n2)))affected.add(q.id);}
+  for(const q of [...d.s]){if(!q.verandaTransition||q.id===id)continue;const p=nodes.get(q.n1),r=nodes.get(q.n2);if(Math.hypot(p.x-r.x,p.y-r.y)>EPS)continue;const keep=locked.has(q.n2)?q.n2:q.n1,drop=keep===q.n1?q.n2:q.n1;if(locked.has(drop))throw Error('Ev bağlantıları birleştirilemez.');d.s=d.s.filter(x=>x.id!==q.id);for(const edge of d.s){if(edge.n1===drop)edge.n1=keep;if(edge.n2===drop)edge.n2=keep;}d.n=d.n.filter(n=>n.id!==drop);nodes.delete(drop);}
+ const oldNodes=new Map(input.n.map(n=>[n.id,n]));for(const q of d.s.filter(q=>q.tip==='veranda')){const p=nodes.get(q.n1),r=nodes.get(q.n2);axis(p,r);if(Math.hypot(p.x-r.x,p.y-r.y)<EPS)throw Error('Bu ölçü bir veranda kenarını sıfırlıyor.');const before=input.s.find(x=>x.id===q.id);if(before&&affected.has(q.id)){const u=oldNodes.get(before.n1),v=oldNodes.get(before.n2),qa=axis(u,v);if((v[qa]-u[qa])*(r[qa]-p[qa])<=0)throw Error('Bu ölçü veranda kenarını ters çeviriyor.');}}
+  function intersects(p,q,r,t){const ux=q.x-p.x,uy=q.y-p.y,vx=t.x-r.x,vy=t.y-r.y,den=ux*vy-uy*vx,dx=r.x-p.x,dy=r.y-p.y;if(Math.abs(den)>EPS){const a=(dx*vy-dy*vx)/den,b=(dx*uy-dy*ux)/den;return a>=-EPS&&a<=1+EPS&&b>=-EPS&&b<=1+EPS;}if(Math.abs(dx*uy-dy*ux)>EPS)return false;const k=Math.abs(ux)>Math.abs(uy)?'x':'y';return Math.min(Math.max(p[k],q[k]),Math.max(r[k],t[k]))-Math.max(Math.min(p[k],q[k]),Math.min(r[k],t[k]))>EPS;}
+  for(let i=0;i<d.s.length;i++)for(let j=i+1;j<d.s.length;j++){const u=d.s[i],v=d.s[j];if(!affected.has(u.id)&&!affected.has(v.id))continue;const p=nodes.get(u.n1),q=nodes.get(u.n2),r=nodes.get(v.n1),t=nodes.get(v.n2);if(!intersects(p,q,r,t))continue;const common=[u.n1,u.n2].some(n=>n===v.n1||n===v.n2);const cross=(q.x-p.x)*(t.y-r.y)-(q.y-p.y)*(t.x-r.x);if(common&&Math.abs(cross)>EPS)continue;throw Error('Yeni sınır bir duvar veya veranda kenarıyla çakışıyor. Diğer sabit tarafı ya da farklı ölçüyü seçin.');}
+  if(Math.abs(measure(d,id)-value)>.01)throw Error('Net ölçü korunamadı; işlem uygulanmadı.');
+  return {state:d,steps};
+ }
+ return {measure,resize};
+});
+
+</script><script>
+(function(){
+ const $=id=>document.getElementById(id);let target=null;
+ const dialog=document.createElement('dialog');dialog.id='verandaMeasureDialog';dialog.style.cssText='background:#192334;color:#d6e6ef;border:1px solid #40566b;border-radius:12px;padding:24px;width:390px';
+ dialog.innerHTML='<form><h3>Veranda net ölçüsü</h3><label>Yeni net ölçü · cm<input id="verandaNet" type="number" min="1" max="100000" step="any" required></label><label>Sabit kalacak taraf<select id="verandaFixed"></select></label><p id="verandaPreview"></p><p>Bağlı dik kenarlar birlikte taşınır. Ev duvarları korunur. Ev bağlantısında gerekirse dik bir kademe eklenir.</p><button id="verandaApply" class="sib" type="submit">Ölçüyü uygula</button><button id="verandaCancel" class="sib" type="button">İptal</button></form>';
+ document.body.append(dialog);dialog.querySelectorAll('input,select').forEach(el=>el.style.cssText='display:block;box-sizing:border-box;width:100%;padding:9px;margin:8px 0 16px;background:#101b29;color:#d6e6ef');
+ function preview(){try{const r=VerandaCore.resize(Studio.state(),target,+$('verandaNet').value,$('verandaFixed').value);$('verandaPreview').textContent=r.steps?r.steps+' ev bağlantısında dik kademe oluşacak. Ev duvarları taşınmaz.':'Bağlı veranda kenarları güncellenecek. Ev duvarları taşınmaz.';$('verandaApply').disabled=false;}catch(e){$('verandaPreview').textContent=e.message;$('verandaApply').disabled=true;}}
+ function open(s){if(!s||s.tip!=='veranda')return;try{target=s.id;const d=Studio.state(),a=getNode(s.n1),b=getNode(s.n2),horizontal=Math.abs(a.y-b.y)<.001;const start=horizontal?(a.x<b.x?'Sol uç':'Sağ uç'):(a.y<b.y?'Üst uç':'Alt uç'),end=horizontal?(a.x<b.x?'Sağ uç':'Sol uç'):(a.y<b.y?'Alt uç':'Üst uç');$('verandaNet').value=+VerandaCore.measure(d,s.id).toFixed(4);$('verandaFixed').replaceChildren();for(const [value,label] of [['start',start+' sabit'],['end',end+' sabit'],['center','Merkez sabit']]){const o=document.createElement('option');o.value=value;o.textContent=label;$('verandaFixed').append(o);}const locked=id=>G.segs.some(q=>q.tip!=='veranda'&&(q.n1===id||q.n2===id));$('verandaFixed').value=locked(s.n2)&&!locked(s.n1)?'end':'start';preview();dialog.showModal();$('verandaNet').focus();$('verandaNet').select();}catch(e){Studio.toast(e.message,true);}}
+ $('verandaNet').oninput=preview;$('verandaFixed').onchange=preview;$('verandaCancel').onclick=()=>dialog.close();
+ function apply(id,value,fixed){let result;try{result=VerandaCore.resize(Studio.state(),id,value,fixed);}catch(e){Studio.toast(e.message,true);return false;}const ok=Studio.edit(()=>{G.nodes=result.state.n;G.segs=result.state.s;});if(ok)Studio.toast('Veranda net ölçüsü güncellendi.'+(result.steps?' Ev bağlantısında dik kademe eklendi.':''));return ok;}
+ dialog.querySelector('form').onsubmit=e=>{e.preventDefault();if(apply(target,+$('verandaNet').value,$('verandaFixed').value))dialog.close();else preview();};
+ const base=updateSidebar;window.updateSidebar=function(){base();const s=G.secili;if(!s||s.tip!=='veranda'||!['seg','dim'].includes(G.seciliTip))return;const box=$('sbSelIc');if(G.seciliTip==='seg')box.querySelector('.sr')?.remove();const row=document.createElement('div');row.className='sr';try{row.textContent='Net uzunluk: '+fmtCm(VerandaCore.measure(Studio.state(),s.id))+' cm';}catch{row.textContent='Eğik veranda sınırı';}const button=document.createElement('button');button.id='verandaEditMeasure';button.className='sib';button.textContent='Net ölçüyü düzenle';button.onclick=()=>open(s);box.prepend(row,button);};
+ const resize=resizeSeg;window.resizeSeg=function(value){if(G.secili?.tip==='veranda')open(G.secili);else resize(value);};
+ window.addEventListener('dblclick',e=>{if(e.target!==cv||G.tool!=='sec')return;const r=cv.getBoundingClientRect(),h=hitDim(e.clientX-r.left,e.clientY-r.top),s=h&&getSeg(h.segId);if(s?.tip==='veranda'){e.preventDefault();e.stopImmediatePropagation();open(s);}},true);
+ window.VerandaEditor={open,apply};
 })();
 
 </script></body></html>

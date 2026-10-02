@@ -63,3 +63,9 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 - Kullanıcı 1690/Profilden örneğinin 1660 panel kabul edilmesini ve serbest text komutu eklenmesini istedi. Üretim karar kayıtları güncellendi; kaynak çizimler korunuyor.
 - DEV-013 tamamlandı: bağımsız annotations verisi, eski kayıtlarla uyumlu şema, metin ekleme/düzenleme/taşıma/silme, boyut/açı, JSON/yerel yedek/geri alma ve PNG sınırları. Uygulama5.9.20; imalat sayıları değişmez.
 - tests/text-notes.cjs gerçek tıklama/sürükleme/düzenleme, JSON tekrar açma, PNG, geri/ileri alma, silme ve şema doğrulamasını geçti. Temel31/31 ve prefab77/77 başarılı. Canlı kullanıcı sayfası yenilenmedi ve çizimi değiştirilmedi. DEV-012/006/011 açık.
+
+## 2 Ekim 2026 — Ev bilgisayarı — 5.9.21 veranda ölçüsü
+
+- Kullanıcı mevcut verandanın her projede değişen net derinlik/genişliğinin ev duvarları korunarak düzenlenmesini onayladı. DEV-014 tamamlandı: ayrı veranda-core ve veranda-ui; net ölçü, sabit taraf, bağlı dik kenar hareketi, ev bağlantısında bildirilen kademe, çakışma/reversal koruması. Kademe gerekmez hale gelince kaldırılır.
+- Eski aks uzunluğu alanı veranda için net ölçü komutuyla değiştirildi; ölçü çizgisine çift tık açar. İşlem tek geri alma adımıdır. Mevcut DWG/JSON referansları ve canlı plan değiştirilmedi.
+- Yeni veranda testi geçti (69,5/507 örnekleri, merkez, tekrar boyutlandırma, duvar/kapı/oda korunması, UI, JSON). Temel31/31, prefab77/77 ve metin testleri başarılı; build üretildi. Sürüm5.9.21. Eğik veranda, direk/kiriş ve çatı otomasyonu bu işin dışında; DEV-012/006/011 açık.
