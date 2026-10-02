@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.19
+# Prefabrikten Plan Studio · 5.9.20
+
+5.9.20: Metin (T) komutu ile çok satırlı plan notu ekleme, boyut/açı seçimi, sürükleyerek taşıma, çift tıkla düzenleme ve silme. Metinler JSON, yerel kurtarma, geri/ileri alma ve PNG çıktısında korunur; imalat metrajına katılmaz.
 
 5.9.19: Drawing1.dwg referansındaki 52,75 / 71,375 / 102,75 / 166 cm yerleşimler için 520 / 710 / 1020 / 1660 mm kesim eşlemeleri eklendi. Genel sabit pay çıkarma kuralı uygulanmaz. İş JSON'u ile ölçülü karşılaştırma ve orijinalleri değiştirmeyen ayrı kontrol taslağı hazırlandı: [karşılaştırma raporu](analizler/2026-10-02-tuna84-karsilastirma.md). Bu teslim bir üretim onayı değildir; makas/H mesnet, ürün listesi, kapı boşluğu ve çatı/tesisat ayrıntıları raporda açık tutulur. Mevcut kullanıcı çizimleri kendiliğinden dönüştürülmez.
 

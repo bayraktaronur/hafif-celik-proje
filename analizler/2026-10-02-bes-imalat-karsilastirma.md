@@ -101,3 +101,7 @@ Proje kökünde `tools/extract-manufacturing-dwgs.ps1` kaynak hash'lerini kontro
 ## Kullanıcı düzeltmesi — 2 Ekim 2026
 
 42,5 cm H payı dâhil doğru yerleşim ölçüsüdür; imalat kesimi 42 cm / 420 mm olmalıdır. VP 537 içindeki 415 yazısı tamamen yazım hatasıdır. Bu karar kullanıcı açıklamasıyla kesinleşti; kaynak DWG korunarak raporda düzeltildi. Katalog uygulaması sonraki sürüm işidir.
+
+## Kullanıcı kararı — 1690 / Profilden
+
+Kullanıcı bu panonun 1660 mm panel olarak değerlendirilmesini istedi. Önceki 1690/Profilden belirsizliği kapandı; ayrı ürün ailesi sonucu çıkarılmayacak. Kaynak geometrisi ve yazısı tarihsel kanıt olarak korunur, mevcut planlar otomatik daraltılmaz. Profilden gibi açıklamalar için bağımsız Metin komutu istendi; 5.9.20 bu komutu sağlar.

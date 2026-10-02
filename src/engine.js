@@ -4063,9 +4063,9 @@ function dosyaYukle(ev){
 // Ekran görüntüsü değil: planı ayrı bir tuvale açık "kağıt" temasıyla yeniden çizer.
 // Grid, düğüm noktaları, seçim/tutamaçlar yok; plan sığdırılır, 2x çözünürlük, alt bilgi bandı.
 function pngIndir(){
-  if(!G.nodes.length||!G.segs.length){alert('Önce plan çizin.');return;}
+  if(!G.segs.length&&!(G.annotations||[]).length){alert('Önce plan çizin.');return;}
   var minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-  G.nodes.forEach(function(n){minX=Math.min(minX,n.x);minY=Math.min(minY,n.y);maxX=Math.max(maxX,n.x);maxY=Math.max(maxY,n.y);});
+  G.nodes.concat(window.TextNotes?TextNotes.bounds():[]).forEach(function(n){minX=Math.min(minX,n.x);minY=Math.min(minY,n.y);maxX=Math.max(maxX,n.x);maxY=Math.max(maxY,n.y);});
   var wCm=Math.max(1,maxX-minX),hCm=Math.max(1,maxY-minY);
   var M=110,FOOT=86,TARGET=1600,R=2;
   var s=Math.min((TARGET-2*M)/wCm,(TARGET-2*M)/hCm,2.2);

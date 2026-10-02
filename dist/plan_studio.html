@@ -629,15 +629,16 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
     const d=JSON.parse(JSON.stringify(input));
     if(d.sistem&&!['celik','prefabrik'].includes(d.sistem))fail('Bilinmeyen yapı sistemi.');
     d.sistem=d.sistem||'celik';
-    for(const k of ['n','s','e','r','fixtures','counters']){
+    for(const k of ['n','s','e','r','fixtures','counters','annotations']){
       if(d[k]===undefined)d[k]=[];
       if(!Array.isArray(d[k])||d[k].length>20000)fail('Geçersiz veya aşırı büyük nesne listesi: '+k);
     }
     const all=new Set();
-    for(const o of [...d.n,...d.s,...d.e,...d.r,...d.fixtures,...d.counters]){
+    for(const o of [...d.n,...d.s,...d.e,...d.r,...d.fixtures,...d.counters,...d.annotations]){
       if(!o||typeof o!=='object'||typeof o.id!=='string'||!/^[-a-zA-Z0-9_]{1,80}$/.test(o.id))fail('Geçersiz nesne kimliği.');
       if(all.has(o.id))fail('Tekrarlanan nesne kimliği: '+o.id);all.add(o.id);
     }
+    for(const a of d.annotations){if(typeof a.text!=='string'||!a.text.trim()||a.text.length>1000||!finite(a.x,-1e7,1e7)||!finite(a.y,-1e7,1e7)||!finite(a.size,2,100)||!finite(a.angle,0,359))fail('Metin içeriği, boyutu veya konumu geçersiz.');}
     const nodes=new Map(d.n.map(n=>[n.id,n])),segs=new Map(d.s.map(s=>[s.id,s]));
     for(const n of d.n)if(!finite(n.x,-10000000,10000000)||!finite(n.y,-10000000,10000000))fail('Geçersiz düğüm koordinatı: '+n.id);
     for(const s of d.s){
@@ -4810,9 +4811,9 @@ function dosyaYukle(ev){
 // Ekran görüntüsü değil: planı ayrı bir tuvale açık "kağıt" temasıyla yeniden çizer.
 // Grid, düğüm noktaları, seçim/tutamaçlar yok; plan sığdırılır, 2x çözünürlük, alt bilgi bandı.
 function pngIndir(){
-  if(!G.nodes.length||!G.segs.length){alert('Önce plan çizin.');return;}
+  if(!G.segs.length&&!(G.annotations||[]).length){alert('Önce plan çizin.');return;}
   var minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-  G.nodes.forEach(function(n){minX=Math.min(minX,n.x);minY=Math.min(minY,n.y);maxX=Math.max(maxX,n.x);maxY=Math.max(maxY,n.y);});
+  G.nodes.concat(window.TextNotes?TextNotes.bounds():[]).forEach(function(n){minX=Math.min(minX,n.x);minY=Math.min(minY,n.y);maxX=Math.max(maxX,n.x);maxY=Math.max(maxY,n.y);});
   var wCm=Math.max(1,maxX-minX),hCm=Math.max(1,maxY-minY);
   var M=110,FOOT=86,TARGET=1600,R=2;
   var s=Math.min((TARGET-2*M)/wCm,(TARGET-2*M)/hCm,2.2);
@@ -4957,15 +4958,15 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.19',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
-      n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
+    return {v:'5',revision:'5.9.20',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+      n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
   }
   function snapshot(){return JSON.stringify(state());}
   function resetInteraction(){
     G.selPanels=[];G.panelAnchor=null;
-    if(window.Fixtures)Fixtures.cancel();if(window.Kitchen)Kitchen.cancel();
+    if(window.TextNotes)TextNotes.cancel();if(window.Fixtures)Fixtures.cancel();if(window.Kitchen)Kitchen.cancel();
     delete G.drawRejectReason;
     G.drawing=false;G.drawChain=false;G.drawStart=null;G.drawPreviewPt=null;G.numBuf='';G.dragging=false;G.dragNodeId=null;G.dragMidSeg=null;G.dragMidMode=null;G.dragEleman=null;G.wallDrag=null;G.dimDrag=null;G.lblDrag=null;G.panning=false;G.snapPt=null;G.snapNodeId=null;G.secili=null;G.seciliTip=null;G.seciliDimRow=null;G.selSegs=[];G.shiftLock=false;G.altKey=false;G.lockAxis=null;
     $('lockInd').style.display='none';$('shiftLbl').textContent='';
@@ -4977,7 +4978,7 @@ updateStatus();
     restoring=true;
     try{
       resetInteraction();
-      G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
+      G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
@@ -5024,12 +5025,12 @@ updateStatus();
       if(file.size>12*1024*1024)throw Error('Dosya 12 MB sınırını aşıyor.');
       if(!/\.json$/i.test(file.name))throw Error('Bu sürüm JSON proje dosyası açar.');
       const valid=PlanProject.validate(JSON.parse(await file.text()));
-      if(G.segs.length&&snapshot()!==fileSnapshot&&!confirm('Açılan dosya mevcut çalışmanın yerini alacak. Devam edilsin mi?'))return;
+      if((G.segs.length||(G.annotations||[]).length)&&snapshot()!==fileSnapshot&&!confirm('Açılan dosya mevcut çalışmanın yerini alacak. Devam edilsin mi?'))return;
       loadProject(valid);toast('Proje açıldı. Geometrik uyarıları Plan kontrolü bölümünde görebilirsiniz.');
     }catch(e){toast('Dosya açılamadı: '+e.message,true);}
   };
   window.yeniPlan=function(){
-    if(G.segs.length&&!confirm('Yeni proje açılsın mı? İndirmediğiniz çalışmayı önce Kaydet ile saklayabilirsiniz.'))return;
+    if((G.segs.length||(G.annotations||[]).length)&&!confirm('Yeni proje açılsın mı? İndirmediğiniz çalışmayı önce Kaydet ile saklayabilirsiniz.'))return;
     const sistem=G.sistem;
     apply({n:[],s:[],e:[],r:[],opt:clone(PlanProject.DEFAULT_OPTIONS),sistem,catiYon:'yatay',projectName:'Yeni proje',ky:280,dy:320,fire:10,settings:{}});
     G.hist=[];future=[];G.zoom=1;G.pan={x:100,y:80};fileSnapshot='';storageReady=true;$('recoveryBanner').hidden=true;draw();schedule();
@@ -5043,7 +5044,7 @@ updateStatus();
     try{
       pushH();mutate();if(geometry)normalizeGraph();detectRooms();
       const errors=newErrors(before,state());if(errors.length)throw Error(errors[0].message);
-      if(selected){G.secili=({node:G.nodes,seg:G.segs,eleman:G.elemanlar,room:G.rooms,fixture:G.fixtures,counter:G.counters,dim:G.segs}[selectedType]||[]).find(o=>o.id===selected)||null;G.seciliTip=G.secili?selectedType:null;}
+      if(selected){G.secili=({node:G.nodes,seg:G.segs,eleman:G.elemanlar,room:G.rooms,annotation:G.annotations,fixture:G.fixtures,counter:G.counters,dim:G.segs}[selectedType]||[]).find(o=>o.id===selected)||null;G.seciliTip=G.secili?selectedType:null;}
       updateSidebar();draw();return true;
     }catch(e){apply(before);G.hist=h;future=f;toast(e.message,true);return false;}
   }
@@ -5169,8 +5170,9 @@ updateStatus();
     for(let y=((G.pan.y%major)+major)%major;y<H;y+=major){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
   };
   function fit(){
-    if(!G.nodes.length){G.zoom=1;G.pan={x:100,y:80};draw();return;}
-    const xs=G.nodes.map(n=>n.x),ys=G.nodes.map(n=>n.y),minX=Math.min(...xs),minY=Math.min(...ys),w=Math.max(100,Math.max(...xs)-minX),h=Math.max(100,Math.max(...ys)-minY);
+    const points=G.nodes.concat(window.TextNotes?TextNotes.bounds():[]);
+    if(!points.length){G.zoom=1;G.pan={x:100,y:80};draw();return;}
+    const xs=points.map(n=>n.x),ys=points.map(n=>n.y),minX=Math.min(...xs),minY=Math.min(...ys),w=Math.max(100,Math.max(...xs)-minX),h=Math.max(100,Math.max(...ys)-minY);
     G.zoom=Math.max(.1,Math.min(5,Math.min((cwrap.clientWidth-180)/w,(cwrap.clientHeight-180)/h)/G.scale));
     G.pan={x:(cwrap.clientWidth-w*sc())/2-minX*sc(),y:(cwrap.clientHeight-h*sc())/2-minY*sc()};draw();
   }
@@ -5804,7 +5806,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.19';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.20';syncUI();draw();
 })();
 
 </script><script>
@@ -6909,6 +6911,41 @@ window.OpeningCatalog=(function(){
  const sidebar=updateSidebar;window.updateSidebar=function(){sidebar();if(G.seciliTip==='fixture'&&G.secili){const f=G.secili,b=document.createElement('button');b.className='sib';b.id='furnitureLock';b.textContent=f.locked?'🔒 Yer kilidini aç':'Yerini kilitle';b.onclick=()=>Studio.edit(()=>f.locked=!f.locked);$('sbSelIc').append(b);}};
  const roomOpen=window.openOdaModal;window.openOdaModal=function(room){roomOpen(room);let b=$('roomAutoFurniture');if(!b){b=document.createElement('button');b.id='roomAutoFurniture';b.className='sib';$('mbgOda').querySelector('.modal').append(b);}b.textContent='Bu odaya otomatik tefriş öner';b.disabled=['banyo','ebanyo','wc'].includes(room.tip);b.onclick=()=>{$('mbgOda').classList.remove('open');openAuto(room);};};
  window.FurnitureUI={openAuto,cancel:()=>{auto.close();menu.close();clear();}};
+})();
+
+</script><script>
+/* Plan annotations are independent objects, never manufacturing quantities. */
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);let draft=null,ghost=null,moving=null,editId=null;
+ G.annotations=G.annotations||[];
+ const button=document.createElement('button');button.id='t-text';button.className='t';button.textContent='T Metin';button.title='Metin ekle · T';button.onclick=()=>open();document.querySelector('.tool-group').append(button);
+ const dialog=document.createElement('dialog');dialog.id='textDialog';dialog.style.cssText='background:#192334;color:#d6e6ef;border:1px solid #40566b;border-radius:12px;padding:24px;width:360px;max-height:90vh;overflow:auto';
+ dialog.innerHTML='<form><h3>Plan metni</h3><label>Metin<textarea id="noteText" maxlength="1000" rows="4" required placeholder="Örn. Profilden / Montaj notu"></textarea></label><label>Yazı boyutu · cm<input id="noteSize" type="number" min="2" max="100" value="12" required></label><label>Açı · derece<input id="noteAngle" type="number" min="0" max="359" value="0" required></label><p>Plana tıklayarak yerleştirin. Çift tık: düzenle · Sürükle: taşı · Delete: sil.</p><button class="sib" type="submit" id="noteSubmit">Yerleştir</button><button class="sib" type="button" id="noteCancel">İptal</button></form>';
+ document.body.append(dialog);dialog.querySelectorAll('input,textarea').forEach(el=>el.style.cssText='display:block;box-sizing:border-box;width:100%;margin:6px 0 12px;padding:9px;background:#101b29;color:#d6e6ef;border:1px solid #40566b;border-radius:5px');
+ const stop=e=>{e.preventDefault();e.stopImmediatePropagation();};
+ function cancel(){draft=ghost=moving=null;editId=null;if(dialog.open)dialog.close();}
+ function open(a){cancel();setTool('sec');editId=a?.id||null;$('noteText').value=a?.text||'';$('noteSize').value=a?.size||12;$('noteAngle').value=a?.angle||0;$('noteSubmit').textContent=a?'Uygula':'Yerleştir';dialog.showModal();$('noteText').focus();}
+ $('noteCancel').onclick=()=>dialog.close();
+ dialog.querySelector('form').onsubmit=e=>{e.preventDefault();const values={text:$('noteText').value.trim(),size:+$('noteSize').value,angle:+$('noteAngle').value};if(!values.text)return;if(editId){const id=editId;Studio.edit(()=>Object.assign(G.annotations.find(a=>a.id===id),values));dialog.close();return;}dialog.close();setTool('text');draft=values;Studio.toast('Metni yerleştirmek için plana tıklayın. Esc: iptal.');cv.focus();};
+ function point(e){const r=cv.getBoundingClientRect();return toCm(e.clientX-r.left,e.clientY-r.top);}
+ function dimensions(a){ctx.save();ctx.font=a.size+'px sans-serif';const width=Math.max(...a.text.split('\n').map(t=>ctx.measureText(t).width));ctx.restore();return {w:width,h:a.text.split('\n').length*a.size*1.25};}
+ function corners(a){const {w,h}=dimensions(a),t=a.angle*Math.PI/180;return [[0,0],[w,0],[w,h],[0,h]].map(([x,y])=>({x:a.x+x*Math.cos(t)-y*Math.sin(t),y:a.y+x*Math.sin(t)+y*Math.cos(t)}));}
+ function hit(p){return [...G.annotations].reverse().find(a=>{const t=-a.angle*Math.PI/180,dx=p.x-a.x,dy=p.y-a.y,x=dx*Math.cos(t)-dy*Math.sin(t),y=dx*Math.sin(t)+dy*Math.cos(t),b=dimensions(a),pad=4/sc();return x>=-pad&&y>=-pad&&x<=b.w+pad&&y<=b.h+pad;});}
+ function select(a){G.secili=a;G.seciliTip='annotation';G.selSegs=[];G.selPanels=[];updateSidebar();draw();}
+ function remove(){if(G.seciliTip!=='annotation')return;const id=G.secili.id;Studio.edit(()=>{G.annotations=G.annotations.filter(a=>a.id!==id);G.secili=null;G.seciliTip=null;});}
+ const baseDelete=seciliSil;window.seciliSil=function(){if(G.seciliTip==='annotation')remove();else baseDelete();};
+ const baseSidebar=updateSidebar;window.updateSidebar=function(){baseSidebar();if(G.seciliTip!=='annotation'||!G.secili)return;const box=$('sbSelIc');box.replaceChildren();const label=document.createElement('p');label.textContent=G.secili.text;box.append(label);for(const [name,action] of [['Metni düzenle',()=>open(G.secili)],['Sil',remove]]){const b=document.createElement('button');b.className='sib';b.textContent=name;b.onclick=action;box.append(b);}};
+ const baseTool=setTool;window.setTool=function(t){if(t!=='text')draft=ghost=moving=null;baseTool(t);button.classList.toggle('on',t==='text');};
+ function paint(a,selected){const p=toCv(a.x,a.y),b=dimensions(a);ctx.save();ctx.translate(p.x,p.y);ctx.rotate(a.angle*Math.PI/180);ctx.font=(a.size*sc())+'px sans-serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=selected?'#ffd469':TH.wall;a.text.split('\n').forEach((line,i)=>ctx.fillText(line,0,i*a.size*1.25*sc()));if(selected){ctx.strokeStyle='#ffd469';ctx.setLineDash([4,3]);ctx.strokeRect(-3,-3,b.w*sc()+6,b.h*sc()+6);}ctx.restore();}
+ const baseDraw=drawElemanlar;window.drawElemanlar=function(){baseDraw();G.annotations.forEach(a=>paint(a,!TH.export&&G.seciliTip==='annotation'&&G.secili?.id===a.id));if(!TH.export&&ghost){ctx.save();ctx.globalAlpha=.6;paint(ghost,true);ctx.restore();}};
+ window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;const p=point(e);if(G.tool==='text'&&draft){stop(e);const a={...draft,id:'note-'+crypto.randomUUID(),x:Math.round(p.x),y:Math.round(p.y)};if(Studio.edit(()=>G.annotations.push(a))){setTool('sec');select(a);}return;}if(G.tool==='sec'){const a=hit(p);if(a){stop(e);select(a);moving={id:a.id,start:p,x:a.x,y:a.y};cv.focus();}}},true);
+ window.addEventListener('mousemove',e=>{if(draft&&e.target===cv){ghost={...draft,...point(e)};draw();}if(moving){const a=G.annotations.find(a=>a.id===moving.id);if(!a){moving=null;return;}const p=point(e);ghost={...a,x:Math.round(moving.x+p.x-moving.start.x),y:Math.round(moving.y+p.y-moving.start.y)};draw();}},true);
+ window.addEventListener('mouseup',e=>{if(!moving||e.button!==0)return;stop(e);const m=moving,p=ghost;moving=ghost=null;if(p&&(p.x!==m.x||p.y!==m.y))Studio.edit(()=>{const a=G.annotations.find(a=>a.id===m.id);a.x=p.x;a.y=p.y;});draw();},true);
+ window.addEventListener('dblclick',e=>{if(e.target!==cv||G.tool!=='sec')return;const a=hit(point(e));if(a){stop(e);open(a);}},true);
+ window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||document.querySelector('dialog[open]'))return;if(e.key==='Escape'&&(draft||moving)){stop(e);cancel();setTool('sec');}else if(e.key==='Delete'&&G.seciliTip==='annotation'){stop(e);remove();}else if(e.key.toLowerCase()==='t'&&!e.ctrlKey&&!e.altKey&&!e.metaKey){stop(e);open();}},true);
+ window.addEventListener('blur',()=>{moving=ghost=null;draw();});
+ window.TextNotes={open,cancel,bounds:()=>G.annotations.flatMap(corners)};
 })();
 
 </script></body></html>

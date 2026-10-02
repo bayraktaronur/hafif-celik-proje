@@ -11,15 +11,15 @@
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.19',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
-      n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
+    return {v:'5',revision:'5.9.20',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+      n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
   }
   function snapshot(){return JSON.stringify(state());}
   function resetInteraction(){
     G.selPanels=[];G.panelAnchor=null;
-    if(window.Fixtures)Fixtures.cancel();if(window.Kitchen)Kitchen.cancel();
+    if(window.TextNotes)TextNotes.cancel();if(window.Fixtures)Fixtures.cancel();if(window.Kitchen)Kitchen.cancel();
     delete G.drawRejectReason;
     G.drawing=false;G.drawChain=false;G.drawStart=null;G.drawPreviewPt=null;G.numBuf='';G.dragging=false;G.dragNodeId=null;G.dragMidSeg=null;G.dragMidMode=null;G.dragEleman=null;G.wallDrag=null;G.dimDrag=null;G.lblDrag=null;G.panning=false;G.snapPt=null;G.snapNodeId=null;G.secili=null;G.seciliTip=null;G.seciliDimRow=null;G.selSegs=[];G.shiftLock=false;G.altKey=false;G.lockAxis=null;
     $('lockInd').style.display='none';$('shiftLbl').textContent='';
@@ -31,7 +31,7 @@
     restoring=true;
     try{
       resetInteraction();
-      G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
+      G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
@@ -78,12 +78,12 @@
       if(file.size>12*1024*1024)throw Error('Dosya 12 MB sınırını aşıyor.');
       if(!/\.json$/i.test(file.name))throw Error('Bu sürüm JSON proje dosyası açar.');
       const valid=PlanProject.validate(JSON.parse(await file.text()));
-      if(G.segs.length&&snapshot()!==fileSnapshot&&!confirm('Açılan dosya mevcut çalışmanın yerini alacak. Devam edilsin mi?'))return;
+      if((G.segs.length||(G.annotations||[]).length)&&snapshot()!==fileSnapshot&&!confirm('Açılan dosya mevcut çalışmanın yerini alacak. Devam edilsin mi?'))return;
       loadProject(valid);toast('Proje açıldı. Geometrik uyarıları Plan kontrolü bölümünde görebilirsiniz.');
     }catch(e){toast('Dosya açılamadı: '+e.message,true);}
   };
   window.yeniPlan=function(){
-    if(G.segs.length&&!confirm('Yeni proje açılsın mı? İndirmediğiniz çalışmayı önce Kaydet ile saklayabilirsiniz.'))return;
+    if((G.segs.length||(G.annotations||[]).length)&&!confirm('Yeni proje açılsın mı? İndirmediğiniz çalışmayı önce Kaydet ile saklayabilirsiniz.'))return;
     const sistem=G.sistem;
     apply({n:[],s:[],e:[],r:[],opt:clone(PlanProject.DEFAULT_OPTIONS),sistem,catiYon:'yatay',projectName:'Yeni proje',ky:280,dy:320,fire:10,settings:{}});
     G.hist=[];future=[];G.zoom=1;G.pan={x:100,y:80};fileSnapshot='';storageReady=true;$('recoveryBanner').hidden=true;draw();schedule();
@@ -97,7 +97,7 @@
     try{
       pushH();mutate();if(geometry)normalizeGraph();detectRooms();
       const errors=newErrors(before,state());if(errors.length)throw Error(errors[0].message);
-      if(selected){G.secili=({node:G.nodes,seg:G.segs,eleman:G.elemanlar,room:G.rooms,fixture:G.fixtures,counter:G.counters,dim:G.segs}[selectedType]||[]).find(o=>o.id===selected)||null;G.seciliTip=G.secili?selectedType:null;}
+      if(selected){G.secili=({node:G.nodes,seg:G.segs,eleman:G.elemanlar,room:G.rooms,annotation:G.annotations,fixture:G.fixtures,counter:G.counters,dim:G.segs}[selectedType]||[]).find(o=>o.id===selected)||null;G.seciliTip=G.secili?selectedType:null;}
       updateSidebar();draw();return true;
     }catch(e){apply(before);G.hist=h;future=f;toast(e.message,true);return false;}
   }
@@ -223,8 +223,9 @@
     for(let y=((G.pan.y%major)+major)%major;y<H;y+=major){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
   };
   function fit(){
-    if(!G.nodes.length){G.zoom=1;G.pan={x:100,y:80};draw();return;}
-    const xs=G.nodes.map(n=>n.x),ys=G.nodes.map(n=>n.y),minX=Math.min(...xs),minY=Math.min(...ys),w=Math.max(100,Math.max(...xs)-minX),h=Math.max(100,Math.max(...ys)-minY);
+    const points=G.nodes.concat(window.TextNotes?TextNotes.bounds():[]);
+    if(!points.length){G.zoom=1;G.pan={x:100,y:80};draw();return;}
+    const xs=points.map(n=>n.x),ys=points.map(n=>n.y),minX=Math.min(...xs),minY=Math.min(...ys),w=Math.max(100,Math.max(...xs)-minX),h=Math.max(100,Math.max(...ys)-minY);
     G.zoom=Math.max(.1,Math.min(5,Math.min((cwrap.clientWidth-180)/w,(cwrap.clientHeight-180)/h)/G.scale));
     G.pan={x:(cwrap.clientWidth-w*sc())/2-minX*sc(),y:(cwrap.clientHeight-h*sc())/2-minY*sc()};draw();
   }

@@ -57,3 +57,9 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 - Kullanıcıya415/420 ile Profilden169/166 farkı soruldu; henüz cevap kaydedilmedi. DEV-012 uygulama/katalog ve DEV-006/011 doğrulamaları açık. Kod davranışı/canlıplan değişmedi; sürüm5.9.19. Sonraki iş kaynaklı üretimkataloğu ve karşılaştırma planlarıdır.
 
 - Kullanıcı düzeltmesi: 42,5 cm H payı dâhil yerleşim, doğru kesim 420 mm; 415 tamamen yazım hatası. Bu belirsizlik kapandı. 169/Profilden açıklaması bekleniyor; üretim kataloğuna 42,5→420 uygulanacak. Kaynak DWG değiştirilmedi.
+
+## 2 Ekim 2026 — Ev bilgisayarı — 5.9.20 Metin komutu
+
+- Kullanıcı 1690/Profilden örneğinin 1660 panel kabul edilmesini ve serbest text komutu eklenmesini istedi. Üretim karar kayıtları güncellendi; kaynak çizimler korunuyor.
+- DEV-013 tamamlandı: bağımsız annotations verisi, eski kayıtlarla uyumlu şema, metin ekleme/düzenleme/taşıma/silme, boyut/açı, JSON/yerel yedek/geri alma ve PNG sınırları. Uygulama5.9.20; imalat sayıları değişmez.
+- tests/text-notes.cjs gerçek tıklama/sürükleme/düzenleme, JSON tekrar açma, PNG, geri/ileri alma, silme ve şema doğrulamasını geçti. Temel31/31 ve prefab77/77 başarılı. Canlı kullanıcı sayfası yenilenmedi ve çizimi değiştirilmedi. DEV-012/006/011 açık.

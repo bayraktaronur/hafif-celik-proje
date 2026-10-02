@@ -10,6 +10,14 @@
       "reason": "User confirmed source annotation typo",
       "source": "VP 537 - 166 m².dwg",
       "rawSourceUnchanged": true
+    },
+    {
+      "date": "2026-10-02",
+      "source": "VP 523-82 m².dwg",
+      "sourceAnnotationMm": 1690,
+      "effectivePanelMm": 1660,
+      "decision": "Kullanıcı 1660 panel olarak değerlendirilmesini istedi. Profilden notu ayrı üretim türü kabul edilmeyecek; serbest plan metni olarak yazılabilecek.",
+      "rawSourceUnchanged": true
     }
   ],
   "drawings": [
