@@ -1,0 +1,3 @@
+# Preserve drawing/reference bytes and SHA-256 across computer checkouts.
+cizimler/** -text
+referanslar/** -text
