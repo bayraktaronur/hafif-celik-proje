@@ -13,3 +13,11 @@ https://github.com/bayraktaronur/hafif-celik-proje
 - Tarayıcıda saklanan çizimler Git tarafından taşınmaz. Kullanıcı çizimlerini iki bilgisayarda açmak istediğinde uygulamanın dışa aktarma/kaydetme yöntemini kontrol et ve çizim dosyaları için ayrıca kayıt düzeni belirle.
 - Diğer bilgisayarda ilk kurulumu yaparken mevcut yedeği koru; depoyu ayrı bir klasöre klonla ve Codex'te o klasörü aç.
 - Görünüm kuralı: H panel ekleri, üçlü/dörtlü birleşimler, çektirme U ve köşe direklerini hiçbir sunum/filtrede gizleme. Müşteri sunumundaki kapı/pencere etiketleri en/yükseklik ölçüleridir (ör. 80/205); nesne adı değildir.
+
+## Sohbetler arasında devamlılık
+
+- Her çalışmanın başında Git kontrolünden sonra `DEVAM.md` dosyasını oku. Bu kayıt iki bilgisayarın ortak çalışma özetidir; erişilemeyen sohbetleri hatırlıyormuş gibi davranma.
+- Her anlamlı çalışma sonunda, kod değişmese bile, `DEVAM.md` içindeki son durum, alınan kararlar, açık işler, dosya/rapor yolları ve sıradaki adımı güncelle. İlgili raporlarla birlikte bağlı Git dalına gönder ve uzak commit'i doğrula. Yalnız belge değişikliklerinde uygulama sürümünü artırmak gerekmez.
+- Bir analiz istendiğinde sonucunu yalnız sohbette bırakma: `analizler/` altında kaynak dosya adı, kapsam, bulgular, belirsizlikler ve yapılacaklar içeren bir rapor tut; `DEVAM.md` içinden bağlantı ver. Kaynak bulunamadıysa analizi tamamlandı diye kaydetme.
+- İki bilgisayarda kullanılacak, kullanıcı tarafından bu proje için sağlanan çizimleri `referanslar/` altında; Plan Studio'nun Kaydet ile indirdiği, paylaşılacak müşteri planlarını `cizimler/` altında düzenle. Yalnız göreve ait dosyaları ekle; bilgisayardaki tüm müşteri dosyalarını topluca yükleme. Orijinalleri taşıma/silme, kopyala; büyük veya Git'e uygun olmayan dosyalar için ortak depolama konumunu kayda geçir.
+- Tarayıcı otomatik yedeği, sohbete eklenmiş dosya ve Git'e gönderilmiş dosya farklıdır. Paylaşım başarısını dosyanın ortak depoda bulunduğunu doğrulayarak bildir. Erişilemeyen iş bilgisayarı kayıtları için açık bir aktarım görevi bırak.
