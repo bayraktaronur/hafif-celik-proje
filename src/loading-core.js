@@ -12,7 +12,7 @@
  function fingerprint(s){let a=2166136261,b=5381;for(let i=0;i<s.length;i++){a=Math.imul(a^s.charCodeAt(i),16777619);b=Math.imul(b,33)^s.charCodeAt(i);}return (a>>>0).toString(16)+'-'+(b>>>0).toString(16);}
  function build(items,config){const c=validate(config),groups=new Map();
   for(const item of items){const key=JSON.stringify([item.group,item.name,item.size]);if(!groups.has(key))groups.set(key,{key,group:item.group,name:item.name,size:item.size,unit:'adet',calculated:0,sources:[],warning:item.warning});const r=groups.get(key);r.calculated++;r.sources.push(item.source);}
-  const rows=[...groups.values()].sort((a,b)=>(['Panel','Metal','Kapı / PVC'].indexOf(a.group)-['Panel','Metal','Kapı / PVC'].indexOf(b.group))||a.key.localeCompare(b.key,'tr'));for(const r of rows){r.basis=fingerprint(JSON.stringify(r.sources.slice().sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)))));const a=c.adjustments.find(a=>a.key===r.key);r.stale=!!a&&a.basis!==r.basis;const auto=r.sources.length&&r.sources.every(s=>s.hRule&&s.hRule.ear!==null);r.qty=a?(r.stale?null:a.qty):auto?r.calculated:null;r.reason=a?.reason||'';r.referenceId=a?a.referenceId:(r.sources[0]?.referenceId||'');r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':auto?'Otomatik H adedi':'Kural bekliyor';}
+  const rows=[...groups.values()].sort((a,b)=>(['Panel','Metal','Kapı / PVC'].indexOf(a.group)-['Panel','Metal','Kapı / PVC'].indexOf(b.group))||a.key.localeCompare(b.key,'tr'));for(const r of rows){r.basis=fingerprint(JSON.stringify(r.sources.slice().sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)))));const a=c.adjustments.find(a=>a.key===r.key);r.stale=!!a&&a.basis!==r.basis;const auto=r.sources.length&&r.sources.every(s=>(s.hRule&&s.hRule.ear!==null)||!!s.cornerRule);r.qty=a?(r.stale?null:a.qty):auto?r.calculated:null;r.reason=a?.reason||'';r.referenceId=a?a.referenceId:(r.sources[0]?.referenceId||'');r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':auto?(r.sources[0].cornerRule?'Otomatik köşe direği':'Otomatik H adedi'):'Kural bekliyor';}
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};
  }
@@ -24,5 +24,11 @@
    label:supported.length?(exterior?'Kulaklı · dübelli':'Kulaklı · dübelsiz'):(hits.length?'Makas mesnet kontrolü gerekli':outside?(exterior?'Kulaksız · dübelli':'Kulaksız · dübelsiz'):'Makas verisi bekleniyor'),
    matches:hits.map(m=>({no:m.no,axis:m.axis,pos:m.pos,a:m.a,b:m.b,zoneId:m.zoneId||'',supported:m.supported!==false}))};
  }
- return {validate,build,csv,fingerprint,classifyH};
+ function cornerProduct(k,height){
+  const side=String(k)==='10'?98:String(k)==='6'?58:null;
+  if(!side||!Number.isFinite(height)||height<=0)return null;
+  const length=Math.round(height*1000)/100;
+  return {rule:'corner-98-58-v1',nominalCm:Number(k),sideMm:side,heightMm:length,size:`${side} × ${side} × ${length} mm`,referenceId:side===98&&height===250?'tuna-22':''};
+ }
+ return {validate,build,csv,fingerprint,classifyH,cornerProduct};
 });

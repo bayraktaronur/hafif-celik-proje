@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.32
+# Prefabrikten Plan Studio · 5.9.33
+
+5.9.33: Çizimdeki10/6cm köşe direkleri yükleme ve Excel’de98×98/58×58mm kesit ve bina yüksekliği×10mm boy ile otomatik sayılır. Nominal çizim geometrisi korunur. Tuna8köşe direği Excel22satırıyla eşleşir.
 
 5.9.32: H kulak kuralı makas uç mesnedine bağlandı; arada üzerinden geçmesi yeterli değil. Otomatik H adetleri, uygun ölçülerde Tuna referans eşlemesi, isteğe bağlı plan K/KS/D/DS etiketleri ve gerçek XLSX indirme. Tuna altı H grubu Excel ile10/10/9/2/1/4 eşleşir. Özel ara mesnet ve profil/net boy ayrıca doğrulanmalıdır.
 

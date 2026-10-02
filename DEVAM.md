@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.32 H uç mesnet sınıflandırması, plan etiketi ve XLSX.
+Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.33 köşe direği 98/58 mm Excel eşlemesi.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -15,7 +15,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.32; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Aktarım: program 5.9.33; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Aktarım: program 5.9.32; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.32**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.33**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -211,3 +211,14 @@ H sınıfları tüm çizimlerde otomatik hesaplanır; yükleme listesindeki H ta
 Yükleme listesi → Planda H etiketleri (K/KS/D/DS); seçim JSON/geri alma/kurtarmada saklanır. H ve köşe sembolleri etiket kapatıldığında da kalır. Excel indir (.xlsx) tüm güncel listeyi yeni dosyada verir; özgün Tuna Excel dosyasını değiştirmez. CSV de korunur. XLSX sayılar sayısal, kullanıcı metinleri formül olarak yürütülmez. Profil kesiti/net boy ve diğer üretim kalemleri hâlâ kontrol gerektirir.
 
 Kontroller: loading-h.cjs iki yön/uç-orta ayrımı/mesnet ve veri belirsizliği, Tuna altı grup; loading-list.cjs otomatik adet, gerçek XLSX/CSV, etiket, kayıt/geri alma; verify-loading-xlsx.py bağımsız okuma; plan-export.cjs başarılı. Arayüz ve etiketler görsel incelendi. Canlı kullanıcı çizimi ve takip dışı JSON korunmuştur. Sıradaki iş kullanıcının yeni deneme çizimlerinde doğrulama; diğer açık işler devam eder.
+
+
+## 5.9.33 — Köşe direği ürün ölçüsü / DEV-023
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-023 | 10'luk/6'lık köşe direği Excel ürün eşlemesi | Tamamlandı: çizim nominal10/6cm korunur; yükleme ve XLSX/CSV98×98×bina yüksekliği(mm) /58×58×bina yüksekliği(mm). Adet otomatik. |
+
+Kullanıcı açık kuralı:10'luk köşe98×98,6'lık köşe58×58; boy sabit2500 değil bina yüksekliği(cm)×10. Tuna'da8 adet98×98×2500 ve Excel22satırı eşleşir. Farklı yükseklikte Tuna2500satırı zorla eşlenmez. Karma10/6 veya tanımsız kesit kural bekler; veranda serbest direğine ve H profiline bu kural uygulanmaz. Çektirme U3/4 farkı açık. Yükseklik değişince eski manuel düzeltme yeni ürün grubuna sessizce taşınmaz.
+
+Kontroller: tests/loading-corners.cjs10/6 nominal koruma,250/280/300cm boy,8Tuna adedi, tanımsız kesit ve eski düzeltme; loading-list, loading-h, verify-loading-xlsx başarılı. Gerçek indirilen XLSX'te98×98×2500,8adet,tuna-22 doğrulandı. Canlı plan ve kullanıcı JSON'u değiştirilmedi. Diğer açık işler devam eder.

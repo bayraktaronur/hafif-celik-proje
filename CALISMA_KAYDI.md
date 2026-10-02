@@ -161,3 +161,8 @@ Kullanıcı DWG/Excel ile tariflerinin ilişkilendirilmesini istedi. Drawing1 ç
 ## 3 Ekim 2026 — Ev PC — 5.9.32 / DEV-022
 
 Kullanıcı Tuna mesnet yorumunu onayladı. Uç mesnet sınıflandırması genelleştirildi, otomatik H adetleri ve uygun ölçülerde Tuna referans eşlemesi eklendi. İsteğe bağlı H K/KS/D/DS plan etiketleri, JSON kalıcılığı; gerçek XLSX indirme (kaynak Excel değişmez). Tuna altı satır10/10/9/2/1/4 eşleşti. loading-h, loading-list, verify-loading-xlsx ve plan-export kontrolleri başarılı; etiket görüntüsü incelendi. Özel ara mesnet, profil/net boy ve diğer üretim işleri açık; sonraki deneme çizimleriyle doğrulama kullanıcı tarafından planlandı. Canlı çizim ve takip dışı JSON korunmuştur. Sürüm5.9.32.
+
+
+## 3 Ekim 2026 — Ev PC — 5.9.33 / DEV-023
+
+Kullanıcı10'luk köşe direğinin98×98×bina yüksekliği(mm),6'lığın58×58×bina yüksekliği(mm) olarak Excel'e geçmesini istedi. Çizim nominal ölçüleri korunarak ürün eşlemesi ve otomatik adet eklendi. Tuna8adet98×98×2500 Excel22satırıyla eşleşti.6cm/300cm denemesinde58×58×3000 doğrulandı. Tanımsız/karma kesitler bekler; veranda direği/H/U bu kuralın kapsamı değil. loading-corners, loading-list, loading-h ve bağımsız XLSX okuma testleri başarılı. Canlı çizim ve takip dışı JSON korundu. U adet farkı ve diğer üretim işleri açık.
