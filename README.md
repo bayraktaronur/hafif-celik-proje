@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.34
+# Prefabrikten Plan Studio · 5.9.35
+
+5.9.35: Net kesimi bilinen dolu parçalar1250mm stok panolara kalınlık/yükseklik bazında sığdırılır. Çizim parça adedi ve sevk stok adedi ayrı; kesim/artık Excel ve CSV’de. Özel panel genişlikleri numaralar kapalıyken de görünür. Kapı/pencere reçeteleri, katalog dışı net kesimler ve testere payı ayrıca doğrulanmalıdır.
 
 5.9.34: Çektirme U60/100mm, bina yüksekliği−60mm boy; her ölçüde her başlayan5adede1yedek. Tuna3+1=4 adet60×2440mm. Kullanılan ve yedek miktarlar ayrı, sevk toplamı otomatik; XLSX/CSV yedek sütunu eklendi.
 

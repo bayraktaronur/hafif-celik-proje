@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.34 çektirme U ölçüsü ve yedek sevk hesabı.
+Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.35 dolu pano stok kesimi ve özel ölçü etiketleri.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -15,7 +15,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.34; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Aktarım: program 5.9.35; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Aktarım: program 5.9.34; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.34**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.35**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -252,3 +252,16 @@ Kullanıcı dört maddeyi birlikte açıkça doğruladı:6'lık bağlanan duvar 
 ## DEV-025 — Kesim kapsamı genişletmesi
 
 Kullanıcı aynı tam panodan şantiyede kesim uygulamasının yalnız62,5cm yarım panel için değil57,5cm ve daha kısa özel panel parçaları için de geçerli olduğunu açıkça belirtti. Kural parça adına veya yalnız yarım panel tipine bağlanmamalı; uyumlu parçaların gerçek kesim enlerinden stok pano ihtiyacı hesaplanmalı.62,5/57,5 kullanıcı örnekleridir; mevcut aks/net kesim katalog farkları bu kararla kendiliğinden değiştirilmez. Bir tam panodan üç veya daha fazla küçük parça çıkarma, tek kalan parça sevki ve kesim payı henüz açıkça tarif edilmedi. Bu tur üretim kararı kaydıdır; kod5.9.34 değişmedi. DEV-025 uygulaması ve Tuna49/47 doğrulaması açık; kullanıcı çizimi korunmuştur.
+
+
+## 5.9.35 — Dolu pano stok kesimi / DEV-025
+
+Kullanıcı2×30cm→1tam,3×40→1tam,102→1tam,2×70→2tam örneklerini onayladı; sahada kesim artığı kabul ediliyor. Çizim parçaları birleştirilmez/ölçüleri125'e çevrilmez.125,5 ve62,75 dışında özel genişlik etiketi panel numaraları kapalıyken de görünür; geometri ve ölçü değerleri korunur.
+
+Net kesimi bilinen dolu parçalar kalınlık/yükseklik bazında1250mm stok panoya büyükten küçüğe sığdırılır. Bu uygulanabilir plan en az stok garantisi değildir; en toplamını1250'ye bölmekle yetinilmez (2×700 iki stok). Satır Çizim=parça adedi, Sevk=stok adedi. Kesim dağılımı panel numaraları ve artıklarla UI/Excel/CSV'de gösterilir; manuel toplam ve eski karar denetimi korunur. Kapılı/pencereli ürünler dolu havuza katılmaz. Testere payı henüz verilmedi; otomatik pay uydurulmadı, bu durum açıklamada belirtilir.
+
+Mevcut Modular net kesim kataloğu öncelikli. Kullanıcının doğrudan verdiği30/40/70/102/57,5/62,5cm örnekleri ayrıca net mm olarak tanınır; diğer katalog dışı genişlikte net kesim bilinmediğinden otomatik stok hesabı bekler. Aks ölçüsünden evrensel pay çıkarılmaz.
+
+Tuna:24dış dolu parça→22stok (Excel23);13iç dolu parça→12stok (Excel12).710+520mm birlikte1230mm olur ve20mm artık bırakır; önceki47toplamla fark tamamen kapanmadı. Kapı/pencere12ürünün reçetesi ayrı açık.49yerleşim korunur. DEV-025 ilk uygulama tamam, bilinmeyen kesim ölçüsü/testere payı ve deneme çizimleriyle üretim doğrulaması açık.
+
+Testler: loading-stock kullanıcı örnekleri, ölçü grupları, sığma/artık, eski karar; loading-list Tuna24/22 ve13/12, JSON/CSV/XLSX; loading-H/U/corners regresyonları; plan-export başarılı. Özel etiketler görsel kontrol edildi. Canlı müşteri planı ve takip dışı JSON korunmuştur.

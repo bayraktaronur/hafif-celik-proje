@@ -470,10 +470,11 @@ function drawPanels(){
         }
       }
       // numara
-      if(G.pnlEtiket&&p.no&&!p.acik&&wpx>=8&&p.w*s>=22){
+      var specialWidth=Math.abs(p.w-125.5)>.01&&Math.abs(p.w-62.75)>.01;
+      if(specialWidth||(!p.acik&&G.pnlEtiket&&p.no&&wpx>=8&&p.w*s>=22)){
         var m=P((p.a+p.b)/2,0),ang=Math.atan2(r.uy,r.ux);
         if(ang>Math.PI/2+1e-6||ang<=-Math.PI/2+1e-6)ang+=Math.PI;
-        var fs=Math.max(7,Math.min(11,wpx*0.7)),txt=p.tip==='ozel'&&p.w*s>=48?p.no+' · '+fmtCm(p.w):p.no;
+        var fs=Math.max(7,Math.min(11,wpx*0.7)),txt=specialWidth?((G.pnlEtiket&&p.no?p.no+' · ':'')+fmtCm(p.w)+' cm'):p.no;
         ctx.save();ctx.translate(m.x,m.y);ctx.rotate(ang);
         ctx.font='700 '+fs+'px '+FF;ctx.textAlign='center';ctx.textBaseline='middle';
         ctx.fillStyle=p.tip==='yarim'?TH.pnlTxtY:p.tip==='ozel'?TH.pnlTxtO:TH.pnlTxt;ctx.fillText(txt,0,0.5);
