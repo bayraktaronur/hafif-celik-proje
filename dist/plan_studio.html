@@ -4958,7 +4958,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.21',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.22',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -4966,7 +4966,7 @@ updateStatus();
   function snapshot(){return JSON.stringify(state());}
   function resetInteraction(){
     G.selPanels=[];G.panelAnchor=null;
-    if(window.TextNotes)TextNotes.cancel();if(window.Fixtures)Fixtures.cancel();if(window.Kitchen)Kitchen.cancel();
+    if(window.PlanClipboard)PlanClipboard.cancel();if(window.TextNotes)TextNotes.cancel();if(window.Fixtures)Fixtures.cancel();if(window.Kitchen)Kitchen.cancel();
     delete G.drawRejectReason;
     G.drawing=false;G.drawChain=false;G.drawStart=null;G.drawPreviewPt=null;G.numBuf='';G.dragging=false;G.dragNodeId=null;G.dragMidSeg=null;G.dragMidMode=null;G.dragEleman=null;G.wallDrag=null;G.dimDrag=null;G.lblDrag=null;G.panning=false;G.snapPt=null;G.snapNodeId=null;G.secili=null;G.seciliTip=null;G.seciliDimRow=null;G.selSegs=[];G.shiftLock=false;G.altKey=false;G.lockAxis=null;
     $('lockInd').style.display='none';$('shiftLbl').textContent='';
@@ -5035,15 +5035,15 @@ updateStatus();
     apply({n:[],s:[],e:[],r:[],opt:clone(PlanProject.DEFAULT_OPTIONS),sistem,catiYon:'yatay',projectName:'Yeni proje',ky:280,dy:320,fire:10,settings:{}});
     G.hist=[];future=[];G.zoom=1;G.pan={x:100,y:80};fileSnapshot='';storageReady=true;$('recoveryBanner').hidden=true;draw();schedule();
   };
-  function newErrors(before,after){
+  function newErrors(before,after,checkModules=true){
     const known=new Set(PlanProject.analyze(before).filter(i=>i.level==='error').map(i=>i.code+'|'+i.id));
-    return PlanProject.analyze(after).filter(i=>i.level==='error'&&!known.has(i.code+'|'+i.id)).concat(window.Modular?Modular.validate(before,after):[]);
+    return PlanProject.analyze(after).filter(i=>i.level==='error'&&!known.has(i.code+'|'+i.id)).concat(checkModules&&window.Modular?Modular.validate(before,after):[]);
   }
-  function edit(mutate,{geometry=false}={}){
+  function edit(mutate,{geometry=false,preserveLayout=false}={}){
     const before=state(),h=G.hist.slice(),f=future.slice(),selected=G.secili?.id,selectedType=G.seciliTip;
     try{
       pushH();mutate();if(geometry)normalizeGraph();detectRooms();
-      const errors=newErrors(before,state());if(errors.length)throw Error(errors[0].message);
+      const errors=newErrors(before,state(),!preserveLayout);if(errors.length)throw Error(errors[0].message);
       if(selected){G.secili=({node:G.nodes,seg:G.segs,eleman:G.elemanlar,room:G.rooms,annotation:G.annotations,fixture:G.fixtures,counter:G.counters,dim:G.segs}[selectedType]||[]).find(o=>o.id===selected)||null;G.seciliTip=G.secili?selectedType:null;}
       updateSidebar();draw();return true;
     }catch(e){apply(before);G.hist=h;future=f;toast(e.message,true);return false;}
@@ -5257,7 +5257,7 @@ updateStatus();
   },true);
   window.addEventListener('blur',()=>{G.altKey=false;G.shiftLock=false;G.lockAxis=null;G.panning=false;$('lockInd').style.display='none';$('shiftLbl').textContent='';});
   window.addEventListener('beforeunload',e=>{if(G.segs.length&&snapshot()!==lastStored&&snapshot()!==fileSnapshot){e.preventDefault();e.returnValue='';}});
-  window.Studio={state,snapshot,loadProject,analyze,issues,fit,tab,demo,openingError,edit,toast,
+  window.Studio={applyTransaction(input){const d=PlanProject.validate(input);return edit(()=>apply(d),{preserveLayout:true});},state,snapshot,loadProject,analyze,issues,fit,tab,demo,openingError,edit,toast,
     rename(value){pushH();projectName=value.trim()||'Yeni proje';$('projectName').value=projectName;schedule();},
     projectField(key,value){const number=Number(value);edit(()=>{positive(number,key==='fire'?0:50,key==='fire'?100:2000,key==='fire'?'Fire oranı':'Yükseklik');if(key==='fire'){ALCI.FIRE=number;$('fireYuzde').value=number;}else{$(key).value=number;if(key==='katYuk')G.opt.h=number;}});optPanelGuncelle();},
     zoom(dir){const f=dir>0?1.2:1/1.2,z=Math.max(.1,Math.min(10,G.zoom*f)),x=cwrap.clientWidth/2,y=cwrap.clientHeight/2;G.pan.x=x-(x-G.pan.x)*z/G.zoom;G.pan.y=y-(y-G.pan.y)*z/G.zoom;G.zoom=z;draw();},
@@ -5806,7 +5806,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.21';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.22';syncUI();draw();
 })();
 
 </script><script>
@@ -6991,6 +6991,64 @@ window.OpeningCatalog=(function(){
  const resize=resizeSeg;window.resizeSeg=function(value){if(G.secili?.tip==='veranda')open(G.secili);else resize(value);};
  window.addEventListener('dblclick',e=>{if(e.target!==cv||G.tool!=='sec')return;const r=cv.getBoundingClientRect(),h=hitDim(e.clientX-r.left,e.clientY-r.top),s=h&&getSeg(h.segId);if(s?.tip==='veranda'){e.preventDefault();e.stopImmediatePropagation();open(s);}},true);
  window.VerandaEditor={open,apply};
+})();
+
+</script><script>
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PlanClipboardCore=api;})(globalThis,function(){
+ const clone=x=>JSON.parse(JSON.stringify(x)),lists=['n','s','e','r','fixtures','counters','annotations','roofs'];
+ function all(d){return {s:d.s.map(x=>x.id),fixtures:(d.fixtures||[]).map(x=>x.id),counters:(d.counters||[]).map(x=>x.id),annotations:(d.annotations||[]).map(x=>x.id),roofs:(d.roofs||[]).map(x=>x.id)};}
+ function extract(d,selection){const p=clone(d),chosen=k=>new Set(selection[k]||[]);for(const k of ['s','fixtures','counters','annotations','roofs'])p[k]=(p[k]||[]).filter(x=>chosen(k).has(x.id));
+  const segs=new Set(p.s.map(s=>s.id)),nodes=new Set(p.s.flatMap(s=>[s.n1,s.n2]));p.n=p.n.filter(n=>nodes.has(n.id));p.e=p.e.filter(e=>segs.has(e.segId));p.r=p.r.filter(r=>r.nodeIds.every((id,i)=>p.s.some(s=>(s.n1===id&&s.n2===r.nodeIds[(i+1)%r.nodeIds.length])||(s.n2===id&&s.n1===r.nodeIds[(i+1)%r.nodeIds.length]))));
+  p.roofMaterials=(p.roofMaterials||[]).filter(m=>p.roofs.some(z=>z.material===m.id));const roofIds=new Set(p.roofs.map(r=>r.id));for(const r of p.roofs){for(const parent of [r.attachment?.parentId,r.production?.role==='child'?r.production.parentId:null])if(parent&&!roofIds.has(parent))throw Error('Bağlı çatıyı ana çatısıyla birlikte seçin.');if(r.sourceRoomId&&!p.r.some(x=>x.id===r.sourceRoomId))throw Error('Veranda çatısını bağlı odanın sınırlarıyla birlikte seçin.');}
+  if(!['s','fixtures','counters','annotations','roofs'].some(k=>p[k].length))throw Error('Önce nesne veya alan seçin.');
+  p.settings=p.settings||{};p.settings.trussOverrides=(p.settings.trussOverrides||[]).filter(x=>nodes.has(x.nodeId)&&(!x.zoneId||roofIds.has(x.zoneId)));
+  const points=[...p.n,...p.fixtures,...p.annotations,...p.roofs,...p.counters.flatMap(c=>c.points)];const origin={x:Math.min(...points.map(p=>p.x)),y:Math.min(...points.map(p=>p.y))};return {format:'prefabrikten-plan-clipboard',version:1,project:p,origin};
+ }
+ function remove(d,clip){const p=clone(d),ids=new Set(lists.flatMap(k=>(clip.project[k]||[]).map(o=>o.id)));for(const k of lists.filter(k=>k!=='n'))p[k]=(p[k]||[]).filter(o=>!ids.has(o.id));const used=new Set(p.s.flatMap(s=>[s.n1,s.n2]));p.n=p.n.filter(n=>used.has(n.id));p.r=p.r.filter(r=>r.nodeIds.every(id=>used.has(id)));for(const z of p.roofs)if(ids.has(z.sourceRoomId)||ids.has(z.attachment?.parentId)||ids.has(z.production?.parentId))throw Error('Kesilecek seçimde bağlı çatıları da seçin.');p.settings.trussOverrides=(p.settings.trussOverrides||[]).filter(t=>used.has(t.nodeId)&&!ids.has(t.zoneId));return p;}
+ function paste(target,clip,point,uid){
+  if(clip?.format!=='prefabrikten-plan-clipboard'||clip.version!==1)throw Error('Geçersiz plan panosu.');
+  const p=clone(clip.project),d=clone(target),dx=point.x-clip.origin.x,dy=point.y-clip.origin.y,empty=!['s','fixtures','counters','annotations','roofs'].some(k=>(d[k]||[]).length);
+  if(!empty&&(d.sistem!==p.sistem||d.catiYon!==p.catiYon||d.ky!==p.ky||d.opt.h!==p.opt.h||d.opt.dis!==p.opt.dis||d.opt.ic!==p.opt.ic))throw Error('Kaynak ve hedefin sistem, kat yüksekliği, duvar kalınlığı veya çatı yönü farklı. Boş projeye yapıştırın.');
+  const map=new Map(),groups=new Map();for(const k of lists)for(const o of p[k]||[])map.set(o.id,uid());for(const m of p.roofMaterials||[])map.set(m.id,'custom_'+uid());
+  function refs(o){if(!o||typeof o!=='object')return;for(const k of Object.keys(o)){const v=o[k];if(k==='nodeIds'&&Array.isArray(v))o[k]=v.map(id=>map.get(id)||id);else if(typeof v==='string'&&(k==='id'||k==='n1'||k==='n2'||k.endsWith('Id'))&&map.has(v))o[k]=map.get(v);else if(v&&typeof v==='object')refs(v);}}
+  refs(p);const translate=o=>{o.x+=dx;o.y+=dy;};p.n.forEach(translate);p.fixtures.forEach(translate);p.annotations.forEach(translate);for(const c of p.counters){c.points.forEach(translate);c.runs.forEach(translate);}for(const r of p.r){delete r.sig;if(Number.isFinite(r.cx))r.cx+=dx;if(Number.isFinite(r.cy))r.cy+=dy;if(r.pts)r.pts.forEach(translate);}
+  for(const z of p.roofs){translate(z);if(!groups.has(z.group))groups.set(z.group,uid());z.group=groups.get(z.group);if(z.attachment?.base)translate(z.attachment.base);if(z.childJoin){z.childJoin.points.forEach(translate);z.childJoin.support.forEach(translate);}if(map.has(z.material))z.material=map.get(z.material);}
+  for(const t of p.settings.trussOverrides||[]){const v=t.axis==='x'?dx:dy;t.from+=v;t.to+=v;}
+  // Pasting walls into existing walls must not silently merge openings or manufacture duplicate panels.
+  const oldNodes=new Map(d.n.map(n=>[n.id,n])),newNodes=new Map(p.n.map(n=>[n.id,n]));
+  function collision(a,b,c,e){const ux=b.x-a.x,uy=b.y-a.y,vx=e.x-c.x,vy=e.y-c.y,den=ux*vy-uy*vx,dx=c.x-a.x,dy=c.y-a.y;if(Math.abs(den)<1e-7){if(Math.abs(dx*uy-dy*ux)>.001)return false;const k=Math.abs(ux)>Math.abs(uy)?'x':'y';return Math.min(Math.max(a[k],b[k]),Math.max(c[k],e[k]))>=Math.max(Math.min(a[k],b[k]),Math.min(c[k],e[k]))-.001;}const t=(dx*vy-dy*vx)/den,u=(dx*uy-dy*ux)/den;return t>=0&&t<=1&&u>=0&&u<=1;}
+  for(const a of p.s)for(const b of d.s)if(collision(newNodes.get(a.n1),newNodes.get(a.n2),oldNodes.get(b.n1),oldNodes.get(b.n2)))throw Error('Yapıştırılacak duvar mevcut duvara değiyor veya çakışıyor. Boş bir konum seçin.');
+  if(empty)for(const k of ['sistem','catiYon','opt','ky','dy','fire','settings'])d[k]=clone(p[k]);
+  const added={};for(const k of lists){added[k]=(p[k]||[]).map(x=>x.id);d[k]=[...(d[k]||[]),...(p[k]||[])];}d.roofMaterials=[...(d.roofMaterials||[]),...(p.roofMaterials||[])];if(!empty)d.settings.trussOverrides=[...(d.settings.trussOverrides||[]),...(p.settings.trussOverrides||[])];return {state:d,added};
+ }
+ return {all,extract,remove,paste};
+});
+
+</script><script>
+(function(){
+ const C=PlanClipboardCore,KEY='prefabrikten.planstudio.clipboard.v1';let selection=null,drag=null,clip=null,pending=null,ghost=null;
+ const stop=e=>{e.preventDefault();e.stopImmediatePropagation();};
+ const group=document.createElement('div');group.className='tool-group';document.querySelector('.tool-ribbon').append(group);
+ function button(id,label,action){const b=document.createElement('button');b.id=id;b.className='t';b.textContent=label;b.onclick=action;group.append(b);return b;}
+ button('clipArea','▧ Alan seç',()=>{cancel();setTool('area-select');Studio.toast('Sürükleyerek alan seçin. Tamamen alan içinde kalan nesneler seçilir.');});
+ button('clipAll','Tümünü seç',all);button('clipCopy','Kopyala',()=>copy(false));button('clipCut','Kes',()=>copy(true));button('clipPaste','Yapıştır',paste);
+ function cancel(){selection=drag=pending=ghost=null;}
+ function point(e){const r=cv.getBoundingClientRect();return toCm(e.clientX-r.left,e.clientY-r.top);}
+ function setSelection(s){selection=s;G.secili=null;G.seciliTip=null;G.selPanels=[];G.selSegs=s.s||[];updateSidebar();draw();const count=Object.values(s).reduce((n,a)=>n+a.length,0);Studio.toast(count+' nesne seçili. Duvarların kapı/pencereleri birlikte kopyalanır. Ctrl+C / Ctrl+X.');}
+ function all(){setTool('sec');setSelection(C.all(Studio.state()));}
+ function boundsPoints(d,k,o){if(k==='s')return [d.n.find(n=>n.id===o.n1),d.n.find(n=>n.id===o.n2)];if(k==='counters')return o.points;if(k==='roofs')return RoofCore.footprint(o).map(p=>RoofCore.transform(o,p));if(k==='fixtures'){const t=o.angle*Math.PI/180;return [[-o.w/2,-o.d/2],[o.w/2,-o.d/2],[o.w/2,o.d/2],[-o.w/2,o.d/2]].map(([x,y])=>({x:o.x+x*Math.cos(t)-y*Math.sin(t),y:o.y+x*Math.sin(t)+y*Math.cos(t)}));}ctx.save();ctx.font=o.size+'px sans-serif';const w=Math.max(...o.text.split('\n').map(t=>ctx.measureText(t).width)),h=o.text.split('\n').length*o.size*1.25;ctx.restore();const a=o.angle*Math.PI/180;return [[0,0],[w,0],[w,h],[0,h]].map(([x,y])=>({x:o.x+x*Math.cos(a)-y*Math.sin(a),y:o.y+x*Math.sin(a)+y*Math.cos(a)}));}
+ function rectSelection(a,b){const d=Studio.state(),s={},inside=p=>p.x>=Math.min(a.x,b.x)&&p.x<=Math.max(a.x,b.x)&&p.y>=Math.min(a.y,b.y)&&p.y<=Math.max(a.y,b.y);for(const k of ['s','fixtures','counters','annotations','roofs'])s[k]=(d[k]||[]).filter(o=>boundsPoints(d,k,o).every(inside)).map(o=>o.id);return s;}
+ function current(){if(G.secili){const k={seg:'s',dim:'s',fixture:'fixtures',counter:'counters',annotation:'annotations'}[G.seciliTip];if(k)return {[k]:k==='s'&&G.selSegs?.length?G.selSegs:[G.secili.id]};if(G.seciliTip==='eleman')return {s:[G.secili.segId]};}if(selection)return selection;if(G.selSegs?.length)return {s:G.selSegs};throw Error('Alan seç veya Tümünü seç ile nesneleri seçin.');}
+ function copy(cut){try{const d=Studio.state(),s=JSON.parse(JSON.stringify(current()));if(s.s?.length){const ids=new Set(s.s);for(const r of pfAnaliz().runs)if(r.items.some(i=>ids.has(i.seg.id)))r.items.forEach(i=>ids.add(i.seg.id));s.s=[...ids];}const data=C.extract(d,s),serialized=JSON.stringify(data);if(serialized.length>8e6)throw Error('Seçim pano boyutu sınırını aşıyor; dosya olarak kaydedin.');const removed=cut?C.remove(d,data):null;let stored=true;try{localStorage.setItem(KEY,serialized);}catch{stored=false;}if(cut&&!stored)throw Error('Plan panosu kaydedilemedi; güvenlik için kesme uygulanmadı.');clip=data;if(cut&&!Studio.applyTransaction(removed))return;selection=s;draw();Studio.toast((cut?'Kesildi.':'Kopyalandı.')+' Ctrl+V ile konumlandırın. '+(stored?'Yeni/Aç sonrasında Plan Studio panosu korunur.':'Pano yalnız bu sekmede tutuluyor.'));}catch(e){Studio.toast(e.message,true);}}
+ function paste(){try{if(!clip){const raw=localStorage.getItem(KEY);if(!raw)throw Error('Plan panosu boş. Önce kopyalayın.');if(raw.length>8e6)throw Error('Plan panosu çok büyük.');clip=JSON.parse(raw);}if(clip.format!=='prefabrikten-plan-clipboard'||clip.version!==1||!Number.isFinite(clip.origin?.x)||!Number.isFinite(clip.origin?.y))throw Error('Geçersiz plan panosu.');PlanProject.validate(clip.project);setTool('plan-paste');pending=clip;selection=null;Studio.toast('Sol üst referans noktasını yerleştirmek için plana tıklayın. Esc: iptal.');cv.focus();}catch(e){clip=null;Studio.toast(e.message,true);}}
+ const baseDraw=draw;window.draw=function(){baseDraw();if(TH.export)return;ctx.save();ctx.strokeStyle='#65dec2';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);if(drag){const a=toCv(drag.start.x,drag.start.y),b=toCv(drag.end.x,drag.end.y);ctx.fillStyle='rgba(101,222,194,.1)';ctx.fillRect(a.x,a.y,b.x-a.x,b.y-a.y);ctx.strokeRect(a.x,a.y,b.x-a.x,b.y-a.y);}if(selection){const d=Studio.state();for(const k of Object.keys(selection))for(const o of (d[k]||[]).filter(o=>selection[k].includes(o.id))){const ps=boundsPoints(d,k,o).map(p=>toCv(p.x,p.y));ctx.beginPath();ps.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));if(k!=='s')ctx.closePath();ctx.stroke();}}if(pending&&ghost){const d=pending.project,dx=ghost.x-pending.origin.x,dy=ghost.y-pending.origin.y;for(const k of ['s','fixtures','counters','annotations','roofs'])for(const o of d[k]||[]){const ps=boundsPoints(d,k,o).map(p=>toCv(p.x+dx,p.y+dy));ctx.beginPath();ps.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));if(k!=='s')ctx.closePath();ctx.stroke();}}ctx.restore();};
+ window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;if(G.tool==='area-select'){stop(e);drag={start:point(e),end:point(e)};return;}if(G.tool==='plan-paste'&&pending){stop(e);try{const result=C.paste(Studio.state(),pending,point(e),()=> 'paste-'+crypto.randomUUID());if(Studio.applyTransaction(result.state)){pending=ghost=null;setTool('sec');setSelection({s:result.added.s,fixtures:result.added.fixtures,counters:result.added.counters,annotations:result.added.annotations,roofs:result.added.roofs});}}catch(err){Studio.toast(err.message,true);}return;}selection=null;},true);
+ window.addEventListener('mousemove',e=>{if(drag){drag.end=point(e);draw();}else if(pending&&e.target===cv){ghost=point(e);draw();}},true);
+ window.addEventListener('mouseup',e=>{if(!drag||e.button!==0)return;stop(e);const s=rectSelection(drag.start,point(e));drag=null;setTool('sec');setSelection(s);},true);
+ window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable||document.querySelector('dialog[open],.mbg.open'))return;const k=e.key.toLowerCase();if((e.ctrlKey||e.metaKey)&&['a','c','x','v'].includes(k)){stop(e);({a:all,c:()=>copy(false),x:()=>copy(true),v:paste})[k]();}else if(e.key==='Escape'&&(pending||drag||selection)){stop(e);cancel();setTool('sec');draw();}},true);
+ window.addEventListener('blur',()=>{drag=null;});
+ const baseTool=setTool;window.setTool=function(t){if(t!=='plan-paste')pending=ghost=null;if(t!=='area-select')drag=null;if(t!=='sec')selection=null;baseTool(t);};
+ window.PlanClipboard={all,copy,paste,cancel,rectSelection};
 })();
 
 </script></body></html>

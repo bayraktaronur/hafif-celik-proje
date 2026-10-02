@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.21
+# Prefabrikten Plan Studio · 5.9.22
+
+5.9.22: Alan seç / Ctrl+A, Ctrl+C kopyala, Ctrl+X kes, Ctrl+V konumlandırarak yapıştır. Plan Studio panosu Yeni/Aç ve aynı tarayıcı kaynağında yeniden açma boyunca korunur. Duvarlar kapı/pencereleri ve bağlı panel hattıyla taşınır; yeni kimlikler, oda türleri, metin/tefriş/tezgâh/çatı bağlantıları korunur. Kes/yapıştır geri alınabilir; mevcut duvarla çakışma engellenir. Bu pano Windows/AutoCAD panosu veya iki bilgisayar arası eşitleme değildir.
 
 5.9.21: Mevcut veranda ölçüsüne çift tıklayarak veya özelliklerden net ölçü düzenleme; başlangıç/bitiş/merkez sabit seçenekleri. Bağlı dik sınırlar birlikte taşınır, ev duvarları korunur. Ev bağlantısında gerekli dik kademe önceden bildirilir; çakışan veya ters dönen kenarlar reddedilir. Geri alma ve JSON desteği.
 

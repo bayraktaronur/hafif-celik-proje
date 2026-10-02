@@ -69,3 +69,10 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 - Kullanıcı mevcut verandanın her projede değişen net derinlik/genişliğinin ev duvarları korunarak düzenlenmesini onayladı. DEV-014 tamamlandı: ayrı veranda-core ve veranda-ui; net ölçü, sabit taraf, bağlı dik kenar hareketi, ev bağlantısında bildirilen kademe, çakışma/reversal koruması. Kademe gerekmez hale gelince kaldırılır.
 - Eski aks uzunluğu alanı veranda için net ölçü komutuyla değiştirildi; ölçü çizgisine çift tık açar. İşlem tek geri alma adımıdır. Mevcut DWG/JSON referansları ve canlı plan değiştirilmedi.
 - Yeni veranda testi geçti (69,5/507 örnekleri, merkez, tekrar boyutlandırma, duvar/kapı/oda korunması, UI, JSON). Temel31/31, prefab77/77 ve metin testleri başarılı; build üretildi. Sürüm5.9.21. Eğik veranda, direk/kiriş ve çatı otomasyonu bu işin dışında; DEV-012/006/011 açık.
+
+## 2 Ekim 2026 — 5.9.22 Plan panosu / DEV-015
+
+- DEV-015 tamamlandı: Alan seç ile tamamen çerçeve içinde kalan nesneleri seçme; Ctrl+A tümünü seçme, Ctrl+C kopyalama, Ctrl+X kesme, Ctrl+V ardından tıkla konumlandırma, Esc iptal. Kesme/yapıştırma tek adımda geri alınır.
+- Duvar açıklıkları ve bağlı prefabrik hat birlikte taşınır. Yeni nesne kimlikleri, oda türleri, metinler, tefrişler, tezgâhlar, seçili çatı bağlantıları ve malzemeler korunur. Boş projeye kaynak üretim ayarları da aktarılır. Mevcut duvarlara temas/kesişme/üst üste binme reddedilir; otomatik duvar birleştirme yapılmaz. Özel panel uyarıları gizlenmez.
+- Pano Yeni/Aç ve aynı tarayıcı kaynağında yeniden açma boyunca yerel depoda korunur. Bu, Windows/AutoCAD panosu veya iki bilgisayar arası aktarım değildir; dosya yedeği yerine geçmez. Alan seçimi kesişen nesneleri değil tamamen kapsananları alır; bağlı panel hattı koruma amacıyla genişletilebilir.
+- Kontroller: temel31/31, prefab77/77, veranda, metin ve yeni tests/plan-clipboard.cjs başarılı. Yeni test kopya kimlikleri, çatı bağlantıları, malzemeler, çakışma, gerçek fare/klavye kullanımı, kes/geri al, pano yeniden açma ve oda/ayar korumayı kapsar. Dağıtım HTML üretildi. Canlı plan ve kullanıcının özgün JSON dosyası değiştirilmedi. DEV-006/011/012 açık kalır.

@@ -11,7 +11,7 @@
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.21',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.22',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -19,7 +19,7 @@
   function snapshot(){return JSON.stringify(state());}
   function resetInteraction(){
     G.selPanels=[];G.panelAnchor=null;
-    if(window.TextNotes)TextNotes.cancel();if(window.Fixtures)Fixtures.cancel();if(window.Kitchen)Kitchen.cancel();
+    if(window.PlanClipboard)PlanClipboard.cancel();if(window.TextNotes)TextNotes.cancel();if(window.Fixtures)Fixtures.cancel();if(window.Kitchen)Kitchen.cancel();
     delete G.drawRejectReason;
     G.drawing=false;G.drawChain=false;G.drawStart=null;G.drawPreviewPt=null;G.numBuf='';G.dragging=false;G.dragNodeId=null;G.dragMidSeg=null;G.dragMidMode=null;G.dragEleman=null;G.wallDrag=null;G.dimDrag=null;G.lblDrag=null;G.panning=false;G.snapPt=null;G.snapNodeId=null;G.secili=null;G.seciliTip=null;G.seciliDimRow=null;G.selSegs=[];G.shiftLock=false;G.altKey=false;G.lockAxis=null;
     $('lockInd').style.display='none';$('shiftLbl').textContent='';
@@ -88,15 +88,15 @@
     apply({n:[],s:[],e:[],r:[],opt:clone(PlanProject.DEFAULT_OPTIONS),sistem,catiYon:'yatay',projectName:'Yeni proje',ky:280,dy:320,fire:10,settings:{}});
     G.hist=[];future=[];G.zoom=1;G.pan={x:100,y:80};fileSnapshot='';storageReady=true;$('recoveryBanner').hidden=true;draw();schedule();
   };
-  function newErrors(before,after){
+  function newErrors(before,after,checkModules=true){
     const known=new Set(PlanProject.analyze(before).filter(i=>i.level==='error').map(i=>i.code+'|'+i.id));
-    return PlanProject.analyze(after).filter(i=>i.level==='error'&&!known.has(i.code+'|'+i.id)).concat(window.Modular?Modular.validate(before,after):[]);
+    return PlanProject.analyze(after).filter(i=>i.level==='error'&&!known.has(i.code+'|'+i.id)).concat(checkModules&&window.Modular?Modular.validate(before,after):[]);
   }
-  function edit(mutate,{geometry=false}={}){
+  function edit(mutate,{geometry=false,preserveLayout=false}={}){
     const before=state(),h=G.hist.slice(),f=future.slice(),selected=G.secili?.id,selectedType=G.seciliTip;
     try{
       pushH();mutate();if(geometry)normalizeGraph();detectRooms();
-      const errors=newErrors(before,state());if(errors.length)throw Error(errors[0].message);
+      const errors=newErrors(before,state(),!preserveLayout);if(errors.length)throw Error(errors[0].message);
       if(selected){G.secili=({node:G.nodes,seg:G.segs,eleman:G.elemanlar,room:G.rooms,annotation:G.annotations,fixture:G.fixtures,counter:G.counters,dim:G.segs}[selectedType]||[]).find(o=>o.id===selected)||null;G.seciliTip=G.secili?selectedType:null;}
       updateSidebar();draw();return true;
     }catch(e){apply(before);G.hist=h;future=f;toast(e.message,true);return false;}
@@ -310,7 +310,7 @@
   },true);
   window.addEventListener('blur',()=>{G.altKey=false;G.shiftLock=false;G.lockAxis=null;G.panning=false;$('lockInd').style.display='none';$('shiftLbl').textContent='';});
   window.addEventListener('beforeunload',e=>{if(G.segs.length&&snapshot()!==lastStored&&snapshot()!==fileSnapshot){e.preventDefault();e.returnValue='';}});
-  window.Studio={state,snapshot,loadProject,analyze,issues,fit,tab,demo,openingError,edit,toast,
+  window.Studio={applyTransaction(input){const d=PlanProject.validate(input);return edit(()=>apply(d),{preserveLayout:true});},state,snapshot,loadProject,analyze,issues,fit,tab,demo,openingError,edit,toast,
     rename(value){pushH();projectName=value.trim()||'Yeni proje';$('projectName').value=projectName;schedule();},
     projectField(key,value){const number=Number(value);edit(()=>{positive(number,key==='fire'?0:50,key==='fire'?100:2000,key==='fire'?'Fire oranı':'Yükseklik');if(key==='fire'){ALCI.FIRE=number;$('fireYuzde').value=number;}else{$(key).value=number;if(key==='katYuk')G.opt.h=number;}});optPanelGuncelle();},
     zoom(dir){const f=dir>0?1.2:1/1.2,z=Math.max(.1,Math.min(10,G.zoom*f)),x=cwrap.clientWidth/2,y=cwrap.clientHeight/2;G.pan.x=x-(x-G.pan.x)*z/G.zoom;G.pan.y=y-(y-G.pan.y)*z/G.zoom;G.zoom=z;draw();},
