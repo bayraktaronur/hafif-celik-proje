@@ -12,3 +12,7 @@ print("PASS XLSX structure, six Tuna matches, numeric quantities and text cells"
 corners=[r for r in s.iter_rows(min_row=5,values_only=True) if r[1]=="Köşe direği"]
 assert len(corners)==1 and corners[0][2]=="98 × 98 × 2500 mm" and corners[0][5]==8 and corners[0][8]=="tuna-22"
 print("PASS XLSX corner product 98x98x2500, quantity 8 and Tuna reference")
+
+us=[r for r in s.iter_rows(min_row=5,values_only=True) if r[1]=="Çektirme U"]
+assert len(us)==1 and us[0][2]=="60 × 2440 mm" and us[0][4]==3 and us[0][5]==4 and us[0][10]==1 and us[0][8]=="tuna-29"
+print("PASS XLSX U 60x2440: 3 installed + 1 spare = 4 shipped")

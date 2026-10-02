@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.33 köşe direği 98/58 mm Excel eşlemesi.
+Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.34 çektirme U ölçüsü ve yedek sevk hesabı.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -15,7 +15,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.33; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Aktarım: program 5.9.34; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Aktarım: program 5.9.33; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.33**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.34**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -222,3 +222,14 @@ Kontroller: loading-h.cjs iki yön/uç-orta ayrımı/mesnet ve veri belirsizliğ
 Kullanıcı açık kuralı:10'luk köşe98×98,6'lık köşe58×58; boy sabit2500 değil bina yüksekliği(cm)×10. Tuna'da8 adet98×98×2500 ve Excel22satırı eşleşir. Farklı yükseklikte Tuna2500satırı zorla eşlenmez. Karma10/6 veya tanımsız kesit kural bekler; veranda serbest direğine ve H profiline bu kural uygulanmaz. Çektirme U3/4 farkı açık. Yükseklik değişince eski manuel düzeltme yeni ürün grubuna sessizce taşınmaz.
 
 Kontroller: tests/loading-corners.cjs10/6 nominal koruma,250/280/300cm boy,8Tuna adedi, tanımsız kesit ve eski düzeltme; loading-list, loading-h, verify-loading-xlsx başarılı. Gerçek indirilen XLSX'te98×98×2500,8adet,tuna-22 doğrulandı. Canlı plan ve kullanıcı JSON'u değiştirilmedi. Diğer açık işler devam eder.
+
+
+## 5.9.34 — Çektirme U ve yedek / DEV-024
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-024 | U ölçüsü, Tuna3/4 farkı ve yedek | Tamamlandı: kullanıcı3/4farkının bilinçli yedek olduğunu açıkladı; ölçü ve otomatik sevk hesabı uygulandı. |
+
+Kullanıcı kararı:6cm duvar U60mm,10cm duvar U100mm. Boy=bina yüksekliği(cm)×10−60mm. Her5U'ya1yedek;3→4örneği gereği her başlayan5'li grup yukarı yuvarlanır. U yoksa yedek yok;1–5adet+1,6–10adet+2,11–15adet+3. Farklı en/boylar ayrı gruplandırılır ve her gruba ayrı yedek hesaplanır. Bu yorum kullanıcıya uygulama başında açıklandı. Çizim adedi değişmez, sevk miktarı çizim+yedek; gerekçeli manuel miktar son toplamın yerine geçer, tekrar yedek eklenmez.
+
+Tuna3adet60×2440mm+1yedek=4adet, Excel29satırı eşleşir. Yedek arayüzde ve XLSX/CSV'de ayrı görünür. Tanımsız kesit/boy otomatik hesaplanmaz. H ve köşe adetleri korunur. tests/loading-u.cjs0/1/3/5/6/10/11, ölçü grubu ayrımı, manuel ve eski karar; loading-list/H/corners ve verify-loading-xlsx başarılı. Canlı plan ve kullanıcı JSON'u korundu. U farkı kapandı; panel47/49 ve diğer üretim işleri sürer.

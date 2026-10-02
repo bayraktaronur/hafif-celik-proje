@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.33
+# Prefabrikten Plan Studio · 5.9.34
+
+5.9.34: Çektirme U60/100mm, bina yüksekliği−60mm boy; her ölçüde her başlayan5adede1yedek. Tuna3+1=4 adet60×2440mm. Kullanılan ve yedek miktarlar ayrı, sevk toplamı otomatik; XLSX/CSV yedek sütunu eklendi.
 
 5.9.33: Çizimdeki10/6cm köşe direkleri yükleme ve Excel’de98×98/58×58mm kesit ve bina yüksekliği×10mm boy ile otomatik sayılır. Nominal çizim geometrisi korunur. Tuna8köşe direği Excel22satırıyla eşleşir.
 

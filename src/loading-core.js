@@ -12,11 +12,11 @@
  function fingerprint(s){let a=2166136261,b=5381;for(let i=0;i<s.length;i++){a=Math.imul(a^s.charCodeAt(i),16777619);b=Math.imul(b,33)^s.charCodeAt(i);}return (a>>>0).toString(16)+'-'+(b>>>0).toString(16);}
  function build(items,config){const c=validate(config),groups=new Map();
   for(const item of items){const key=JSON.stringify([item.group,item.name,item.size]);if(!groups.has(key))groups.set(key,{key,group:item.group,name:item.name,size:item.size,unit:'adet',calculated:0,sources:[],warning:item.warning});const r=groups.get(key);r.calculated++;r.sources.push(item.source);}
-  const rows=[...groups.values()].sort((a,b)=>(['Panel','Metal','Kapı / PVC'].indexOf(a.group)-['Panel','Metal','Kapı / PVC'].indexOf(b.group))||a.key.localeCompare(b.key,'tr'));for(const r of rows){r.basis=fingerprint(JSON.stringify(r.sources.slice().sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)))));const a=c.adjustments.find(a=>a.key===r.key);r.stale=!!a&&a.basis!==r.basis;const auto=r.sources.length&&r.sources.every(s=>(s.hRule&&s.hRule.ear!==null)||!!s.cornerRule);r.qty=a?(r.stale?null:a.qty):auto?r.calculated:null;r.reason=a?.reason||'';r.referenceId=a?a.referenceId:(r.sources[0]?.referenceId||'');r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':auto?(r.sources[0].cornerRule?'Otomatik köşe direği':'Otomatik H adedi'):'Kural bekliyor';}
+  const rows=[...groups.values()].sort((a,b)=>(['Panel','Metal','Kapı / PVC'].indexOf(a.group)-['Panel','Metal','Kapı / PVC'].indexOf(b.group))||a.key.localeCompare(b.key,'tr'));for(const r of rows){r.basis=fingerprint(JSON.stringify(r.sources.slice().sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)))));const a=c.adjustments.find(a=>a.key===r.key);r.stale=!!a&&a.basis!==r.basis;const auto=r.sources.length&&r.sources.every(s=>(s.hRule&&s.hRule.ear!==null)||!!s.cornerRule||!!s.uRule);r.spare=r.sources.every(s=>s.uRule)?Math.ceil(r.calculated/5):0;r.qty=a?(r.stale?null:a.qty):auto?r.calculated+r.spare:null;r.reason=a?.reason||(r.spare?`${r.calculated} çizim + ${r.spare} yedek; her başlayan 5 adede 1 yedek, ölçü bazında.`:'');r.referenceId=a?a.referenceId:(r.sources[0]?.referenceId||'');r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':auto?(r.sources[0].uRule?'Otomatik U + yedek':r.sources[0].cornerRule?'Otomatik köşe direği':'Otomatik H adedi'):'Kural bekliyor';}
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};
  }
- function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; çatı, tesisat ve sarf otomatik hesaplanmaz.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Sevk taslağı','Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', ')])].map(r=>r.map(cell).join(';')).join('\r\n');}
+ function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; çatı, tesisat ve sarf otomatik hesaplanmaz.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Sevk taslağı','Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler','Hesaplanan yedek'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', '),r.spare??0])].map(r=>r.map(cell).join(';')).join('\r\n');}
  function classifyH(point,trusses,exterior){
   const hits=trusses.filter(m=>{const axis=m.axis,cross=axis==='x'?'y':'x';return ['x','y'].includes(axis)&&Math.abs(point[axis]-m.pos)<.6&&Math.min(Math.abs(point[cross]-m.a),Math.abs(point[cross]-m.b))<.6;});
   const supported=hits.filter(m=>m.supported!==false),outside=trusses.length>0&&!hits.length;
@@ -30,5 +30,11 @@
   const length=Math.round(height*1000)/100;
   return {rule:'corner-98-58-v1',nominalCm:Number(k),sideMm:side,heightMm:length,size:`${side} × ${side} × ${length} mm`,referenceId:side===98&&height===250?'tuna-22':''};
  }
- return {validate,build,csv,fingerprint,classifyH,cornerProduct};
+ function uProduct(k,height){
+  const width=String(k)==='10'?100:String(k)==='6'?60:null;
+  if(!width||!Number.isFinite(height)||height<=6)return null;
+  const length=Math.round(height*1000)/100-60;
+  return {rule:'u-height-minus60-spare-ceil5-v1',widthMm:width,heightMm:length,size:`${width} × ${length} mm`,referenceId:width===60&&height===250?'tuna-29':''};
+ }
+ return {validate,build,csv,fingerprint,classifyH,cornerProduct,uProduct};
 });

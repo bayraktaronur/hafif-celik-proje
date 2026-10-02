@@ -166,3 +166,8 @@ Kullanıcı Tuna mesnet yorumunu onayladı. Uç mesnet sınıflandırması genel
 ## 3 Ekim 2026 — Ev PC — 5.9.33 / DEV-023
 
 Kullanıcı10'luk köşe direğinin98×98×bina yüksekliği(mm),6'lığın58×58×bina yüksekliği(mm) olarak Excel'e geçmesini istedi. Çizim nominal ölçüleri korunarak ürün eşlemesi ve otomatik adet eklendi. Tuna8adet98×98×2500 Excel22satırıyla eşleşti.6cm/300cm denemesinde58×58×3000 doğrulandı. Tanımsız/karma kesitler bekler; veranda direği/H/U bu kuralın kapsamı değil. loading-corners, loading-list, loading-h ve bağımsız XLSX okuma testleri başarılı. Canlı çizim ve takip dışı JSON korundu. U adet farkı ve diğer üretim işleri açık.
+
+
+## 3 Ekim 2026 — Ev PC — 5.9.34 / DEV-024
+
+Kullanıcı U6'lık60mm/10'luk100mm, boy bina yüksekliği−60mm, her5U'ya1yedek tarifini verdi. Tuna3çizim/4Excel farkının bilinçli yedek olduğunu onayladı.3→4 örneğine göre yedek ceil(adet/5), ölçü bazında uygulandı ve kullanıcıya açıklandı. Tuna60×2440mm3+1=4; Excel29satırı otomatik eşleşir. Kullanılan/yedek/toplam ayrımı arayüz ve XLSX/CSV'de görünür. Manuel toplam tekrar yedeklenmez; kaynak değişirse kontrol ister. U sınır/grup testleri, loading-list/H/corners ve bağımsız XLSX doğrulaması geçti. Canlı çizim değişmedi. DEV-024 tamamlandı; panel stok farkı ve diğer açık işler korunur.
