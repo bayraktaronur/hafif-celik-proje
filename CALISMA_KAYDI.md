@@ -40,3 +40,10 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 - 5.9.19 dört kaynaklı kesim eşlemesi ekler (52,75→520; 71,375→710; 102,75→1020; 166→1660). Genel otomatik pano kuralı veya bilinmeyen ölçüler için çıkarma formülü eklenmedi.
 - Doğrulama: build başarılı; prefab 77/77, temel 31/31; karşılaştırma betiği 49 pano kimliğini, 6 kapı/6 pencere/7 mekânı, 250 cm, mevcut düğümleri/dış kapıyı ve JSON tekrar açmayı doğruladı. 14 plan uyarısı gizlenmeden kayıtlı.
 - Sonraki işler: DEV-011 e107 makas/H mesnet uyuşmazlığı ve üretim detayları; DEV-006 Excel/PVC satır eşleme (47 ürün / 49 geometrik yuva farkı). Çatı, tesisat ve veranda direk/kiriş imalatı tamamlandı sayılmıyor. DEV-004, DEV-007–009 açık kalır.
+
+## 2 Ekim 2026 — Ev bilgisayarı — Genel imalat kural denetimi
+
+- DEV-012: engine/prefab/modular/roof-workflow kaynakları ile Drawing1 ölçü kanıtları karşılaştırıldı. İmalat kural matrisi, belirsizlikler ve kabul sırası analizler/2026-10-02-uretim-kural-denetimi.md dosyasına kaydedildi.
+- Bağımsız tarayıcı denetimi başarılı: ek üzerindeki T=H3; ortadaki T=U; merkez dışındaki T de U. Bu son davranış üretim kuralı olarak onaylanmış değildir. Taslak 49 pano, 29 H, 7 H3, 3 U, 8 köşe ve 14 uyarı veriyor; bağlantı adetleri CAD ile bağımsız doğrulanmadı.
+- Mevcut kesim tablosu yalnız genişliğe bakıyor; bağlantı/ürün ailesi kataloğu gerekli. 49 yuva/47 ürün eşlemesi, U kullanım sınırları, profil kesitleri ve makas taşıyıcı rolü açık. İki farklı üretim DWG ve varsa ilgili Excel/profil detayları sonraki kaynaklar.
+- Kod davranışı ve canlı çizim değiştirilmedi; sürüm 5.9.19. Yeni denetim betiği çalıştırıldı; uygulama testleri değişiklik olmadığı için tekrarlanmadı. Kullanıcının özgün Yeni proje (11).json dosyası kapsam dışı korunuyor.

@@ -1,0 +1,1262 @@
+{
+  "version": "5.9.19",
+  "source": "cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json",
+  "note": "Observed software behaviour, not approved manufacturing rules. CAD connection profiles were not independently measured.",
+  "connectionCounts": {
+    "kose": 8,
+    "H3": 7,
+    "U": 3,
+    "H": 29
+  },
+  "reference": {
+    "runs": [
+      {
+        "owner": "e96",
+        "origin": [
+          313.75,
+          -313.75
+        ],
+        "direction": [
+          1,
+          0
+        ],
+        "axisLength": 888.5,
+        "startDeduction": 5,
+        "endDeduction": 5,
+        "panels": [
+          {
+            "number": "T1",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "P1",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": "pencere",
+            "cutMm": 1250
+          },
+          {
+            "number": "T2",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "P2",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": "pencere",
+            "cutMm": 1250
+          },
+          {
+            "number": "T3",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "P3",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": "pencere",
+            "cutMm": 1250
+          },
+          {
+            "number": "T4",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          }
+        ]
+      },
+      {
+        "owner": "e98",
+        "origin": [
+          1202.25,
+          -313.75
+        ],
+        "direction": [
+          0,
+          1
+        ],
+        "axisLength": 690.25,
+        "startDeduction": 0,
+        "endDeduction": 0,
+        "panels": [
+          {
+            "number": "T5",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T6",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T7",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T8",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T9",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "Y1",
+            "width": 62.75,
+            "thickness": 10,
+            "kind": "yarim",
+            "opening": null,
+            "cutMm": 625
+          }
+        ]
+      },
+      {
+        "owner": "e72",
+        "origin": [
+          313.75,
+          -313.75
+        ],
+        "direction": [
+          0,
+          1
+        ],
+        "axisLength": 878.5,
+        "startDeduction": 0,
+        "endDeduction": 0,
+        "panels": [
+          {
+            "number": "T10",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T11",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T12",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T13",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "P4",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": "pencere",
+            "cutMm": 1250
+          },
+          {
+            "number": "T14",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T15",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          }
+        ]
+      },
+      {
+        "owner": "e142",
+        "origin": [
+          695.25,
+          313.75
+        ],
+        "direction": [
+          1,
+          0
+        ],
+        "axisLength": 188.25,
+        "startDeduction": 5,
+        "endDeduction": 5,
+        "panels": [
+          {
+            "number": "Ö1",
+            "width": 52.75,
+            "thickness": 10,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 520
+          },
+          {
+            "number": "K1",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": "kapi",
+            "cutMm": 1250
+          }
+        ]
+      },
+      {
+        "owner": "e102",
+        "origin": [
+          883.5,
+          313.75
+        ],
+        "direction": [
+          0,
+          1
+        ],
+        "axisLength": 62.75,
+        "startDeduction": 0,
+        "endDeduction": 0,
+        "panels": [
+          {
+            "number": "Y2",
+            "width": 62.75,
+            "thickness": 10,
+            "kind": "yarim",
+            "opening": null,
+            "cutMm": 625
+          }
+        ]
+      },
+      {
+        "owner": "e100",
+        "origin": [
+          883.5,
+          376.5
+        ],
+        "direction": [
+          1,
+          0
+        ],
+        "axisLength": 318.75,
+        "startDeduction": 5,
+        "endDeduction": 5,
+        "panels": [
+          {
+            "number": "Ö2",
+            "width": 71.375,
+            "thickness": 10,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 710
+          },
+          {
+            "number": "P5",
+            "width": 166,
+            "thickness": 10,
+            "kind": "ozel",
+            "opening": "pencere",
+            "cutMm": 1660
+          },
+          {
+            "number": "Ö3",
+            "width": 71.375,
+            "thickness": 10,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 710
+          }
+        ]
+      },
+      {
+        "owner": "e134",
+        "origin": [
+          695.25,
+          313.75
+        ],
+        "direction": [
+          0,
+          1
+        ],
+        "axisLength": 251,
+        "startDeduction": 0,
+        "endDeduction": 0,
+        "panels": [
+          {
+            "number": "T16",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T17",
+            "width": 125.5,
+            "thickness": 10,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          }
+        ]
+      },
+      {
+        "owner": "e135",
+        "origin": [
+          313.75,
+          564.75
+        ],
+        "direction": [
+          1,
+          0
+        ],
+        "axisLength": 381.5,
+        "startDeduction": 5,
+        "endDeduction": 5,
+        "panels": [
+          {
+            "number": "Ö4",
+            "width": 102.75,
+            "thickness": 10,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 1020
+          },
+          {
+            "number": "P6",
+            "width": 166,
+            "thickness": 10,
+            "kind": "ozel",
+            "opening": "pencere",
+            "cutMm": 1660
+          },
+          {
+            "number": "Ö5",
+            "width": 102.75,
+            "thickness": 10,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 1020
+          }
+        ]
+      },
+      {
+        "owner": "cadWallBathBottom",
+        "origin": [
+          695.25,
+          -62.75
+        ],
+        "direction": [
+          1,
+          0
+        ],
+        "axisLength": 188.25,
+        "startDeduction": 3,
+        "endDeduction": 3,
+        "panels": [
+          {
+            "number": "K2",
+            "width": 122.5,
+            "thickness": 6,
+            "kind": "ozel",
+            "opening": "kapi",
+            "cutMm": 1220
+          },
+          {
+            "number": "Ö6",
+            "width": 59.75,
+            "thickness": 6,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 590
+          }
+        ]
+      },
+      {
+        "owner": "e107",
+        "origin": [
+          695.25,
+          -313.75
+        ],
+        "direction": [
+          0,
+          1
+        ],
+        "axisLength": 627.5,
+        "startDeduction": 5,
+        "endDeduction": 5,
+        "panels": [
+          {
+            "number": "Ö7",
+            "width": 120.5,
+            "thickness": 6,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 1200
+          },
+          {
+            "number": "T18",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "K3",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": "kapi",
+            "cutMm": 1250
+          },
+          {
+            "number": "Ö8",
+            "width": 120.5,
+            "thickness": 6,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 1200
+          },
+          {
+            "number": "K4",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": "kapi",
+            "cutMm": 1250
+          }
+        ]
+      },
+      {
+        "owner": "e115",
+        "origin": [
+          883.5,
+          -313.75
+        ],
+        "direction": [
+          0,
+          1
+        ],
+        "axisLength": 627.5,
+        "startDeduction": 5,
+        "endDeduction": 5,
+        "panels": [
+          {
+            "number": "Ö9",
+            "width": 120.5,
+            "thickness": 6,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 1200
+          },
+          {
+            "number": "T19",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "K5",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": "kapi",
+            "cutMm": 1250
+          },
+          {
+            "number": "K6",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": "kapi",
+            "cutMm": 1250
+          },
+          {
+            "number": "Ö10",
+            "width": 120.5,
+            "thickness": 6,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 1200
+          }
+        ]
+      },
+      {
+        "owner": "e110",
+        "origin": [
+          313.75,
+          62.75
+        ],
+        "direction": [
+          1,
+          0
+        ],
+        "axisLength": 381.5,
+        "startDeduction": 5,
+        "endDeduction": 3,
+        "panels": [
+          {
+            "number": "T20",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T21",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "Ö11",
+            "width": 122.5,
+            "thickness": 6,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 1220
+          }
+        ]
+      },
+      {
+        "owner": "e118",
+        "origin": [
+          883.5,
+          62.75
+        ],
+        "direction": [
+          1,
+          0
+        ],
+        "axisLength": 318.75,
+        "startDeduction": 3,
+        "endDeduction": 5,
+        "panels": [
+          {
+            "number": "Ö12",
+            "width": 59.75,
+            "thickness": 6,
+            "kind": "ozel",
+            "opening": null,
+            "cutMm": 590
+          },
+          {
+            "number": "T22",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          },
+          {
+            "number": "T23",
+            "width": 125.5,
+            "thickness": 6,
+            "kind": "tam",
+            "opening": null,
+            "cutMm": 1250
+          }
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "node": "e70",
+        "type": "kose",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": "e109",
+        "type": "H3",
+        "thickness": "10/6",
+        "description": "ana 10 / kol 6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e72",
+        "position": 376.5
+      },
+      {
+        "node": "e71",
+        "type": "kose",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": "e105",
+        "type": "H3",
+        "thickness": "10/6",
+        "description": "ana 10 / kol 6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e96",
+        "position": 381.5
+      },
+      {
+        "node": "e113",
+        "type": "U",
+        "thickness": "6",
+        "description": "T birleşim (ana 10)",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e96",
+        "position": 569.75
+      },
+      {
+        "node": "e95",
+        "type": "kose",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": "e117",
+        "type": "H3",
+        "thickness": "10/6",
+        "description": "ana 10 / kol 6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e98",
+        "position": 376.5
+      },
+      {
+        "node": "e97",
+        "type": "kose",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": "e99",
+        "type": "kose",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": "e101",
+        "type": "kose",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": "e101",
+        "type": "U",
+        "thickness": "6",
+        "description": "Köşe direğine iç duvar bağlantısı",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": "cadBathL",
+        "type": "H3",
+        "thickness": "6/6",
+        "description": "ana 6 / kol 6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e107",
+        "position": 251
+      },
+      {
+        "node": "e106",
+        "type": "H3",
+        "thickness": "6/6",
+        "description": "ana 6 / kol 6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e107",
+        "position": 376.5
+      },
+      {
+        "node": "e130",
+        "type": "kose",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": "e130",
+        "type": "U",
+        "thickness": "6",
+        "description": "Köşe direğine iç duvar bağlantısı",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": "cadBathR",
+        "type": "H3",
+        "thickness": "6/6",
+        "description": "ana 6 / kol 6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e115",
+        "position": 251
+      },
+      {
+        "node": "e114",
+        "type": "H3",
+        "thickness": "6/6",
+        "description": "ana 6 / kol 6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e115",
+        "position": 376.5
+      },
+      {
+        "node": "e133",
+        "type": "kose",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": null,
+        "position": null
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e96",
+        "position": 130.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e96",
+        "position": 256
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e96",
+        "position": 507
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e96",
+        "position": 632.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e96",
+        "position": 758
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e98",
+        "position": 125.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e98",
+        "position": 251
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e98",
+        "position": 502
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e98",
+        "position": 627.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e72",
+        "position": 125.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e72",
+        "position": 251
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e72",
+        "position": 502
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e72",
+        "position": 627.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e72",
+        "position": 753
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e142",
+        "position": 57.75
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e100",
+        "position": 76.375
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e100",
+        "position": 242.375
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e134",
+        "position": 125.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e135",
+        "position": 107.75
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "10",
+        "description": "10 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e135",
+        "position": 273.75
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "6",
+        "description": "6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "cadWallBathBottom",
+        "position": 125.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "6",
+        "description": "6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e107",
+        "position": 125.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "6",
+        "description": "6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e107",
+        "position": 497
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "6",
+        "description": "6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e115",
+        "position": 125.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "6",
+        "description": "6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e115",
+        "position": 502
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "6",
+        "description": "6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e110",
+        "position": 130.5
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "6",
+        "description": "6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e110",
+        "position": 256
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "6",
+        "description": "6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e118",
+        "position": 62.75
+      },
+      {
+        "node": null,
+        "type": "H",
+        "thickness": "6",
+        "description": "6 cm",
+        "warning": false,
+        "freeEnd": false,
+        "owner": "e118",
+        "position": 188.25
+      }
+    ],
+    "issues": [
+      {
+        "level": "warning",
+        "code": "truss-support",
+        "message": "1 makas bu hattın H noktasına oturmuyor. Panel eşleşmesini kontrol edin.",
+        "id": "e107",
+        "type": "seg"
+      },
+      {
+        "code": "module-axis",
+        "id": "e142",
+        "type": "seg",
+        "key": "module-axis|x:753.00",
+        "message": "X yönünde 753 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+        "level": "warning"
+      },
+      {
+        "code": "module-width",
+        "id": "e100",
+        "type": "seg",
+        "key": "module-width|e100:5.00:71.38",
+        "message": "71.38 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+        "level": "warning"
+      },
+      {
+        "code": "module-width",
+        "id": "e100",
+        "type": "seg",
+        "key": "module-width|e100:76.38:166.00",
+        "message": "166 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+        "level": "warning"
+      },
+      {
+        "code": "module-axis",
+        "id": "e100",
+        "type": "seg",
+        "key": "module-axis|x:959.88",
+        "message": "X yönünde 959.88 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+        "level": "warning"
+      },
+      {
+        "code": "module-width",
+        "id": "e100",
+        "type": "seg",
+        "key": "module-width|e100:242.38:71.38",
+        "message": "71.38 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+        "level": "warning"
+      },
+      {
+        "code": "module-axis",
+        "id": "e100",
+        "type": "seg",
+        "key": "module-axis|x:1125.88",
+        "message": "X yönünde 1125.88 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+        "level": "warning"
+      },
+      {
+        "code": "module-width",
+        "id": "e135",
+        "type": "seg",
+        "key": "module-width|e135:5.00:102.75",
+        "message": "102.75 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+        "level": "warning"
+      },
+      {
+        "code": "module-width",
+        "id": "e135",
+        "type": "seg",
+        "key": "module-width|e135:107.75:166.00",
+        "message": "166 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+        "level": "warning"
+      },
+      {
+        "code": "module-axis",
+        "id": "e135",
+        "type": "seg",
+        "key": "module-axis|x:421.50",
+        "message": "X yönünde 421.5 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+        "level": "warning"
+      },
+      {
+        "code": "module-width",
+        "id": "e135",
+        "type": "seg",
+        "key": "module-width|e135:273.75:102.75",
+        "message": "102.75 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+        "level": "warning"
+      },
+      {
+        "code": "module-axis",
+        "id": "e135",
+        "type": "seg",
+        "key": "module-axis|x:587.50",
+        "message": "X yönünde 587.5 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+        "level": "warning"
+      },
+      {
+        "code": "module-width",
+        "id": "e107",
+        "type": "seg",
+        "key": "module-width|e107:376.50:120.50",
+        "message": "120.5 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+        "level": "warning"
+      },
+      {
+        "code": "module-axis",
+        "id": "e107",
+        "type": "seg",
+        "key": "module-axis|y:183.25",
+        "message": "Y yönünde 183.25 cm H noktası ortak 62,75 cm aksına uymuyor (referans -313.75 cm).",
+        "level": "warning"
+      }
+    ]
+  },
+  "probes": [
+    {
+      "name": "T at seam",
+      "x": 125.5,
+      "joint": [
+        {
+          "node": "b",
+          "type": "H3",
+          "thickness": "10/6",
+          "description": "ana 10 / kol 6 cm",
+          "warning": false,
+          "freeEnd": false,
+          "owner": "ab",
+          "position": 125.5
+        }
+      ],
+      "issues": []
+    },
+    {
+      "name": "T at panel centre",
+      "x": 62.75,
+      "joint": [
+        {
+          "node": "b",
+          "type": "U",
+          "thickness": "6",
+          "description": "T birleşim (ana 10)",
+          "warning": false,
+          "freeEnd": false,
+          "owner": "ab",
+          "position": 62.75
+        }
+      ],
+      "issues": []
+    },
+    {
+      "name": "T off centre",
+      "x": 40,
+      "joint": [
+        {
+          "node": "b",
+          "type": "U",
+          "thickness": "6",
+          "description": "T birleşim (ana 10)",
+          "warning": false,
+          "freeEnd": false,
+          "owner": "ab",
+          "position": 40
+        }
+      ],
+      "issues": [
+        {
+          "code": "module-junction",
+          "id": "ab",
+          "type": "seg",
+          "key": "module-junction|x:40.00",
+          "message": "40 cm birleşim ortak tam/yarım panel aksından kaçıyor. U bağlantısı serbest bir yerleşim izni değildir.",
+          "level": "warning"
+        }
+      ]
+    }
+  ]
+}
