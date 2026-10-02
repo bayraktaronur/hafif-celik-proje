@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.23
+# Prefabrikten Plan Studio · 5.9.24
+
+5.9.24: PDF ve PNG ortak çıktı ekranında antetli/antetsiz, dikey/yatay/otomatik yön ve en uygun standart ölçek seçenekleri. İki yerleşim önizlemesi ve tıklayarak büyütme. Antet firma/logosu, müşteri, adres, proje no, tarih, çizen, kontrol eden, revizyon, pafta, not ve iletişim alanları; sistem, yükseklik, duvar kalınlığı ve aks alanları plandan gelir. PNG/JPG/WebP logo PNG'ye dönüştürülerek JSON'a gömülür; resmi logo verilmezse firma adı kullanılır. Alan düzenlemeleri Bilgileri projeye kaydet veya çıktı indirme sırasında kaydedilir; iptal değişiklikleri uygulamaz. PNG çözünürlük bilgisi pHYs içinde yazılır. Prefabrik dış yükseklik alanı gizlenir; eski dy değeri korunur, prefabrikten hafif çelik aktarımında iç/dış yükseklik kat yüksekliğinden alınır. Alçıpan fire ayarı Metraj Listesi'ne taşındı. PDF/DWG/DXF içe aktarma bu sürümde eklenmedi.
 
 5.9.23: Ölçekli PDF ve 1:1 mm DXF kat planı çıktısı. PDF'de A4–A0, yön ve 1:20/50/100/200 seçilir; taşma reddedilir, otomatik küçültme yapılmaz. PDF yüksek çözünürlüklü raster görseldir (A4–A2 300, A1 200, A0 150 dpi), yazdırma %100/Gerçek boyut olmalıdır. DXF duvar açıklıkları kesilmiş konturlar, bağlantılar, donatılar ve ayrı katmanlarda düzenlenebilir çizgi/yazı içerir; ölçü yazıları cm, geometri mm'dir. Eğriler çoklu çizgiler, ölçüler bağımsız çizgi/yazıdır; parametrik CAD nesneleri değildir. DWG/PDF/DXF içe aktarma ve doğrudan DWG yazma henüz yoktur. JSON düzenlenebilir ana proje kaydı olarak korunmalıdır.
 

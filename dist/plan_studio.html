@@ -72,6 +72,10 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 /* Keep all file/export actions reachable on smaller desktop windows. */
 .header-actions{flex-wrap:wrap;justify-content:flex-end}.header-actions>.tb{white-space:nowrap}@media(max-width:1250px){.header-actions{max-width:340px;gap:5px}.header-actions>.tb{padding:5px 8px}}
 
+.sheet-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 16px}#sheetFields{margin:12px 0;padding:12px;border:1px solid #40566b;border-radius:8px}#sheetFields summary{cursor:pointer;margin-bottom:10px}.orientation-previews{display:flex;gap:12px;margin:12px 0}.orientation-card{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px;background:#101b29;color:#d6e6ef;border:1px solid #40566b;border-radius:8px}.orientation-card[aria-pressed=true]{border:2px solid #69d6b2}.orientation-card img{width:100px;height:90px;object-fit:contain}#planExportDialog #exportPreview{max-height:440px}@media(max-width:900px){.sheet-inputs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+#planExportDialog h3{font-size:18px;margin-bottom:14px}#planExportDialog p{margin:10px 0;line-height:1.5}#exportPdfOptions{gap:16px;flex-wrap:wrap}#sheetOptions>label{display:block;margin-top:12px}
+
 </style></head>
 <body>
 <header class="app-header">
@@ -86,7 +90,7 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
       <div class="sb-t">Proje ayarları</div>
       <div class="sr"><span class="sl">Kat yük. (cm)</span><input class="si" type="number" id="katYuk" value="280"></div>
       <div class="sr"><span class="sl">Dış yük. (cm)</span><input class="si" type="number" id="disYuk" value="320"></div>
-      <div class="sr"><span class="sl">Alçıpan fire %</span><input class="si" type="number" id="fireYuzde" value="10" onchange="Studio.projectField('fire',this.value)"></div>
+
       <button class="sib" id="dimRestore" style="display:none;margin-top:6px" onclick="dimHepsiniGeriGetir()">↺ Ölçüleri sıfırla</button>
     </div>
     <div class="sb" id="sbSel" style="display:none">
@@ -210,6 +214,7 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 <div class="mbg" id="mbgMet">
   <div class="modal" style="min-width:460px;max-width:620px;max-height:82vh;display:flex;flex-direction:column">
     <h3>📋 Metraj Listesi</h3>
+          <div class="sr"><span class="sl">Alçıpan fire %</span><input class="si" type="number" id="fireYuzde" value="10" onchange="Studio.projectField('fire',this.value);metrajAc()"></div>
     <div id="metrajIc" style="overflow:auto;flex:1"></div>
     <div class="mbtns" style="margin-top:10px">
       <button class="mok" onclick="metrajCSV()">⬇ Excel (CSV)</button>
@@ -688,6 +693,9 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
     if(d.catiYon&&!['yatay','dikey'].includes(d.catiYon))fail('Makas yönü geçersiz.');
     d.catiYon=d.catiYon||'yatay';
     d.projectName=typeof d.projectName==='string'?d.projectName.slice(0,100):'İçe aktarılan proje';
+    const sheet=d.sheetInfo||{};if(typeof sheet!=='object'||Array.isArray(sheet))fail('Antet bilgileri geçersiz.');d.sheetInfo={};
+    for(const k of ['company','customer','location','projectNo','drawnBy','checkedBy','revision','date','sheetNo','title','notes','contact'])if(sheet[k]!==undefined){if(typeof sheet[k]!=='string'||sheet[k].length>240)fail('Antet alanı çok uzun veya geçersiz: '+k);d.sheetInfo[k]=sheet[k];}
+    if(sheet.logo!==undefined){if(!Array.isArray(sheet.logo)||sheet.logo.length>40||sheet.logo.some(s=>typeof s!=='string'||s.length>8000)||!/^data:image\/png;base64,[A-Za-z0-9+/]+=*$/.test(sheet.logo.join('')))fail('Antet logosu geçersiz.');d.sheetInfo.logo=sheet.logo;}
     const settings=d.settings||{};d.settings={};
     if(settings.viewFilters&&typeof settings.viewFilters==='object'){
       d.settings.viewFilters={};
@@ -2079,6 +2087,7 @@ function catiBtnGuncelle(){
 function makasToggle(){G.makasGoster=!G.makasGoster;catiBtnGuncelle();draw();}
 function setSistem(v,sessiz){
   G.sistem=v==='prefabrik'?'prefabrik':'celik';
+  document.getElementById('disYuk').closest('.sr').style.display=isPref()?'none':'';
   var gs=document.getElementById('gridSel');
   if(isPref()){
     gs.innerHTML='<option value="62.75">62,75 (½ panel)</option><option value="125.5">125,5 (1 panel)</option><option value="10">10 cm (serbest)</option>';
@@ -4873,7 +4882,7 @@ function _pngAltBilgi(c,W,H,FOOT,s){
 function hafifCeligeAktar(){
   if(!G.segs.length){alert('Önce plan çizin.');return;}
   var katYuk=+document.getElementById('katYuk').value||280;
-  var disYuk=+document.getElementById('disYuk').value||320;
+  var disYuk=isPref()?katYuk:(+document.getElementById('disYuk').value||320);
   // Odaları rooms'tan al
   var rooms=G.rooms.map(function(room,i){
     // Segment elemanlarını bu odaya bağla (odanın içinde olan elemanlar)
@@ -4961,7 +4970,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.23',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.24',projectName,sheetInfo:clone(G.sheetInfo||{}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -4981,7 +4990,7 @@ updateStatus();
     restoring=true;
     try{
       resetInteraction();
-      G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
+      G.sheetInfo=clone(d.sheetInfo||{});G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
@@ -5809,7 +5818,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.23';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.24';syncUI();draw();
 })();
 
 </script><script>
@@ -7102,7 +7111,12 @@ window.OpeningCatalog=(function(){
   const start=length;append('xref\n0 6\n0000000000 65535 f \n');for(let i=1;i<=5;i++)append(String(offsets[i]).padStart(10,'0')+' 00000 n \n');append(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${start}\n%%EOF\n`);
   const result=new Uint8Array(length);let pos=0;for(const p of parts){result.set(p,pos);pos+=p.length;}return result;
  }
- return {wallPieces,dxf,pdf};
+ function pngDensity(input,dpi){
+  const parts=[input.slice(0,8)],u32=(b,i)=>new DataView(b.buffer,b.byteOffset,b.byteLength).getUint32(i),chunk=new Uint8Array(21),view=new DataView(chunk.buffer);view.setUint32(0,9);chunk.set([112,72,89,115],4);view.setUint32(8,Math.round(dpi/0.0254));view.setUint32(12,Math.round(dpi/0.0254));chunk[16]=1;let crc=0xffffffff;for(const byte of chunk.slice(4,17)){crc^=byte;for(let j=0;j<8;j++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}view.setUint32(17,(crc^0xffffffff)>>>0);
+  for(let i=8;i<input.length;){const n=u32(input,i),type=String.fromCharCode(...input.slice(i+4,i+8));if(i+n+12>input.length)throw Error('PNG verisi eksik.');if(type!=='pHYs')parts.push(input.slice(i,i+n+12));if(type==='IHDR')parts.push(chunk);i+=n+12;}
+  const out=new Uint8Array(parts.reduce((a,b)=>a+b.length,0));let pos=0;for(const p of parts){out.set(p,pos);pos+=p.length;}return out;
+ }
+ return {wallPieces,dxf,pdf,pngDensity};
 });
 
 </script><script>
@@ -7156,13 +7170,47 @@ window.OpeningCatalog=(function(){
 })();
 
 </script><script>
+/* Shared PDF/PNG title block. Logo is embedded in the project, never fetched. */
+(function(){
+ 'use strict';
+ const images=new Map(),fields=[['company','Firma'],['customer','Müşteri'],['projectNo','Proje no'],['location','Proje yeri / adres'],['drawnBy','Çizen'],['checkedBy','Kontrol eden'],['date','Tarih'],['revision','Revizyon'],['sheetNo','Pafta no'],['title','Pafta başlığı'],['contact','Firma iletişim'],['notes','Proje notu']];
+ async function ready(info){const url=info.logo?.join('');if(!url)return;if(images.has(url))return images.get(url);const image=new Image();image.src=url;await image.decode();if(!image.width||!image.height)throw Error('Logo açılamadı.');images.set(url,image);return image;}
+ async function importLogo(file){if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>5*1024*1024)throw Error('Logo PNG, JPG veya WebP olmalı; en fazla 5 MB.');const url=URL.createObjectURL(file);try{const img=new Image();img.src=url;await img.decode();if(img.width>8000||img.height>8000)throw Error('Logo boyutu çok büyük.');const s=Math.min(1,600/img.width,220/img.height),c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*s));c.height=Math.max(1,Math.round(img.height*s));c.getContext('2d').drawImage(img,0,0,c.width,c.height);const data=c.toDataURL('image/png');if(data.length>320000)throw Error('Logo çok ayrıntılı; daha sade veya küçük bir görsel seçin.');return data.match(/.{1,8000}/g);}finally{URL.revokeObjectURL(url);}}
+ function paint(c,l,info){
+  const px=96/25.4,x=12,y=l.h-82,w=l.w-24,ink='#223946',muted='#647883',edge='#bdcbd0';c.save();c.scale(px,px);c.translate(x,y);c.textAlign='left';c.textBaseline='top';c.lineWidth=.2;
+  function text(value,x,y,width,size=2.7,lines=1,bold=false,color=ink){c.font=(bold?'600 ':'')+size+'px sans-serif';c.fillStyle=color;const words=String(value||'—').replace(/[\r\n]+/g,' ').split(/\s+/);let rows=[],line='';for(const word of words){if(line&&c.measureText(line+' '+word).width>width){rows.push(line);line=word;}else line+=(line?' ':'')+word;}if(line)rows.push(line);if(rows.length>lines)rows=rows.slice(0,lines).map((s,i)=>i===lines-1?s+'…':s);rows.forEach((s,i)=>{while(c.measureText(s).width>width&&s.length>1)s=s.slice(0,-2)+'…';c.fillText(s,x,y+i*size*1.25);});}
+  function rect(x,y,w,h,bg){if(bg){c.fillStyle=bg;c.fillRect(x,y,w,h);}c.strokeStyle=edge;c.strokeRect(x,y,w,h);}
+  function cell(label,value,x,y,w,h){rect(x,y,w,h);text(label.toLocaleUpperCase('tr-TR'),x+2.5,y+1.7,w-5,1.8,1,false,muted);text(value,x+2.5,y+5,w-5,2.55,h>=13?2:1,true);}
+  rect(0,0,w,70,'#ffffff');rect(0,0,w,19,'#eef4f3');c.fillStyle='#287565';c.fillRect(0,0,w,.8);
+  const logoW=Math.min(70,w*.26),metaW=35,titleW=w-logoW-metaW,url=info.logo?.join(''),img=url&&images.get(url);
+  if(url&&!img){c.restore();throw Error('Logo hazırlanıyor; çıktı ekranını yeniden açın.');}
+  if(img){const s=Math.min((logoW-7)/img.width,12/img.height);c.drawImage(img,3.5+(logoW-7-img.width*s)/2,2,img.width*s,img.height*s);text(info.company||'PREFABRİKTEN',3.5,15,logoW-7,1.9,1,true);}else{text(info.company||'PREFABRİKTEN',3.5,5,logoW-7,3.6,2,true);}
+  text(info.title||'Kat planı',logoW+3,3,titleW-6,3.6,1,true);text(Studio.state().projectName,logoW+3,9,titleW-6,2.6,2);cell('Pafta / ölçek',(info.sheetNo||'A-01')+'  ·  1:'+l.scale,w-metaW,1,metaW,18);
+  let cy=19;const widths=[.35,.4,.25];let cx=0;[['Müşteri',info.customer],['Proje yeri',info.location],['Proje no',info.projectNo]].forEach(([k,v],i)=>{cell(k,v,cx,cy,w*widths[i],12);cx+=w*widths[i];});
+  cy+=12;const date=/^\d{4}-\d{2}-\d{2}$/.test(info.date||'')?info.date.split('-').reverse().join('.'):info.date;[['Tarih',date],['Çizen',info.drawnBy],['Kontrol eden',info.checkedBy],['Revizyon',info.revision]].forEach(([k,v],i)=>cell(k,v,w*i/4,cy,w/4,11));
+  cy+=11;const d=Studio.state(),fmt=n=>Number(n).toLocaleString('tr-TR',{maximumFractionDigits:1}),closed=G.rooms.filter(r=>r.tip!=='veranda').reduce((a,r)=>a+r.area,0),ver=G.rooms.filter(r=>r.tip==='veranda').reduce((a,r)=>a+r.area,0);
+  const type=(d.sistem==='prefabrik'?'Prefabrik':'Hafif çelik'),height=d.sistem==='prefabrik'?'Duvar '+fmt(d.ky)+' cm':'Kat '+fmt(d.ky)+' / dış '+fmt(d.dy)+' cm';
+  [['Yapı sistemi',type],['Yükseklik / duvar',height+(d.sistem==='prefabrik'?' · Dış '+fmt(d.opt.dis)+' / iç '+fmt(d.opt.ic)+' cm':'')],['Kapalı alan · aks',fmt(closed)+' m²'],['Veranda · aks',fmt(ver)+' m²']].forEach(([k,v],i)=>cell(k,v,w*i/4,cy,w/4,15));
+  cy+=15;text(info.notes||'Kat planı',3,cy+2,w-45,2.3,2);text(info.contact,3,cy+8,w-45,1.9,1,false,muted);text(l.paper+' · '+(l.orientation==='portrait'?'Dikey':'Yatay')+' · Ölçüler cm',w-42,cy+2,39,1.9);text('PDF yazdırma: %100 / Gerçek boyut',w-42,cy+6,39,1.6);
+  c.restore();
+ }
+ window.TitleBlock={fields,ready,importLogo,paint,height:70};
+})();
+
+</script><script>
 /* Plan-only export. No cloud dependency and no changes to the saved model. */
 (function(){
  'use strict';
  const $=id=>document.getElementById(id),PX=96/25.4,PAPERS={A4:[210,297],A3:[297,420],A2:[420,594],A1:[594,841],A0:[841,1189]};let format='pdf';
  const dialog=document.createElement('dialog');dialog.id='planExportDialog';dialog.style.cssText='background:#192334;color:#d6e6ef;border:1px solid #40566b;border-radius:12px;padding:24px;width:560px;max-width:90vw;max-height:90vh;overflow:auto';
  dialog.innerHTML='<form><h3 id="exportTitle">Plan çıktısı</h3><div id="exportPdfOptions" style="display:flex;gap:12px"><label>Kâğıt<select id="exportPaper"><option>A4</option><option selected>A3</option><option>A2</option><option>A1</option><option>A0</option></select></label><label>Yön<select id="exportOrientation"><option value="portrait" selected>Dikey</option><option value="landscape">Yatay</option></select></label><label>Ölçek<select id="exportScale"><option value="20">1:20</option><option value="50" selected>1:50</option><option value="100">1:100</option><option value="200">1:200</option></select></label></div><p id="exportDescription"></p><p id="exportStatus" role="status"></p><img id="exportPreview" alt="PDF sayfa önizlemesi" style="width:100%;max-height:310px;object-fit:contain;background:#fff"><p style="font-size:12px">Seçili görünüm filtreleri kullanılır. H, U ve köşe bağlantıları korunur. Kat planı çıktısıdır; 3B model veya imalat onayı değildir.</p><button class="sib" id="exportSubmit" type="submit">İndir</button><button class="sib" id="exportCancel" type="button">Vazgeç</button></form>';
- document.body.append(dialog);dialog.querySelectorAll('select').forEach(el=>el.style.cssText='display:block;padding:8px;margin:6px 0;background:#101b29;color:#d6e6ef');
+ document.body.append(dialog);dialog.style.width='960px';dialog.style.margin='auto';
+ $('exportPdfOptions').insertAdjacentHTML('afterend','<div id="sheetOptions"><label><input id="exportAntet" type="checkbox" checked> Antetli çıktı</label><details id="sheetFields"><summary>Logo, müşteri ve proje bilgileri</summary><div id="sheetInputs" class="sheet-inputs"></div><label>Logo seç (PNG / JPG / WebP)<input id="sheetLogo" type="file" accept="image/png,image/jpeg,image/webp"></label><button id="sheetLogoRemove" type="button" class="sib">Logoyu kaldır</button><p>Logo yoksa firma adı kullanılır. Bilgiler ve logo JSON proje kaydında taşınır.</p><button id="sheetSave" type="button" class="sib">Bilgileri projeye kaydet</button></details><div id="orientationPreviews" class="orientation-previews"></div></div>');
+ for(const [key,label] of TitleBlock.fields){const el=document.createElement('label');el.textContent=label;const input=document.createElement('input');input.id='sheet-'+key;input.type=key==='date'?'date':'text';input.maxLength=240;el.append(input);$('sheetInputs').append(el);}
+ $('exportOrientation').insertAdjacentHTML('afterbegin','<option value="auto">Otomatik öneri</option>');$('exportOrientation').value='auto';$('exportScale').insertAdjacentHTML('afterbegin','<option value="auto">En uygun ölçek</option>');$('exportScale').value='auto';
+ dialog.querySelectorAll('select,input:not([type=checkbox]):not([type=file])').forEach(el=>el.style.cssText='display:block;width:100%;box-sizing:border-box;padding:8px;margin:6px 0;background:#101b29;color:#d6e6ef;border:1px solid #40566b;border-radius:5px');
+ let draft={},dirty=false,refreshTimer,refreshId=0;
+ exportPreview.style.maxHeight='520px';exportPreview.style.cursor='zoom-in';exportPreview.title='Büyütmek / küçültmek için tıklayın';exportPreview.onclick=()=>{const large=exportPreview.style.maxHeight==='none';exportPreview.style.maxHeight=large?'520px':'none';};
  for(const [type,label] of [['pdf','PDF çıktı'],['dxf','DXF çıktı']]){const b=document.createElement('button');b.id='export-'+type;b.className='tb';b.textContent=label;b.onclick=()=>open(type);document.querySelector('.header-actions').append(b);}
  function render(target,s,pan={x:0,y:0}){
   const save={zoom:G.zoom,pan:G.pan,secili:G.secili,seciliTip:G.seciliTip,selSegs:G.selSegs,selPanels:G.selPanels,wallDrag:G.wallDrag,lblDrag:G.lblDrag,drawing:G.drawing,snapPt:G.snapPt},old={ctx,TH,DIM};
@@ -7171,33 +7219,35 @@ window.OpeningCatalog=(function(){
   }finally{Object.assign(G,save);ctx=old.ctx;TH=old.TH;DIM=old.DIM;draw();}
  }
  function record(s=1){const r=PlanCanvasRecorder();render(r,s);if(!Number.isFinite(r.bounds.minX))throw Error('Önce bir plan veya metin oluşturun.');return r;}
- function layout(paper,orientation,scale){
+ function layout(paper,orientation,scale,antet=false,info=G.sheetInfo||{}){
   if(!PAPERS[paper]||![20,50,100,200].includes(scale))throw Error('Geçersiz kâğıt veya ölçek.');const [a,b]=PAPERS[paper],w=orientation==='landscape'?b:a,h=orientation==='landscape'?a:b,s=10*PX/scale;
-  const r=record(s),B=r.bounds,width=(B.maxX-B.minX)/PX,height=(B.maxY-B.minY)/PX,aw=w-24,ah=h-52;
+  const r=record(s),B=r.bounds,width=(B.maxX-B.minX)/PX,height=(B.maxY-B.minY)/PX,aw=w-24,ah=h-(antet?106:24);
   if(width>aw||height>ah)throw Error(`Plan bu sayfaya 1:${scale} ölçekte sığmıyor (${Math.ceil(width)} × ${Math.ceil(height)} mm). Daha büyük kâğıt veya 1:${scale<100?100:200} ölçek seçin.`);
-  const dpi=[300,200,150].find(d=>w*h*d*d/(25.4*25.4)<=40000000);return {paper,orientation,scale,w,h,s,dpi,bounds:B,pan:{x:(w*PX-(B.maxX-B.minX))/2-B.minX,y:20*PX+(ah*PX-(B.maxY-B.minY))/2-B.minY}};
+  const dpi=[300,200,150].find(d=>w*h*d*d/(25.4*25.4)<=40000000);return {paper,orientation,scale,w,h,s,dpi,antet,info,bounds:B,score:Math.abs(Math.log(Math.max(1,width)/Math.max(1,height)/(aw/ah))),pan:{x:(w*PX-(B.maxX-B.minX))/2-B.minX,y:12*PX+(ah*PX-(B.maxY-B.minY))/2-B.minY}};
  }
  function pageCanvas(l,dpi=l.dpi){
   const out=document.createElement('canvas'),W=l.w*PX,H=l.h*PX;out.width=Math.ceil(l.w*dpi/25.4);out.height=Math.ceil(l.h*dpi/25.4);
   if(out.width*out.height>150000000)throw Error('Bu sayfa çözünürlüğü çok büyük. Daha küçük kâğıt seçin.');
   const c=out.getContext('2d');if(!c)throw Error('Çıktı tuvali oluşturulamadı.');c.setTransform(out.width/W,0,0,out.height/H,0,0);c.fillStyle='#fff';c.fillRect(0,0,W,H);render(c,l.s,l.pan);
-  c.fillStyle='#253649';c.textAlign='left';c.textBaseline='top';c.font='bold 13px sans-serif';c.fillText('PREFABRİKTEN / PLAN STUDIO',12*PX,8*PX);
-  c.textAlign='right';c.font='11px sans-serif';c.fillText('KAT PLANI · '+l.paper+' · 1:'+l.scale,(l.w-12)*PX,8*PX);
-  c.strokeStyle='#c5ccd3';c.lineWidth=.7;c.beginPath();c.moveTo(12*PX,(l.h-27)*PX);c.lineTo((l.w-12)*PX,(l.h-27)*PX);c.stroke();
-  c.textAlign='left';c.font='bold 12px sans-serif';let title=Studio.state().projectName||'Yeni proje';while(c.measureText(title).width>(l.w-95)*PX&&title.length>1)title=title.slice(0,-2)+'…';c.fillText(title,12*PX,(l.h-23)*PX);
-  c.font='10px sans-serif';c.fillText('Ölçü yazıları: cm · Yazdırma: %100 / Gerçek boyut',12*PX,(l.h-17)*PX);c.fillText('Kat planı sunumu · İmalat onayı değildir',12*PX,(l.h-12)*PX);
-  const bar=100*l.s,x=(l.w-12)*PX-bar,y=(l.h-18)*PX;c.fillStyle='#253649';c.fillRect(x,y,bar/2,3);c.fillStyle='#bdc6cf';c.fillRect(x+bar/2,y,bar/2,3);c.strokeRect(x,y,bar,3);c.fillStyle='#253649';c.fillText('0',x,y+6);c.textAlign='right';c.fillText('1 m',x+bar,y+6);
+  if(l.antet)TitleBlock.paint(c,l,l.info);
   return out;
  }
  function makePdf(l){const canvas=pageCanvas(l),data=atob(canvas.toDataURL('image/jpeg',.97).split(',')[1]),bytes=Uint8Array.from(data,c=>c.charCodeAt(0));return PlanExportCore.pdf(bytes,canvas.width,canvas.height,l.w,l.h);}
  function makeDxf(){const r=record(1);return PlanExportCore.dxf([...PlanExportCore.wallPieces(Studio.state()),...r.items]);}
  function download(data,ext,mime){const name=(Studio.state().projectName||'plan').replace(/[<>:"/\\|?*\x00-\x1f]/g,'_'),url=URL.createObjectURL(new Blob([data],{type:mime})),a=document.createElement('a');a.href=url;a.download=name+'.'+ext;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);}
- function chosen(){return layout($('exportPaper').value,$('exportOrientation').value,+$('exportScale').value);}
- function refresh(){try{if(format==='pdf'){const l=chosen();$('exportPreview').src=pageCanvas(l,72).toDataURL('image/png');$('exportPreview').hidden=false;$('exportStatus').textContent=`${l.w} × ${l.h} mm · 1:${l.scale} · ${l.dpi} dpi · Tek sayfa`;}else{record(1);$('exportPreview').hidden=true;$('exportStatus').textContent='1:1 model · 1 birim = 1 mm · Yazılı ölçüler cm olarak korunur.';}$('exportSubmit').disabled=false;}catch(e){$('exportPreview').hidden=true;$('exportStatus').textContent=e.message;$('exportSubmit').disabled=true;}}
- function open(type){format=type;$('exportTitle').textContent=type==='pdf'?'Ölçekli PDF plan çıktısı':'AutoCAD için DXF çıktısı';$('exportPdfOptions').hidden=type!=='pdf';$('exportPdfOptions').style.display=type==='pdf'?'flex':'none';$('exportDescription').textContent=type==='pdf'?'PDF, yüksek çözünürlüklü plan görseli içerir. Yazdırırken %100 / Gerçek boyut seçin; sayfaya sığdır seçeneğini kapatın.':'Düzenlenebilir 2B çizgiler ve yazılar, ayrı katmanlarda kaydedilir. Ölçüler çizgi/yazıdır; eğriler çoklu çizgidir. Bu dosya DWG değildir; AutoCAD’de açıp DWG olarak kaydedebilirsiniz.';refresh();dialog.showModal();}
- dialog.querySelectorAll('select').forEach(el=>el.onchange=refresh);$('exportCancel').onclick=()=>dialog.close();
- dialog.querySelector('form').onsubmit=e=>{e.preventDefault();try{if(format==='pdf')download(makePdf(chosen()),'pdf','application/pdf');else download(makeDxf(),'dxf','application/dxf');dialog.close();Studio.toast(format.toUpperCase()+' çıktısı hazırlandı.');}catch(err){$('exportStatus').textContent=err.message;Studio.toast(err.message,true);}};
- window.PlanExport={open,record,layout,pageCanvas,makePdf,makeDxf};
+ function recommend(paper,orientation='auto',scale='auto',antet=true,info={}){const candidates=[];for(const dir of orientation==='auto'?['portrait','landscape']:[orientation])for(const value of scale==='auto'?[20,50,100,200]:[+scale]){try{candidates.push(layout(paper,dir,value,antet,info));break;}catch(e){if(!/sığmıyor/.test(e.message))throw e;}}if(!candidates.length)throw Error('Plan seçili kâğıda sığmıyor. Daha büyük kâğıt veya daha küçük ölçek seçin.');return candidates.sort((a,b)=>a.scale-b.scale||a.score-b.score)[0];}
+ function readFields(){for(const [key] of TitleBlock.fields)draft[key]=$('sheet-'+key).value;return structuredClone(draft);}
+ function chosen(dir=$('exportOrientation').value){return recommend($('exportPaper').value,dir,$('exportScale').value,$('exportAntet').checked,readFields());}
+ async function refresh(){const id=++refreshId;$('exportSubmit').disabled=true;try{if(format!=='dxf'){await TitleBlock.ready(readFields());if(id!==refreshId)return;const l=chosen();$('exportPreview').src=pageCanvas(l,72).toDataURL('image/png');$('exportPreview').hidden=false;$('exportStatus').textContent=`${l.antet?'Antetli':'Antetsiz'} · ${l.orientation==='portrait'?'Dikey':'Yatay'} · ${l.w} × ${l.h} mm · 1:${l.scale} · ${l.dpi} dpi`;$('orientationPreviews').replaceChildren();for(const dir of ['portrait','landscape']){const button=document.createElement('button');button.type='button';button.className='orientation-card';button.setAttribute('aria-pressed',String(l.orientation===dir));try{const alt=chosen(dir),image=document.createElement('img');image.src=pageCanvas(alt,40).toDataURL('image/png');image.alt=dir==='portrait'?'Dikey yerleşim':'Yatay yerleşim';button.append(image,document.createTextNode((dir==='portrait'?'Dikey':'Yatay')+' · 1:'+alt.scale+(l.orientation===dir?' · Seçili':'')));button.onclick=()=>{$('exportOrientation').value=dir;refresh();};}catch{button.textContent=(dir==='portrait'?'Dikey':'Yatay')+' · Sığmıyor';button.disabled=true;}$('orientationPreviews').append(button);}}else{record(1);$('exportPreview').hidden=true;$('exportStatus').textContent='1:1 model · 1 birim = 1 mm · Yazılı ölçüler cm olarak korunur.';}$('exportSubmit').disabled=false;}catch(e){if(id!==refreshId)return;$('exportPreview').hidden=true;$('exportStatus').textContent=e.message;$('exportSubmit').disabled=true;}}
+ async function open(type){format=type;dirty=false;draft=structuredClone(G.sheetInfo||{});const defaults={company:'PREFABRİKTEN',date:new Date().toLocaleDateString('sv-SE'),title:'Kat planı',sheetNo:'A-01'};for(const [key] of TitleBlock.fields)$('sheet-'+key).value=draft[key]??defaults[key]??'';$('sheetLogo').value='';$('exportTitle').textContent=type==='dxf'?'AutoCAD için DXF çıktısı':type.toUpperCase()+' · Antet ve sayfa düzeni';$('sheetOptions').hidden=type==='dxf';$('exportPdfOptions').style.display=type==='dxf'?'none':'flex';$('exportDescription').textContent=type==='dxf'?'Düzenlenebilir 2B çizgiler/yazılar; geometri mm, ölçü etiketleri cm. Antet DXF içine eklenmez.':'Dikey ve yatay yerleşimleri karşılaştırın. Otomatik öneri, sığan en büyük standart ölçeği seçer. PDF’de %100 / Gerçek boyut kullanın. PNG’nin kâğıt ölçeği, tam seçili kâğıt boyutunda basıldığında geçerlidir.';dialog.showModal();await refresh();}
+ function saveInfo(){if(!dirty)return true;const info=readFields();try{PlanProject.validate({...Studio.state(),sheetInfo:info});if(!Studio.edit(()=>{G.sheetInfo=info;}))return false;dirty=false;return true;}catch(e){Studio.toast(e.message,true);return false;}}
+ dialog.querySelectorAll('select').forEach(el=>el.onchange=refresh);$('exportAntet').onchange=refresh;for(const [key] of TitleBlock.fields)$('sheet-'+key).oninput=()=>{dirty=true;clearTimeout(refreshTimer);refreshTimer=setTimeout(refresh,180);};
+ $('sheetSave').onclick=()=>{if(saveInfo())Studio.toast('Antet bilgileri projeye kaydedildi. İki bilgisayar için JSON kaydınızı da alın.');};
+ $('sheetLogo').onchange=async e=>{const file=e.target.files[0];if(!file)return;const active=draft;$('exportSubmit').disabled=true;try{const logo=await TitleBlock.importLogo(file);if(active!==draft||!dialog.open)return;draft.logo=logo;dirty=true;await refresh();}catch(err){$('exportStatus').textContent=err.message;}};
+ $('sheetLogoRemove').onclick=()=>{delete draft.logo;dirty=true;$('sheetLogo').value='';refresh();};$('exportCancel').onclick=()=>{refreshId++;dialog.close();};
+ dialog.querySelector('form').onsubmit=async e=>{e.preventDefault();$('exportSubmit').disabled=true;try{if(format==='dxf')download(makeDxf(),'dxf','application/dxf');else{await TitleBlock.ready(readFields());const l=chosen();if(format==='pdf')download(makePdf(l),'pdf','application/pdf');else{const canvas=pageCanvas(l);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('PNG oluşturulamadı.');download(PlanExportCore.pngDensity(new Uint8Array(await blob.arrayBuffer()),l.dpi),'png','image/png');}saveInfo();}refreshId++;dialog.close();Studio.toast(format.toUpperCase()+' çıktısı hazırlandı.');}catch(err){$('exportStatus').textContent=err.message;Studio.toast(err.message,true);$('exportSubmit').disabled=false;}};
+ window.pngIndir=()=>open('png');
+ window.PlanExport={open,record,layout,pageCanvas,makePdf,makeDxf,recommend};
 })();
 
 </script></body></html>

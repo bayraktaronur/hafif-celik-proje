@@ -45,5 +45,10 @@
   const start=length;append('xref\n0 6\n0000000000 65535 f \n');for(let i=1;i<=5;i++)append(String(offsets[i]).padStart(10,'0')+' 00000 n \n');append(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${start}\n%%EOF\n`);
   const result=new Uint8Array(length);let pos=0;for(const p of parts){result.set(p,pos);pos+=p.length;}return result;
  }
- return {wallPieces,dxf,pdf};
+ function pngDensity(input,dpi){
+  const parts=[input.slice(0,8)],u32=(b,i)=>new DataView(b.buffer,b.byteOffset,b.byteLength).getUint32(i),chunk=new Uint8Array(21),view=new DataView(chunk.buffer);view.setUint32(0,9);chunk.set([112,72,89,115],4);view.setUint32(8,Math.round(dpi/0.0254));view.setUint32(12,Math.round(dpi/0.0254));chunk[16]=1;let crc=0xffffffff;for(const byte of chunk.slice(4,17)){crc^=byte;for(let j=0;j<8;j++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}view.setUint32(17,(crc^0xffffffff)>>>0);
+  for(let i=8;i<input.length;){const n=u32(input,i),type=String.fromCharCode(...input.slice(i+4,i+8));if(i+n+12>input.length)throw Error('PNG verisi eksik.');if(type!=='pHYs')parts.push(input.slice(i,i+n+12));if(type==='IHDR')parts.push(chunk);i+=n+12;}
+  const out=new Uint8Array(parts.reduce((a,b)=>a+b.length,0));let pos=0;for(const p of parts){out.set(p,pos);pos+=p.length;}return out;
+ }
+ return {wallPieces,dxf,pdf,pngDensity};
 });

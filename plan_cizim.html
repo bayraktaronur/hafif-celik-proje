@@ -13,7 +13,7 @@
       <div class="sb-t">Proje ayarları</div>
       <div class="sr"><span class="sl">Kat yük. (cm)</span><input class="si" type="number" id="katYuk" value="280"></div>
       <div class="sr"><span class="sl">Dış yük. (cm)</span><input class="si" type="number" id="disYuk" value="320"></div>
-      <div class="sr"><span class="sl">Alçıpan fire %</span><input class="si" type="number" id="fireYuzde" value="10" onchange="Studio.projectField('fire',this.value)"></div>
+
       <button class="sib" id="dimRestore" style="display:none;margin-top:6px" onclick="dimHepsiniGeriGetir()">↺ Ölçüleri sıfırla</button>
     </div>
     <div class="sb" id="sbSel" style="display:none">
@@ -137,6 +137,7 @@
 <div class="mbg" id="mbgMet">
   <div class="modal" style="min-width:460px;max-width:620px;max-height:82vh;display:flex;flex-direction:column">
     <h3>📋 Metraj Listesi</h3>
+          <div class="sr"><span class="sl">Alçıpan fire %</span><input class="si" type="number" id="fireYuzde" value="10" onchange="Studio.projectField('fire',this.value);metrajAc()"></div>
     <div id="metrajIc" style="overflow:auto;flex:1"></div>
     <div class="mbtns" style="margin-top:10px">
       <button class="mok" onclick="metrajCSV()">⬇ Excel (CSV)</button>
@@ -177,4 +178,4 @@
   </div>
 </div>
 
-<link rel="stylesheet" href="src/prefab.css"><link rel="stylesheet" href="src/roof.css"><script src="src/roof-core.js"></script><script src="src/furniture-catalog.js"></script><script src="src/project.js"></script><script src="src/engine.js"></script><script src="src/studio.js"></script><script src="src/prefab.js"></script><script src="src/modular.js"></script><script src="src/opening-catalog.js"></script><script src="src/windows.js"></script><script src="src/fixtures.js"></script><script src="src/counter-cut.js"></script><script src="src/kitchen.js"></script><script src="src/roof.js"></script><script src="src/roof-workflow.js"></script><script src="src/view-filters.js"></script><script src="src/room-picker.js"></script><script src="src/furniture-layout.js"></script><script src="src/furniture-ui.js"></script><script src="src/text-notes.js"></script><script src="src/veranda-core.js"></script><script src="src/veranda-ui.js"></script><script src="src/plan-clipboard-core.js"></script><script src="src/plan-clipboard-ui.js"></script><script src="src/export-core.js"></script><script src="src/export-recorder.js"></script><script src="src/plan-export.js"></script></body></html>
+<link rel="stylesheet" href="src/prefab.css"><link rel="stylesheet" href="src/roof.css"><script src="src/roof-core.js"></script><script src="src/furniture-catalog.js"></script><script src="src/project.js"></script><script src="src/engine.js"></script><script src="src/studio.js"></script><script src="src/prefab.js"></script><script src="src/modular.js"></script><script src="src/opening-catalog.js"></script><script src="src/windows.js"></script><script src="src/fixtures.js"></script><script src="src/counter-cut.js"></script><script src="src/kitchen.js"></script><script src="src/roof.js"></script><script src="src/roof-workflow.js"></script><script src="src/view-filters.js"></script><script src="src/room-picker.js"></script><script src="src/furniture-layout.js"></script><script src="src/furniture-ui.js"></script><script src="src/text-notes.js"></script><script src="src/veranda-core.js"></script><script src="src/veranda-ui.js"></script><script src="src/plan-clipboard-core.js"></script><script src="src/plan-clipboard-ui.js"></script><script src="src/export-core.js"></script><script src="src/export-recorder.js"></script><script src="src/title-block.js"></script><script src="src/plan-export.js"></script></body></html>

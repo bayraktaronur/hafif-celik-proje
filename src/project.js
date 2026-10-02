@@ -77,6 +77,9 @@
     if(d.catiYon&&!['yatay','dikey'].includes(d.catiYon))fail('Makas yönü geçersiz.');
     d.catiYon=d.catiYon||'yatay';
     d.projectName=typeof d.projectName==='string'?d.projectName.slice(0,100):'İçe aktarılan proje';
+    const sheet=d.sheetInfo||{};if(typeof sheet!=='object'||Array.isArray(sheet))fail('Antet bilgileri geçersiz.');d.sheetInfo={};
+    for(const k of ['company','customer','location','projectNo','drawnBy','checkedBy','revision','date','sheetNo','title','notes','contact'])if(sheet[k]!==undefined){if(typeof sheet[k]!=='string'||sheet[k].length>240)fail('Antet alanı çok uzun veya geçersiz: '+k);d.sheetInfo[k]=sheet[k];}
+    if(sheet.logo!==undefined){if(!Array.isArray(sheet.logo)||sheet.logo.length>40||sheet.logo.some(s=>typeof s!=='string'||s.length>8000)||!/^data:image\/png;base64,[A-Za-z0-9+/]+=*$/.test(sheet.logo.join('')))fail('Antet logosu geçersiz.');d.sheetInfo.logo=sheet.logo;}
     const settings=d.settings||{};d.settings={};
     if(settings.viewFilters&&typeof settings.viewFilters==='object'){
       d.settings.viewFilters={};

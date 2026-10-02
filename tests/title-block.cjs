@@ -1,0 +1,24 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{pathToFileURL}=require('node:url');let pw;try{pw=require('playwright')}catch{pw=require(path.resolve(path.dirname(process.execPath),'../node_modules/playwright'))}
+const Project=require('../src/project.js');
+(async()=>{const browser=await pw.chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{
+ const p=await browser.newPage({viewport:{width:1600,height:1100}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('dialog',d=>d.accept());await p.goto(pathToFileURL(path.resolve('dist/plan_studio.html')).href);
+ const source=JSON.parse(fs.readFileSync('cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json'));await p.evaluate(d=>Studio.loadProject(d),source);const before=await p.evaluate(()=>Studio.state());
+ assert.equal(await p.locator('#disYuk').isVisible(),false);assert.equal(await p.locator('#projectSidebar #fireYuzde').count(),0);
+ await p.evaluate(()=>metrajAc());assert.equal(await p.locator('#mbgMet #fireYuzde').isVisible(),true);await p.evaluate(()=>document.getElementById('mbgMet').classList.remove('open'));
+ await p.evaluate(()=>setSistem('celik'));assert.equal(await p.locator('#disYuk').isVisible(),true);await p.evaluate(()=>geriAl());assert.equal(await p.locator('#disYuk').isVisible(),false);assert.equal(await p.evaluate(()=>Studio.state().dy),before.dy);
+ await p.locator('#export-pdf').click();await p.locator('#sheetFields summary').click();
+ for(const [key,value] of Object.entries({company:'PREFABRİKTEN',customer:'Örnek Müşteri',projectNo:'PF-084',location:'İstanbul / Örnek proje',drawnBy:'Onur',checkedBy:'',date:'2026-10-02',revision:'R01',title:'Zemin kat planı',notes:'Müşteri yerleşim sunumu',contact:'prefabrikten.com'}))await p.locator('#sheet-'+key).fill(value);
+ const logo=await p.evaluate(()=>{const c=document.createElement('canvas');c.width=300;c.height=100;const x=c.getContext('2d');x.fillStyle='#287565';x.fillRect(0,0,90,90);x.fillStyle='#223946';x.font='bold 30px sans-serif';x.fillText('LOGO TEST',105,60);return c.toDataURL('image/png').split(',')[1];});
+ await p.locator('#sheetLogo').setInputFiles({name:'test-logo.png',mimeType:'image/png',buffer:Buffer.from(logo,'base64')});await p.waitForFunction(()=>!document.getElementById('exportSubmit').disabled);await p.locator('#sheetSave').click();
+ const saved=await p.evaluate(()=>Studio.state());assert.equal(saved.sheetInfo.customer,'Örnek Müşteri');assert.ok(saved.sheetInfo.logo.length);assert.deepEqual(saved.s,before.s);assert.equal(saved.dy,before.dy);assert.equal(saved.fire,before.fire);Project.validate(saved);
+ await p.locator('#sheetFields summary').click();await p.screenshot({path:'artifacts/export/title-dialog.png'});
+ const download=p.waitForEvent('download');await p.locator('#exportSubmit').click();await (await download).saveAs('artifacts/export/antet.pdf');
+ await p.evaluate(d=>Studio.loadProject(d),saved);assert.deepEqual(await p.evaluate(()=>Studio.state().sheetInfo),saved.sheetInfo);
+ await p.evaluate(()=>pngIndir());const png=p.waitForEvent('download');await p.locator('#exportSubmit').click();await(await png).saveAs('artifacts/export/antet.png');
+ await p.evaluate(()=>pngIndir());await p.locator('#exportAntet').uncheck();assert.ok((await p.locator('#exportStatus').textContent()).includes('Antetsiz'));const plain=p.waitForEvent('download');await p.locator('#exportSubmit').click();await(await plain).saveAs('artifacts/export/antetsiz.png');
+ const geo=await p.evaluate(()=>{const l=PlanExport.recommend('A3','auto','auto',true,G.sheetInfo);return {orientation:l.orientation,scale:l.scale,low:l.pan.y+l.bounds.maxY,top:(l.h-82)*(96/25.4)};});assert.ok(geo.low<geo.top);assert.ok([20,50,100,200].includes(geo.scale));
+ await p.evaluate(()=>PlanExport.open('pdf'));await p.locator('#sheetFields summary').click();await p.locator('#sheet-customer').fill('Vazgeçilen değişiklik');await p.locator('#exportCancel').click();assert.equal(await p.evaluate(()=>Studio.state().sheetInfo.customer),'Örnek Müşteri');
+ const bad=structuredClone(saved);bad.sheetInfo.logo=['https://example.invalid/logo.png'];assert.throws(()=>Project.validate(bad),/logo/);
+ await p.reload();await p.evaluate(d=>Studio.loadProject(d),saved);await p.evaluate(()=>PlanExport.open('pdf'));assert.equal(await p.locator('#sheet-customer').inputValue(),'Örnek Müşteri');assert.equal(await p.locator('#exportSubmit').isEnabled(),true);await p.locator('#exportCancel').click();
+ assert.deepEqual(errors,[]);console.log('PASS title block/logo persistence, cancel/reload, PDF/PNG/plain downloads, auto orientation and scale, preserved model, prefab height visibility and moved waste control');
+ }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

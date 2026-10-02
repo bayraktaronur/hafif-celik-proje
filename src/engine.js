@@ -1328,6 +1328,7 @@ function catiBtnGuncelle(){
 function makasToggle(){G.makasGoster=!G.makasGoster;catiBtnGuncelle();draw();}
 function setSistem(v,sessiz){
   G.sistem=v==='prefabrik'?'prefabrik':'celik';
+  document.getElementById('disYuk').closest('.sr').style.display=isPref()?'none':'';
   var gs=document.getElementById('gridSel');
   if(isPref()){
     gs.innerHTML='<option value="62.75">62,75 (½ panel)</option><option value="125.5">125,5 (1 panel)</option><option value="10">10 cm (serbest)</option>';
@@ -4122,7 +4123,7 @@ function _pngAltBilgi(c,W,H,FOOT,s){
 function hafifCeligeAktar(){
   if(!G.segs.length){alert('Önce plan çizin.');return;}
   var katYuk=+document.getElementById('katYuk').value||280;
-  var disYuk=+document.getElementById('disYuk').value||320;
+  var disYuk=isPref()?katYuk:(+document.getElementById('disYuk').value||320);
   // Odaları rooms'tan al
   var rooms=G.rooms.map(function(room,i){
     // Segment elemanlarını bu odaya bağla (odanın içinde olan elemanlar)

@@ -11,7 +11,7 @@
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.23',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.24',projectName,sheetInfo:clone(G.sheetInfo||{}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -31,7 +31,7 @@
     restoring=true;
     try{
       resetInteraction();
-      G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
+      G.sheetInfo=clone(d.sheetInfo||{});G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
