@@ -110,3 +110,10 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 - Kontroller: CAD özel testleri; temel31/31, PDF/DXF ve antet testleri. AutoCAD dört örnekte AUDIT0; DIMENSION/HATCH varlığı, mm geometri / cm ölçü stili. Grip ucu100mm taşınınca gösterilen ölçü10cm artar. AutoCAD PDF görsel kontrolü başarılı.
 - Tuna model nesneleri: önceki783; yeni tam193, sade139, panel191. Panel49 ayrı blok korunur. Üretim kuralları değişmedi; DEV-006/011/012 açık.
 - Rapor: analizler/2026-10-03-sade-dxf.md. Kullanıcının canlı çizimi ve takip dışı JSON korunmuştur.
+
+## 3 Ekim 2026 — Ev PC — 5.9.27 / DEV-020
+
+- HATCH sınırının oda aks poligonu olması duvarlara taşmaya neden oluyordu. Duvar şeritleri ve direk konturları plan alanından çıkarılarak kapalı net tarama döngüleri üretildi; açıklık eşiklerinde de duvar yüzünde durur. Native HATCH ve etiket boşlukları korunur.
+- Kapalı veranda dış kesik çizgisi10cm direğin dış yüzüne5cm ötelenir. Dik köşeler kesiştirilir; aynı doğrultudaki duvar/veranda geçişinde hatalı çapraz birleşme düzeltilir. Tarama direk içine girmez.
+- tests/cad-boundaries.cjs75708örnek nokta: duvar/direk çakışması0, eksik alan0; ters poligon yönünde aynı alan; üç dış kenarda5cm. CAD/PDF testleri başarılı; AutoCAD dört dosya AUDIT0 ve PDF görsel kontrolü.
+- Mevcut aks/ölçü/alan değişmedi. Sürüm5.9.27. Kullanıcı Yeni proje (11).json korunmuştur. Açık üretim işleri değişmedi.

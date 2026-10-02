@@ -43,5 +43,36 @@
   for(let i=0;i<4;i++){const a=box[i],b=box[(i+1)%4];for(let j=0;j<=16;j++)if(!ptInPolygon(a.x+(b.x-a.x)*j/16,a.y+(b.y-a.y)*j/16,polygon))return [];}
   return [box];
  }
- window.CadSymbols={dimension,joint,labelIsland};
+ function postPolygons(){
+  const out=[];
+  if(isPref())for(const b of pfAnaliz().bag)if(b.tip==='kose')out.push(...joint(b).filter(e=>e.closed).map(e=>e.points));
+  for(const n of G.nodes){const attached=G.segs.filter(s=>s.n1===n.id||s.n2===n.id);if(attached.length&&attached.every(s=>s.tip==='veranda'))out.push([[-5,-5],[5,-5],[5,5],[-5,5]].map(([x,y])=>({x:n.x+x,y:n.y+y})));}
+  return out;
+ }
+ function roomBoundary(room){
+  const nodes=room.nodeIds.map(getNode);if(nodes.some(n=>!n)||nodes.length<3)return {points:[],edges:[]};
+  const area=nodes.reduce((a,p,i)=>a+p.x*nodes[(i+1)%nodes.length].y-p.y*nodes[(i+1)%nodes.length].x,0),sign=area>=0?1:-1;
+  const edges=nodes.map((a,i)=>{const b=nodes[(i+1)%nodes.length],seg=G.segs.find(s=>(s.n1===a.id&&s.n2===b.id)||(s.n2===a.id&&s.n1===b.id));if(!seg)throw Error('Tarama sınırında eksik duvar.');const dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(L<1e-7)throw Error('Tarama sınırında sıfır uzunluk.');const offset=seg.tip==='veranda'?-5:0;return {seg,a:{x:a.x-dy/L*offset*sign,y:a.y+dx/L*offset*sign},b:{x:b.x-dy/L*offset*sign,y:b.y+dx/L*offset*sign},u:{x:dx/L,y:dy/L}};});
+  const joins=edges.map((e,i)=>{const prev=edges[(i+edges.length-1)%edges.length],den=prev.u.x*e.u.y-prev.u.y*e.u.x;if(Math.abs(den)<1e-9)return {incoming:prev.b,outgoing:e.a};const dx=e.a.x-prev.a.x,dy=e.a.y-prev.a.y,t=(dx*e.u.y-dy*e.u.x)/den,p={x:prev.a.x+prev.u.x*t,y:prev.a.y+prev.u.y*t};return {incoming:p,outgoing:p};});
+  const points=[];for(const j of joins){points.push(j.incoming);if(Math.hypot(j.incoming.x-j.outgoing.x,j.incoming.y-j.outgoing.y)>1e-7)points.push(j.outgoing);}
+  return {points,edges:edges.map((e,i)=>({seg:e.seg,a:joins[i].outgoing,b:joins[(i+1)%edges.length].incoming}))};
+ }
+ function hatchLoops(room){
+  const boundary=roomBoundary(room);if(boundary.points.length<3)return [];
+  const cuts=postPolygons();
+  // Keep the threshold clear too: hatch stops at the room-facing wall surface,
+  // independently of door/window paper masks and screen draw order.
+  for(const s of G.segs){if(s.tip==='veranda')continue;const a=getNode(s.n1),b=getNode(s.n2),L=Math.hypot(b.x-a.x,b.y-a.y);if(L<1e-7)continue;const ux=(b.x-a.x)/L,uy=(b.y-a.y)/L,h=s.k/2;cuts.push([[0,h],[L,h],[L,-h],[0,-h]].map(([t,o])=>({x:a.x+ux*t-uy*o,y:a.y+uy*t+ux*o})));}
+  const edges=CounterCut.difference(boundary.points,cuts).edges,remaining=new Set(edges),loops=[],key=p=>Math.round(p.x*1e6)+','+Math.round(p.y*1e6),starts=new Map();
+  for(const e of edges){const k=key(e.a);if(!starts.has(k))starts.set(k,[]);starts.get(k).push(e);}
+  while(remaining.size){const first=remaining.values().next().value,points=[];let e=first;for(let limit=0;limit<=edges.length;limit++){points.push(e.a);remaining.delete(e);if(key(e.b)===key(first.a))break;const next=(starts.get(key(e.b))||[]).filter(q=>remaining.has(q));if(!next.length)throw Error('Net tarama sınırı kapanmadı.');const ux=e.b.x-e.a.x,uy=e.b.y-e.a.y;next.sort((a,b)=>Math.atan2(ux*(a.b.y-a.a.y)-uy*(a.b.x-a.a.x),ux*(a.b.x-a.a.x)+uy*(a.b.y-a.a.y))-Math.atan2(ux*(b.b.y-b.a.y)-uy*(b.b.x-b.a.x),ux*(b.b.x-b.a.x)+uy*(b.b.y-b.a.y)));e=next[0];}if(points.length>=3)loops.push(points);}
+  return loops;
+ }
+ function verandaEdges(){
+  const out=[],used=new Set();for(const room of G.rooms.filter(r=>r.tip==='veranda'))for(const e of roomBoundary(room).edges)if(e.seg.tip==='veranda'&&!used.has(e.seg.id)){used.add(e.seg.id);out.push({layer:'VERANDA',points:[e.a,e.b],dashed:true});}
+  // Open veranda paths do not define an inside/outside; retain them as axes.
+  for(const s of G.segs)if(s.tip==='veranda'&&!used.has(s.id))out.push({layer:'VERANDA',points:[getNode(s.n1),getNode(s.n2)],dashed:true});
+  return out;
+ }
+ window.CadSymbols={dimension,joint,labelIsland,roomBoundary,hatchLoops,verandaEdges,postPolygons};
 })();

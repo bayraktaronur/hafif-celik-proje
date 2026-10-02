@@ -4971,7 +4971,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.26',projectName,sheetInfo:clone(G.sheetInfo||{}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.27',projectName,sheetInfo:clone(G.sheetInfo||{}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5819,7 +5819,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.26';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.27';syncUI();draw();
 })();
 
 </script><script>
@@ -7096,7 +7096,7 @@ window.OpeningCatalog=(function(){
   function emit(e,owner){
    const base=type=>put(0,type,5,next(),330,owner,100,'AcDbEntity',8,e.layer||'0',6,e.dashed?'DASHED':'CONTINUOUS');
    if(e.dimension){base('DIMENSION');const pt=(code,p)=>put(code,num(p.x*10),code+10,num(-p.y*10),code+20,0);put(100,'AcDbDimension',2,e.dimBlock);pt(10,e.q1);pt(11,e.middle);put(70,33,71,5,42,num(Math.hypot(e.p1.x-e.p0.x,e.p1.y-e.p0.y)),1,'<>',3,'PS_CM',100,'AcDbAlignedDimension');pt(13,e.p0);pt(14,e.p1);}
-   else if(e.hatch){base('HATCH');put(62,8,100,'AcDbHatch',10,0,20,0,30,0,210,0,220,0,230,1,2,e.grid?'PS_TILE':'PS_DIAGONAL',70,0,71,0,91,1+(e.holes||[]).length);for(const [index,points] of [e.points,...(e.holes||[])].entries()){put(92,index?2:3,72,0,73,1,93,points.length);for(const p of points)put(10,num(p.x*10),20,num(-p.y*10));put(97,0);}put(75,0,76,0,52,0,41,1,77,0,78,e.grid?2:1);for(const angle of e.grid?[0,90]:[45])put(53,angle,43,0,44,0,45,angle===45?-212.132034:angle===90?-300:0,46,angle===45?212.132034:angle===0?300:0,79,0);put(98,0);}
+   else if(e.hatch){base('HATCH');put(62,8,100,'AcDbHatch',10,0,20,0,30,0,210,0,220,0,230,1,2,e.grid?'PS_TILE':'PS_DIAGONAL',70,0,71,0,91,(e.loops||[e.points]).length+(e.holes||[]).length);for(const points of [...(e.loops||[e.points]),...(e.holes||[])]){put(92,2,72,0,73,1,93,points.length);for(const p of points)put(10,num(p.x*10),20,num(-p.y*10));put(97,0);}put(75,0,76,0,52,0,41,1,77,0,78,e.grid?2:1);for(const angle of e.grid?[0,90]:[45])put(53,angle,43,0,44,0,45,angle===45?-212.132034:angle===90?-300:0,46,angle===45?212.132034:angle===0?300:0,79,0);put(98,0);}
    else if(e.blockName){base('INSERT');put(100,'AcDbBlockReference',2,e.blockName,10,num(e.origin.x*10),20,num(-e.origin.y*10),30,0,41,1,42,1,43,1,50,0);}
    else if(e.text!==undefined){if(!e.text)return;base('TEXT');const x=num(e.x*10),y=num(-e.y*10);put(100,'AcDbText',10,x,20,y,30,0,40,num(e.height*10),1,escapeText(e.text),50,num(-(e.angle||0)*180/Math.PI),41,1,7,'STANDARD',72,e.align||0,11,x,21,y,31,0,100,'AcDbText',73,e.baseline||0);}
    else if(e.points?.length>=2){base('LWPOLYLINE');put(100,'AcDbPolyline',90,e.points.length,70,e.closed?1:0);for(const p of e.points)put(10,num(p.x*10),20,num(-p.y*10));}
@@ -7248,7 +7248,38 @@ window.OpeningCatalog=(function(){
   for(let i=0;i<4;i++){const a=box[i],b=box[(i+1)%4];for(let j=0;j<=16;j++)if(!ptInPolygon(a.x+(b.x-a.x)*j/16,a.y+(b.y-a.y)*j/16,polygon))return [];}
   return [box];
  }
- window.CadSymbols={dimension,joint,labelIsland};
+ function postPolygons(){
+  const out=[];
+  if(isPref())for(const b of pfAnaliz().bag)if(b.tip==='kose')out.push(...joint(b).filter(e=>e.closed).map(e=>e.points));
+  for(const n of G.nodes){const attached=G.segs.filter(s=>s.n1===n.id||s.n2===n.id);if(attached.length&&attached.every(s=>s.tip==='veranda'))out.push([[-5,-5],[5,-5],[5,5],[-5,5]].map(([x,y])=>({x:n.x+x,y:n.y+y})));}
+  return out;
+ }
+ function roomBoundary(room){
+  const nodes=room.nodeIds.map(getNode);if(nodes.some(n=>!n)||nodes.length<3)return {points:[],edges:[]};
+  const area=nodes.reduce((a,p,i)=>a+p.x*nodes[(i+1)%nodes.length].y-p.y*nodes[(i+1)%nodes.length].x,0),sign=area>=0?1:-1;
+  const edges=nodes.map((a,i)=>{const b=nodes[(i+1)%nodes.length],seg=G.segs.find(s=>(s.n1===a.id&&s.n2===b.id)||(s.n2===a.id&&s.n1===b.id));if(!seg)throw Error('Tarama sınırında eksik duvar.');const dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(L<1e-7)throw Error('Tarama sınırında sıfır uzunluk.');const offset=seg.tip==='veranda'?-5:0;return {seg,a:{x:a.x-dy/L*offset*sign,y:a.y+dx/L*offset*sign},b:{x:b.x-dy/L*offset*sign,y:b.y+dx/L*offset*sign},u:{x:dx/L,y:dy/L}};});
+  const joins=edges.map((e,i)=>{const prev=edges[(i+edges.length-1)%edges.length],den=prev.u.x*e.u.y-prev.u.y*e.u.x;if(Math.abs(den)<1e-9)return {incoming:prev.b,outgoing:e.a};const dx=e.a.x-prev.a.x,dy=e.a.y-prev.a.y,t=(dx*e.u.y-dy*e.u.x)/den,p={x:prev.a.x+prev.u.x*t,y:prev.a.y+prev.u.y*t};return {incoming:p,outgoing:p};});
+  const points=[];for(const j of joins){points.push(j.incoming);if(Math.hypot(j.incoming.x-j.outgoing.x,j.incoming.y-j.outgoing.y)>1e-7)points.push(j.outgoing);}
+  return {points,edges:edges.map((e,i)=>({seg:e.seg,a:joins[i].outgoing,b:joins[(i+1)%edges.length].incoming}))};
+ }
+ function hatchLoops(room){
+  const boundary=roomBoundary(room);if(boundary.points.length<3)return [];
+  const cuts=postPolygons();
+  // Keep the threshold clear too: hatch stops at the room-facing wall surface,
+  // independently of door/window paper masks and screen draw order.
+  for(const s of G.segs){if(s.tip==='veranda')continue;const a=getNode(s.n1),b=getNode(s.n2),L=Math.hypot(b.x-a.x,b.y-a.y);if(L<1e-7)continue;const ux=(b.x-a.x)/L,uy=(b.y-a.y)/L,h=s.k/2;cuts.push([[0,h],[L,h],[L,-h],[0,-h]].map(([t,o])=>({x:a.x+ux*t-uy*o,y:a.y+uy*t+ux*o})));}
+  const edges=CounterCut.difference(boundary.points,cuts).edges,remaining=new Set(edges),loops=[],key=p=>Math.round(p.x*1e6)+','+Math.round(p.y*1e6),starts=new Map();
+  for(const e of edges){const k=key(e.a);if(!starts.has(k))starts.set(k,[]);starts.get(k).push(e);}
+  while(remaining.size){const first=remaining.values().next().value,points=[];let e=first;for(let limit=0;limit<=edges.length;limit++){points.push(e.a);remaining.delete(e);if(key(e.b)===key(first.a))break;const next=(starts.get(key(e.b))||[]).filter(q=>remaining.has(q));if(!next.length)throw Error('Net tarama sınırı kapanmadı.');const ux=e.b.x-e.a.x,uy=e.b.y-e.a.y;next.sort((a,b)=>Math.atan2(ux*(a.b.y-a.a.y)-uy*(a.b.x-a.a.x),ux*(a.b.x-a.a.x)+uy*(a.b.y-a.a.y))-Math.atan2(ux*(b.b.y-b.a.y)-uy*(b.b.x-b.a.x),ux*(b.b.x-b.a.x)+uy*(b.b.y-b.a.y)));e=next[0];}if(points.length>=3)loops.push(points);}
+  return loops;
+ }
+ function verandaEdges(){
+  const out=[],used=new Set();for(const room of G.rooms.filter(r=>r.tip==='veranda'))for(const e of roomBoundary(room).edges)if(e.seg.tip==='veranda'&&!used.has(e.seg.id)){used.add(e.seg.id);out.push({layer:'VERANDA',points:[e.a,e.b],dashed:true});}
+  // Open veranda paths do not define an inside/outside; retain them as axes.
+  for(const s of G.segs)if(s.tip==='veranda'&&!used.has(s.id))out.push({layer:'VERANDA',points:[getNode(s.n1),getNode(s.n2)],dashed:true});
+  return out;
+ }
+ window.CadSymbols={dimension,joint,labelIsland,roomBoundary,hatchLoops,verandaEdges,postPolygons};
 })();
 
 </script>
@@ -7296,13 +7327,13 @@ window.OpeningCatalog=(function(){
  if(isPref()){
   const A=pfAnaliz();for(const r of A.runs)for(const p of r.slots){const point=(t,o)=>({x:r.ax+r.ux*t-r.uy*o,y:r.ay+r.uy*t+r.ux*o});const items=[],spans=[];if(p.acik&&p.el){const e=p.el,seg=getSeg(e.segId),a=getNode(seg.n1),b=getNode(seg.n2),L=Math.hypot(b.x-a.x,b.y-a.y),ux=(b.x-a.x)/L,uy=(b.y-a.y)/L;const project=t=>(a.x+ux*t-r.ax)*r.ux+(a.y+uy*t-r.ay)*r.uy,ends=[project(e.t*L),project(e.t*L+e.en)].sort((a,b)=>a-b);spans.push([p.a,Math.max(p.a,Math.min(p.b,ends[0]))],[Math.min(p.b,Math.max(p.a,ends[1])),p.b]);items.push(...openingItems(e));panelOpenings.add(e.id);}else spans.push([p.a,p.b]);for(const [lo,hi] of spans)if(hi-lo>.001)items.push({layer:'PANEL',closed:true,points:[point(lo,p.k/2),point(hi,p.k/2),point(hi,-p.k/2),point(lo,-p.k/2)]});if(G.pnlEtiket&&p.no&&!p.acik)items.push({layer:'PANEL_NO',text:p.no,...point((p.a+p.b)/2,0),height:Math.min(7,p.k*.65),angle:Math.atan2(r.uy,r.ux),align:1,baseline:2});block('PANEL_'+String(p.no||p.tip).replace(/[^A-Za-z0-9_]/g,'_'),items,point(p.a,0));}
   for(const b of A.bag)block('BAGLANTI_'+b.tip,CadSymbols.joint(b));
-  for(const e of PlanExportCore.wallPieces(Studio.state()).filter(e=>e.layer==='VERANDA'))block('VERANDA',[e]);
- }else for(const e of PlanExportCore.wallPieces(Studio.state()))block('DUVAR',[e]);
+  for(const e of CadSymbols.verandaEdges())block('VERANDA',[e]);
+ }else{for(const e of PlanExportCore.wallPieces(Studio.state()).filter(e=>e.layer!=='VERANDA'))block('DUVAR',[e]);for(const e of CadSymbols.verandaEdges())block('VERANDA',[e]);}
  const saved={elemanlar:G.elemanlar,fixtures:G.fixtures,counters:G.counters,annotations:G.annotations};
  try{for(const key of Object.keys(saved))G[key]=[];
   for(const [key,name] of [['elemanlar','ACIKLIK'],['fixtures','TEFRIS'],['counters','TEZGAH'],['annotations','METIN']])for(const object of saved[key]||[]){if(key==='elemanlar'&&panelOpenings.has(object.id))continue;G[key]=[object];if(key==='counters')G.fixtures=saved.fixtures;const items=capture('DONATI_METIN',()=>{if(key==='counters'){for(const edge of Kitchen.effective(object).edges){ctx.beginPath();ctx.moveTo(edge.a.x,edge.a.y);ctx.lineTo(edge.b.x,edge.b.y);ctx.stroke();}}else drawElemanlar();});block(name,items);G[key]=[];G.fixtures=[];}
  }finally{Object.assign(G,saved);}
- for(const room of G.rooms){const saved=G.rooms;let labels=[];try{G.rooms=[room];labels=capture('ODA',drawRooms).filter(e=>e.text!==undefined);block('ODA',labels);}finally{G.rooms=saved;}if(['veranda','banyo','ebanyo','wc'].includes(room.tip)){const points=room.nodeIds.map(getNode).filter(Boolean).map(p=>({x:p.x,y:p.y}));if(points.length>=3)out.push({hatch:true,grid:room.tip!=='veranda',layer:'TARAMA',points,holes:CadSymbols.labelIsland(labels,points)});}}
+ for(const room of G.rooms){const saved=G.rooms;let labels=[];try{G.rooms=[room];labels=capture('ODA',drawRooms).filter(e=>e.text!==undefined);block('ODA',labels);}finally{G.rooms=saved;}if(['veranda','banyo','ebanyo','wc'].includes(room.tip)){const loops=CadSymbols.hatchLoops(room),points=loops[0];if(points?.length>=3)out.push({hatch:true,grid:room.tip!=='veranda',layer:'TARAMA',points,loops,holes:CadSymbols.labelIsland(labels,points)});}}
  for(const n of G.nodes){const connected=G.segs.filter(s=>s.n1===n.id||s.n2===n.id);if(connected.length&&connected.every(s=>s.tip==='veranda')){const items=[10,8].map(size=>({layer:'KOSE_DIREGI',closed:true,points:[[-1,-1],[1,-1],[1,1],[-1,1]].map(([x,y])=>({x:n.x+x*size/2,y:n.y+y*size/2}))}));block('VERANDA_DIREGI',items,n);}}
  for(const [name,fn] of [['MAKAS',drawMakas],['OLCU',drawDims],['KAPLAMA',drawAlciGorsel]]){const items=capture(name,fn);if(name==='OLCU')out.push(...items);else block(name,items);}
  return out;
