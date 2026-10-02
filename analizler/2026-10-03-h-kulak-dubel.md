@@ -27,3 +27,16 @@ Sıradaki kararlar: makas altında olmayan H ve dış duvar H dübel kuralı; i�
 Kullanıcı makas altına gelmeyen dış duvar H'lerinin kulaksız–dübelli olduğunu onayladı. Mevcut makas verisinde eşleşme bulunmayan dış H için ear=false, dowel=true atanır. Makas listesi yoksa veya temas eden makasın mesneti belirsizse olumlu sınıflandırma yapılmaz. İç H hakkında ek kural varsayılmaz.
 
 Tuna kontrol planındaki önceki3 belirsiz standart H'nin2'si dış kulaksız–dübelli sınıfına geçti;1 iç H kural bekliyor. Diğer adetler aynı. Bu, eski Excel standart H kulaksız–dübelli10 adediyle uyuşmuyor; fark açık kalır. Kontrol: tests/loading-h.cjs ve tests/loading-list.cjs geçti. Model ve kaynak dosyalar değiştirilmedi.
+
+
+## 5.9.31 — İç H onayı ve güncel sonuç
+
+Kullanıcı iç H'lerin her zaman dübelsiz, makas altında kulaklı ve makas altında değilse kulaksız olduğunu onayladı. Dübel dış duvar işaretinden, kulak mevcut makas eşleşmesinden türetilir. Makas verisi yoksa veya mesnet belirsizse kulak bilinmiyor; dübel içte false/dışta true olarak kalır.
+
+| Tür | Kulaklı/dübelli | Kulaksız/dübelli | Kulaklı/dübelsiz | Kulaksız/dübelsiz |
+| --- | ---: | ---: | ---: | ---: |
+| H | 18 | 2 | 8 | 1 |
+| Üçlü H | 3 | 0 | 4 | 0 |
+| Toplam | 21 | 2 | 12 | 1 |
+
+Bunlar aynı Tuna kontrol taslağının sayımlarıdır; canlı kullanıcı planının güncel sayımları olduğu iddia edilmez. Temel kulak/dübel sınıfları artık tanımlı; önceki bölümlerdeki iç H belirsizliği bu kararla giderildi. Kaynak Excel farkları ve profil/net kesim boyu açık kalır. Sevk miktarı henüz tamamlanmış reçete değildir. tests/loading-h.cjs iç/dış dört sınıf, makas verisi yokluğu, mesnet belirsizliği ve makas değişimi; loading-list.cjs kayıt/CSV/geri alma regresyonları başarılı.

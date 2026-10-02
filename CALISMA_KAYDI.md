@@ -141,3 +141,8 @@ Kullanıcının makas altında H kulaklı, dış duvarda ayrıca dübelli kural�
 ## 3 Ekim 2026 — Ev PC — 5.9.30 / DEV-022
 
 Kullanıcı makas altına gelmeyen dış H'nin kulaksız–dübelli olduğunu doğruladı. Sınıflandırma ve yükleme açıklaması güncellendi; makas verisi yok/mesnet belirsiz koşulları kontrol bekler. Kontrol planındaki3 belirsiz H'nin2'si dış kulaksız–dübelli oldu,1 iç H bekliyor. İç dübel kuralı hâlâ açık. İki yönde sınıflandırma, açıklık dışı, veri yokluğu, mesnet belirsizliği, taşınan makas ve yükleme kayıt regresyonları geçti. Sürüm5.9.30. Canlı çizim ve kullanıcı JSON'u değiştirilmedi; diğer açık işler korunur.
+
+
+## 3 Ekim 2026 — Ev PC — 5.9.31 / DEV-022
+
+Kullanıcı iç H'nin her zaman dübelsiz, makas altında kulaklı ve makas dışında kulaksız olduğunu onayladı. Temel dört kulak/dübel sınıfı tamamlandı; mesnet/veri belirsizliği kulak için bilinmiyor kalır. Kontrol taslağı21/2/12/1 sınıf adetleri üretti (sırasıyla kulaklı-dübelli, kulaksız-dübelli, kulaklı-dübelsiz, kulaksız-dübelsiz; üçlü H dahil). tests/loading-h.cjs ve loading-list.cjs geçti. Mevcut müşteri çizimi değişmedi. Net boy/profil ve Excel farkları devam eder; sevk taslağı onaylanmış reçete değildir. Rapor: analizler/2026-10-03-h-kulak-dubel.md.

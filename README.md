@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.30
+# Prefabrikten Plan Studio · 5.9.31
+
+5.9.31: İç H dübelsizdir; makas altında kulaklı, dışında kulaksızdır. Dış H kurallarıyla dört temel sınıf tamamlandı. Makas verisi/mesneti belirsizse kulak kararı bekler; profil/net boy ve Excel uyuşmazlıkları ayrıca doğrulanmalıdır.
 
 5.9.30: Kullanıcı kuralıyla makas altına gelmeyen dış duvar H bağlantıları kulaksız–dübelli sınıflandırılır. Makas verisi/mesneti belirsizse kontrol bekler; iç duvar kuralları henüz tamamlanmadı.
 
