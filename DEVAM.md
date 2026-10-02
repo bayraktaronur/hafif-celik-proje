@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 2 Ekim 2026, ev bilgisayarı; 5.9.25 panel bazlı DXF blokları ve tek yükseklik kontrolü.
+Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.26 sade DXF, gerçek ölçü/tarama nesneleri ve CAD bağlantı sembolleri.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -15,7 +15,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.25; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Aktarım: program 5.9.26; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Aktarım: program 5.9.25; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.25**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.26**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -136,3 +136,11 @@ Bu düzen sohbetleri birleştirmez; proje bilgisinin sohbetten bağımsız taş�
 | DEV-018 | Panel bazlı DXF ve tek yükseklik ayarı | Tamamlandı: Tuna taslağında 49 panel / 49 ayrı INSERT; açıklık yanları ve sembolü panel bloğunda. Tefriş, tezgâh, metin ve bağlantılar ayrı blok. AutoCAD AUDIT iki örnekte 0 hata. [Analiz](analizler/2026-10-02-tuna84-dxf-bloklari.md). |
 
 Üretim doğrulaması DEV-006/011/012 açık kalır. Tarayıcı canlı planı değiştirilmedi. `Yeni proje (11).json` kullanıcı dosyası bu teslimde depoya eklenmedi.
+
+## 5.9.26 — Sade CAD çıktısı
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-019 | Parçalı ölçü/tarama ve köşe direklerini düzeltme | Tamamlandı: native DIMENSION/HATCH, sade/panel/ekrandaki detay seçimi, 10×5 köşe ve 10×10 veranda serbest uç direği. [Rapor](analizler/2026-10-03-sade-dxf.md), tests/cad-export.cjs ve AutoCAD kontrolleri. |
+
+Önceki DEV-018 blok aktarımı korunur. Sade görünüm varsayılandır; taramalar kutudan kapatılabilir. DIMENSION kendi uç noktasına göre güncellenir; panel bloğuna ilişkisel bağlantı kurulmuş değildir. Bağlantı çizgileri 2B plan sembolüdür; üretim profil detayının onayı değildir. DEV-006/011/012 açık. Kullanıcı canlı çizimi değişmedi, Yeni proje (11).json takip dışı korundu.

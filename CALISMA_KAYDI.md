@@ -102,3 +102,11 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 - Prefabrik yükseklik tek kontrol: Panel / duvar yüksekliği. Geri alma ve üretim yüksekliği birlikte güncellenir.
 - Kontrol: PDF/DXF testleri, title-block, prefab 77/77; AutoCAD Core Console iki DXF için AUDIT 0 hata, mm birimi. Genel testte eski dropdown sıra varsayımı yeni arayüze uyarlandı.
 - Rapor: analizler/2026-10-02-tuna84-dxf-bloklari.md. Canlı çizim ve takip dışı Yeni proje (11).json korunmuştur. DEV-006/011/012 ve içe aktarma açık kalır.
+
+## 3 Ekim 2026 — Ev PC — 5.9.26 / DEV-019
+
+- Kullanıcı parçalı ölçü/tarama ve Tuna ile uyuşmayan köşe sembollerini bildirdi. Ekran çizgilerini körlemesine bloklamak yerine ölçüler native DIMENSION, taramalar oda başına native HATCH oldu. Etiket çevresinde tarama boşluğu bırakılır.
+- Sade plan varsayılan, Panel detayı ve Ekrandaki detaylar seçenekleri eklendi; tarama ayrı seçim. Kaynak model/filtreler değişmez. H/U/köşe her modda kalır. Köşe10×5 dışa oturan kontur, veranda serbest ucunda10×10/8×8 çizim.
+- Kontroller: CAD özel testleri; temel31/31, PDF/DXF ve antet testleri. AutoCAD dört örnekte AUDIT0; DIMENSION/HATCH varlığı, mm geometri / cm ölçü stili. Grip ucu100mm taşınınca gösterilen ölçü10cm artar. AutoCAD PDF görsel kontrolü başarılı.
+- Tuna model nesneleri: önceki783; yeni tam193, sade139, panel191. Panel49 ayrı blok korunur. Üretim kuralları değişmedi; DEV-006/011/012 açık.
+- Rapor: analizler/2026-10-03-sade-dxf.md. Kullanıcının canlı çizimi ve takip dışı JSON korunmuştur.

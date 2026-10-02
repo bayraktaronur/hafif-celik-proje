@@ -2701,6 +2701,7 @@ function _dimLine(ax,ay,ux,uy,sx,sy,d0,d1,offPx,wallPx,txt,col,strong){
   var p0=toCv(ax+ux*d0,ay+uy*d0),p1=toCv(ax+ux*d1,ay+uy*d1);
   var q0={x:p0.x+sx*offPx,y:p0.y+sy*offPx},q1={x:p1.x+sx*offPx,y:p1.y+sy*offPx};
   var len=Math.hypot(q1.x-q0.x,q1.y-q0.y);if(len<3)return;
+  if(ctx.nativeDimension){ctx.nativeDimension({p0,p1,q0,q1,wallPx,txt,sx,sy});return;}
   var accent=col&&col!==DIM.txt; // kapı/pencere/seçili
   ctx.save();ctx.lineCap='round';
   // Uzatma çizgileri: duvar yüzünden 3px boşluk, ölçü çizgisini 3px geçer

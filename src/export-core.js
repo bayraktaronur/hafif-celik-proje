@@ -14,12 +14,12 @@
  function escapeText(s){return String(s).replace(/[\r\n]/g,' ').split('').map(c=>c.charCodeAt(0)>126||c==='\\'||c==='%'?'\\U+'+c.charCodeAt(0).toString(16).toUpperCase().padStart(4,'0'):c).join('');}
  function dxf(items){
   const lines=[],put=(...v)=>lines.push(...v.map(String));let handle=256;
-  const defs=items.filter(e=>e.blockName);const layers=[...new Set(['0',...items.flatMap(e=>[e.layer,...(e.items||[]).map(q=>q.layer)])])];
+  const dimensions=items.filter(e=>e.dimension);const defs=items.filter(e=>e.blockName).concat(dimensions.map((e,i)=>({blockName:e.dimBlock='*D'+(i+1),items:e.picture})));const layers=[...new Set(['0',...items.flatMap(e=>[e.layer,...(e.items||[]).map(q=>q.layer)])])];
   put(0,'SECTION',2,'HEADER',9,'$ACADVER',1,'AC1015',9,'$HANDSEED',5,'__HANDSEED__',9,'$INSUNITS',70,4,9,'$MEASUREMENT',70,1,0,'ENDSEC');
   const next=()=> (handle++).toString(16);
   const table=(name,count)=>{const h=next();put(0,'TABLE',2,name,5,h,330,0,100,'AcDbSymbolTable',70,count);return h;};
   const entry=(type,owner,sub)=>put(0,type,5,next(),330,owner,100,'AcDbSymbolTableRecord',100,sub);
-  put(0,'SECTION',2,'TABLES');for(const name of ['VPORT','VIEW','UCS']){table(name,0);put(0,'ENDTAB');}put(0,'TABLE',2,'DIMSTYLE',5,next(),330,0,100,'AcDbSymbolTable',70,0,100,'AcDbDimStyleTable',71,0,0,'ENDTAB');let owner=table('LTYPE',4);
+  put(0,'SECTION',2,'TABLES');for(const name of ['VPORT','VIEW','UCS']){table(name,0);put(0,'ENDTAB');}put(0,'TABLE',2,'DIMSTYLE',5,next(),330,0,100,'AcDbSymbolTable',70,1,100,'AcDbDimStyleTable',71,1,0,'DIMSTYLE',105,next(),100,'AcDbSymbolTableRecord',100,'AcDbDimStyleTableRecord',2,'PS_CM',70,0,40,1,41,25,42,20,44,20,140,70,144,.1,147,20,171,3,176,256,177,256,178,256,271,2,277,2,278,44,284,8,0,'ENDTAB');let owner=table('LTYPE',4);
   for(const name of ['BYBLOCK','BYLAYER','CONTINUOUS']){entry('LTYPE',owner,'AcDbLinetypeTableRecord');put(2,name,70,0,3,'Solid line',72,65,73,0,40,0);}
   entry('LTYPE',owner,'AcDbLinetypeTableRecord');put(2,'DASHED',70,0,3,'Dashed',72,65,73,2,40,120,49,70,74,0,49,-50,74,0,0,'ENDTAB');
   owner=table('LAYER',layers.length);for(const l of layers){entry('LAYER',owner,'AcDbLayerTableRecord');put(2,l,70,0,62,7,6,'CONTINUOUS',290,1,370,-3,390,'0');}put(0,'ENDTAB');
@@ -28,11 +28,13 @@
   owner=table('BLOCK_RECORD',2+defs.length);const blocks=[];for(const name of ['*Model_Space','*Paper_Space',...defs.map(e=>e.blockName)]){const h=next();blocks.push({name,h});put(0,'BLOCK_RECORD',5,h,330,owner,100,'AcDbSymbolTableRecord',100,'AcDbBlockTableRecord',2,name);}put(0,'ENDTAB',0,'ENDSEC');
   function emit(e,owner){
    const base=type=>put(0,type,5,next(),330,owner,100,'AcDbEntity',8,e.layer||'0',6,e.dashed?'DASHED':'CONTINUOUS');
-   if(e.blockName){base('INSERT');put(100,'AcDbBlockReference',2,e.blockName,10,num(e.origin.x*10),20,num(-e.origin.y*10),30,0,41,1,42,1,43,1,50,0);}
+   if(e.dimension){base('DIMENSION');const pt=(code,p)=>put(code,num(p.x*10),code+10,num(-p.y*10),code+20,0);put(100,'AcDbDimension',2,e.dimBlock);pt(10,e.q1);pt(11,e.middle);put(70,33,71,5,42,num(Math.hypot(e.p1.x-e.p0.x,e.p1.y-e.p0.y)),1,'<>',3,'PS_CM',100,'AcDbAlignedDimension');pt(13,e.p0);pt(14,e.p1);}
+   else if(e.hatch){base('HATCH');put(62,8,100,'AcDbHatch',10,0,20,0,30,0,210,0,220,0,230,1,2,e.grid?'PS_TILE':'PS_DIAGONAL',70,0,71,0,91,1+(e.holes||[]).length);for(const [index,points] of [e.points,...(e.holes||[])].entries()){put(92,index?2:3,72,0,73,1,93,points.length);for(const p of points)put(10,num(p.x*10),20,num(-p.y*10));put(97,0);}put(75,0,76,0,52,0,41,1,77,0,78,e.grid?2:1);for(const angle of e.grid?[0,90]:[45])put(53,angle,43,0,44,0,45,angle===45?-212.132034:angle===90?-300:0,46,angle===45?212.132034:angle===0?300:0,79,0);put(98,0);}
+   else if(e.blockName){base('INSERT');put(100,'AcDbBlockReference',2,e.blockName,10,num(e.origin.x*10),20,num(-e.origin.y*10),30,0,41,1,42,1,43,1,50,0);}
    else if(e.text!==undefined){if(!e.text)return;base('TEXT');const x=num(e.x*10),y=num(-e.y*10);put(100,'AcDbText',10,x,20,y,30,0,40,num(e.height*10),1,escapeText(e.text),50,num(-(e.angle||0)*180/Math.PI),41,1,7,'STANDARD',72,e.align||0,11,x,21,y,31,0,100,'AcDbText',73,e.baseline||0);}
    else if(e.points?.length>=2){base('LWPOLYLINE');put(100,'AcDbPolyline',90,e.points.length,70,e.closed?1:0);for(const p of e.points)put(10,num(p.x*10),20,num(-p.y*10));}
   }
-  put(0,'SECTION',2,'BLOCKS');for(const {name,h} of blocks){put(0,'BLOCK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockBegin',2,name,70,0,10,0,20,0,30,0,3,name,1,'');for(const e of defs.find(d=>d.blockName===name)?.items||[])emit(e,h);put(0,'ENDBLK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockEnd');}put(0,'ENDSEC');
+  put(0,'SECTION',2,'BLOCKS');for(const {name,h} of blocks){put(0,'BLOCK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockBegin',2,name,70,name.startsWith('*D')?1:0,10,0,20,0,30,0,3,name,1,'');for(const e of defs.find(d=>d.blockName===name)?.items||[])emit(e,h);put(0,'ENDBLK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockEnd');}put(0,'ENDSEC');
   put(0,'SECTION',2,'ENTITIES');for(const e of items)emit(e,blocks[0].h);
   put(0,'ENDSEC',0,'SECTION',2,'OBJECTS',0,'DICTIONARY',5,next(),330,0,100,'AcDbDictionary',281,1,0,'ENDSEC',0,'EOF');return lines.join('\r\n').replace('__HANDSEED__',handle.toString(16))+'\r\n';
  }
