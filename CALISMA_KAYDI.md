@@ -117,3 +117,7 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 - Kapalı veranda dış kesik çizgisi10cm direğin dış yüzüne5cm ötelenir. Dik köşeler kesiştirilir; aynı doğrultudaki duvar/veranda geçişinde hatalı çapraz birleşme düzeltilir. Tarama direk içine girmez.
 - tests/cad-boundaries.cjs75708örnek nokta: duvar/direk çakışması0, eksik alan0; ters poligon yönünde aynı alan; üç dış kenarda5cm. CAD/PDF testleri başarılı; AutoCAD dört dosya AUDIT0 ve PDF görsel kontrolü.
 - Mevcut aks/ölçü/alan değişmedi. Sürüm5.9.27. Kullanıcı Yeni proje (11).json korunmuştur. Açık üretim işleri değişmedi.
+
+## 3 Ekim 2026 — Ev PC — Yükleme listesi bağlantı önerisi
+
+Kullanıcının sorusu üzerine kaynak Excel salt okunur incelendi.47panel, metal kulak/dübel ayrımları, PVC sipariş ölçüleri ve alternatif tesisat sayfaları kayda alındı. Satır/ürün/nesne eşleme ve revizyonlu sevkiyat yaklaşımı önerildi; uygulama veya onaylı reçete değildir. DEV-006 devam eder. Rapor: analizler/2026-10-03-yukleme-listesi-baglanti.md. Kod ve kullanıcı planı değişmedi.

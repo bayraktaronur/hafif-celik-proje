@@ -152,3 +152,7 @@ Bu düzen sohbetleri birleştirmez; proje bilgisinin sohbetten bağımsız taş�
 | DEV-020 | Hatch duvara giriyor; veranda çizgisi direğin içinden geçiyor | Tamamlandı: duvar/direk izdüşümü taramadan çıkarılır, kapalı veranda konturu mevcut10cm direğin dış yüzüne5cm ötelenir. tests/cad-boundaries.cjs75708nokta ve AutoCAD dört örnek AUDIT0. [Rapor](analizler/2026-10-03-dxf-net-sinir.md). |
 
 Aks, ölçü, oda alanı ve kayıtlı model değişmez; değişiklik DXF gösterimidir. Açık veranda yollarında iç/dış belirsiz olduğundan aks korunur. Canlı çizim ve takip dışı kullanıcı JSON korunmuştur. DEV-006/011/012 açık.
+
+## 3 Ekim — Yükleme listesi bağlantısı / DEV-006
+
+Excel ana sayfası yeniden okundu. Panel47/çizim49 farkı açık; stok pano ile yerleştirilmiş parça ayrımı doğrulanmalı. Öneri: çizim revizyonu → malzeme/kesim reçetesi → izlenebilir yükleme satırları; önce panel/metal/kapı-PVC satır eşleme. [Öneri ve kaynak hash](analizler/2026-10-03-yukleme-listesi-baglanti.md). Henüz entegrasyon uygulanmadı, reçeteler onaylanmadı. Sürüm5.9.27 aynı.
