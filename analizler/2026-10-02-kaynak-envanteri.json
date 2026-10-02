@@ -1,0 +1,42 @@
+[
+  {
+    "source": "G:\\Drive'ım\\2025 - SİSTEM PREFABRİK\\SİPARİŞLER\\2026 - SİPARİŞLER\\09 - EYLÜL\\Sevk Edilen Siparişler\\SP - 202600185 - Tuna Pref. 84m²\\SP - 202600185 - Tuna Pref. 84m².dwg",
+    "repository_path": "referanslar/tuna-84m2/SP - 202600185 - Tuna Pref. 84m².dwg",
+    "bytes": 4012193,
+    "sha256": "7f0ac72fce090585d14e87fc77c44787c43f76e5b3eee6896a1f3c33b38465e2",
+    "verified_on": "2026-10-02",
+    "status": "Orijinal ve kopya SHA-256 eşit"
+  },
+  {
+    "source": "G:\\Drive'ım\\2025 - SİSTEM PREFABRİK\\SİPARİŞLER\\2026 - SİPARİŞLER\\09 - EYLÜL\\Sevk Edilen Siparişler\\SP - 202600185 - Tuna Pref. 84m²\\SP - 202600185 - Tuna Pref. 84m².xlsx",
+    "repository_path": "referanslar/tuna-84m2/SP - 202600185 - Tuna Pref. 84m².xlsx",
+    "bytes": 26139,
+    "sha256": "a9b2946ca5ae6476b8334016a2a3c107e1d6d0bd0d3e4f870e2f76639beb0803",
+    "verified_on": "2026-10-02",
+    "status": "Orijinal ve kopya SHA-256 eşit"
+  },
+  {
+    "source": "G:\\Drive'ım\\2025 - SİSTEM PREFABRİK\\SİPARİŞLER\\2026 - SİPARİŞLER\\09 - EYLÜL\\Sevk Edilen Siparişler\\SP - 202600185 - Tuna Pref. 84m²\\SP - 202600185 - Tuna Pref.84m² - Pvc Sipariş.pdf",
+    "repository_path": "referanslar/tuna-84m2/SP - 202600185 - Tuna Pref.84m² - Pvc Sipariş.pdf",
+    "bytes": 185180,
+    "sha256": "6068361ade970445f609bfe49680c198043f0f3948c485e8c544d22e813d12c7",
+    "verified_on": "2026-10-02",
+    "status": "Orijinal ve kopya SHA-256 eşit"
+  },
+  {
+    "source": "C:\\Users\\ONUR\\Desktop\\Drawing1.dwg",
+    "repository_path": "referanslar/tuna-84m2/Drawing1.dwg",
+    "bytes": 100184,
+    "sha256": "a671a74c3c72b67c94ea157fb4e2d65a28b51f151615c8887241f0ab7e530a55",
+    "verified_on": "2026-10-02",
+    "status": "Orijinal ve kopya SHA-256 eşit"
+  },
+  {
+    "source": "C:\\Users\\ONUR\\Downloads\\Yeni proje (5).json",
+    "repository_path": "cizimler/2026-10-02-is-kayit-5.json",
+    "bytes": 7195,
+    "sha256": "2d424c32b19d5ef7040a1642ead7d116060cc75968c1a387f0031e922a315bb3",
+    "verified_on": "2026-10-02",
+    "status": "Orijinal ve kopya SHA-256 eşit"
+  }
+]

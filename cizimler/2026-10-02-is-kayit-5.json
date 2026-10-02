@@ -1,0 +1,419 @@
+{
+  "v": "5",
+  "revision": "5.9.17",
+  "projectName": "Yeni proje",
+  "sistem": "prefabrik",
+  "catiYon": "dikey",
+  "opt": {
+    "h": 280,
+    "dis": 10,
+    "ic": 6,
+    "alciDuvar": "yok",
+    "cephe": "yok",
+    "plaka": "40x250",
+    "bindirme": 3,
+    "cepheFire": 5,
+    "cati": "besik",
+    "egim": 33,
+    "sacak": 30,
+    "trapezEn": 100,
+    "kaplama": "trapez",
+    "osb": false,
+    "catiFire": 5,
+    "suRulo": 75,
+    "suBindirme": 10,
+    "parcaBoy": 200,
+    "parcaBind": 10,
+    "vidaM2": 5,
+    "inisAralik": 10,
+    "aksAcik": false
+  },
+  "n": [
+    {
+      "id": "e70",
+      "x": 313.75,
+      "y": -313.75
+    },
+    {
+      "id": "e71",
+      "x": 313.75,
+      "y": 564.75
+    },
+    {
+      "id": "e95",
+      "x": 1202.25,
+      "y": -313.75
+    },
+    {
+      "id": "e97",
+      "x": 1202.25,
+      "y": 376.5
+    },
+    {
+      "id": "e99",
+      "x": 883.5,
+      "y": 376.5
+    },
+    {
+      "id": "e101",
+      "x": 883.5,
+      "y": 313.75
+    },
+    {
+      "id": "e105",
+      "x": 695.25,
+      "y": -313.75
+    },
+    {
+      "id": "e106",
+      "x": 695.25,
+      "y": 62.75
+    },
+    {
+      "id": "e109",
+      "x": 313.75,
+      "y": 62.75
+    },
+    {
+      "id": "e113",
+      "x": 883.5,
+      "y": -313.75
+    },
+    {
+      "id": "e114",
+      "x": 883.5,
+      "y": 62.75
+    },
+    {
+      "id": "e117",
+      "x": 1202.25,
+      "y": 62.75
+    },
+    {
+      "id": "e130",
+      "x": 695.25,
+      "y": 313.75
+    },
+    {
+      "id": "e133",
+      "x": 695.25,
+      "y": 564.75
+    }
+  ],
+  "s": [
+    {
+      "id": "e72",
+      "n1": "e70",
+      "n2": "e109",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e96",
+      "n1": "e70",
+      "n2": "e105",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "e98",
+      "n1": "e95",
+      "n2": "e117",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e100",
+      "n1": "e97",
+      "n2": "e99",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e102",
+      "n1": "e99",
+      "n2": "e101",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e107",
+      "n1": "e105",
+      "n2": "e106",
+      "k": 6,
+      "elemanlar": [],
+      "dis": false,
+      "pfSnap": true,
+      "kSabit": true
+    },
+    {
+      "id": "e108",
+      "n1": "e105",
+      "n2": "e113",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "e110",
+      "n1": "e106",
+      "n2": "e109",
+      "k": 6,
+      "elemanlar": [],
+      "dis": false,
+      "kSabit": true
+    },
+    {
+      "id": "e111",
+      "n1": "e109",
+      "n2": "e71",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e115",
+      "n1": "e113",
+      "n2": "e114",
+      "k": 6,
+      "elemanlar": [],
+      "dis": false,
+      "pfSnap": true,
+      "kSabit": true
+    },
+    {
+      "id": "e116",
+      "n1": "e113",
+      "n2": "e95",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "e118",
+      "n1": "e114",
+      "n2": "e117",
+      "k": 6,
+      "elemanlar": [],
+      "dis": false,
+      "kSabit": true
+    },
+    {
+      "id": "e119",
+      "n1": "e117",
+      "n2": "e97",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e121",
+      "n1": "e114",
+      "n2": "e101",
+      "k": 6,
+      "elemanlar": [],
+      "dis": false,
+      "kSabit": true
+    },
+    {
+      "id": "e134",
+      "n1": "e130",
+      "n2": "e133",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e135",
+      "n1": "e133",
+      "n2": "e71",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "e142",
+      "n1": "e130",
+      "n2": "e101",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pnlCfg": {
+        "dizi": [
+          57.75,
+          120.5
+        ],
+        "explicit": true
+      }
+    }
+  ],
+  "e": [
+    {
+      "id": "e144",
+      "tip_": "kapi",
+      "segId": "e142",
+      "t": 0.41434262948207173,
+      "en": 90,
+      "yuk": 210,
+      "ad": "Dış kapı",
+      "kapiYon": "ic",
+      "penTip": "surme",
+      "yan": -1,
+      "mentese": "b",
+      "kapiTip": "dis",
+      "catalogId": null,
+      "hand": "sol"
+    }
+  ],
+  "r": [
+    {
+      "id": "e112",
+      "sig": "e105,e106,e109,e70",
+      "nodeIds": [
+        "e105",
+        "e106",
+        "e109",
+        "e70"
+      ],
+      "area": 14.363475,
+      "cx": 504.5,
+      "cy": -125.5,
+      "ad": "Oda 2",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 504.5,
+      "ly": -125.5
+    },
+    {
+      "id": "e120",
+      "sig": "e113,e114,e117,e95",
+      "nodeIds": [
+        "e114",
+        "e113",
+        "e95",
+        "e117"
+      ],
+      "area": 12.0009375,
+      "cx": 1042.875,
+      "cy": -125.5,
+      "ad": "Oda 3",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 1042.875,
+      "ly": -125.5
+    },
+    {
+      "id": "e122",
+      "sig": "e101,e114,e117,e97,e99",
+      "nodeIds": [
+        "e101",
+        "e114",
+        "e117",
+        "e97",
+        "e99"
+      ],
+      "area": 10.00078125,
+      "cx": 1042.875,
+      "cy": 219.625,
+      "ad": "Oda 4",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 1042.875,
+      "ly": 219.625
+    },
+    {
+      "id": "e143",
+      "sig": "e101,e105,e106,e109,e113,e114,e130,e133,e71",
+      "nodeIds": [
+        "e113",
+        "e114",
+        "e101",
+        "e130",
+        "e133",
+        "e71",
+        "e109",
+        "e106",
+        "e105"
+      ],
+      "area": 30.9639875,
+      "cx": 613.1791341574627,
+      "cy": 194.0551220995035,
+      "ad": "Oda 1",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 527.40625,
+      "ly": 235.3125
+    }
+  ],
+  "fixtures": [],
+  "counters": [],
+  "roofs": [],
+  "roofMaterials": [],
+  "ky": 280,
+  "dy": 320,
+  "fire": 10,
+  "settings": {
+    "panelDrawMode": "mixed",
+    "trussOverrides": [],
+    "snapGrid": true,
+    "snapWall": true,
+    "pnlEtiket": true,
+    "makasGoster": true,
+    "ortho": false,
+    "panelSync": true,
+    "moveAlign": false,
+    "moveModule": false,
+    "moduleAxisSnap": true,
+    "snapTargets": {
+      "h": true,
+      "mid": true,
+      "end": true,
+      "node": false,
+      "nearest": false
+    },
+    "gridCm": 62.75,
+    "defaultK": 10,
+    "elStep": 5,
+    "freeSnapStep": 5,
+    "selectionMode": "panel",
+    "olcuModu": "panel",
+    "duvarYakala": "custom",
+    "inputUnit": "panel"
+  }
+}
