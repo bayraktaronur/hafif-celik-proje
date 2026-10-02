@@ -1,0 +1,17 @@
+{
+  "confirmed": [
+    {
+      "date": "2026-10-02",
+      "placementCm": 42.5,
+      "cutMm": 420,
+      "includes": "H allowance",
+      "incorrectSourceLabel": "415",
+      "reason": "User confirmed source annotation typo",
+      "source": "VP 537 - 166 m².dwg",
+      "rawSourceUnchanged": true
+    }
+  ],
+  "pending": [
+    "VP 523: 169 cm / 1690 mm Profilden product family versus 166 cm standard"
+  ]
+}

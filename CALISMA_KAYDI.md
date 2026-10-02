@@ -47,3 +47,13 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 - Bağımsız tarayıcı denetimi başarılı: ek üzerindeki T=H3; ortadaki T=U; merkez dışındaki T de U. Bu son davranış üretim kuralı olarak onaylanmış değildir. Taslak 49 pano, 29 H, 7 H3, 3 U, 8 köşe ve 14 uyarı veriyor; bağlantı adetleri CAD ile bağımsız doğrulanmadı.
 - Mevcut kesim tablosu yalnız genişliğe bakıyor; bağlantı/ürün ailesi kataloğu gerekli. 49 yuva/47 ürün eşlemesi, U kullanım sınırları, profil kesitleri ve makas taşıyıcı rolü açık. İki farklı üretim DWG ve varsa ilgili Excel/profil detayları sonraki kaynaklar.
 - Kod davranışı ve canlı çizim değiştirilmedi; sürüm 5.9.19. Yeni denetim betiği çalıştırıldı; uygulama testleri değişiklik olmadığı için tekrarlanmadı. Kullanıcının özgün Yeni proje (11).json dosyası kapsam dışı korunuyor.
+
+## 2 Ekim 2026 — Ev bilgisayarı — Beş imalat DWG karşılaştırması
+
+- Kullanıcının belirttiği beş G: dosyasına erişildi; yalnız bu dosyalar ortak referanslara kopyalandı ve SHA-256 eşitliği doğrulandı. AutoCAD2021 Core Console beş geçici kopyayı başarıyla okudu; kaynaklar korunuyor.
+- Ana montaj planları, ölçü yazıları, pano zincirleri ve dik yüz temasları analiz edildi. Rapor: analizler/2026-10-02-bes-imalat-karsilastirma.md. Sayısal kanıt, envanter ve beş tanısal plan önizlemesi kaydedildi. Araçlar: tools/extract-manufacturing-dwgs.ps1, tools/analyze-manufacturing-dwgs.cjs.
+- Yeni kritik kanıtlar: 42,5 yerleşime415/420 çelişkisi; Profilden169/1690;100,25/1000;103,75/1030;251/2500; dört45derece cumba kenarı yaklaşık78,7419 ve790 yazısı. Bunlar tek sabit kesim payı veya koşulsuz160→166 kuralının yeterli olmadığını gösteriyor.
+- Sekiz125,5pano orta temas adayı ve bir122,5panoda59,75konumu kaydedildi. Temas geometrisi profil türünün fiziksel onayı değildir. Sayısal dikdörtgen aday adetleri BOM olarak sunulmadı.
+- Kullanıcıya415/420 ile Profilden169/166 farkı soruldu; henüz cevap kaydedilmedi. DEV-012 uygulama/katalog ve DEV-006/011 doğrulamaları açık. Kod davranışı/canlıplan değişmedi; sürüm5.9.19. Sonraki iş kaynaklı üretimkataloğu ve karşılaştırma planlarıdır.
+
+- Kullanıcı düzeltmesi: 42,5 cm H payı dâhil yerleşim, doğru kesim 420 mm; 415 tamamen yazım hatası. Bu belirsizlik kapandı. 169/Profilden açıklaması bekleniyor; üretim kataloğuna 42,5→420 uygulanacak. Kaynak DWG değiştirilmedi.

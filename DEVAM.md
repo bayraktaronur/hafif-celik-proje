@@ -77,3 +77,13 @@ Bu düzen sohbetleri birleştirmez; proje bilgisinin sohbetten bağımsız taş�
 - Rapor: analizler/2026-10-02-uretim-kural-denetimi.md; sayısal çıktı aynı adlı .json. tools/audit-manufacturing.cjs bağımsız tarayıcıda üç T örneğini ve 49 yuvalı taslağı denetler.
 - Motor hem ortadaki hem merkez dışı T kolunu U sınıflandırıyor; bunun üretimde her konum için geçerli olduğu doğrulanmadı. Yerleşim/kesim/açıklık ölçüleri ve bağlantıya bağlı ürün kataloğu ayrılmalı. İki ek gerçek imalat DWG ve varsa kesim/profil detayları isteniyor.
 - Sonraki öncelik DEV-012 kaynaklı kural matrisi; DEV-006 ürün eşlemesi ve DEV-011 mesnet incelemesi bununla birlikte sürer. Uygulama 5.9.19; canlı plan değişmedi. Denetim, üretim onayı değildir.
+
+## 2 Ekim 2026 — Beş ek imalat örneği / DEV-012
+
+- Kullanıcı VP 537 (166 m²), 43 m², VP 517 (68 m²), VP 523 (82 m²), VP 528 (106 m²) dosyalarını programın üretim referansı olarak verdi. Beş kaynak referanslar/imalat-ornekleri/ altına hash doğrulamasıyla kopyalandı.
+- [Yeni karşılaştırma](analizler/2026-10-02-bes-imalat-karsilastirma.md); ölçü kanıtı analizler/2026-10-02-bes-imalat-geometri.json; kaynak yolları/hash analizler/2026-10-02-bes-imalat-kaynaklari.json. Ana plan önizlemeleri analizler/imalat-onizleme/ içinde.
+- Ortak tam/yarım modül 125,5/62,75; 5 ve 3 cm uç paylarıyla uyumlu farklı panolar var. VP 523'te 169 cm/1690 ve Profilden, diğerlerinde166/1660. VP 528'de eğik cumba ve251/2500. VP 537 42,5 cm yan parça415, VP517 aynı genişlik420 yazıyor: kullanıcı açıklaması bekleniyor; kesim tablosuna eklenmedi.
+- U için yalnız kesilmiş panelin geometrik ortası şartı yeterli olmayabilir: VP528'de122,5 panelde59,75 konumunda dik kol teması var; nominalmodül/3cm uç payı açıklaması aday yorum. Üretim teyidi olmadan genellenmeyecek.
+- DEV-012 karşılaştırması tamamlandı; kaynaklı ürün/bağlantı kataloğu ve motor uygulaması açık. Öncelik ürün ailesi + uç bağlantısı + yerleşim/kesim ayrımı; ardından eğik cumba ve ayrı kontrol JSON'ları. DEV-006 ve DEV-011 kapanmadı. Uygulama5.9.19, canlı çizim değişmedi.
+
+- Kullanıcı düzeltmesi: 42,5 cm H payı dâhil yerleşim, doğru kesim 420 mm; 415 tamamen yazım hatası. Bu belirsizlik kapandı. 169/Profilden açıklaması bekleniyor; üretim kataloğuna 42,5→420 uygulanacak. Kaynak DWG değiştirilmedi.
