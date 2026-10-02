@@ -38,13 +38,22 @@
   });
  }
  function checkDirection(yon){
+  if(!['yatay','dikey'].includes(yon))throw Error('Geçersiz makas yönü.');
   if(yon!==G.catiYon&&(G.trussOverrides||[]).length)throw Error('Elle taşınmış makaslar var. Ortak yönü değiştirmeden önce bunları otomatik aksa döndürün.');
-  const old=G.catiYon,keys=new Set(Modular.inspect().map(i=>i.key));
-  try{G.catiYon=yon;const issues=Modular.inspect().filter(i=>!keys.has(i.key));if(issues.length)throw Error('Bu yön mevcut panel / birleşim akslarına uymuyor. Duvarlar taşınmadı. '+issues[0].message);}
-  finally{G.catiYon=old;pfAnaliz();}
+ }
+ function setDirection(yon){
+  if(yon===G.catiYon)return;
+  // Roof production may rotate after walls have been laid out. Keep their
+  // physical joints and panels instead of regenerating them from the new axis.
+  if(isPref()){
+   const runs=pfAnaliz().runs;
+   runs.forEach(r=>{if(r.slots.length)r.owner.pnlCfg={...r.owner.pnlCfg,dizi:r.slots.map(p=>p.w),explicit:true};});
+   G.nodes.forEach(n=>{if(G.segs.some(s=>s.tip!=='veranda'&&(s.n1===n.id||s.n2===n.id)))n.koseTers=!n.koseTers;});
+  }
+  G.catiYon=yon;
  }
  function direction(yon){
-  try{checkDirection(yon);const ok=R.commit(()=>{G.catiYon=yon;synchronize();});catiBtnGuncelle();draw();return ok;}
+  try{checkDirection(yon);const ok=R.commit(()=>{setDirection(yon);synchronize();});catiBtnGuncelle();draw();if(ok){const warnings=Prefab.issues().filter(i=>i.code==='truss-support');const message='Makas yönü değiştirildi; duvarlar ve panel birleşimleri korundu.'+(warnings.length?' '+warnings.length+' duvar hattında makas / H mesnet uyumunu Plan kontrolünden inceleyin.':'');R.notice(message,!!warnings.length);Studio.toast(message,!!warnings.length);}return ok;}
   catch(e){R.notice(e.message,true);Studio.toast(e.message,true);$('roofProductionDirection').value=G.catiYon;return false;}
  }
  window.catiYonAyarla=function(yon){return direction(yon);};
@@ -141,7 +150,7 @@
   try{
    if(next.childJoin)next.childJoin.requestedSideEaves=[next.eaves[2],next.eaves[3]];
    if(z.outline){const e=Number(data.get('boundaryEave'));if(!Number.isFinite(e)||e<0||e>500)throw Error('Saçak 0–500 cm olmalı.');next.eaves=[e,e,e,e];next.edgeEaves=z.outline.map((_,i)=>z.joinEdges?.[i]?0:e);}
-   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;G.catiYon=yon;synchronize();catiBtnGuncelle();});}
+   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;setDirection(yon);synchronize();catiBtnGuncelle();});}
    if(steps&&next.childJoin)throw Error('Saplanma yönünü değiştirmek için U sınırını yeniden çizin.');
    if(steps===1&&next.production?.role==='child')next.production.relative=next.production.relative===90?0:90;
    else if(steps)next=C.turn(next,steps);

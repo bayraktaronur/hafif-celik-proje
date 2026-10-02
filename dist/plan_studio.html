@@ -4957,7 +4957,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.17',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.18',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5804,7 +5804,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.17';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.18';syncUI();draw();
 })();
 
 </script><script>
@@ -6556,13 +6556,22 @@ window.OpeningCatalog=(function(){
   });
  }
  function checkDirection(yon){
+  if(!['yatay','dikey'].includes(yon))throw Error('Geçersiz makas yönü.');
   if(yon!==G.catiYon&&(G.trussOverrides||[]).length)throw Error('Elle taşınmış makaslar var. Ortak yönü değiştirmeden önce bunları otomatik aksa döndürün.');
-  const old=G.catiYon,keys=new Set(Modular.inspect().map(i=>i.key));
-  try{G.catiYon=yon;const issues=Modular.inspect().filter(i=>!keys.has(i.key));if(issues.length)throw Error('Bu yön mevcut panel / birleşim akslarına uymuyor. Duvarlar taşınmadı. '+issues[0].message);}
-  finally{G.catiYon=old;pfAnaliz();}
+ }
+ function setDirection(yon){
+  if(yon===G.catiYon)return;
+  // Roof production may rotate after walls have been laid out. Keep their
+  // physical joints and panels instead of regenerating them from the new axis.
+  if(isPref()){
+   const runs=pfAnaliz().runs;
+   runs.forEach(r=>{if(r.slots.length)r.owner.pnlCfg={...r.owner.pnlCfg,dizi:r.slots.map(p=>p.w),explicit:true};});
+   G.nodes.forEach(n=>{if(G.segs.some(s=>s.tip!=='veranda'&&(s.n1===n.id||s.n2===n.id)))n.koseTers=!n.koseTers;});
+  }
+  G.catiYon=yon;
  }
  function direction(yon){
-  try{checkDirection(yon);const ok=R.commit(()=>{G.catiYon=yon;synchronize();});catiBtnGuncelle();draw();return ok;}
+  try{checkDirection(yon);const ok=R.commit(()=>{setDirection(yon);synchronize();});catiBtnGuncelle();draw();if(ok){const warnings=Prefab.issues().filter(i=>i.code==='truss-support');const message='Makas yönü değiştirildi; duvarlar ve panel birleşimleri korundu.'+(warnings.length?' '+warnings.length+' duvar hattında makas / H mesnet uyumunu Plan kontrolünden inceleyin.':'');R.notice(message,!!warnings.length);Studio.toast(message,!!warnings.length);}return ok;}
   catch(e){R.notice(e.message,true);Studio.toast(e.message,true);$('roofProductionDirection').value=G.catiYon;return false;}
  }
  window.catiYonAyarla=function(yon){return direction(yon);};
@@ -6659,7 +6668,7 @@ window.OpeningCatalog=(function(){
   try{
    if(next.childJoin)next.childJoin.requestedSideEaves=[next.eaves[2],next.eaves[3]];
    if(z.outline){const e=Number(data.get('boundaryEave'));if(!Number.isFinite(e)||e<0||e>500)throw Error('Saçak 0–500 cm olmalı.');next.eaves=[e,e,e,e];next.edgeEaves=z.outline.map((_,i)=>z.joinEdges?.[i]?0:e);}
-   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;G.catiYon=yon;synchronize();catiBtnGuncelle();});}
+   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;setDirection(yon);synchronize();catiBtnGuncelle();});}
    if(steps&&next.childJoin)throw Error('Saplanma yönünü değiştirmek için U sınırını yeniden çizin.');
    if(steps===1&&next.production?.role==='child')next.production.relative=next.production.relative===90?0:90;
    else if(steps)next=C.turn(next,steps);

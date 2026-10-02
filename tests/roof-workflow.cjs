@@ -26,11 +26,28 @@ let pw;try{pw=require('playwright')}catch{pw=require(path.resolve(path.dirname(p
  await page.evaluate(()=>{RoofStudio.open();RoofStudio.select(G.roofs[0].id);RoofStudio.setView('section');});await page.screenshot({path:'artifacts/roof-boundary-section.png'});await page.evaluate(()=>RoofStudio.setView('3d'));await page.screenshot({path:'artifacts/roof-boundary-3d.png'});await page.evaluate(()=>RoofStudio.setView('plan'));await page.screenshot({path:'artifacts/roof-boundary-plan.png'});
  // A production turn cannot resize an existing manufactured rectangular frame.
  await page.evaluate(()=>{Studio.loadProject({v:'5',sistem:'prefabrik',catiYon:'yatay',settings:{panelDrawMode:'mixed'},n:[{id:'a',x:0,y:0},{id:'b',x:502,y:0},{id:'c',x:502,y:512},{id:'d',x:0,y:512}],s:[['a','b'],['b','c'],['c','d'],['d','a']].map(([n1,n2],i)=>({id:'s'+i,n1,n2,k:10})),e:[],r:[]});});
- const state=await page.evaluate(()=>Studio.snapshot());assert.equal(await page.evaluate(()=>RoofWorkflow.direction('dikey')),false);assert.equal(await page.evaluate(()=>Studio.snapshot()),state);
+ const wallState=()=>page.evaluate(()=>JSON.stringify({n:G.nodes.map(({id,x,y})=>({id,x,y})),e:G.elemanlar,panels:pfAnaliz().runs.map(r=>({id:r.owner.id,s0:r.s0,s1:r.s1,slots:r.slots.map(p=>[p.a,p.b,p.w])}))}));
+ const state=await page.evaluate(()=>Studio.snapshot()),walls=await wallState();
+ assert.equal(await page.evaluate(()=>RoofWorkflow.direction('dikey')),true,await page.evaluate(()=>({issues:Modular.inspect(),notice:document.getElementById('roofNotice').textContent})));
+ assert.equal(await wallState(),walls);assert.equal(await page.evaluate(()=>G.catiYon),'dikey');
+ await page.evaluate(()=>geriAl());assert.equal(await page.evaluate(()=>Studio.snapshot()),state);
+ await page.evaluate(()=>ileriAl());assert.equal(await wallState(),walls);
+ const rotated=await page.evaluate(()=>Studio.state());await page.evaluate(d=>Studio.loadProject(d),rotated);assert.equal(await wallState(),walls);
+ assert.equal(await page.evaluate(()=>RoofWorkflow.direction('yatay')),true);assert.equal(await wallState(),walls);
  await page.evaluate(()=>{RoofStudio.open();RoofStudio.add(RoofStudio.make({x:-5,y:-5,w:512,d:522}));});
  const snap=await page.evaluate(()=>RoofWorkflow.snap({x:-4.5,y:-5.1}));near(snap.x,-5);near(snap.y,-5);assert.equal(snap.ref.nodeId,'a');
  await page.evaluate(()=>{document.getElementById('trussSelect').value='1';document.getElementById('trussPosition').value='140';Prefab.trussMove();});
  near(await page.evaluate(()=>makasAnaliz().makaslar[1].pos),140);const moved=await page.evaluate(()=>Studio.state());assert.equal(moved.settings.trussOverrides[0].zoneId,moved.roofs[0].id);await page.evaluate(d=>Studio.loadProject(d),moved);near(await page.evaluate(()=>makasAnaliz().makaslar[1].pos),140);
  await page.evaluate(()=>{RoofStudio.open();RoofWorkflow.start(false);});await page.keyboard.press('Escape');assert.equal(await page.evaluate(()=>RoofWorkflow.getDraft()),null);assert.equal(await page.locator('#roofDialog').isVisible(),true);
- assert.deepEqual(errors,[]);console.log('PASS polygon offsets, concave gable/mono/hip areas, UI closed boundary, editable eaves, joins, regional frames, synchronized direction, atomic rejection, undo, persistence and 3 views');
+ // Concave 84 m² reference outline: changing the floor-plan button must not
+ // introduce the former 10 cm panel, move openings or discard joint geometry.
+ await page.evaluate(()=>{document.getElementById('roofClose').click();const pts=[[0,0],[878.5,0],[878.5,700.25],[564.75,700.25],[564.75,637.5],[376.5,637.5],[376.5,878.5],[0,878.5]];Studio.loadProject({v:'5',sistem:'prefabrik',catiYon:'yatay',settings:{panelDrawMode:'mixed'},n:pts.map(([x,y],i)=>({id:'n'+i,x,y})),s:pts.map((_,i)=>({id:'s'+i,n1:'n'+i,n2:'n'+((i+1)%pts.length),k:10})),e:[{id:'w1',segId:'s0',tip_:'pencere',en:80,yuk:120,t:.04}],r:[]});});
+ const concave=await wallState(),oldIssues=await page.evaluate(()=>Modular.inspect().map(i=>i.key));
+ await page.click('#catiBtn');assert.equal(await page.evaluate(()=>G.catiYon),'dikey');assert.equal(await wallState(),concave);
+ assert.deepEqual(await page.evaluate(()=>Modular.inspect().map(i=>i.key)),oldIssues);
+ assert.ok(await page.evaluate(()=>Prefab.issues().some(i=>i.code==='truss-support')));
+ await page.click('#catiBtn');assert.equal(await page.evaluate(()=>G.catiYon),'yatay');assert.equal(await wallState(),concave);
+ await page.evaluate(()=>{RoofStudio.add(RoofStudio.make({x:-5,y:-5,w:888.5,d:888.5}));RoofStudio.open();});
+ await page.click('#roofTurn');assert.equal(await page.evaluate(()=>G.catiYon),'dikey');assert.equal(await wallState(),concave);assert.equal(await page.evaluate(()=>G.roofs[0].angle%180),90);
+ assert.deepEqual(errors,[]);console.log('PASS polygon offsets, roof joins, floor/roof direction preserves walls and panels, concave outline, support warnings, undo, persistence and 3 views');
 }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

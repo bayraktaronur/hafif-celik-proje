@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.17
+# Prefabrikten Plan Studio · 5.9.18
+
+5.9.18: Kat planı ve çatı planından makas yönü değiştirilirken mevcut duvar koordinatları, köşe payları, panel dizilimleri ve açıklıklar korunur. Otomatik paneller mevcut ölçüleriyle açık dizilim olarak saklanır; yön değişimi artık 10 cm gibi yeni panel artıkları üretmez. Çatı geometrisi ortak yönle güncellenir; H mesnet uyumsuzluğu Plan kontrolünde uyarılır. Elle taşınmış makasların önce otomatik aksa döndürülmesi gerekir. Dikdörtgen ve girintili plan, iki arayüz, geri/ileri alma ve JSON yeniden açma testleri eklenmiştir.
 
 5.9.16: Tefriş yerleştirme ve taşıma sırasında yakındaki ürünlerin dış kenarlarına ve merkezlerine ekran mesafesine göre hizalama eklenmiştir. Geçici kesikli kılavuzlar yalnız çalışma görünümündedir. Yerleştirme penceresi ve seçili ürün panelindeki Kenar / merkez hizalama tikiyle kapatılabilir (oturum ayarı). Alt + sürükle ürünü özgün ölçü/dönüş/aynalama bilgileriyle yeni kimlik altında kopyalar; asıl ürün korunur. Kilitli üründen alınan kopya kilitsizdir. Alt + yalnız tıklama kopya oluşturmaz; Esc vazgeçer. Sağ panelde Kopyala düğmesiyle tıklayarak yerleştirme de vardır. Shift taşımanın sabit eksenini korur. Tezgâha bağlı ilk yerleştirme ve buzdolabı arka hizalaması önceliklidir. Tek adım geri al/ileri al ve JSON kaydı test edilmiştir.
 
