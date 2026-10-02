@@ -233,3 +233,8 @@ Kontroller: tests/loading-corners.cjs10/6 nominal koruma,250/280/300cm boy,8Tuna
 Kullanıcı kararı:6cm duvar U60mm,10cm duvar U100mm. Boy=bina yüksekliği(cm)×10−60mm. Her5U'ya1yedek;3→4örneği gereği her başlayan5'li grup yukarı yuvarlanır. U yoksa yedek yok;1–5adet+1,6–10adet+2,11–15adet+3. Farklı en/boylar ayrı gruplandırılır ve her gruba ayrı yedek hesaplanır. Bu yorum kullanıcıya uygulama başında açıklandı. Çizim adedi değişmez, sevk miktarı çizim+yedek; gerekçeli manuel miktar son toplamın yerine geçer, tekrar yedek eklenmez.
 
 Tuna3adet60×2440mm+1yedek=4adet, Excel29satırı eşleşir. Yedek arayüzde ve XLSX/CSV'de ayrı görünür. Tanımsız kesit/boy otomatik hesaplanmaz. H ve köşe adetleri korunur. tests/loading-u.cjs0/1/3/5/6/10/11, ölçü grubu ayrımı, manuel ve eski karar; loading-list/H/corners ve verify-loading-xlsx başarılı. Canlı plan ve kullanıcı JSON'u korundu. U farkı kapandı; panel47/49 ve diğer üretim işleri sürer.
+
+
+## Çektirme U — son kullanıcı teyidi
+
+Kullanıcı dört maddeyi birlikte açıkça doğruladı:6'lık bağlanan duvar için60mm U;10'luk için100mm U; her iki ende boy=bina yüksekliği−60mm; her başlayan5adede1yedek ve farklı ölçüler ayrı.250cm yükseklikte60×2440 veya100×2440mm;100×2400mm kullanılmaz. Önceki açıklama sorusundaki belirsizlik kapandı. Mevcut5.9.34 hesabı doğru; kod/sürüm değişmedi. Bu karar ev/iş ortak kaydıdır.

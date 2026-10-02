@@ -171,3 +171,8 @@ Kullanıcı10'luk köşe direğinin98×98×bina yüksekliği(mm),6'lığın58×5
 ## 3 Ekim 2026 — Ev PC — 5.9.34 / DEV-024
 
 Kullanıcı U6'lık60mm/10'luk100mm, boy bina yüksekliği−60mm, her5U'ya1yedek tarifini verdi. Tuna3çizim/4Excel farkının bilinçli yedek olduğunu onayladı.3→4 örneğine göre yedek ceil(adet/5), ölçü bazında uygulandı ve kullanıcıya açıklandı. Tuna60×2440mm3+1=4; Excel29satırı otomatik eşleşir. Kullanılan/yedek/toplam ayrımı arayüz ve XLSX/CSV'de görünür. Manuel toplam tekrar yedeklenmez; kaynak değişirse kontrol ister. U sınır/grup testleri, loading-list/H/corners ve bağımsız XLSX doğrulaması geçti. Canlı çizim değişmedi. DEV-024 tamamlandı; panel stok farkı ve diğer açık işler korunur.
+
+
+## Çektirme U — son kullanıcı teyidi
+
+Kullanıcı dört maddeyi birlikte açıkça doğruladı:6'lık bağlanan duvar için60mm U;10'luk için100mm U; her iki ende boy=bina yüksekliği−60mm; her başlayan5adede1yedek ve farklı ölçüler ayrı.250cm yükseklikte60×2440 veya100×2440mm;100×2400mm kullanılmaz. Önceki açıklama sorusundaki belirsizlik kapandı. Mevcut5.9.34 hesabı doğru; kod/sürüm değişmedi. Bu karar ev/iş ortak kaydıdır.
