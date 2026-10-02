@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 2 Ekim 2026, iş bilgisayarı; kaynak aktarımı ve analiz devri.
+Son güncelleme: 2 Ekim 2026, ev bilgisayarı; iş kaynakları alındı ve doğrulandı.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -12,7 +12,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | --- | --- | --- |
 | DEV-001 | İş bilgisayarındaki AutoCAD dosyası ve analizini alma | Tamamlandı: iki DWG, Excel ve PDF kopyaları ve önceki bulgular ortak depoda; aşağıdaki rapor/envanter. |
 | DEV-002 | Güncel müşteri planını belirleme | Tarihli JSON yedeği alındı; tarayıcıdaki en son çizimle aynı olduğu doğrulanmadı. Kullanıcının son Kaydet çıktısı belirlenmeli. |
-| DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İş bilgisayarı 5c9a9d0 güncellemesini aldı; üç kayıt okundu, ilk devir kaydedildi. Yeni teslimin evde alınması sonraki oturumda doğrulanmalı. |
+| DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
 Aktarım: program 5.9.18; kaynak belgeler ve analiz kaydı ortak depoya alındı. Son canlı müşteri planının doğrulanması DEV-002 kapsamında açık.
