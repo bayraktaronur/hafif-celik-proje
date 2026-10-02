@@ -247,3 +247,8 @@ Kullanıcı dört maddeyi birlikte açıkça doğruladı:6'lık bağlanan duvar 
 | DEV-025 | Yerleştirilen panel ile sevk stok panosu ayrımı | Kural toplama/uygulama açık. Kullanıcı normal koşulda iki yarım yerine bir tam pano gönderildiğini, montajcının şantiyede kestiğini doğruladı. |
 
 Önceki “bir yarım gönderiyoruz” ifadesi kullanıcı tarafından “bir tam” olarak düzeltildi. Çizimde iki yarım panel korunmalı, sevk listesi bunların kaynak tam panosunu ayrı saymalı. Özel durumlar olabileceği kullanıcı tarafından belirtildi. Tek kalan yarımın sevki, özel boy parçaların birlikte kesimi ve malzeme uyumluluğu ayrıntıları henüz kesinleştirilmedi. Bunlar varsayılarak genel kesim optimizasyonu uygulanmamalı. Bu tur kayıt güncellemesidir;5.9.34 kodu değişmedi, pano otomatik stok hesabı henüz eklenmedi. Tuna49/47 farkı bu kural kullanılarak ayrıca doğrulanmalı; fark çözüldü denmez. Diğer açık işler ve kullanıcı çizimi korunur.
+
+
+## DEV-025 — Kesim kapsamı genişletmesi
+
+Kullanıcı aynı tam panodan şantiyede kesim uygulamasının yalnız62,5cm yarım panel için değil57,5cm ve daha kısa özel panel parçaları için de geçerli olduğunu açıkça belirtti. Kural parça adına veya yalnız yarım panel tipine bağlanmamalı; uyumlu parçaların gerçek kesim enlerinden stok pano ihtiyacı hesaplanmalı.62,5/57,5 kullanıcı örnekleridir; mevcut aks/net kesim katalog farkları bu kararla kendiliğinden değiştirilmez. Bir tam panodan üç veya daha fazla küçük parça çıkarma, tek kalan parça sevki ve kesim payı henüz açıkça tarif edilmedi. Bu tur üretim kararı kaydıdır; kod5.9.34 değişmedi. DEV-025 uygulaması ve Tuna49/47 doğrulaması açık; kullanıcı çizimi korunmuştur.

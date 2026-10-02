@@ -181,3 +181,8 @@ Kullanıcı dört maddeyi birlikte açıkça doğruladı:6'lık bağlanan duvar 
 ## 3 Ekim 2026 — Ev PC — Pano sevk kuralı / DEV-025
 
 Kullanıcı iki yarım panel yerine normal koşulda bir tam pano gönderildiğini açıkça düzelterek doğruladı; kesim montajcı tarafından şantiyede yapılır. Çizim parçası/stok pano ayrımı kayıtlı. Tek kalan yarım ve özel parça kuralları açık; uygulama ve Tuna49/47 doğrulaması devam edecek. Kod/sürüm5.9.34 değişmedi; canlı çizim ve takip dışı JSON korunmuştur.
+
+
+## DEV-025 — Kesim kapsamı genişletmesi
+
+Kullanıcı aynı tam panodan şantiyede kesim uygulamasının yalnız62,5cm yarım panel için değil57,5cm ve daha kısa özel panel parçaları için de geçerli olduğunu açıkça belirtti. Kural parça adına veya yalnız yarım panel tipine bağlanmamalı; uyumlu parçaların gerçek kesim enlerinden stok pano ihtiyacı hesaplanmalı.62,5/57,5 kullanıcı örnekleridir; mevcut aks/net kesim katalog farkları bu kararla kendiliğinden değiştirilmez. Bir tam panodan üç veya daha fazla küçük parça çıkarma, tek kalan parça sevki ve kesim payı henüz açıkça tarif edilmedi. Bu tur üretim kararı kaydıdır; kod5.9.34 değişmedi. DEV-025 uygulaması ve Tuna49/47 doğrulaması açık; kullanıcı çizimi korunmuştur.
