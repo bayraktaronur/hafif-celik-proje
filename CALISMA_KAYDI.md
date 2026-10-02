@@ -95,3 +95,10 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 - Kullanıcı kararı: prefabrik iç/dış duvar yüksekliği aynıdır; dış yükseklik alanı prefabrik modunda gizlendi, hafif çelik modunda kalır. Eski dy değerleri silinmedi; prefabrikten hafif çelik dışa aktarımında eşit kat yüksekliği kullanılır. Çatı yüksekliği bu alana bağlanmadı. Alçıpan fire yüzdesi Proje ayarları bölümünden Metraj Listesi'ne taşındı; değer ve hesap korunur.
 - Kontroller: tests/title-block.cjs logo/müşteri kaydı, JSON yeniden açma, iptal, sayfa yenileme, PDF/PNG/antetsiz indirme, otomatik yerleşim, model koruma, sistem değişimi ve fire alanı yerini doğruladı. Temel31/31, prefab77/77; metin/veranda/pano ve PDF/DXF testleri geçti. PDF bağımsız ölçek ölçümü 101,94 mm (beklenen102 mm); PNG300 dpi bilgisi doğrulandı. Dağıtım HTML üretildi. Canlı kullanıcı çizimi ve kaynak JSON dosyaları değiştirilmedi.
 - DEV-006/011/012 imalat doğrulaması, DEV-009 içe aktarma/çok kat ve diğer açık işler devam eder. Kullanıcı canlı çizimini diğer PC'ye taşımadan önce JSON olarak kaydetmelidir; antet bilgisi de bu kayda dahildir.
+
+## 2 Ekim 2026 — Ev PC — 5.9.25
+
+- Tuna DWG blokları yeniden incelendi; referans pencere bloklarının sade geometrisi esas alındı. Her model paneli ayrı DXF INSERT, açıklıklı paneller yan parçalar ve sembolle birlikte; nesne bazlı tefriş/tezgâh/metin/bağlantı blokları.
+- Prefabrik yükseklik tek kontrol: Panel / duvar yüksekliği. Geri alma ve üretim yüksekliği birlikte güncellenir.
+- Kontrol: PDF/DXF testleri, title-block, prefab 77/77; AutoCAD Core Console iki DXF için AUDIT 0 hata, mm birimi. Genel testte eski dropdown sıra varsayımı yeni arayüze uyarlandı.
+- Rapor: analizler/2026-10-02-tuna84-dxf-bloklari.md. Canlı çizim ve takip dışı Yeni proje (11).json korunmuştur. DEV-006/011/012 ve içe aktarma açık kalır.

@@ -14,7 +14,7 @@
  function escapeText(s){return String(s).replace(/[\r\n]/g,' ').split('').map(c=>c.charCodeAt(0)>126||c==='\\'||c==='%'?'\\U+'+c.charCodeAt(0).toString(16).toUpperCase().padStart(4,'0'):c).join('');}
  function dxf(items){
   const lines=[],put=(...v)=>lines.push(...v.map(String));let handle=256;
-  const layers=[...new Set(['0',...items.map(e=>e.layer)])];
+  const defs=items.filter(e=>e.blockName);const layers=[...new Set(['0',...items.flatMap(e=>[e.layer,...(e.items||[]).map(q=>q.layer)])])];
   put(0,'SECTION',2,'HEADER',9,'$ACADVER',1,'AC1015',9,'$HANDSEED',5,'__HANDSEED__',9,'$INSUNITS',70,4,9,'$MEASUREMENT',70,1,0,'ENDSEC');
   const next=()=> (handle++).toString(16);
   const table=(name,count)=>{const h=next();put(0,'TABLE',2,name,5,h,330,0,100,'AcDbSymbolTable',70,count);return h;};
@@ -25,14 +25,16 @@
   owner=table('LAYER',layers.length);for(const l of layers){entry('LAYER',owner,'AcDbLayerTableRecord');put(2,l,70,0,62,7,6,'CONTINUOUS',290,1,370,-3,390,'0');}put(0,'ENDTAB');
   owner=table('STYLE',1);entry('STYLE',owner,'AcDbTextStyleTableRecord');put(2,'STANDARD',70,0,40,0,41,1,50,0,71,0,42,2.5,3,'Arial.ttf',4,'',0,'ENDTAB');
   owner=table('APPID',1);entry('APPID',owner,'AcDbRegAppTableRecord');put(2,'ACAD',70,0,0,'ENDTAB');
-  owner=table('BLOCK_RECORD',2);const blocks=[];for(const name of ['*Model_Space','*Paper_Space']){const h=next();blocks.push({name,h});put(0,'BLOCK_RECORD',5,h,330,owner,100,'AcDbSymbolTableRecord',100,'AcDbBlockTableRecord',2,name);}put(0,'ENDTAB',0,'ENDSEC');
-  put(0,'SECTION',2,'BLOCKS');for(const {name,h} of blocks){put(0,'BLOCK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockBegin',2,name,70,0,10,0,20,0,30,0,3,name,1,'',0,'ENDBLK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockEnd');}put(0,'ENDSEC');
-  put(0,'SECTION',2,'ENTITIES');
-  for(const e of items){
-   const base=type=>put(0,type,5,next(),330,blocks[0].h,100,'AcDbEntity',8,e.layer,6,e.dashed?'DASHED':'CONTINUOUS');
-   if(e.text!==undefined){if(!e.text)continue;base('TEXT');const x=num(e.x*10),y=num(-e.y*10);put(100,'AcDbText',10,x,20,y,30,0,40,num(e.height*10),1,escapeText(e.text),50,num(-e.angle*180/Math.PI),41,1,7,'STANDARD',72,e.align||0,11,x,21,y,31,0,100,'AcDbText',73,e.baseline||0);}
+  owner=table('BLOCK_RECORD',2+defs.length);const blocks=[];for(const name of ['*Model_Space','*Paper_Space',...defs.map(e=>e.blockName)]){const h=next();blocks.push({name,h});put(0,'BLOCK_RECORD',5,h,330,owner,100,'AcDbSymbolTableRecord',100,'AcDbBlockTableRecord',2,name);}put(0,'ENDTAB',0,'ENDSEC');
+  function emit(e,owner){
+   const base=type=>put(0,type,5,next(),330,owner,100,'AcDbEntity',8,e.layer||'0',6,e.dashed?'DASHED':'CONTINUOUS');
+   if(e.blockName){base('INSERT');put(100,'AcDbBlockReference',2,e.blockName,10,num(e.origin.x*10),20,num(-e.origin.y*10),30,0,41,1,42,1,43,1,50,0);}
+   else if(e.text!==undefined){if(!e.text)return;base('TEXT');const x=num(e.x*10),y=num(-e.y*10);put(100,'AcDbText',10,x,20,y,30,0,40,num(e.height*10),1,escapeText(e.text),50,num(-(e.angle||0)*180/Math.PI),41,1,7,'STANDARD',72,e.align||0,11,x,21,y,31,0,100,'AcDbText',73,e.baseline||0);}
    else if(e.points?.length>=2){base('LWPOLYLINE');put(100,'AcDbPolyline',90,e.points.length,70,e.closed?1:0);for(const p of e.points)put(10,num(p.x*10),20,num(-p.y*10));}
-  }put(0,'ENDSEC',0,'SECTION',2,'OBJECTS',0,'DICTIONARY',5,next(),330,0,100,'AcDbDictionary',281,1,0,'ENDSEC',0,'EOF');return lines.join('\r\n').replace('__HANDSEED__',handle.toString(16))+'\r\n';
+  }
+  put(0,'SECTION',2,'BLOCKS');for(const {name,h} of blocks){put(0,'BLOCK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockBegin',2,name,70,0,10,0,20,0,30,0,3,name,1,'');for(const e of defs.find(d=>d.blockName===name)?.items||[])emit(e,h);put(0,'ENDBLK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockEnd');}put(0,'ENDSEC');
+  put(0,'SECTION',2,'ENTITIES');for(const e of items)emit(e,blocks[0].h);
+  put(0,'ENDSEC',0,'SECTION',2,'OBJECTS',0,'DICTIONARY',5,next(),330,0,100,'AcDbDictionary',281,1,0,'ENDSEC',0,'EOF');return lines.join('\r\n').replace('__HANDSEED__',handle.toString(16))+'\r\n';
  }
  function pdf(jpeg,widthPx,heightPx,widthMm,heightMm){
   const enc=new TextEncoder(),parts=[];let length=0;const offsets=[0];const append=x=>{const b=typeof x==='string'?enc.encode(x):x;parts.push(b);length+=b.length;};

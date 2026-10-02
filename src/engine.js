@@ -763,7 +763,6 @@ function optPanelGuncelle(){
   var o=G.opt;
   function sel(id,val,opts){return '<select class="si" style="width:auto" onchange="optUygula(\''+id+'\',this.value)">'+opts.map(function(x){return '<option value="'+x[0]+'"'+(String(val)===String(x[0])?' selected':'')+'>'+x[1]+'</option>';}).join('')+'</select>';}
   var html=
-    '<div class="sr"><span class="sl">Panel yüksekliği</span>'+sel('h',o.h,[[250,'250 cm'],[280,'280 cm'],[300,'300 cm']])+'</div>'+
     '<div class="sr"><span class="sl">İç duvar</span>'+sel('ic',o.ic,[[6,'6 cm'],[10,'10 cm'],[15,'15 cm']])+'</div>'+
     '<div class="sr"><span class="sl">Dış duvar</span>'+sel('dis',o.dis||10,[[6,'6 cm'],[10,'10 cm'],[15,'15 cm']])+'</div>'+
     '<div class="sr"><span class="sl">Duvar alçıpanı</span>'+sel('alciDuvar',o.alciDuvar,[['yok','Yok (standart)'],['hepsi','Tüm odalar'],['secili','Seçili odalar']])+'</div>'+
@@ -1329,6 +1328,7 @@ function makasToggle(){G.makasGoster=!G.makasGoster;catiBtnGuncelle();draw();}
 function setSistem(v,sessiz){
   G.sistem=v==='prefabrik'?'prefabrik':'celik';
   document.getElementById('disYuk').closest('.sr').style.display=isPref()?'none':'';
+  document.getElementById('katYuk').closest('.sr').querySelector('.sl').textContent=isPref()?'Panel / duvar yüksekliği (cm)':'Kat yük. (cm)';
   var gs=document.getElementById('gridSel');
   if(isPref()){
     gs.innerHTML='<option value="62.75">62,75 (½ panel)</option><option value="125.5">125,5 (1 panel)</option><option value="10">10 cm (serbest)</option>';

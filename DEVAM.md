@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 2 Ekim 2026, ev bilgisayarı; 5.9.24 ortak PDF/PNG anteti, otomatik yerleşim ve proje ayarlarının sadeleşmesi.
+Son güncelleme: 2 Ekim 2026, ev bilgisayarı; 5.9.25 panel bazlı DXF blokları ve tek yükseklik kontrolü.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -15,7 +15,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.24; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Aktarım: program 5.9.25; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Aktarım: program 5.9.24; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.24**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.25**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -128,3 +128,11 @@ Bu düzen sohbetleri birleştirmez; proje bilgisinin sohbetten bağımsız taş�
 - Kullanıcı kararı: prefabrik iç/dış duvar yüksekliği aynıdır; dış yükseklik alanı prefabrik modunda gizlendi, hafif çelik modunda kalır. Eski dy değerleri silinmedi; prefabrikten hafif çelik dışa aktarımında eşit kat yüksekliği kullanılır. Çatı yüksekliği bu alana bağlanmadı. Alçıpan fire yüzdesi Proje ayarları bölümünden Metraj Listesi'ne taşındı; değer ve hesap korunur.
 - Kontroller: tests/title-block.cjs logo/müşteri kaydı, JSON yeniden açma, iptal, sayfa yenileme, PDF/PNG/antetsiz indirme, otomatik yerleşim, model koruma, sistem değişimi ve fire alanı yerini doğruladı. Temel31/31, prefab77/77; metin/veranda/pano ve PDF/DXF testleri geçti. PDF bağımsız ölçek ölçümü 101,94 mm (beklenen102 mm); PNG300 dpi bilgisi doğrulandı. Dağıtım HTML üretildi. Canlı kullanıcı çizimi ve kaynak JSON dosyaları değiştirilmedi.
 - DEV-006/011/012 imalat doğrulaması, DEV-009 içe aktarma/çok kat ve diğer açık işler devam eder. Kullanıcı canlı çizimini diğer PC'ye taşımadan önce JSON olarak kaydetmelidir; antet bilgisi de bu kayda dahildir.
+
+## 5.9.25 — Tuna referanslı DXF blokları
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-018 | Panel bazlı DXF ve tek yükseklik ayarı | Tamamlandı: Tuna taslağında 49 panel / 49 ayrı INSERT; açıklık yanları ve sembolü panel bloğunda. Tefriş, tezgâh, metin ve bağlantılar ayrı blok. AutoCAD AUDIT iki örnekte 0 hata. [Analiz](analizler/2026-10-02-tuna84-dxf-bloklari.md). |
+
+Üretim doğrulaması DEV-006/011/012 açık kalır. Tarayıcı canlı planı değiştirilmedi. `Yeni proje (11).json` kullanıcı dosyası bu teslimde depoya eklenmedi.
