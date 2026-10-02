@@ -4,6 +4,19 @@ Son güncelleme: 2 Ekim 2026, ev bilgisayarı.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
+**Çalışma düzeni: gündüz iş bilgisayarı, gece ev bilgisayarı.** Aynı program dönüşümlü geliştirilir. Teslim geçmişi: [CALISMA_KAYDI.md](CALISMA_KAYDI.md).
+
+## Açık işler ve devir durumu
+
+| Kimlik | İş | Durum / tamamlanma koşulu |
+| --- | --- | --- |
+| DEV-001 | İş bilgisayarındaki AutoCAD dosyası ve analizini alma | Bekliyor. Kaynak çizim, önceki analiz kapsamı ve varsa raporu bulunup ortak depoya alınmalı. |
+| DEV-002 | Güncel müşteri planını belirleme | Tarihli JSON yedeği alındı; tarayıcıdaki en son çizimle aynı olduğu doğrulanmadı. Kullanıcının son Kaydet çıktısı belirlenmeli. |
+| DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | Evde hazır. İş bilgisayarında güncelleme alınıp bu kayıt okunmalı; ilk devir teyidi çalışma kaydına eklenmeli. |
+| DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
+
+Aktarımın üç ayrı konusu: **program 5.9.18 güncel**, **ortak çalışma kayıtları oluşturuldu**, **AutoCAD kaynağı/analizi ve son canlı planın doğrulanması hâlâ bekliyor**. Tüm dosyalar eksiksiz taşındı deneme.
+
 ## Doğrulanmış durum
 
 - Uygulama sürümü **5.9.18**. Uygulama commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`.
@@ -33,7 +46,8 @@ Kullanıcı iş bilgisayarındaki sohbete bir AutoCAD çizimi yüklediğini ve a
 ## Çizimleri taşıma ve dosya düzeni
 
 - **Kaydet / Ctrl+S** mevcut planı `.json` olarak indirir (`src/studio.js`, `planKaydet`). “Tarayıcıda yedeklendi” mesajı GitHub'a gönderim değildir.
-- Ev klasöründe `Yeni proje (11).json` var. Kullanıcının dosyası olarak korundu; Git'e eklenmedi ve en son çizim olduğu doğrulanmadı.
+- Ev klasöründeki `Yeni proje (11).json` orijinali korundu. Aynı içeriğin tarihli kopyası: [2026-10-02-ev-kayit-11.json](cizimler/2026-10-02-ev-kayit-11.json). Şema doğrulaması başarılı: 36 duvar, 26 tefriş. En son canlı çizim olduğu doğrulanmadı.
+- Kopyanın SHA-256 değeri: `2c45a264202a0bd16f09e1684fe5fe9f5d365623d5e592c33c01ae3474d8c55c`.
 - `cizimler/`: iki bilgisayarda kullanılacağı belirlenen Plan Studio JSON kayıtları.
 - `referanslar/`: ilgili kaynak DWG/DXF/PDF ve diğer çizim referanslarının kopyaları.
 - `analizler/`: kaynakları belirtilmiş analiz raporları, kararlar ve belirsizlikler.
