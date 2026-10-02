@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.35 dolu pano stok kesimi ve özel ölçü etiketleri.
+Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.36 dolu pano stok kesimi ve özel ölçü etiketleri.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -15,7 +15,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.35; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Aktarım: program 5.9.35; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.35**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.36**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -265,3 +265,9 @@ Mevcut Modular net kesim kataloğu öncelikli. Kullanıcının doğrudan verdiğ
 Tuna:24dış dolu parça→22stok (Excel23);13iç dolu parça→12stok (Excel12).710+520mm birlikte1230mm olur ve20mm artık bırakır; önceki47toplamla fark tamamen kapanmadı. Kapı/pencere12ürünün reçetesi ayrı açık.49yerleşim korunur. DEV-025 ilk uygulama tamam, bilinmeyen kesim ölçüsü/testere payı ve deneme çizimleriyle üretim doğrulaması açık.
 
 Testler: loading-stock kullanıcı örnekleri, ölçü grupları, sığma/artık, eski karar; loading-list Tuna24/22 ve13/12, JSON/CSV/XLSX; loading-H/U/corners regresyonları; plan-export başarılı. Özel etiketler görsel kontrol edildi. Canlı müşteri planı ve takip dışı JSON korunmuştur.
+
+## 5.9.36 — Serbest özel ölçüler / DEV-025
+
+Kullanıcı örneklerin sınırlı liste olmadığını netleştirdi. 5.9.35 içindeki 30/40/70/102/57,5/62,5 özel ölçü listesi kaldırıldı. Her pozitif sonlu özel en genel olarak değerlendirilir. Modular kataloğundaki doğrulanmış net kesimler önceliklidir (125,5→1250; 62,75→625 mm). Diğer enlerde çizim ölçüsü mm'ye çevrilerek stok hesabına esas alınır; bu değer doğrulanmış net imalat kesimi sayılmaz, H payı uydurulmaz. Kaynakta cutBasis tutulur ve hesap açıklamasında belirtilir. 1250 mm'den büyük tek parça bu stokla otomatik karşılanmaz. Kapı/pencereler ayrı kalır. Çizim geometri ve etiketleri değişmez.
+
+Kalınlık/yükseklik grupları, artık ve uygulanabilir büyükten küçüğe sığdırma korunur; en az stok garantisi ve testere payı henüz yoktur. 1249 farklı en, ondalıklı karışık gruplar, bilinen katalog önceliği, büyük parça kontrolü ve tarayıcıda 37,2+86,4 cm özel parçalarının tek stok hesabı test edildi. Tuna sayıları 24/22 ve 13/12 değişmedi; JSON/CSV/XLSX ve eski karar kontrolleri geçti. DEV-025 saha net kesim paylarının genellenmesi, testere payı ve deneme çizimleriyle doğrulama açık. Canlı kullanıcı çizimi ve Yeni proje (11).json korunmuştur.

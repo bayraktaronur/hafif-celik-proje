@@ -191,3 +191,9 @@ Kullanıcı aynı tam panodan şantiyede kesim uygulamasının yalnız62,5cm yar
 ## 3 Ekim 2026 — Ev PC — 5.9.35 / DEV-025
 
 Kullanıcı kısa/özel parçaların stok tam panodan saha kesimi ve artık kabulü örneklerini verdi. Net kesimi bilinen dolu parçalar kalınlık/yükseklik bazında1250mm stoklara sığdırıldı; kapı/pencere ayrı bırakıldı. Kesim/artık UI/XLSX/CSV'ye eklendi. Özel genişlikler çizimde numara filtresinden bağımsız kalır; nominal geometri değişmedi. Tuna24dış parça22stok,13iç parça12stok; dış Excel23 ile bir fark açık (710+520 birlikte kesimi). Testere payı ve bilinmeyen net kesimler varsayılmadı. loading-stock/list/H/U/corners ve plan-export geçti; özel etiket görsel kontrolü. Uygulama5.9.35; canlı plan ve kullanıcı JSON'u değişmedi. Diğer açık işler korunur.
+
+## 5.9.36 — Serbest özel ölçüler / DEV-025
+
+Kullanıcı örneklerin sınırlı liste olmadığını netleştirdi. 5.9.35 içindeki 30/40/70/102/57,5/62,5 özel ölçü listesi kaldırıldı. Her pozitif sonlu özel en genel olarak değerlendirilir. Modular kataloğundaki doğrulanmış net kesimler önceliklidir (125,5→1250; 62,75→625 mm). Diğer enlerde çizim ölçüsü mm'ye çevrilerek stok hesabına esas alınır; bu değer doğrulanmış net imalat kesimi sayılmaz, H payı uydurulmaz. Kaynakta cutBasis tutulur ve hesap açıklamasında belirtilir. 1250 mm'den büyük tek parça bu stokla otomatik karşılanmaz. Kapı/pencereler ayrı kalır. Çizim geometri ve etiketleri değişmez.
+
+Kalınlık/yükseklik grupları, artık ve uygulanabilir büyükten küçüğe sığdırma korunur; en az stok garantisi ve testere payı henüz yoktur. 1249 farklı en, ondalıklı karışık gruplar, bilinen katalog önceliği, büyük parça kontrolü ve tarayıcıda 37,2+86,4 cm özel parçalarının tek stok hesabı test edildi. Tuna sayıları 24/22 ve 13/12 değişmedi; JSON/CSV/XLSX ve eski karar kontrolleri geçti. DEV-025 saha net kesim paylarının genellenmesi, testere payı ve deneme çizimleriyle doğrulama açık. Canlı kullanıcı çizimi ve Yeni proje (11).json korunmuştur.
