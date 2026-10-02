@@ -195,3 +195,8 @@ Tuna kontrol dosyası, üçlüler dahil:21 kulaklı–dübelli,2 kulaksız–dü
 ## Tuna H–Excel karşılaştırması / DEV-006 ve DEV-022
 
 [Rapor](analizler/2026-10-03-tuna-h-excel-karsilastirma.md):36/36 toplam eşit; standart dış20/iç9, üçlü dış3/iç4 eşit. Excel kulaklı12/kulaksız24, program33/3. Dış8 standart+1 üçlü farkı makasla aynı doğrultudaki duvarlarda; iç8 standart+4 üçlü de programda kulaklı, Excel'de kulaksız. **2B makas aks eşleşmesi fiziksel H'nin makasa girdiğini kanıtlamaz.** DEV-022 temel tarifleri kayıtlı ama fiziksel temas koşulu doğrulaması açık; üst/alt cephe ve iç bölme örnekleri kullanıcıyla doğrulanmalı. Kod/sürüm5.9.31 değişmedi, Excel ve müşteri çizimi değiştirilmedi. Rapor bağlantı kimlikleri ve kaynak hash'lerini içerir.
+
+
+## Tuna H mesnet yorumu — sonraki uygulama düzeltmesi
+
+[İlişkilendirme raporu](analizler/2026-10-03-tuna-h-mesnet-yorumu.md): makasın yalnız a/b uçlarına oturan H'leri kulaklı kabul eden alternatif hesap Excel'in6satırını tam karşılıyor:10/10/9/2/1/4. Kullanıcının “makasa giren” şartı önceki kodda geniş2B aks eşleşmesi olarak yorumlanmış. Güçlü açıklama kulak=gerçek mesnet bağlantısı, dübel=dış duvar. Bu projede iç13H gerçek uç mesnette değil; her projede iç H kulaksız genellemesi yapılmamalı. **DEV-022 kod düzeltmesi açık:**5.9.31 halen33kulaklı üretir; analizdeki12kulaklı sonucu henüz uygulamaya işlenmedi. Kod/çizim/Excel değişmedi. Diğer açık işler sürer.

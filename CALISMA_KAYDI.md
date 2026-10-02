@@ -151,3 +151,8 @@ Kullanıcı iç H'nin her zaman dübelsiz, makas altında kulaklı ve makas dı�
 ## 3 Ekim 2026 — Ev PC — Tuna H karşılaştırması
 
 Kaynak Excel B23:D28 yeniden okundu, hash doğrulandı.5.9.31 kontrol JSON hesabı yeniden üretildi. Toplam36/36 eşit fakat21 bağlantının kulak sınıfı farklı: dış standart8, dış üçlü1, iç standart8, iç üçlü4. Aynı aks/hat ile fiziksel makasa giriş ayrımı nedeniyle mevcut2B sınıflandırmanın fazla kulaklı saymış olabileceği saptandı; kesin kök neden/onay olarak sunulmadı. Bağlantı bazlı rapor analizler/2026-10-03-tuna-h-excel-karsilastirma.md. DEV-022 fiziksel temas kontrolü açık; DEV-006/011 devam. Kod/Excel/canlı çizim değişmedi, sürüm5.9.31.
+
+
+## 3 Ekim 2026 — Ev PC — Tuna H fiziksel mesnet ilişkilendirmesi
+
+Kullanıcı DWG/Excel ile tariflerinin ilişkilendirilmesini istedi. Drawing1 çıkarılmış geometri görünümü ve tam SP DWG önceki AutoCAD dökümü incelendi, iki kaynak hash'i doğrulandı. Makas uçlarına bağlanan H alternatif sayımı Excel'in altı satırıyla10/10/9/2/1/4 olarak tam eşleşti. Önceki algoritmanın aynı aksa gelmeyi gerçek bağlantı kabul ettiği geniş yorum saptandı. Kulak=gerçek mesnet, dübel=dış duvar güçlü çıkarımı raporlandı; üretim detayına dair kesin kanıt gibi sunulmadı. Kod5.9.31 değişmedi, DEV-022 uygulama düzeltmesi açık. Rapor: analizler/2026-10-03-tuna-h-mesnet-yorumu.md. Kaynaklar/canlı çizim korundu.
