@@ -13,3 +13,6 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 .architectural-note{font-size:11px;line-height:1.5;color:#93a9bb;margin:4px 0 9px}
 .architectural-note:empty{display:none}
 #verandaAreaRow[hidden]{display:none}
+
+/* Keep all file/export actions reachable on smaller desktop windows. */
+.header-actions{flex-wrap:wrap;justify-content:flex-end}.header-actions>.tb{white-space:nowrap}@media(max-width:1250px){.header-actions{max-width:340px;gap:5px}.header-actions>.tb{padding:5px 8px}}

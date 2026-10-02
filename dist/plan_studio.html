@@ -69,6 +69,9 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 .architectural-note:empty{display:none}
 #verandaAreaRow[hidden]{display:none}
 
+/* Keep all file/export actions reachable on smaller desktop windows. */
+.header-actions{flex-wrap:wrap;justify-content:flex-end}.header-actions>.tb{white-space:nowrap}@media(max-width:1250px){.header-actions{max-width:340px;gap:5px}.header-actions>.tb{padding:5px 8px}}
+
 </style></head>
 <body>
 <header class="app-header">
@@ -4958,7 +4961,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.22',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.23',projectName,sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5806,7 +5809,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.22';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.23';syncUI();draw();
 })();
 
 </script><script>
@@ -7049,6 +7052,152 @@ window.OpeningCatalog=(function(){
  window.addEventListener('blur',()=>{drag=null;});
  const baseTool=setTool;window.setTool=function(t){if(t!=='plan-paste')pending=ghost=null;if(t!=='area-select')drag=null;if(t!=='sec')selection=null;baseTool(t);};
  window.PlanClipboard={all,copy,paste,cancel,rectSelection};
+})();
+
+</script><script>
+/* Offline PDF container and editable 2D DXF. Model coordinates are centimetres. */
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PlanExportCore=api;})(globalThis,function(){
+ 'use strict';
+ const num=n=>{if(!Number.isFinite(n))throw Error('Çıktıda geçersiz koordinat.');return +n.toFixed(6);};
+ function wallPieces(d){
+  const nodes=new Map(d.n.map(n=>[n.id,n])),out=[];
+  for(const s of d.s){const a=nodes.get(s.n1),b=nodes.get(s.n2);if(!a||!b)continue;const L=Math.hypot(b.x-a.x,b.y-a.y);if(L<.001)continue;const ux=(b.x-a.x)/L,uy=(b.y-a.y)/L;
+   if(s.tip==='veranda'){out.push({layer:'VERANDA',points:[a,b],closed:false,dashed:true});continue;}
+   const spans=d.e.filter(e=>e.segId===s.id).map(e=>[Math.max(0,e.t*L),Math.min(L,e.t*L+e.en)]).sort((a,b)=>a[0]-b[0]);let cursor=-s.k/2;
+   function add(lo,hi){if(hi-lo<.001)return;const h=s.k/2;out.push({layer:s.dis?'DUVAR_DIS':'DUVAR_IC',closed:true,points:[[lo,h],[hi,h],[hi,-h],[lo,-h]].map(([v,o])=>({x:a.x+ux*v-uy*o,y:a.y+uy*v+ux*o}))});}
+   for(const [lo,hi] of spans){add(cursor,lo);cursor=Math.max(cursor,hi);}add(cursor,L+s.k/2);
+  }return out;
+ }
+ function escapeText(s){return String(s).replace(/[\r\n]/g,' ').split('').map(c=>c.charCodeAt(0)>126||c==='\\'||c==='%'?'\\U+'+c.charCodeAt(0).toString(16).toUpperCase().padStart(4,'0'):c).join('');}
+ function dxf(items){
+  const lines=[],put=(...v)=>lines.push(...v.map(String));let handle=256;
+  const layers=[...new Set(['0',...items.map(e=>e.layer)])];
+  put(0,'SECTION',2,'HEADER',9,'$ACADVER',1,'AC1015',9,'$HANDSEED',5,'__HANDSEED__',9,'$INSUNITS',70,4,9,'$MEASUREMENT',70,1,0,'ENDSEC');
+  const next=()=> (handle++).toString(16);
+  const table=(name,count)=>{const h=next();put(0,'TABLE',2,name,5,h,330,0,100,'AcDbSymbolTable',70,count);return h;};
+  const entry=(type,owner,sub)=>put(0,type,5,next(),330,owner,100,'AcDbSymbolTableRecord',100,sub);
+  put(0,'SECTION',2,'TABLES');for(const name of ['VPORT','VIEW','UCS']){table(name,0);put(0,'ENDTAB');}put(0,'TABLE',2,'DIMSTYLE',5,next(),330,0,100,'AcDbSymbolTable',70,0,100,'AcDbDimStyleTable',71,0,0,'ENDTAB');let owner=table('LTYPE',4);
+  for(const name of ['BYBLOCK','BYLAYER','CONTINUOUS']){entry('LTYPE',owner,'AcDbLinetypeTableRecord');put(2,name,70,0,3,'Solid line',72,65,73,0,40,0);}
+  entry('LTYPE',owner,'AcDbLinetypeTableRecord');put(2,'DASHED',70,0,3,'Dashed',72,65,73,2,40,120,49,70,74,0,49,-50,74,0,0,'ENDTAB');
+  owner=table('LAYER',layers.length);for(const l of layers){entry('LAYER',owner,'AcDbLayerTableRecord');put(2,l,70,0,62,7,6,'CONTINUOUS',290,1,370,-3,390,'0');}put(0,'ENDTAB');
+  owner=table('STYLE',1);entry('STYLE',owner,'AcDbTextStyleTableRecord');put(2,'STANDARD',70,0,40,0,41,1,50,0,71,0,42,2.5,3,'Arial.ttf',4,'',0,'ENDTAB');
+  owner=table('APPID',1);entry('APPID',owner,'AcDbRegAppTableRecord');put(2,'ACAD',70,0,0,'ENDTAB');
+  owner=table('BLOCK_RECORD',2);const blocks=[];for(const name of ['*Model_Space','*Paper_Space']){const h=next();blocks.push({name,h});put(0,'BLOCK_RECORD',5,h,330,owner,100,'AcDbSymbolTableRecord',100,'AcDbBlockTableRecord',2,name);}put(0,'ENDTAB',0,'ENDSEC');
+  put(0,'SECTION',2,'BLOCKS');for(const {name,h} of blocks){put(0,'BLOCK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockBegin',2,name,70,0,10,0,20,0,30,0,3,name,1,'',0,'ENDBLK',5,next(),330,h,100,'AcDbEntity',8,'0',100,'AcDbBlockEnd');}put(0,'ENDSEC');
+  put(0,'SECTION',2,'ENTITIES');
+  for(const e of items){
+   const base=type=>put(0,type,5,next(),330,blocks[0].h,100,'AcDbEntity',8,e.layer,6,e.dashed?'DASHED':'CONTINUOUS');
+   if(e.text!==undefined){if(!e.text)continue;base('TEXT');const x=num(e.x*10),y=num(-e.y*10);put(100,'AcDbText',10,x,20,y,30,0,40,num(e.height*10),1,escapeText(e.text),50,num(-e.angle*180/Math.PI),41,1,7,'STANDARD',72,e.align||0,11,x,21,y,31,0,100,'AcDbText',73,e.baseline||0);}
+   else if(e.points?.length>=2){base('LWPOLYLINE');put(100,'AcDbPolyline',90,e.points.length,70,e.closed?1:0);for(const p of e.points)put(10,num(p.x*10),20,num(-p.y*10));}
+  }put(0,'ENDSEC',0,'SECTION',2,'OBJECTS',0,'DICTIONARY',5,next(),330,0,100,'AcDbDictionary',281,1,0,'ENDSEC',0,'EOF');return lines.join('\r\n').replace('__HANDSEED__',handle.toString(16))+'\r\n';
+ }
+ function pdf(jpeg,widthPx,heightPx,widthMm,heightMm){
+  const enc=new TextEncoder(),parts=[];let length=0;const offsets=[0];const append=x=>{const b=typeof x==='string'?enc.encode(x):x;parts.push(b);length+=b.length;};
+  const w=num(widthMm*72/25.4),h=num(heightMm*72/25.4);append('%PDF-1.4\n');
+  function object(id,body){offsets[id]=length;append(id+' 0 obj\n'+body+'\nendobj\n');}
+  object(1,'<< /Type /Catalog /Pages 2 0 R >>');object(2,'<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+  object(3,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${w} ${h}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>`);
+  offsets[4]=length;append(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${widthPx} /Height ${heightPx} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`);append(jpeg);append('\nendstream\nendobj\n');
+  const stream=`q\n${w} 0 0 ${h} 0 0 cm\n/Im0 Do\nQ\n`;object(5,`<< /Length ${enc.encode(stream).length} >>\nstream\n${stream}endstream`);
+  const start=length;append('xref\n0 6\n0000000000 65535 f \n');for(let i=1;i<=5;i++)append(String(offsets[i]).padStart(10,'0')+' 00000 n \n');append(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${start}\n%%EOF\n`);
+  const result=new Uint8Array(length);let pos=0;for(const p of parts){result.set(p,pos);pos+=p.length;}return result;
+ }
+ return {wallPieces,dxf,pdf};
+});
+
+</script><script>
+/* Records the existing Canvas renderer in drawing coordinates; never reads pixels. */
+(function(){
+ 'use strict';
+ const point=(m,x,y)=>({x:m.a*x+m.c*y+m.e,y:m.b*x+m.d*y+m.f});
+ const inside=(p,poly)=>{let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if((a.y>p.y)!==(b.y>p.y)&&p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x)c=!c;}return c;};
+ function clipLine(a,b,poly){
+  const dx=b.x-a.x,dy=b.y-a.y,ts=[0,1];
+  for(let i=0;i<poly.length;i++){const c=poly[i],d=poly[(i+1)%poly.length],ex=d.x-c.x,ey=d.y-c.y,det=dx*ey-dy*ex;if(Math.abs(det)<1e-9)continue;const t=((c.x-a.x)*ey-(c.y-a.y)*ex)/det,u=((c.x-a.x)*dy-(c.y-a.y)*dx)/det;if(t>0&&t<1&&u>=0&&u<=1)ts.push(t);}
+  ts.sort((a,b)=>a-b);const out=[];for(let i=1;i<ts.length;i++){const t=(ts[i-1]+ts[i])/2;if(inside({x:a.x+t*dx,y:a.y+t*dy},poly))out.push([{x:a.x+ts[i-1]*dx,y:a.y+ts[i-1]*dy},{x:a.x+ts[i]*dx,y:a.y+ts[i]*dy}]);}return out;
+ }
+ window.PlanCanvasRecorder=function(){
+  const c=document.createElement('canvas').getContext('2d'),items=[],bounds={minX:Infinity,minY:Infinity,maxX:-Infinity,maxY:-Infinity};
+  let paths=[],current=null,clips=[],stack=[],layer='PLAN';
+  const p=(x,y)=>point(c.getTransform(),x,y);
+  function include(points,pad=0){for(const q of points){bounds.minX=Math.min(bounds.minX,q.x-pad);bounds.minY=Math.min(bounds.minY,q.y-pad);bounds.maxX=Math.max(bounds.maxX,q.x+pad);bounds.maxY=Math.max(bounds.maxY,q.y+pad);}}
+  function start(q){current={points:[q],closed:false};paths.push(current);}
+  function line(q){if(!current)start(q);else current.points.push(q);}
+  function emitPath(path,fill){
+   const m=c.getTransform(),lw=c.lineWidth*Math.hypot(m.a,m.b),color=fill?c.fillStyle:c.strokeStyle;
+   let pieces=[path];
+   if(clips.length){pieces=[];const ps=path.points.concat(path.closed?[path.points[0]]:[]);for(let i=1;i<ps.length;i++){let lines=[[ps[i-1],ps[i]]];for(const poly of clips)lines=lines.flatMap(([a,b])=>clipLine(a,b,poly));pieces.push(...lines.map(points=>({points,closed:false})));}}
+   for(const q of pieces)include(q.points,fill?0:lw/2);
+   // Wall bodies come from model geometry, with openings cut out. Paper masks
+   // and panel colour bands must not become false CAD edges across openings.
+   if(layer==='DUVAR'||(layer==='PANEL_BAGLANTI'&&!fill&&lw>3))return;
+   if(fill&&(layer==='ODA'||color==='#ffffff'||color==='#fff'||color===TH.opening||color===TH.winFill))return;
+   for(const q of pieces)if(q.points.length>1)items.push({...q,layer,dashed:c.getLineDash().length>0});
+  }
+  const api={items,bounds,setLayer:l=>{layer=l;},
+   save(){c.save();stack.push(clips.slice());},restore(){c.restore();clips=stack.pop()||[];},
+   beginPath(){paths=[];current=null;},moveTo(x,y){start(p(x,y));},lineTo(x,y){line(p(x,y));},closePath(){if(current)current.closed=true;},
+   rect(x,y,w,h){start(p(x,y));line(p(x+w,y));line(p(x+w,y+h));line(p(x,y+h));current.closed=true;},
+   roundRect(x,y,w,h,r){r=Math.min(typeof r==='number'?r:r[0]||0,Math.abs(w)/2,Math.abs(h)/2);api.moveTo(x+r,y);api.lineTo(x+w-r,y);api.arc(x+w-r,y+r,r,-Math.PI/2,0);api.lineTo(x+w,y+h-r);api.arc(x+w-r,y+h-r,r,0,Math.PI/2);api.lineTo(x+r,y+h);api.arc(x+r,y+h-r,r,Math.PI/2,Math.PI);api.lineTo(x,y+r);api.arc(x+r,y+r,r,Math.PI,Math.PI*1.5);api.closePath();},
+   arc(x,y,r,a,b,ccw=false){api.ellipse(x,y,r,r,0,a,b,ccw);},
+   ellipse(x,y,rx,ry,rotation,a,b,ccw=false){let sweep=b-a;if(!ccw){if(sweep>=2*Math.PI)sweep=2*Math.PI;else while(sweep<0)sweep+=2*Math.PI;}else{if(sweep<=-2*Math.PI)sweep=-2*Math.PI;else while(sweep>0)sweep-=2*Math.PI;}const m=c.getTransform(),radius=Math.max(rx,ry)*Math.max(Math.hypot(m.a,m.b),Math.hypot(m.c,m.d));const step=2*Math.acos(Math.max(-1,Math.min(1,1-.02/Math.max(.02,radius))));const count=Math.min(4096,Math.max(4,Math.ceil(Math.abs(sweep)/Math.max(.01,step))));for(let i=0;i<=count;i++){const t=a+sweep*i/count,ex=rx*Math.cos(t),ey=ry*Math.sin(t);line(p(x+ex*Math.cos(rotation)-ey*Math.sin(rotation),y+ex*Math.sin(rotation)+ey*Math.cos(rotation)));}},
+   bezierCurveTo(x1,y1,x2,y2,x3,y3){if(!current)start(p(x1,y1));const a=current.points.at(-1),b=p(x1,y1),d=p(x2,y2),e=p(x3,y3);const count=Math.min(2048,Math.max(16,Math.ceil((Math.hypot(b.x-a.x,b.y-a.y)+Math.hypot(d.x-b.x,d.y-b.y)+Math.hypot(e.x-d.x,e.y-d.y))/.5)));for(let i=1;i<=count;i++){const t=i/count,u=1-t;line({x:u*u*u*a.x+3*u*u*t*b.x+3*u*t*t*d.x+t*t*t*e.x,y:u*u*u*a.y+3*u*u*t*b.y+3*u*t*t*d.y+t*t*t*e.y});}},
+   quadraticCurveTo(x1,y1,x2,y2){if(!current)start(p(x1,y1));const a=current.points.at(-1),b=p(x1,y1),e=p(x2,y2);for(let i=1;i<=64;i++){const t=i/64,u=1-t;line({x:u*u*a.x+2*u*t*b.x+t*t*e.x,y:u*u*a.y+2*u*t*b.y+t*t*e.y});}},
+   clip(){if(current?.points.length>=3)clips.push(current.points.slice());},
+   stroke(){paths.forEach(q=>emitPath(q,false));},fill(){paths.forEach(q=>emitPath({...q,closed:true},true));},
+   strokeRect(x,y,w,h){const old=paths,cur=current;api.beginPath();api.rect(x,y,w,h);api.stroke();paths=old;current=cur;},
+   fillRect(x,y,w,h){const old=paths,cur=current;api.beginPath();api.rect(x,y,w,h);api.fill();paths=old;current=cur;},
+   fillText(text,x,y){const m=c.getTransform(),metrics=c.measureText(String(text)),fs=parseFloat(c.font.match(/([\d.]+)px/)?.[1]||10);const left=Number.isFinite(metrics.actualBoundingBoxLeft)?-metrics.actualBoundingBoxLeft:0,right=Number.isFinite(metrics.actualBoundingBoxRight)?metrics.actualBoundingBoxRight:metrics.width;const top=Number.isFinite(metrics.actualBoundingBoxAscent)?-metrics.actualBoundingBoxAscent:-fs,bottom=Number.isFinite(metrics.actualBoundingBoxDescent)?metrics.actualBoundingBoxDescent:fs*.3;include([[left,top],[right,top],[right,bottom],[left,bottom]].map(([a,b])=>point(m,x+a,y+b)),1);
+    const q=p(x,y);items.push({layer,text:String(text),x:q.x,y:q.y,height:fs*.72*Math.hypot(m.c,m.d),angle:Math.atan2(m.b,m.a),align:{center:1,right:2,end:2}[c.textAlign]||0,baseline:{top:3,hanging:3,middle:2,bottom:1}[c.textBaseline]||0});},
+   strokeText(text,x,y){api.fillText(text,x,y);}
+  };
+  return new Proxy(api,{get(t,k){if(k in t)return t[k];const v=c[k];return typeof v==='function'?v.bind(c):v;},set(t,k,v){if(k in t)t[k]=v;else c[k]=v;return true;}});
+ };
+})();
+
+</script><script>
+/* Plan-only export. No cloud dependency and no changes to the saved model. */
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id),PX=96/25.4,PAPERS={A4:[210,297],A3:[297,420],A2:[420,594],A1:[594,841],A0:[841,1189]};let format='pdf';
+ const dialog=document.createElement('dialog');dialog.id='planExportDialog';dialog.style.cssText='background:#192334;color:#d6e6ef;border:1px solid #40566b;border-radius:12px;padding:24px;width:560px;max-width:90vw;max-height:90vh;overflow:auto';
+ dialog.innerHTML='<form><h3 id="exportTitle">Plan çıktısı</h3><div id="exportPdfOptions" style="display:flex;gap:12px"><label>Kâğıt<select id="exportPaper"><option>A4</option><option selected>A3</option><option>A2</option><option>A1</option><option>A0</option></select></label><label>Yön<select id="exportOrientation"><option value="portrait" selected>Dikey</option><option value="landscape">Yatay</option></select></label><label>Ölçek<select id="exportScale"><option value="20">1:20</option><option value="50" selected>1:50</option><option value="100">1:100</option><option value="200">1:200</option></select></label></div><p id="exportDescription"></p><p id="exportStatus" role="status"></p><img id="exportPreview" alt="PDF sayfa önizlemesi" style="width:100%;max-height:310px;object-fit:contain;background:#fff"><p style="font-size:12px">Seçili görünüm filtreleri kullanılır. H, U ve köşe bağlantıları korunur. Kat planı çıktısıdır; 3B model veya imalat onayı değildir.</p><button class="sib" id="exportSubmit" type="submit">İndir</button><button class="sib" id="exportCancel" type="button">Vazgeç</button></form>';
+ document.body.append(dialog);dialog.querySelectorAll('select').forEach(el=>el.style.cssText='display:block;padding:8px;margin:6px 0;background:#101b29;color:#d6e6ef');
+ for(const [type,label] of [['pdf','PDF çıktı'],['dxf','DXF çıktı']]){const b=document.createElement('button');b.id='export-'+type;b.className='tb';b.textContent=label;b.onclick=()=>open(type);document.querySelector('.header-actions').append(b);}
+ function render(target,s,pan={x:0,y:0}){
+  const save={zoom:G.zoom,pan:G.pan,secili:G.secili,seciliTip:G.seciliTip,selSegs:G.selSegs,selPanels:G.selPanels,wallDrag:G.wallDrag,lblDrag:G.lblDrag,drawing:G.drawing,snapPt:G.snapPt},old={ctx,TH,DIM};
+  try{Object.assign(G,{zoom:s/G.scale,pan,secili:null,seciliTip:null,selSegs:[],selPanels:[],wallDrag:null,lblDrag:null,drawing:false,snapPt:null});ctx=target;TH=TH_PAPER;DIM=DIM_PAPER;
+   for(const [name,fn] of [['ODA',drawRooms],['MAKAS',drawMakas],['DUVAR',drawSegs],['PANEL_BAGLANTI',drawPanels],['KAPLAMA',drawAlciGorsel],['DONATI_METIN',drawElemanlar],['OLCU',drawDims]]){target.setLayer?.(name);fn();}
+  }finally{Object.assign(G,save);ctx=old.ctx;TH=old.TH;DIM=old.DIM;draw();}
+ }
+ function record(s=1){const r=PlanCanvasRecorder();render(r,s);if(!Number.isFinite(r.bounds.minX))throw Error('Önce bir plan veya metin oluşturun.');return r;}
+ function layout(paper,orientation,scale){
+  if(!PAPERS[paper]||![20,50,100,200].includes(scale))throw Error('Geçersiz kâğıt veya ölçek.');const [a,b]=PAPERS[paper],w=orientation==='landscape'?b:a,h=orientation==='landscape'?a:b,s=10*PX/scale;
+  const r=record(s),B=r.bounds,width=(B.maxX-B.minX)/PX,height=(B.maxY-B.minY)/PX,aw=w-24,ah=h-52;
+  if(width>aw||height>ah)throw Error(`Plan bu sayfaya 1:${scale} ölçekte sığmıyor (${Math.ceil(width)} × ${Math.ceil(height)} mm). Daha büyük kâğıt veya 1:${scale<100?100:200} ölçek seçin.`);
+  const dpi=[300,200,150].find(d=>w*h*d*d/(25.4*25.4)<=40000000);return {paper,orientation,scale,w,h,s,dpi,bounds:B,pan:{x:(w*PX-(B.maxX-B.minX))/2-B.minX,y:20*PX+(ah*PX-(B.maxY-B.minY))/2-B.minY}};
+ }
+ function pageCanvas(l,dpi=l.dpi){
+  const out=document.createElement('canvas'),W=l.w*PX,H=l.h*PX;out.width=Math.ceil(l.w*dpi/25.4);out.height=Math.ceil(l.h*dpi/25.4);
+  if(out.width*out.height>150000000)throw Error('Bu sayfa çözünürlüğü çok büyük. Daha küçük kâğıt seçin.');
+  const c=out.getContext('2d');if(!c)throw Error('Çıktı tuvali oluşturulamadı.');c.setTransform(out.width/W,0,0,out.height/H,0,0);c.fillStyle='#fff';c.fillRect(0,0,W,H);render(c,l.s,l.pan);
+  c.fillStyle='#253649';c.textAlign='left';c.textBaseline='top';c.font='bold 13px sans-serif';c.fillText('PREFABRİKTEN / PLAN STUDIO',12*PX,8*PX);
+  c.textAlign='right';c.font='11px sans-serif';c.fillText('KAT PLANI · '+l.paper+' · 1:'+l.scale,(l.w-12)*PX,8*PX);
+  c.strokeStyle='#c5ccd3';c.lineWidth=.7;c.beginPath();c.moveTo(12*PX,(l.h-27)*PX);c.lineTo((l.w-12)*PX,(l.h-27)*PX);c.stroke();
+  c.textAlign='left';c.font='bold 12px sans-serif';let title=Studio.state().projectName||'Yeni proje';while(c.measureText(title).width>(l.w-95)*PX&&title.length>1)title=title.slice(0,-2)+'…';c.fillText(title,12*PX,(l.h-23)*PX);
+  c.font='10px sans-serif';c.fillText('Ölçü yazıları: cm · Yazdırma: %100 / Gerçek boyut',12*PX,(l.h-17)*PX);c.fillText('Kat planı sunumu · İmalat onayı değildir',12*PX,(l.h-12)*PX);
+  const bar=100*l.s,x=(l.w-12)*PX-bar,y=(l.h-18)*PX;c.fillStyle='#253649';c.fillRect(x,y,bar/2,3);c.fillStyle='#bdc6cf';c.fillRect(x+bar/2,y,bar/2,3);c.strokeRect(x,y,bar,3);c.fillStyle='#253649';c.fillText('0',x,y+6);c.textAlign='right';c.fillText('1 m',x+bar,y+6);
+  return out;
+ }
+ function makePdf(l){const canvas=pageCanvas(l),data=atob(canvas.toDataURL('image/jpeg',.97).split(',')[1]),bytes=Uint8Array.from(data,c=>c.charCodeAt(0));return PlanExportCore.pdf(bytes,canvas.width,canvas.height,l.w,l.h);}
+ function makeDxf(){const r=record(1);return PlanExportCore.dxf([...PlanExportCore.wallPieces(Studio.state()),...r.items]);}
+ function download(data,ext,mime){const name=(Studio.state().projectName||'plan').replace(/[<>:"/\\|?*\x00-\x1f]/g,'_'),url=URL.createObjectURL(new Blob([data],{type:mime})),a=document.createElement('a');a.href=url;a.download=name+'.'+ext;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);}
+ function chosen(){return layout($('exportPaper').value,$('exportOrientation').value,+$('exportScale').value);}
+ function refresh(){try{if(format==='pdf'){const l=chosen();$('exportPreview').src=pageCanvas(l,72).toDataURL('image/png');$('exportPreview').hidden=false;$('exportStatus').textContent=`${l.w} × ${l.h} mm · 1:${l.scale} · ${l.dpi} dpi · Tek sayfa`;}else{record(1);$('exportPreview').hidden=true;$('exportStatus').textContent='1:1 model · 1 birim = 1 mm · Yazılı ölçüler cm olarak korunur.';}$('exportSubmit').disabled=false;}catch(e){$('exportPreview').hidden=true;$('exportStatus').textContent=e.message;$('exportSubmit').disabled=true;}}
+ function open(type){format=type;$('exportTitle').textContent=type==='pdf'?'Ölçekli PDF plan çıktısı':'AutoCAD için DXF çıktısı';$('exportPdfOptions').hidden=type!=='pdf';$('exportPdfOptions').style.display=type==='pdf'?'flex':'none';$('exportDescription').textContent=type==='pdf'?'PDF, yüksek çözünürlüklü plan görseli içerir. Yazdırırken %100 / Gerçek boyut seçin; sayfaya sığdır seçeneğini kapatın.':'Düzenlenebilir 2B çizgiler ve yazılar, ayrı katmanlarda kaydedilir. Ölçüler çizgi/yazıdır; eğriler çoklu çizgidir. Bu dosya DWG değildir; AutoCAD’de açıp DWG olarak kaydedebilirsiniz.';refresh();dialog.showModal();}
+ dialog.querySelectorAll('select').forEach(el=>el.onchange=refresh);$('exportCancel').onclick=()=>dialog.close();
+ dialog.querySelector('form').onsubmit=e=>{e.preventDefault();try{if(format==='pdf')download(makePdf(chosen()),'pdf','application/pdf');else download(makeDxf(),'dxf','application/dxf');dialog.close();Studio.toast(format.toUpperCase()+' çıktısı hazırlandı.');}catch(err){$('exportStatus').textContent=err.message;Studio.toast(err.message,true);}};
+ window.PlanExport={open,record,layout,pageCanvas,makePdf,makeDxf};
 })();
 
 </script></body></html>

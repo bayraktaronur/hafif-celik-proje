@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.22
+# Prefabrikten Plan Studio · 5.9.23
+
+5.9.23: Ölçekli PDF ve 1:1 mm DXF kat planı çıktısı. PDF'de A4–A0, yön ve 1:20/50/100/200 seçilir; taşma reddedilir, otomatik küçültme yapılmaz. PDF yüksek çözünürlüklü raster görseldir (A4–A2 300, A1 200, A0 150 dpi), yazdırma %100/Gerçek boyut olmalıdır. DXF duvar açıklıkları kesilmiş konturlar, bağlantılar, donatılar ve ayrı katmanlarda düzenlenebilir çizgi/yazı içerir; ölçü yazıları cm, geometri mm'dir. Eğriler çoklu çizgiler, ölçüler bağımsız çizgi/yazıdır; parametrik CAD nesneleri değildir. DWG/PDF/DXF içe aktarma ve doğrudan DWG yazma henüz yoktur. JSON düzenlenebilir ana proje kaydı olarak korunmalıdır.
 
 5.9.22: Alan seç / Ctrl+A, Ctrl+C kopyala, Ctrl+X kes, Ctrl+V konumlandırarak yapıştır. Plan Studio panosu Yeni/Aç ve aynı tarayıcı kaynağında yeniden açma boyunca korunur. Duvarlar kapı/pencereleri ve bağlı panel hattıyla taşınır; yeni kimlikler, oda türleri, metin/tefriş/tezgâh/çatı bağlantıları korunur. Kes/yapıştır geri alınabilir; mevcut duvarla çakışma engellenir. Bu pano Windows/AutoCAD panosu veya iki bilgisayar arası eşitleme değildir.
 
