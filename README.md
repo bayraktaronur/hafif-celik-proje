@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.24
+# Prefabrikten Plan Studio · 5.9.28
+
+5.9.28: Yükleme listesi ilk aşaması. Çizimden panel, bağlantı ve kapı/pencere sayımı; filtreleme, gerekçeli manuel sevk taslağı, Tuna Excel referans satırlarıyla karşılaştırma, CSV indirme. Ayarlar JSON/geri alma/kurtarmada korunur; ilgili kaynak değişince eski miktar yeniden kontrol ister. Stok pano/kesim, kulak/dübel, PVC sipariş ve diğer üretim reçeteleri henüz tamamlanmadı. [Kullanım ve sınırlar](analizler/2026-10-03-yukleme-listesi-ilk-surum.md).
 
 5.9.24: PDF ve PNG ortak çıktı ekranında antetli/antetsiz, dikey/yatay/otomatik yön ve en uygun standart ölçek seçenekleri. İki yerleşim önizlemesi ve tıklayarak büyütme. Antet firma/logosu, müşteri, adres, proje no, tarih, çizen, kontrol eden, revizyon, pafta, not ve iletişim alanları; sistem, yükseklik, duvar kalınlığı ve aks alanları plandan gelir. PNG/JPG/WebP logo PNG'ye dönüştürülerek JSON'a gömülür; resmi logo verilmezse firma adı kullanılır. Alan düzenlemeleri Bilgileri projeye kaydet veya çıktı indirme sırasında kaydedilir; iptal değişiklikleri uygulamaz. PNG çözünürlük bilgisi pHYs içinde yazılır. Prefabrik dış yükseklik alanı gizlenir; eski dy değeri korunur, prefabrikten hafif çelik aktarımında iç/dış yükseklik kat yüksekliğinden alınır. Alçıpan fire ayarı Metraj Listesi'ne taşındı. PDF/DWG/DXF içe aktarma bu sürümde eklenmedi.
 

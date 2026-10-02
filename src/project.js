@@ -19,6 +19,7 @@
     safeTree(input);
     if(!['5','5.1'].includes(String(input.v)))fail('Desteklenen dosya sürümleri: v5 ve v5.1.');
     const d=JSON.parse(JSON.stringify(input));
+    d.loading=(typeof LoadingCore!=='undefined'?LoadingCore:require('./loading-core.js')).validate(d.loading);
     if(d.sistem&&!['celik','prefabrik'].includes(d.sistem))fail('Bilinmeyen yapı sistemi.');
     d.sistem=d.sistem||'celik';
     for(const k of ['n','s','e','r','fixtures','counters','annotations']){

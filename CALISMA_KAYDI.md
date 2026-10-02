@@ -121,3 +121,13 @@ Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmi
 ## 3 Ekim 2026 — Ev PC — Yükleme listesi bağlantı önerisi
 
 Kullanıcının sorusu üzerine kaynak Excel salt okunur incelendi.47panel, metal kulak/dübel ayrımları, PVC sipariş ölçüleri ve alternatif tesisat sayfaları kayda alındı. Satır/ürün/nesne eşleme ve revizyonlu sevkiyat yaklaşımı önerildi; uygulama veya onaylı reçete değildir. DEV-006 devam eder. Rapor: analizler/2026-10-03-yukleme-listesi-baglanti.md. Kod ve kullanıcı planı değişmedi.
+
+
+## 3 Ekim 2026 — Ev PC — 5.9.28 / DEV-021
+
+- Kullanıcı otomatik yükleme listesine başlanmasını istedi. Panel/bağlantı/kapı-PVC geometrik sayımı, grup/arama/durum filtreleri, kaynak duvarı gösterme, gerekçeli manuel miktar ve ek malzeme arayüzü eklendi.
+- Tuna Excel ana sayfasından 37 referans satırı (panel9–16, metal19–42, açıklık45–49) salt okunur karşılaştırma için eklendi; fiyat ve alternatif tesisat sayfaları alınmadı. Eşleme kullanıcı kararıdır; reçete onayı değildir.
+- Geometrik adet ile sevk taslağı ayrı. Kontrol planı49 panel/12 açıklık; Excel47 pano farkı çözülmedi. Eksik kurallar0 gösterilmez. İlgili kaynak değişince manuel karar geçersizleşir; karşılıksız kalan eski kararlar listelenip geri alınabilir biçimde kaldırılabilir.
+- Kararlar JSON, geri/ileri alma ve tarayıcı kurtarmasında korunur. CSV Türkçe/BOM, proje/sürüm/tarih/kapsam ve kaynak kimlikleri içerir; formül başlatan metinler etkisizleştirilir. Bu aşamada XLSX/PDF yükleme çıktısı, donmuş sevkiyat onayı ve otomatik stok kesim planı yoktur.
+- Kontroller: temel31/31; tests/loading-list.cjs sayım, düzenleme/eşleme, geri alma, JSON, gerçek CSV, değişmiş/kayıp kaynak, eski düzeltmeyi kaldırma, yerel kurtarma, geçersiz içe aktarma ve eski JSON uyumu; title-block ve plan-export başarılı. Yükleme arayüzü görsel kontrol edildi.
+- Kullanıcı çizimi ve takip dışı JSON korunmuştur. DEV-006/011/012 ve diğer açık işler devam eder. Sıradaki iş:47/49 stok-kesim farkı, metal ve PVC reçeteleri. Ayrıntı: analizler/2026-10-03-yukleme-listesi-ilk-surum.md.

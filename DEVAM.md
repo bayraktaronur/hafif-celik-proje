@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.27 net tarama sınırı ve direk dış yüzündeki veranda konturu.
+Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.28 otomatik geometrik sayım ve taslak yükleme listesi.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -15,7 +15,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.27; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Aktarım: program 5.9.28; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Aktarım: program 5.9.27; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.27**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.28**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -156,3 +156,14 @@ Aks, ölçü, oda alanı ve kayıtlı model değişmez; değişiklik DXF göster
 ## 3 Ekim — Yükleme listesi bağlantısı / DEV-006
 
 Excel ana sayfası yeniden okundu. Panel47/çizim49 farkı açık; stok pano ile yerleştirilmiş parça ayrımı doğrulanmalı. Öneri: çizim revizyonu → malzeme/kesim reçetesi → izlenebilir yükleme satırları; önce panel/metal/kapı-PVC satır eşleme. [Öneri ve kaynak hash](analizler/2026-10-03-yukleme-listesi-baglanti.md). Henüz entegrasyon uygulanmadı, reçeteler onaylanmadı. Sürüm5.9.27 aynı.
+
+
+## 5.9.28 — Otomatik yükleme listesi ilk aşama
+
+| Kimlik | İş | Durum / tamamlanma koşulu |
+| --- | --- | --- |
+| DEV-021 | Çizim–yükleme listesi entegrasyonu | İlk aşama tamamlandı: panel/bağlantı/açıklık sayımı, filtre, gerekçeli miktar, Tuna Excel satır eşleme, CSV, JSON/geri alma/kurtarma. Açık: stok pano-kesim reçetesi, kulak/dübel/net boy, PVC sipariş ölçüsü, çatı/tesisat/sarf ve onaylı sevkiyat revizyonu. DEV-006 ile birlikte devam eder. |
+
+[Rapor ve kullanım](analizler/2026-10-03-yukleme-listesi-ilk-surum.md). Üstte **Yükleme listesi** açılır. Çizim adedi otomatik, sevk taslağı miktarı doğrulanmış üretim reçetesi olmadığından başlangıçta boş. Manuel karar gerekçeyle ve ilgili nesnelerin durumuyla kaydedilir; ilgili çizim değişince yeniden kontrol gerekir. Tuna Excel referanstır, her projenin hedefi değildir. Çıktı CSV; özgün XLSX şablonuna yazma henüz yok.
+
+Sonraki adım: Tuna'nın 49 geometrik yuva/47 ürün farkını panel kesim-stok eşlemesiyle çözmek; ardından metal profil ve PVC reçetelerini kalem kalem doğrulamak. Bu teslim üretim onayı değildir. Canlı tarayıcı planı ve takip dışı Yeni proje (11).json değiştirilmedi; yeni müşteri planı aktarılmadı. İki PC arasında yükleme ayarları da Kaydet ile alınan JSON'un içindedir.
