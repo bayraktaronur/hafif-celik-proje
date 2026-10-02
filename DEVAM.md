@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.31 iç/dış H kulak ve dübel kuralları.
+Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.32 H uç mesnet sınıflandırması, plan etiketi ve XLSX.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -15,7 +15,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.31; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Aktarım: program 5.9.32; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Aktarım: program 5.9.31; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.31**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.32**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -200,3 +200,14 @@ Tuna kontrol dosyası, üçlüler dahil:21 kulaklı–dübelli,2 kulaksız–dü
 ## Tuna H mesnet yorumu — sonraki uygulama düzeltmesi
 
 [İlişkilendirme raporu](analizler/2026-10-03-tuna-h-mesnet-yorumu.md): makasın yalnız a/b uçlarına oturan H'leri kulaklı kabul eden alternatif hesap Excel'in6satırını tam karşılıyor:10/10/9/2/1/4. Kullanıcının “makasa giren” şartı önceki kodda geniş2B aks eşleşmesi olarak yorumlanmış. Güçlü açıklama kulak=gerçek mesnet bağlantısı, dübel=dış duvar. Bu projede iç13H gerçek uç mesnette değil; her projede iç H kulaksız genellemesi yapılmamalı. **DEV-022 kod düzeltmesi açık:**5.9.31 halen33kulaklı üretir; analizdeki12kulaklı sonucu henüz uygulamaya işlenmedi. Kod/çizim/Excel değişmedi. Diğer açık işler sürer.
+
+
+## 5.9.32 — Onaylı H mesnet eşlemesi ve Excel / DEV-022
+
+Kullanıcı mesnet yorumunu onayladı ve sonraki çizimlerde otomatik etiket/Excel aktarımı istedi. Gerçek model makasının a/b uçlarına eşleşen H kulaklı; arada üzerinden geçilen H kulaksız. Dış H dübelli/iç H dübelsiz. İç duvarda gerçek makas ucu bulunursa kulaklı-dübelsiz olabilir. Makas verisi yok/mesnet belirsizse adet otomatik kesinleşmez. Özel ara mesnet henüz modelde ayrıca tanımlanmaz; bu tür yeni denemelerde eklenmesi gerekir.
+
+H sınıfları tüm çizimlerde otomatik hesaplanır; yükleme listesindeki H taslak adedi otomatik, diğer ürün kuralları ayrı bekler.250cm ve mevcut10/6cm gruplarında Tuna satırları otomatik eşlenir; farklı ölçülerde bu referans zorlanmaz. Tuna sonucu10/10/9/2/1/4,36H; altı Excel satırı tam eşleşti. Kullanıcı elle miktar değiştirebilir; geometri/kural değişimi eski kararı yeniden kontrol ettirir.
+
+Yükleme listesi → Planda H etiketleri (K/KS/D/DS); seçim JSON/geri alma/kurtarmada saklanır. H ve köşe sembolleri etiket kapatıldığında da kalır. Excel indir (.xlsx) tüm güncel listeyi yeni dosyada verir; özgün Tuna Excel dosyasını değiştirmez. CSV de korunur. XLSX sayılar sayısal, kullanıcı metinleri formül olarak yürütülmez. Profil kesiti/net boy ve diğer üretim kalemleri hâlâ kontrol gerektirir.
+
+Kontroller: loading-h.cjs iki yön/uç-orta ayrımı/mesnet ve veri belirsizliği, Tuna altı grup; loading-list.cjs otomatik adet, gerçek XLSX/CSV, etiket, kayıt/geri alma; verify-loading-xlsx.py bağımsız okuma; plan-export.cjs başarılı. Arayüz ve etiketler görsel incelendi. Canlı kullanıcı çizimi ve takip dışı JSON korunmuştur. Sıradaki iş kullanıcının yeni deneme çizimlerinde doğrulama; diğer açık işler devam eder.

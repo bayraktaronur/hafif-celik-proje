@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.31
+# Prefabrikten Plan Studio · 5.9.32
+
+5.9.32: H kulak kuralı makas uç mesnedine bağlandı; arada üzerinden geçmesi yeterli değil. Otomatik H adetleri, uygun ölçülerde Tuna referans eşlemesi, isteğe bağlı plan K/KS/D/DS etiketleri ve gerçek XLSX indirme. Tuna altı H grubu Excel ile10/10/9/2/1/4 eşleşir. Özel ara mesnet ve profil/net boy ayrıca doğrulanmalıdır.
 
 5.9.31: İç H dübelsizdir; makas altında kulaklı, dışında kulaksızdır. Dış H kurallarıyla dört temel sınıf tamamlandı. Makas verisi/mesneti belirsizse kulak kararı bekler; profil/net boy ve Excel uyuşmazlıkları ayrıca doğrulanmalıdır.
 

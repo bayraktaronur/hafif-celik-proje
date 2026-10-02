@@ -156,3 +156,8 @@ Kaynak Excel B23:D28 yeniden okundu, hash doğrulandı.5.9.31 kontrol JSON hesab
 ## 3 Ekim 2026 — Ev PC — Tuna H fiziksel mesnet ilişkilendirmesi
 
 Kullanıcı DWG/Excel ile tariflerinin ilişkilendirilmesini istedi. Drawing1 çıkarılmış geometri görünümü ve tam SP DWG önceki AutoCAD dökümü incelendi, iki kaynak hash'i doğrulandı. Makas uçlarına bağlanan H alternatif sayımı Excel'in altı satırıyla10/10/9/2/1/4 olarak tam eşleşti. Önceki algoritmanın aynı aksa gelmeyi gerçek bağlantı kabul ettiği geniş yorum saptandı. Kulak=gerçek mesnet, dübel=dış duvar güçlü çıkarımı raporlandı; üretim detayına dair kesin kanıt gibi sunulmadı. Kod5.9.31 değişmedi, DEV-022 uygulama düzeltmesi açık. Rapor: analizler/2026-10-03-tuna-h-mesnet-yorumu.md. Kaynaklar/canlı çizim korundu.
+
+
+## 3 Ekim 2026 — Ev PC — 5.9.32 / DEV-022
+
+Kullanıcı Tuna mesnet yorumunu onayladı. Uç mesnet sınıflandırması genelleştirildi, otomatik H adetleri ve uygun ölçülerde Tuna referans eşlemesi eklendi. İsteğe bağlı H K/KS/D/DS plan etiketleri, JSON kalıcılığı; gerçek XLSX indirme (kaynak Excel değişmez). Tuna altı satır10/10/9/2/1/4 eşleşti. loading-h, loading-list, verify-loading-xlsx ve plan-export kontrolleri başarılı; etiket görüntüsü incelendi. Özel ara mesnet, profil/net boy ve diğer üretim işleri açık; sonraki deneme çizimleriyle doğrulama kullanıcı tarafından planlandı. Canlı çizim ve takip dışı JSON korunmuştur. Sürüm5.9.32.
