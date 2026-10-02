@@ -238,3 +238,12 @@ Tuna3adet60×2440mm+1yedek=4adet, Excel29satırı eşleşir. Yedek arayüzde ve 
 ## Çektirme U — son kullanıcı teyidi
 
 Kullanıcı dört maddeyi birlikte açıkça doğruladı:6'lık bağlanan duvar için60mm U;10'luk için100mm U; her iki ende boy=bina yüksekliği−60mm; her başlayan5adede1yedek ve farklı ölçüler ayrı.250cm yükseklikte60×2440 veya100×2440mm;100×2400mm kullanılmaz. Önceki açıklama sorusundaki belirsizlik kapandı. Mevcut5.9.34 hesabı doğru; kod/sürüm değişmedi. Bu karar ev/iş ortak kaydıdır.
+
+
+## Pano stok hesabı — iki yarım için bir tam / DEV-025
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-025 | Yerleştirilen panel ile sevk stok panosu ayrımı | Kural toplama/uygulama açık. Kullanıcı normal koşulda iki yarım yerine bir tam pano gönderildiğini, montajcının şantiyede kestiğini doğruladı. |
+
+Önceki “bir yarım gönderiyoruz” ifadesi kullanıcı tarafından “bir tam” olarak düzeltildi. Çizimde iki yarım panel korunmalı, sevk listesi bunların kaynak tam panosunu ayrı saymalı. Özel durumlar olabileceği kullanıcı tarafından belirtildi. Tek kalan yarımın sevki, özel boy parçaların birlikte kesimi ve malzeme uyumluluğu ayrıntıları henüz kesinleştirilmedi. Bunlar varsayılarak genel kesim optimizasyonu uygulanmamalı. Bu tur kayıt güncellemesidir;5.9.34 kodu değişmedi, pano otomatik stok hesabı henüz eklenmedi. Tuna49/47 farkı bu kural kullanılarak ayrıca doğrulanmalı; fark çözüldü denmez. Diğer açık işler ve kullanıcı çizimi korunur.

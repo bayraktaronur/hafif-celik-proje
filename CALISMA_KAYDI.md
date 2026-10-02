@@ -176,3 +176,8 @@ Kullanıcı U6'lık60mm/10'luk100mm, boy bina yüksekliği−60mm, her5U'ya1yede
 ## Çektirme U — son kullanıcı teyidi
 
 Kullanıcı dört maddeyi birlikte açıkça doğruladı:6'lık bağlanan duvar için60mm U;10'luk için100mm U; her iki ende boy=bina yüksekliği−60mm; her başlayan5adede1yedek ve farklı ölçüler ayrı.250cm yükseklikte60×2440 veya100×2440mm;100×2400mm kullanılmaz. Önceki açıklama sorusundaki belirsizlik kapandı. Mevcut5.9.34 hesabı doğru; kod/sürüm değişmedi. Bu karar ev/iş ortak kaydıdır.
+
+
+## 3 Ekim 2026 — Ev PC — Pano sevk kuralı / DEV-025
+
+Kullanıcı iki yarım panel yerine normal koşulda bir tam pano gönderildiğini açıkça düzelterek doğruladı; kesim montajcı tarafından şantiyede yapılır. Çizim parçası/stok pano ayrımı kayıtlı. Tek kalan yarım ve özel parça kuralları açık; uygulama ve Tuna49/47 doğrulaması devam edecek. Kod/sürüm5.9.34 değişmedi; canlı çizim ve takip dışı JSON korunmuştur.
