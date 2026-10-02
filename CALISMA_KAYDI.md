@@ -131,3 +131,8 @@ Kullanıcının sorusu üzerine kaynak Excel salt okunur incelendi.47panel, meta
 - Kararlar JSON, geri/ileri alma ve tarayıcı kurtarmasında korunur. CSV Türkçe/BOM, proje/sürüm/tarih/kapsam ve kaynak kimlikleri içerir; formül başlatan metinler etkisizleştirilir. Bu aşamada XLSX/PDF yükleme çıktısı, donmuş sevkiyat onayı ve otomatik stok kesim planı yoktur.
 - Kontroller: temel31/31; tests/loading-list.cjs sayım, düzenleme/eşleme, geri alma, JSON, gerçek CSV, değişmiş/kayıp kaynak, eski düzeltmeyi kaldırma, yerel kurtarma, geçersiz içe aktarma ve eski JSON uyumu; title-block ve plan-export başarılı. Yükleme arayüzü görsel kontrol edildi.
 - Kullanıcı çizimi ve takip dışı JSON korunmuştur. DEV-006/011/012 ve diğer açık işler devam eder. Sıradaki iş:47/49 stok-kesim farkı, metal ve PVC reçeteleri. Ayrıntı: analizler/2026-10-03-yukleme-listesi-ilk-surum.md.
+
+
+## 3 Ekim 2026 — Ev PC — 5.9.29 / DEV-022
+
+Kullanıcının makas altında H kulaklı, dış duvarda ayrıca dübelli kuralı yükleme sınıflandırmasına işlendi. İç dübel ve makas dışı ayrımlar bilinmiyor tutuldu. Makas açıklığı/yönü/mesneti ve yerel dış duvar kontrol edilir; ilgili makas değişince manuel karar yeniden kontrol ister. Kontrol taslağı21 dış,12 iç olumlu eşleşme ve3 bekleyen H verdi; Excel farkları raporda açık. tests/loading-h.cjs ve loading-list.cjs geçti. Canlı çizim ve takip dışı JSON korunmuştur. Rapor: analizler/2026-10-03-h-kulak-dubel.md. Sıradaki iş kalan H kuralları ve Excel farklarının doğrulanması; diğer açık işler devam eder.

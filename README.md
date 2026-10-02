@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.28
+# Prefabrikten Plan Studio · 5.9.29
+
+5.9.29: Yükleme listesinde makas altında H kulaklı, dış duvardaysa ayrıca dübelli sınıflandırılır. Makas açıklığı ve yerel dış duvar kontrol edilir; tanımlanmamış diğer H kuralları bekler. [Sonuçlar ve açık farklar](analizler/2026-10-03-h-kulak-dubel.md).
 
 5.9.28: Yükleme listesi ilk aşaması. Çizimden panel, bağlantı ve kapı/pencere sayımı; filtreleme, gerekçeli manuel sevk taslağı, Tuna Excel referans satırlarıyla karşılaştırma, CSV indirme. Ayarlar JSON/geri alma/kurtarmada korunur; ilgili kaynak değişince eski miktar yeniden kontrol ister. Stok pano/kesim, kulak/dübel, PVC sipariş ve diğer üretim reçeteleri henüz tamamlanmadı. [Kullanım ve sınırlar](analizler/2026-10-03-yukleme-listesi-ilk-surum.md).
 
