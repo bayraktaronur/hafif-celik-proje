@@ -410,7 +410,7 @@ async function test(name,fn){try{await fn();console.log('PASS '+name);results.pu
   }
  });
  await test('Fabrication catalogue keeps confirmed cuts separate and never guesses unknown cuts',async()=>{
-  assert.deepEqual(await page.evaluate(()=>[62.75,59.75,57.75,120.5,122.5,52.75,100].map(Modular.cutMm)),[625,590,570,1200,1220,null,null]);
+  assert.deepEqual(await page.evaluate(()=>[62.75,59.75,57.75,120.5,122.5,52.75,71.375,102.75,166,100,71.5].map(Modular.cutMm)),[625,590,570,1200,1220,520,710,1020,1660,null,null]);
   assert.match(await page.evaluate(()=>pfSegPanelHTML(G.segs[0])),/Yerleşim \/ net kesim/);
  });
  await test('Numeric four-corner outline uses the same full panels as mouse drawing',async()=>{

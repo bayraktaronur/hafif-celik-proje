@@ -1,0 +1,449 @@
+{
+  "input": "cizimler/2026-10-02-is-kayit-5.json",
+  "output": "cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json",
+  "sourceHash": "a671a74c3c72b67c94ea157fb4e2d65a28b51f151615c8887241f0ab7e530a55",
+  "counts": {
+    "before": {
+      "walls": 17,
+      "doors": 1,
+      "windows": 0,
+      "rooms": 4,
+      "panels": 45
+    },
+    "after": {
+      "walls": 21,
+      "veranda": 3,
+      "doors": 6,
+      "windows": 6,
+      "rooms": 7,
+      "panels": 49
+    }
+  },
+  "wallComparison": [
+    {
+      "owner": "e96",
+      "axis": "x",
+      "line": -313.75,
+      "lo": 318.75,
+      "hi": 1197.25,
+      "cadHandles": [
+        "7ED",
+        "AE0",
+        "7EF",
+        "AE5",
+        "7F3",
+        "ADD",
+        "7F1"
+      ],
+      "before": [
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5
+      ],
+      "after": [
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5
+      ]
+    },
+    {
+      "owner": "e98",
+      "axis": "y",
+      "line": 1202.25,
+      "lo": -313.75,
+      "hi": 376.5,
+      "cadHandles": [
+        "7F0",
+        "7F5",
+        "7F7",
+        "7F9",
+        "804",
+        "801"
+      ],
+      "before": [
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        62.75
+      ],
+      "after": [
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        62.75
+      ]
+    },
+    {
+      "owner": "e72",
+      "axis": "y",
+      "line": 313.75,
+      "lo": -313.75,
+      "hi": 564.75,
+      "cadHandles": [
+        "7EC",
+        "7F4",
+        "7F6",
+        "7F8",
+        "ADA",
+        "7FE",
+        "7FA"
+      ],
+      "before": [
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5
+      ],
+      "after": [
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5,
+        125.5
+      ]
+    },
+    {
+      "owner": "e142",
+      "axis": "x",
+      "line": 313.75,
+      "lo": 700.25,
+      "hi": 878.5,
+      "cadHandles": [
+        "BC9",
+        "B3C"
+      ],
+      "before": [
+        57.75,
+        120.5
+      ],
+      "after": [
+        52.75,
+        125.5
+      ]
+    },
+    {
+      "owner": "e102",
+      "axis": "y",
+      "line": 883.5,
+      "lo": 313.75,
+      "hi": 376.5,
+      "cadHandles": [
+        "BCE"
+      ],
+      "before": [
+        62.75
+      ],
+      "after": [
+        62.75
+      ]
+    },
+    {
+      "owner": "e100",
+      "axis": "x",
+      "line": 376.5,
+      "lo": 888.5,
+      "hi": 1197.25,
+      "cadHandles": [
+        "BCC",
+        "AD0",
+        "802"
+      ],
+      "before": [
+        57.75,
+        125.5,
+        125.5
+      ],
+      "after": [
+        71.375,
+        166,
+        71.375
+      ]
+    },
+    {
+      "owner": "e134",
+      "axis": "y",
+      "line": 695.25,
+      "lo": 313.75,
+      "hi": 564.75,
+      "cadHandles": [
+        "BCF",
+        "7FF"
+      ],
+      "before": [
+        125.5,
+        125.5
+      ],
+      "after": [
+        125.5,
+        125.5
+      ]
+    },
+    {
+      "owner": "e135",
+      "axis": "x",
+      "line": 564.75,
+      "lo": 318.75,
+      "hi": 690.25,
+      "cadHandles": [
+        "7FB",
+        "AD5",
+        "7FD"
+      ],
+      "before": [
+        125.5,
+        125.5,
+        120.5
+      ],
+      "after": [
+        102.75,
+        166,
+        102.75
+      ]
+    },
+    {
+      "owner": "cadWallBathBottom",
+      "axis": "x",
+      "line": -62.75,
+      "lo": 698.25,
+      "hi": 880.5,
+      "cadHandles": [
+        "810",
+        "816"
+      ],
+      "before": [],
+      "after": [
+        122.5,
+        59.75
+      ]
+    },
+    {
+      "owner": "e107",
+      "axis": "y",
+      "line": 695.25,
+      "lo": -308.75,
+      "hi": 308.75,
+      "cadHandles": [
+        "80A",
+        "809",
+        "808",
+        "807",
+        "806"
+      ],
+      "before": [
+        120.5,
+        125.5,
+        125.5
+      ],
+      "after": [
+        120.5,
+        125.5,
+        125.5,
+        120.5,
+        125.5
+      ]
+    },
+    {
+      "owner": "e115",
+      "axis": "y",
+      "line": 883.5,
+      "lo": -308.75,
+      "hi": 308.75,
+      "cadHandles": [
+        "80F",
+        "80E",
+        "80D",
+        "80C",
+        "80B"
+      ],
+      "before": [
+        120.5,
+        125.5,
+        125.5,
+        125.5,
+        120.5
+      ],
+      "after": [
+        120.5,
+        125.5,
+        125.5,
+        125.5,
+        120.5
+      ]
+    },
+    {
+      "owner": "e110",
+      "axis": "x",
+      "line": 62.75,
+      "lo": 318.75,
+      "hi": 692.25,
+      "cadHandles": [
+        "814",
+        "815",
+        "813"
+      ],
+      "before": [
+        125.5,
+        125.5,
+        122.5
+      ],
+      "after": [
+        125.5,
+        125.5,
+        122.5
+      ]
+    },
+    {
+      "owner": "e118",
+      "axis": "x",
+      "line": 62.75,
+      "lo": 886.5,
+      "hi": 1197.25,
+      "cadHandles": [
+        "811",
+        "812",
+        "805"
+      ],
+      "before": [
+        59.75,
+        125.5,
+        125.5
+      ],
+      "after": [
+        59.75,
+        125.5,
+        125.5
+      ]
+    }
+  ],
+  "remainingWarnings": [
+    {
+      "level": "warning",
+      "code": "truss-support",
+      "message": "1 makas bu hattın H noktasına oturmuyor. Panel eşleşmesini kontrol edin.",
+      "id": "e107",
+      "type": "seg"
+    },
+    {
+      "code": "module-axis",
+      "id": "e142",
+      "type": "seg",
+      "key": "module-axis|x:753.00",
+      "message": "X yönünde 753 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+      "level": "warning"
+    },
+    {
+      "code": "module-width",
+      "id": "e100",
+      "type": "seg",
+      "key": "module-width|e100:5.00:71.38",
+      "message": "71.38 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+      "level": "warning"
+    },
+    {
+      "code": "module-width",
+      "id": "e100",
+      "type": "seg",
+      "key": "module-width|e100:76.38:166.00",
+      "message": "166 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+      "level": "warning"
+    },
+    {
+      "code": "module-axis",
+      "id": "e100",
+      "type": "seg",
+      "key": "module-axis|x:959.88",
+      "message": "X yönünde 959.88 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+      "level": "warning"
+    },
+    {
+      "code": "module-width",
+      "id": "e100",
+      "type": "seg",
+      "key": "module-width|e100:242.38:71.38",
+      "message": "71.38 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+      "level": "warning"
+    },
+    {
+      "code": "module-axis",
+      "id": "e100",
+      "type": "seg",
+      "key": "module-axis|x:1125.88",
+      "message": "X yönünde 1125.88 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+      "level": "warning"
+    },
+    {
+      "code": "module-width",
+      "id": "e135",
+      "type": "seg",
+      "key": "module-width|e135:5.00:102.75",
+      "message": "102.75 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+      "level": "warning"
+    },
+    {
+      "code": "module-width",
+      "id": "e135",
+      "type": "seg",
+      "key": "module-width|e135:107.75:166.00",
+      "message": "166 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+      "level": "warning"
+    },
+    {
+      "code": "module-axis",
+      "id": "e135",
+      "type": "seg",
+      "key": "module-axis|x:421.50",
+      "message": "X yönünde 421.5 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+      "level": "warning"
+    },
+    {
+      "code": "module-width",
+      "id": "e135",
+      "type": "seg",
+      "key": "module-width|e135:273.75:102.75",
+      "message": "102.75 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+      "level": "warning"
+    },
+    {
+      "code": "module-axis",
+      "id": "e135",
+      "type": "seg",
+      "key": "module-axis|x:587.50",
+      "message": "X yönünde 587.5 cm H noktası ortak 62,75 cm aksına uymuyor (referans 318.75 cm).",
+      "level": "warning"
+    },
+    {
+      "code": "module-width",
+      "id": "e107",
+      "type": "seg",
+      "key": "module-width|e107:376.50:120.50",
+      "message": "120.5 cm panel, tam/yarım modül ve mevcut birleşim paylarıyla açıklanamıyor. Panel ölçüsünü düzeltin veya Özel durum modunu seçin.",
+      "level": "warning"
+    },
+    {
+      "code": "module-axis",
+      "id": "e107",
+      "type": "seg",
+      "key": "module-axis|y:183.25",
+      "message": "Y yönünde 183.25 cm H noktası ortak 62,75 cm aksına uymuyor (referans -313.75 cm).",
+      "level": "warning"
+    }
+  ],
+  "outputSha256": "43862690c526c8ac6a13de8f8242fcee9d9f4a7c63d6c57e80b600efc92b719f"
+}

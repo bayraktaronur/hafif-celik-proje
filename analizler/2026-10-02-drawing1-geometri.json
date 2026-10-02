@@ -1,0 +1,2076 @@
+{
+  "source": "referanslar/tuna-84m2/Drawing1.dwg",
+  "sha256": "a671a74c3c72b67c94ea157fb4e2d65a28b51f151615c8887241f0ab7e530a55",
+  "extraction": "AutoCAD 2021 accoreconsole; entget with 12 decimal places; window INSERTs exploded only in unsaved temporary copy.",
+  "insunits": 4,
+  "coordinateInterpretation": "Drawing coordinates match cm panel dimensions (125.5, 6, 10), although INSUNITS is mm. No source units changed.",
+  "transform": {
+    "xOffset": 1485.330993541329,
+    "yReflectionOrigin": 1948.8914267350701,
+    "formula": "JSON x = CAD x - xOffset; JSON y = yReflectionOrigin - CAD y"
+  },
+  "panels": [
+    {
+      "handle": "7EC",
+      "kind": "polyline",
+      "cadBounds": [
+        1794.080993541329,
+        2137.14142673507,
+        1804.080993541329,
+        2262.64142673507
+      ],
+      "axis": "y",
+      "line": 313.75,
+      "start": -313.75,
+      "end": -188.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7ED",
+      "kind": "polyline",
+      "cadBounds": [
+        1804.080993541329,
+        2257.64142673507,
+        1929.580993541329,
+        2267.64142673507
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 318.75,
+      "end": 444.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7EF",
+      "kind": "polyline",
+      "cadBounds": [
+        2055.080993541329,
+        2257.64142673507,
+        2180.580993541329,
+        2267.64142673507
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 569.75,
+      "end": 695.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7F0",
+      "kind": "polyline",
+      "cadBounds": [
+        2682.580993541329,
+        2137.14142673507,
+        2692.580993541329,
+        2262.64142673507
+      ],
+      "axis": "y",
+      "line": 1202.25,
+      "start": -313.75,
+      "end": -188.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7F1",
+      "kind": "polyline",
+      "cadBounds": [
+        2557.080993541329,
+        2257.64142673507,
+        2682.580993541329,
+        2267.64142673507
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 1071.75,
+      "end": 1197.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7F3",
+      "kind": "polyline",
+      "cadBounds": [
+        2306.080993541329,
+        2257.64142673507,
+        2431.580993541329,
+        2267.64142673507
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 820.75,
+      "end": 946.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7F4",
+      "kind": "polyline",
+      "cadBounds": [
+        1794.080993541329,
+        2011.64142673507,
+        1804.080993541329,
+        2137.14142673507
+      ],
+      "axis": "y",
+      "line": 313.75,
+      "start": -188.25,
+      "end": -62.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7F5",
+      "kind": "polyline",
+      "cadBounds": [
+        2682.580993541329,
+        2011.64142673507,
+        2692.580993541329,
+        2137.14142673507
+      ],
+      "axis": "y",
+      "line": 1202.25,
+      "start": -188.25,
+      "end": -62.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7F6",
+      "kind": "polyline",
+      "cadBounds": [
+        1794.080993541329,
+        1886.14142673507,
+        1804.080993541329,
+        2011.64142673507
+      ],
+      "axis": "y",
+      "line": 313.75,
+      "start": -62.75,
+      "end": 62.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7F7",
+      "kind": "polyline",
+      "cadBounds": [
+        2682.580993541329,
+        1886.14142673507,
+        2692.580993541329,
+        2011.64142673507
+      ],
+      "axis": "y",
+      "line": 1202.25,
+      "start": -62.75,
+      "end": 62.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7F8",
+      "kind": "polyline",
+      "cadBounds": [
+        1794.080993541329,
+        1760.64142673507,
+        1804.080993541329,
+        1886.14142673507
+      ],
+      "axis": "y",
+      "line": 313.75,
+      "start": 62.75,
+      "end": 188.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7F9",
+      "kind": "polyline",
+      "cadBounds": [
+        2682.580993541329,
+        1760.64142673507,
+        2692.580993541329,
+        1886.14142673507
+      ],
+      "axis": "y",
+      "line": 1202.25,
+      "start": 62.75,
+      "end": 188.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7FA",
+      "kind": "polyline",
+      "cadBounds": [
+        1794.080993541329,
+        1384.14142673507,
+        1804.080993541329,
+        1509.64142673507
+      ],
+      "axis": "y",
+      "line": 313.75,
+      "start": 439.25,
+      "end": 564.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7FB",
+      "kind": "polyline",
+      "cadBounds": [
+        1804.080993541329,
+        1379.14142673507,
+        1906.830993541329,
+        1389.14142673507
+      ],
+      "axis": "x",
+      "line": 564.75,
+      "start": 318.75,
+      "end": 421.5,
+      "width": 102.75,
+      "thickness": 10
+    },
+    {
+      "handle": "7FD",
+      "kind": "polyline",
+      "cadBounds": [
+        2072.830993541329,
+        1379.14142673507,
+        2175.580993541329,
+        1389.14142673507
+      ],
+      "axis": "x",
+      "line": 564.75,
+      "start": 587.5,
+      "end": 690.25,
+      "width": 102.75,
+      "thickness": 10
+    },
+    {
+      "handle": "7FE",
+      "kind": "polyline",
+      "cadBounds": [
+        1794.080993541329,
+        1509.64142673507,
+        1804.080993541329,
+        1635.14142673507
+      ],
+      "axis": "y",
+      "line": 313.75,
+      "start": 313.75,
+      "end": 439.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "7FF",
+      "kind": "polyline",
+      "cadBounds": [
+        2175.580993541329,
+        1384.14142673507,
+        2185.580993541329,
+        1509.64142673507
+      ],
+      "axis": "y",
+      "line": 695.25,
+      "start": 439.25,
+      "end": 564.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "801",
+      "kind": "polyline",
+      "cadBounds": [
+        2682.580993541329,
+        1572.39142673507,
+        2692.580993541329,
+        1635.14142673507
+      ],
+      "axis": "y",
+      "line": 1202.25,
+      "start": 313.75,
+      "end": 376.5,
+      "width": 62.75,
+      "thickness": 10
+    },
+    {
+      "handle": "802",
+      "kind": "polyline",
+      "cadBounds": [
+        2611.205993541329,
+        1567.39142673507,
+        2682.580993541329,
+        1577.391426735099
+      ],
+      "axis": "x",
+      "line": 376.5,
+      "start": 1125.875,
+      "end": 1197.25,
+      "width": 71.375,
+      "thickness": 10
+    },
+    {
+      "handle": "804",
+      "kind": "polyline",
+      "cadBounds": [
+        2682.580993541329,
+        1635.14142673507,
+        2692.580993541329,
+        1760.64142673507
+      ],
+      "axis": "y",
+      "line": 1202.25,
+      "start": 188.25,
+      "end": 313.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "805",
+      "kind": "polyline",
+      "cadBounds": [
+        2557.080993541329,
+        1883.14142673507,
+        2682.580993541329,
+        1889.14142673507
+      ],
+      "axis": "x",
+      "line": 62.75,
+      "start": 1071.75,
+      "end": 1197.25,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "806",
+      "kind": "polyline",
+      "cadBounds": [
+        2177.429623814985,
+        1640.137716994366,
+        2183.429623814985,
+        1765.637716994366
+      ],
+      "axis": "y",
+      "line": 695.0986,
+      "start": 183.2537,
+      "end": 308.7537,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "807",
+      "kind": "polyline",
+      "cadBounds": [
+        2177.429623814985,
+        1765.637716994366,
+        2183.580993541329,
+        1886.14142673507
+      ],
+      "axis": "y",
+      "line": 695.1743,
+      "start": 62.75,
+      "end": 183.2537,
+      "width": 120.5037,
+      "thickness": 6.1514
+    },
+    {
+      "handle": "808",
+      "kind": "polyline",
+      "cadBounds": [
+        2177.580993541329,
+        1886.14142673507,
+        2183.580993541329,
+        2011.64142673507
+      ],
+      "axis": "y",
+      "line": 695.25,
+      "start": -62.75,
+      "end": 62.75,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "809",
+      "kind": "polyline",
+      "cadBounds": [
+        2177.580993541329,
+        2011.64142673507,
+        2183.580993541329,
+        2137.14142673507
+      ],
+      "axis": "y",
+      "line": 695.25,
+      "start": -188.25,
+      "end": -62.75,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "80A",
+      "kind": "polyline",
+      "cadBounds": [
+        2177.580993541329,
+        2137.14142673507,
+        2183.580993541329,
+        2257.64142673507
+      ],
+      "axis": "y",
+      "line": 695.25,
+      "start": -308.75,
+      "end": -188.25,
+      "width": 120.5,
+      "thickness": 6
+    },
+    {
+      "handle": "80B",
+      "kind": "polyline",
+      "cadBounds": [
+        2365.830993541329,
+        1640.14142673507,
+        2371.830993541329,
+        1760.64142673507
+      ],
+      "axis": "y",
+      "line": 883.5,
+      "start": 188.25,
+      "end": 308.75,
+      "width": 120.5,
+      "thickness": 6
+    },
+    {
+      "handle": "80C",
+      "kind": "polyline",
+      "cadBounds": [
+        2365.830993541329,
+        1760.64142673507,
+        2371.830993541329,
+        1886.14142673507
+      ],
+      "axis": "y",
+      "line": 883.5,
+      "start": 62.75,
+      "end": 188.25,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "80D",
+      "kind": "polyline",
+      "cadBounds": [
+        2365.830993541329,
+        1886.14142673507,
+        2371.830993541329,
+        2011.64142673507
+      ],
+      "axis": "y",
+      "line": 883.5,
+      "start": -62.75,
+      "end": 62.75,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "80E",
+      "kind": "polyline",
+      "cadBounds": [
+        2365.830993541329,
+        2011.64142673507,
+        2371.830993541329,
+        2137.14142673507
+      ],
+      "axis": "y",
+      "line": 883.5,
+      "start": -188.25,
+      "end": -62.75,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "80F",
+      "kind": "polyline",
+      "cadBounds": [
+        2365.830993541329,
+        2137.14142673507,
+        2371.830993541329,
+        2257.64142673507
+      ],
+      "axis": "y",
+      "line": 883.5,
+      "start": -308.75,
+      "end": -188.25,
+      "width": 120.5,
+      "thickness": 6
+    },
+    {
+      "handle": "810",
+      "kind": "polyline",
+      "cadBounds": [
+        2183.580993541329,
+        2008.64142673507,
+        2306.080993541329,
+        2014.64142673507
+      ],
+      "axis": "x",
+      "line": -62.75,
+      "start": 698.25,
+      "end": 820.75,
+      "width": 122.5,
+      "thickness": 6
+    },
+    {
+      "handle": "811",
+      "kind": "polyline",
+      "cadBounds": [
+        2371.830906617064,
+        1883.06574083068,
+        2431.580993541329,
+        1889.14142673507
+      ],
+      "axis": "x",
+      "line": 62.7878,
+      "start": 886.4999,
+      "end": 946.25,
+      "width": 59.7501,
+      "thickness": 6.0757
+    },
+    {
+      "handle": "812",
+      "kind": "polyline",
+      "cadBounds": [
+        2431.580993541329,
+        1883.14142673507,
+        2557.080993541329,
+        1889.14142673507
+      ],
+      "axis": "x",
+      "line": 62.75,
+      "start": 946.25,
+      "end": 1071.75,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "813",
+      "kind": "polyline",
+      "cadBounds": [
+        2055.080993541329,
+        1883.14142673507,
+        2177.580993541329,
+        1889.14142673507
+      ],
+      "axis": "x",
+      "line": 62.75,
+      "start": 569.75,
+      "end": 692.25,
+      "width": 122.5,
+      "thickness": 6
+    },
+    {
+      "handle": "814",
+      "kind": "polyline",
+      "cadBounds": [
+        1804.080993541329,
+        1883.14142673507,
+        1929.580993541329,
+        1889.14142673507
+      ],
+      "axis": "x",
+      "line": 62.75,
+      "start": 318.75,
+      "end": 444.25,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "815",
+      "kind": "polyline",
+      "cadBounds": [
+        1929.580993541329,
+        1883.14142673507,
+        2055.080993541329,
+        1889.14142673507
+      ],
+      "axis": "x",
+      "line": 62.75,
+      "start": 444.25,
+      "end": 569.75,
+      "width": 125.5,
+      "thickness": 6
+    },
+    {
+      "handle": "816",
+      "kind": "polyline",
+      "cadBounds": [
+        2306.080993541329,
+        2008.64142673507,
+        2365.830993541329,
+        2014.64142673507
+      ],
+      "axis": "x",
+      "line": -62.75,
+      "start": 820.75,
+      "end": 880.5,
+      "width": 59.75,
+      "thickness": 6
+    },
+    {
+      "handle": "B3C",
+      "kind": "polyline",
+      "cadBounds": [
+        2238.330993541329,
+        1630.14142673507,
+        2363.830993541329,
+        1640.14142673507
+      ],
+      "axis": "x",
+      "line": 313.75,
+      "start": 753,
+      "end": 878.5,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "BC9",
+      "kind": "polyline",
+      "cadBounds": [
+        2185.580993541329,
+        1630.14142673507,
+        2238.330993541329,
+        1640.14142673507
+      ],
+      "axis": "x",
+      "line": 313.75,
+      "start": 700.25,
+      "end": 753,
+      "width": 52.75,
+      "thickness": 10
+    },
+    {
+      "handle": "BCC",
+      "kind": "polyline",
+      "cadBounds": [
+        2373.830993541329,
+        1567.39142673507,
+        2445.205993541329,
+        1577.391426735099
+      ],
+      "axis": "x",
+      "line": 376.5,
+      "start": 888.5,
+      "end": 959.875,
+      "width": 71.375,
+      "thickness": 10
+    },
+    {
+      "handle": "BCE",
+      "kind": "polyline",
+      "cadBounds": [
+        2363.830993541329,
+        1572.39142673507,
+        2373.830993541329,
+        1635.14142673507
+      ],
+      "axis": "y",
+      "line": 883.5,
+      "start": 313.75,
+      "end": 376.5,
+      "width": 62.75,
+      "thickness": 10
+    },
+    {
+      "handle": "BCF",
+      "kind": "polyline",
+      "cadBounds": [
+        2175.580993541329,
+        1509.64142673507,
+        2185.580993541329,
+        1635.14142673507
+      ],
+      "axis": "y",
+      "line": 695.25,
+      "start": 313.75,
+      "end": 439.25,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "AD0",
+      "kind": "window-block",
+      "cadBounds": [
+        2445.205993541342,
+        1567.391426735092,
+        2611.205993541342,
+        1577.391426735092
+      ],
+      "axis": "x",
+      "line": 376.5,
+      "start": 959.875,
+      "end": 1125.875,
+      "width": 166,
+      "thickness": 10
+    },
+    {
+      "handle": "AD5",
+      "kind": "window-block",
+      "cadBounds": [
+        1906.830993541342,
+        1379.141426734976,
+        2072.830993541342,
+        1389.141426734976
+      ],
+      "axis": "x",
+      "line": 564.75,
+      "start": 421.5,
+      "end": 587.5,
+      "width": 166,
+      "thickness": 10
+    },
+    {
+      "handle": "ADA",
+      "kind": "window-block",
+      "cadBounds": [
+        1794.080993541371,
+        1635.141426735121,
+        1804.080993541371,
+        1760.641426735121
+      ],
+      "axis": "y",
+      "line": 313.75,
+      "start": 188.25,
+      "end": 313.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "ADD",
+      "kind": "window-block",
+      "cadBounds": [
+        2431.580993541342,
+        2257.641426735063,
+        2557.080993541342,
+        2267.641426735063
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 946.25,
+      "end": 1071.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "AE0",
+      "kind": "window-block",
+      "cadBounds": [
+        1929.580993541342,
+        2257.641426735063,
+        2055.080993541342,
+        2267.641426735063
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 444.25,
+      "end": 569.75,
+      "width": 125.5,
+      "thickness": 10
+    },
+    {
+      "handle": "AE5",
+      "kind": "window-block",
+      "cadBounds": [
+        2180.580993541342,
+        2257.641426735063,
+        2306.080993541342,
+        2267.641426735092
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 695.25,
+      "end": 820.75,
+      "width": 125.5,
+      "thickness": 10
+    }
+  ],
+  "windows": [
+    {
+      "handle": "AD0",
+      "kind": "window-block",
+      "cadBounds": [
+        2445.205993541342,
+        1567.391426735092,
+        2611.205993541342,
+        1577.391426735092
+      ],
+      "axis": "x",
+      "line": 376.5,
+      "start": 959.875,
+      "end": 1125.875,
+      "width": 166,
+      "thickness": 10,
+      "jambs": [
+        "C91",
+        "C92"
+      ],
+      "nominalWidth": 160,
+      "nominalHeight": 120,
+      "geometricGap": 160
+    },
+    {
+      "handle": "AD5",
+      "kind": "window-block",
+      "cadBounds": [
+        1906.830993541342,
+        1379.141426734976,
+        2072.830993541342,
+        1389.141426734976
+      ],
+      "axis": "x",
+      "line": 564.75,
+      "start": 421.5,
+      "end": 587.5,
+      "width": 166,
+      "thickness": 10,
+      "jambs": [
+        "C9D",
+        "C9E"
+      ],
+      "nominalWidth": 160,
+      "nominalHeight": 120,
+      "geometricGap": 160
+    },
+    {
+      "handle": "ADA",
+      "kind": "window-block",
+      "cadBounds": [
+        1794.080993541371,
+        1635.141426735121,
+        1804.080993541371,
+        1760.641426735121
+      ],
+      "axis": "y",
+      "line": 313.75,
+      "start": 188.25,
+      "end": 313.75,
+      "width": 125.5,
+      "thickness": 10,
+      "jambs": [
+        "CA9",
+        "CAC"
+      ],
+      "nominalWidth": 119,
+      "nominalHeight": 120,
+      "geometricGap": 120
+    },
+    {
+      "handle": "ADD",
+      "kind": "window-block",
+      "cadBounds": [
+        2431.580993541342,
+        2257.641426735063,
+        2557.080993541342,
+        2267.641426735063
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 946.25,
+      "end": 1071.75,
+      "width": 125.5,
+      "thickness": 10,
+      "jambs": [
+        "CB3",
+        "CB6"
+      ],
+      "nominalWidth": 119,
+      "nominalHeight": 120,
+      "geometricGap": 120
+    },
+    {
+      "handle": "AE0",
+      "kind": "window-block",
+      "cadBounds": [
+        1929.580993541342,
+        2257.641426735063,
+        2055.080993541342,
+        2267.641426735063
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 444.25,
+      "end": 569.75,
+      "width": 125.5,
+      "thickness": 10,
+      "jambs": [
+        "CBD",
+        "CC0"
+      ],
+      "nominalWidth": 119,
+      "nominalHeight": 120,
+      "geometricGap": 120
+    },
+    {
+      "handle": "AE5",
+      "kind": "window-block",
+      "cadBounds": [
+        2180.580993541342,
+        2257.641426735063,
+        2306.080993541342,
+        2267.641426735092
+      ],
+      "axis": "x",
+      "line": -313.75,
+      "start": 695.25,
+      "end": 820.75,
+      "width": 125.5,
+      "thickness": 10,
+      "jambs": [
+        "CC7",
+        "CC8"
+      ],
+      "nominalWidth": 60,
+      "nominalHeight": 40,
+      "geometricGap": 60
+    }
+  ],
+  "doorArcs": [
+    {
+      "handle": "8A0",
+      "center": [
+        2196.014601860648,
+        2014.624622874115,
+        0
+      ],
+      "radius": 97.619736388231,
+      "startAngle": 6.281979156201,
+      "endAngle": 1.569590175817
+    },
+    {
+      "handle": "92E",
+      "center": [
+        2177.597797402285,
+        1900.07503505436,
+        0
+      ],
+      "radius": 97.619736388231,
+      "startAngle": 1.569590175817,
+      "endAngle": 3.140386502611
+    },
+    {
+      "handle": "9B9",
+      "center": [
+        2177.446427675941,
+        1751.704108675076,
+        0
+      ],
+      "radius": 97.619736388231,
+      "startAngle": 3.142798804568,
+      "endAngle": 4.713595131363
+    },
+    {
+      "handle": "A42",
+      "center": [
+        2371.814191862579,
+        1872.20781841578,
+        0
+      ],
+      "radius": 97.619736388231,
+      "startAngle": 4.711182829406,
+      "endAngle": 6.281979156201
+    },
+    {
+      "handle": "AC9",
+      "center": [
+        2371.814189680374,
+        1898.57503505436,
+        0
+      ],
+      "radius": 97.619736388231,
+      "startAngle": 0.001206150978,
+      "endAngle": 1.572002477773
+    },
+    {
+      "handle": "BC8",
+      "center": [
+        2347.400993541336,
+        1638.14142673507,
+        0
+      ],
+      "radius": 97.619736388231,
+      "startAngle": 1.570796326795,
+      "endAngle": 3.14159265359
+    }
+  ],
+  "labels": [
+    {
+      "type": "TEXT",
+      "handle": "8A1",
+      "layer": "Block1",
+      "text": "80",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2209.407576248969,
+          2090.854365521642,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0.001206150978,
+      "radius": 10
+    },
+    {
+      "type": "TEXT",
+      "handle": "8A2",
+      "layer": "1",
+      "text": "1220",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2220.493103283794,
+          2016.855316370762,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "8A3",
+      "layer": "1",
+      "text": "1220",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2091.993103283794,
+          1891.355316370762,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "8A4",
+      "layer": "1",
+      "text": "590",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2383.345580835465,
+          1873.340902218952,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "92F",
+      "layer": "Block1",
+      "text": "80",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2091.303822687319,
+          1914.347734321614,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 6.281979156201,
+      "radius": 10
+    },
+    {
+      "type": "TEXT",
+      "handle": "9BA",
+      "layer": "Block1",
+      "text": "80",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2091.164358145428,
+          1728.119128937433,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0.001206150978,
+      "radius": 10
+    },
+    {
+      "type": "TEXT",
+      "handle": "A43",
+      "layer": "Block1",
+      "text": "80",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2442.659710547991,
+          1848.641457498081,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 6.281979156201,
+      "radius": 10
+    },
+    {
+      "type": "TEXT",
+      "handle": "ACA",
+      "layer": "Block1",
+      "text": "80",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2442.671613550237,
+          1912.82911550167,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0.001206150978,
+      "radius": 10
+    },
+    {
+      "type": "TEXT",
+      "handle": "ACB",
+      "layer": "1",
+      "text": "1200",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2176.163643499591,
+          2173.96972850155,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.570796326795,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "ACC",
+      "layer": "1",
+      "text": "1200",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2387.995278835808,
+          2173.96972850155,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.570796326795,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "ACD",
+      "layer": "1",
+      "text": "710",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2628.386498494148,
+          1550.721739699809,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "ACE",
+      "layer": "1",
+      "text": "1020",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          1832.013765823462,
+          1362.471739699809,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "ACF",
+      "layer": "1",
+      "text": "1020",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2100.763765823462,
+          1362.471739699809,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AD1",
+      "layer": "1",
+      "text": "\\pxsm1;{\\T0.95;160/120}",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2494.120834629417,
+          1543.579345389742,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AD3",
+      "layer": "1",
+      "text": "\\pxsm1,ql;{\\T0.95;1660}",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2504.53440301023,
+          1570.318085672108,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AD6",
+      "layer": "1",
+      "text": "\\pxsm1;{\\T0.95;160/120}",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          1955.745834629417,
+          1355.329345389684,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AD8",
+      "layer": "1",
+      "text": "\\pxsm1,ql;{\\T0.95;1660}",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          1966.15940301023,
+          1382.06808567205,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15
+    },
+    {
+      "type": "MTEXT",
+      "handle": "ADB",
+      "layer": "1",
+      "text": "\\pxsm1;{\\T0.95;119/120}",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          1773.766869064379,
+          1662.476940429049,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "angle": 1.570796326795,
+      "radius": 15
+    },
+    {
+      "type": "MTEXT",
+      "handle": "ADE",
+      "layer": "1",
+      "text": "\\pxsm1;{\\T0.95;119/120}",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2458.491907321079,
+          2287.655481653674,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AE1",
+      "layer": "1",
+      "text": "\\pxsm1;{\\T0.95;119/120}",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          1956.491907321078,
+          2287.655481653674,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AE3",
+      "layer": "0",
+      "text": "\\pxsm1,ql;{\\T0.95;60/40}",
+      "block": null,
+      "color": 7,
+      "points": [
+        [
+          2219.990522102993,
+          2266.957271913335,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174
+    },
+    {
+      "type": "TEXT",
+      "handle": "AE6",
+      "layer": "1",
+      "text": "590",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2318.539198147295,
+          2015.754231684499,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AF1",
+      "layer": "Block1",
+      "text": "{\\C0;100*100}",
+      "block": null,
+      "color": null,
+      "points": [
+        [
+          2156.706998932017,
+          1297.386184720272,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AF2",
+      "layer": "Block1",
+      "text": "{\\C0;2700}",
+      "block": null,
+      "color": null,
+      "points": [
+        [
+          2165.768493318597,
+          1282.879658643222,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AF6",
+      "layer": "Block1",
+      "text": "{\\C0;100*100}",
+      "block": null,
+      "color": null,
+      "points": [
+        [
+          2663.706998932017,
+          1297.386184720272,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AF7",
+      "layer": "Block1",
+      "text": "{\\C0;2700}",
+      "block": null,
+      "color": null,
+      "points": [
+        [
+          2672.768493318598,
+          1282.879658643222,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AF8",
+      "layer": "Block1",
+      "text": "{\\C0;100*100*2520}",
+      "block": null,
+      "color": null,
+      "points": [
+        [
+          2696.235987394163,
+          1404.826246731078,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "angle": 1.570796326795,
+      "radius": 10
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AF9",
+      "layer": "Block1",
+      "text": "{\\C0;100*100*640}",
+      "block": null,
+      "color": null,
+      "points": [
+        [
+          2192.806092185974,
+          1321.1298219784,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "angle": 1.570796326795,
+      "radius": 10
+    },
+    {
+      "type": "MTEXT",
+      "handle": "AFA",
+      "layer": "Block1",
+      "text": "{\\C0;100*100*4970}",
+      "block": null,
+      "color": null,
+      "points": [
+        [
+          2386.926015286519,
+          1301.453340424814,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "AFE",
+      "layer": "Block1",
+      "text": "",
+      "block": "*D13",
+      "color": 7,
+      "points": [
+        [
+          2180.580993541329,
+          2316.459882704461,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1987.330993541329,
+          2330.748086457813,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "dimensionValue": 386.5
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "AFF",
+      "layer": "Block1",
+      "text": "",
+      "block": "*D14",
+      "color": 7,
+      "points": [
+        [
+          2180.580993541329,
+          2316.459882704461,
+          0
+        ]
+      ],
+      "end": [
+        [
+          2274.705993541329,
+          2330.748086457813,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "dimensionValue": 188.25
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "B00",
+      "layer": "Block1",
+      "text": "",
+      "block": "*D15",
+      "color": 7,
+      "points": [
+        [
+          2368.830993541329,
+          2316.459882704461,
+          0
+        ]
+      ],
+      "end": [
+        [
+          2530.705993541329,
+          2330.721276806338,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "dimensionValue": 323.75
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "B02",
+      "layer": "Block1",
+      "text": "",
+      "block": "*D16",
+      "color": 7,
+      "points": [
+        [
+          2751.705364440673,
+          1886.141426735071,
+          0
+        ]
+      ],
+      "end": [
+        [
+          2737.417160687322,
+          2076.89142673507,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "dimensionValue": 381.5
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "B03",
+      "layer": "Block1",
+      "text": "",
+      "block": "*D17",
+      "color": 7,
+      "points": [
+        [
+          2751.705364440848,
+          1567.391426735071,
+          0
+        ]
+      ],
+      "end": [
+        [
+          2737.417160687496,
+          1726.76642673507,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "dimensionValue": 318.75
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "B04",
+      "layer": "Block1",
+      "text": "",
+      "block": "*D18",
+      "color": 7,
+      "points": [
+        [
+          2751.705364440964,
+          1304.64142673507,
+          0
+        ]
+      ],
+      "end": [
+        [
+          2737.417160687613,
+          1436.01642673507,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "dimensionValue": 262.75
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "B05",
+      "layer": "Block1",
+      "text": "",
+      "block": "*D19",
+      "color": 7,
+      "points": [
+        [
+          2803.12145391251,
+          2267.641426735071,
+          0
+        ]
+      ],
+      "end": [
+        [
+          2788.833250159159,
+          1786.14142673507,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "dimensionValue": 963.000000000001
+    },
+    {
+      "type": "TEXT",
+      "handle": "B3D",
+      "layer": "Block1",
+      "text": "�elik",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2302.628897013712,
+          1680.353252651672,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10
+    },
+    {
+      "type": "TEXT",
+      "handle": "B3E",
+      "layer": "Block1",
+      "text": "90",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2320.199222168552,
+          1712.03256949885,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10
+    },
+    {
+      "type": "TEXT",
+      "handle": "BCB",
+      "layer": "1",
+      "text": "520",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2194.459656397712,
+          1611.771390331421,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "BCD",
+      "layer": "1",
+      "text": "710",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2391.035792086115,
+          1550.721739699809,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "BD0",
+      "layer": "1",
+      "text": "1200",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2175.784143224724,
+          1802.098233249599,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.570796326795,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "BD3",
+      "layer": "1",
+      "text": "1200",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2391.204372253431,
+          1679.171199012671,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.570796326795,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "BD4",
+      "layer": "1",
+      "text": "625",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2361.865915388991,
+          1586.140727023194,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.570796326795,
+      "radius": 15.217391304348
+    },
+    {
+      "type": "TEXT",
+      "handle": "BD5",
+      "layer": "1",
+      "text": "625",
+      "block": null,
+      "color": 0,
+      "points": [
+        [
+          2710.853633784706,
+          1586.140727023194,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.570796326795,
+      "radius": 15.217391304348
+    }
+  ],
+  "uncertainties": [
+    "Panel 806 shifted ~0.1514 cm and panel 807 tapered; panel 811 skew ~0.0757 cm. Orthogonal reconstruction needs declared normalization.",
+    "Door arc radius 97.6197 differs from 80/90 text. Exact opening position/width must be resolved.",
+    "49 geometric panel candidates (43 rectangles + 6 window blocks) are not a verified manufacturing BOM."
+  ]
+}

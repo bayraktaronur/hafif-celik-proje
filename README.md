@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.18
+# Prefabrikten Plan Studio · 5.9.19
+
+5.9.19: Drawing1.dwg referansındaki 52,75 / 71,375 / 102,75 / 166 cm yerleşimler için 520 / 710 / 1020 / 1660 mm kesim eşlemeleri eklendi. Genel sabit pay çıkarma kuralı uygulanmaz. İş JSON'u ile ölçülü karşılaştırma ve orijinalleri değiştirmeyen ayrı kontrol taslağı hazırlandı: [karşılaştırma raporu](analizler/2026-10-02-tuna84-karsilastirma.md). Bu teslim bir üretim onayı değildir; makas/H mesnet, ürün listesi, kapı boşluğu ve çatı/tesisat ayrıntıları raporda açık tutulur. Mevcut kullanıcı çizimleri kendiliğinden dönüştürülmez.
 
 5.9.18: Kat planı ve çatı planından makas yönü değiştirilirken mevcut duvar koordinatları, köşe payları, panel dizilimleri ve açıklıklar korunur. Otomatik paneller mevcut ölçüleriyle açık dizilim olarak saklanır; yön değişimi artık 10 cm gibi yeni panel artıkları üretmez. Çatı geometrisi ortak yönle güncellenir; H mesnet uyumsuzluğu Plan kontrolünde uyarılır. Elle taşınmış makasların önce otomatik aksa döndürülmesi gerekir. Dikdörtgen ve girintili plan, iki arayüz, geri/ileri alma ve JSON yeniden açma testleri eklenmiştir.
 

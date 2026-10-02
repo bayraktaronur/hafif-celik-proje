@@ -144,7 +144,9 @@
   // User-confirmed fabrication examples. This is intentionally a small
   // catalogue, not a guessed constant allowance or rounding formula.
   function cutMm(width){
-    const pairs=[[125.5,1250],[62.75,625],[120.5,1200],[122.5,1220],[59.75,590],[57.75,570]];
+    // Additional measured Drawing1.dwg examples: BC9/BCB, BCC/BCD,
+    // 7FB/ACE and window block AD5/AD8. These are lookup entries, not a universal deduction.
+    const pairs=[[125.5,1250],[62.75,625],[120.5,1200],[122.5,1220],[59.75,590],[57.75,570],[52.75,520],[71.375,710],[102.75,1020],[166,1660]];
     const match=pairs.find(([w])=>Math.abs(width-w)<.001);return match?match[1]:null;
   }
   const panelInfo=pfSegPanelHTML;
