@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.49**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.50**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -498,7 +498,7 @@ Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list;
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-033 | Omega aşık yerleşimi ve sevk | 5.9.49: mahya120mm,saçak0/342mm,OSB400/trapez800,kalan mahyada; dikdörtgen beşik kesit sıra taslağı tamam. Serbest sınır/birleşik çatı ve3000/4200stok/ek hesabı açık. analizler/2026-10-04-asik-120mm-mahya.md |
+| DEV-033 | Omega aşık yerleşimi ve sevk | 5.9.50: dikdörtgen beşik sıra+4200/3000kesimsiz kombinasyon ve ayrı sevk satırları tamam. Genel serbest sınır/diğer çatı sıra yerleşimi ve ek noktaları açık; kontrol satırları gösterilir. analizler/2026-10-04-asik-stok-kombinasyonu.md |
 
 ## 4 Ekim 2026 — DEV-033 sabit aşık uçları
 
@@ -511,3 +511,9 @@ Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list;
 ## 4 Ekim 2026 — DEV-033 planda aşık sıra boyu
 
 [Kaynak görsel/hash ve açıklama](analizler/2026-10-04-asik-plan-boyu.md). Aşıklar makasları dik keser; örnekte sıra boyu bina/ilgili çatı boyu+iki uçta30+30cm. Saçak modelde dahilse tekrar eklenmez. Stok notu sağdan kesilmiş4000ve...; eski4200/3000referansı ile fiziksel/etkin boy ayrımı ve ek bindirme belirsiz. Stok sevk hesabı için bu iki bilgi bekleniyor. Kod/çizim değişmedi.
+
+## 4 Ekim 2026 — 5.9.50 / DEV-033 aşık stok kombinasyonu
+
+[Kurallar, kapsam ve kontroller](analizler/2026-10-04-asik-stok-kombinasyonu.md).4200/3000mm tüm uygun kombinasyonlar: önce en az fazla(bindirme),eşitse en az parça. Kesim/sabit bindirme/yedek yok. Her sıra gerçek saçak dahil çatı boyundan; aynı saçak tekrar eklenmez.3000/4200 ayrı sevk satırları,ekranda/CSV/XLSXte sıra-kombinasyon-bindirme ayrıntısı. Desteklenen dikdörtgen beşik çatı; serbest sınır/diğer çatı veya kısa sıra açık kontrol satırı verir. DEV-033 genel sıra geometrisi ve ek noktaları hâlâ açık.
+
+Build,purlin-stock bağımsız optimum taraması,loading-purlin arayüz/XLSX,stations,loading-list/verge ve verify-loading-xlsx başarılı. Canlı çizim ve Yeni proje (11).json korunur; kaynak/kayıt/test/dist aktarılır,artifacts geçici kalır.

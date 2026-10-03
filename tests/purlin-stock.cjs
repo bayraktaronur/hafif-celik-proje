@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),C=require('../src/loading-core.js'),R=require('../src/roof-core.js');
+for(const [mm,a,b] of [[9000,0,3],[11400,2,1],[15000,0,5],[23400,2,5],[21000,5,0],[20000,2,4],[4000,0,2]]){const p=C.purlinStock(mm);assert.equal(p.n4200,a);assert.equal(p.n3000,b);assert.equal(p.totalMm-p.overlapMm,mm);}
+assert.equal(C.purlinStock(2999),null);assert.equal(C.purlinStock(NaN),null);assert.equal(C.purlinStock(4200).count,1);
+// Independent bounded enumeration confirms the lexicographic optimum for many arbitrary lengths.
+for(let L=3000;L<=30000;L+=137){const candidates=[];for(let a=0;a<=11;a++)for(let b=0;b<=11;b++){const n=a+b,total=a*4200+b*3000;if(!n||total<L||a&&L<4200||n===1&&total!==L)continue;candidates.push({excess:total-L,n});}candidates.sort((a,b)=>a.excess-b.excess||a.n-b.n);const best=C.purlinStock(L);assert.equal(best.overlapMm,candidates[0].excess);assert.equal(best.count,candidates[0].n);}
+const z=R.defaults({w:1000,d:800,pitch:30,eaves:[30,30,30,30]}),m=R.calculate([z],[]),layout=R.purlinRuns([z],m);assert.equal(layout.pending.length,0);assert.ok(layout.runs.length>0);assert.ok(layout.runs.every(r=>r.lengthMm===10600));assert.equal(new Set(layout.runs.map(r=>JSON.stringify([r.p,r.q]))).size,layout.runs.length);
+const osb={...z,layers:[{...R.LAYERS[0]}]};assert.ok(R.purlinRuns([osb],R.calculate([osb],[])).runs.length>layout.runs.length);const turned=R.turn(z);const turnedRuns=R.purlinRuns([turned],R.calculate([turned],[]));assert.ok(turnedRuns.runs.every(r=>r.lengthMm===8600));
+const unsupported={...z,type:'kirma'};assert.equal(R.purlinRuns([unsupported],R.calculate([unsupported],[])).pending.length,1);
+const item=(L)=>({group:'Metal',name:'Omega aşık',size:'3000 mm',source:{id:'r',purlinRule:{label:'sıra 1',...C.purlinStock(L),count:C.purlinStock(L).n3000}}});const row=C.build([item(9000)]).rows[0];assert.equal(row.qty,3);const cfg={manual:[],adjustments:[{key:row.key,basis:row.basis,qty:4,reason:'Ek sevk',referenceId:''}]};assert.equal(C.build([item(9000)],cfg).rows[0].qty,4);assert.equal(C.build([item(9100)],cfg).rows[0].qty,null);
+console.log('PASS global two-stock optimum, zero/variable overlap, no single-piece trimming, eaves once, OSB, rotation, unsupported roof, manual/stale');
+

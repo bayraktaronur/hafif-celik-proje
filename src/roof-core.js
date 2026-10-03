@@ -301,5 +301,25 @@
     if(end-positions.at(-1)>1e-6)positions.push(end);
     return {positions,spacingMm,ridgeOffsetMm:120,eaveIntervalMm:342,remainderMm:positions.length>2?end-positions.at(-2):0};
   }
-  return {purlinStations,connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
+
+  function purlinRuns(zones,roofModel,legacyOSB=false){
+    const runs=[],pending=[];
+    for(const z of zones){const spacing=layers(z,legacyOSB).some(l=>l.id==='osb')?400:z.material==='trapez'?800:null;
+     const poly=footprint(z),ys=poly.map(p=>p.y),lo=Math.min(...ys),hi=Math.max(...ys),ridge=z.d*z.ridge/100;
+     if(z.type!=='besik'||z.outline||!spacing){pending.push({zoneId:z.id,name:z.name,reason:'Bu çatı biçimi veya kaplama için aşık sıra yerleşimi kontrol edilmeli.'});continue;}
+     const localFaces=roofModel.faces.filter(f=>f.zoneId===z.id).map(f=>({...f,local:f.poly.map(p=>untransform(z,p))}));
+     let rowNo=0;
+     for(const [eave,slope] of [[lo,z.pitch/100],[hi,(z.pitch/100)*ridge/(z.d-ridge)]]){
+      const factor=Math.sqrt(1+slope*slope),L=Math.abs(ridge-eave)*factor*10,stations=purlinStations(L,spacing);
+      if(!stations){pending.push({zoneId:z.id,name:z.name,reason:'Sabit aşık uçları bu kısa yüze sığmıyor.'});continue;}
+      for(const mm of stations.positions){const y=eave+Math.sign(ridge-eave)*mm/(10*factor),intervals=[];
+       for(const f of localFaces){const xs=[];f.local.forEach((p,i)=>{const q=f.local[(i+1)%f.local.length];if(Math.abs(p.y-y)<1e-6)xs.push(p.x);if((p.y-y)*(q.y-y)<0)xs.push(p.x+(y-p.y)*(q.x-p.x)/(q.y-p.y));});if(xs.length>1&&Math.max(...xs)-Math.min(...xs)>1e-5)intervals.push([Math.min(...xs),Math.max(...xs)]);}
+       intervals.sort((a,b)=>a[0]-b[0]);const merged=[];for(const pair of intervals){const last=merged.at(-1);if(last&&pair[0]<=last[1]+1e-5)last[1]=Math.max(last[1],pair[1]);else merged.push(pair.slice());}
+       for(const [a,b] of merged){const p=transform(z,{x:a,y}),q=transform(z,{x:b,y});runs.push({id:z.id+':'+(++rowNo),zoneId:z.id,label:z.name+' / sıra '+rowNo,p,q,lengthMm:Math.round((b-a)*10000)/1000,spacingMm:spacing,stationMm:mm});}
+      }
+     }
+    }
+    return {runs,pending};
+  }
+  return {purlinRuns,purlinStations,connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
 });

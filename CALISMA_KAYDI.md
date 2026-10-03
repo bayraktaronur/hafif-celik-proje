@@ -418,3 +418,9 @@ Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list;
 ## 4 Ekim 2026 — DEV-033 planda aşık sıra boyu
 
 [Kaynak görsel/hash ve açıklama](analizler/2026-10-04-asik-plan-boyu.md). Aşıklar makasları dik keser; örnekte sıra boyu bina/ilgili çatı boyu+iki uçta30+30cm. Saçak modelde dahilse tekrar eklenmez. Stok notu sağdan kesilmiş4000ve...; eski4200/3000referansı ile fiziksel/etkin boy ayrımı ve ek bindirme belirsiz. Stok sevk hesabı için bu iki bilgi bekleniyor. Kod/çizim değişmedi.
+
+## 4 Ekim 2026 — 5.9.50 / DEV-033 aşık stok kombinasyonu
+
+[Kurallar, kapsam ve kontroller](analizler/2026-10-04-asik-stok-kombinasyonu.md).4200/3000mm tüm uygun kombinasyonlar: önce en az fazla(bindirme),eşitse en az parça. Kesim/sabit bindirme/yedek yok. Her sıra gerçek saçak dahil çatı boyundan; aynı saçak tekrar eklenmez.3000/4200 ayrı sevk satırları,ekranda/CSV/XLSXte sıra-kombinasyon-bindirme ayrıntısı. Desteklenen dikdörtgen beşik çatı; serbest sınır/diğer çatı veya kısa sıra açık kontrol satırı verir. DEV-033 genel sıra geometrisi ve ek noktaları hâlâ açık.
+
+Build,purlin-stock bağımsız optimum taraması,loading-purlin arayüz/XLSX,stations,loading-list/verge ve verify-loading-xlsx başarılı. Canlı çizim ve Yeni proje (11).json korunur; kaynak/kayıt/test/dist aktarılır,artifacts geçici kalır.

@@ -301,3 +301,6 @@ Aşık kapama U2500mm, Alın V ile bire bir aynı adette ayrı yükleme/CSV/XLSX
 
 ### 5.9.49
 Aşık sıraları: mahya120mm,saçak0/342mm;OSB400/trapez800mm,kalan aralık mahyada. Dikdörtgen beşik çatı kesitinde sıra taslağı ve yüz başına sayı gösterilir. Stok sevk hesabı ve serbest sınır/birleşik çatı gösterimi kapsam dışı.
+
+### 5.9.50
+Omega aşık4200/3000stok kombinasyonu: en az toplam bindirme, eşitlikte en az parça. Dikdörtgen beşik çatı sıralarından ayrı stok adetleri; ekran/CSV/XLSXte sıra ve bindirme ayrıntısı. Desteklenmeyen çatı ve kısa boylar kontrol satırında; kaynak çizim korunur.

@@ -38,6 +38,19 @@
    result.push({id:s.id,point,name,widthMm:veranda?100:s.k*10,lengthCm:veranda?netMm===null?null:netMm/10:L,netMm,veranda,axis,trussAxis});
   }return result;
  }
+
+ // Exhaustive two-stock search: least excess, then fewest pieces. Excess is overlap, not waste.
+ function purlinStock(lengthMm){
+  if(!Number.isFinite(lengthMm)||lengthMm<3000||lengthMm>1000000)return null;
+  let best=null;const eps=1e-6;
+  for(let n4200=0;n4200<=Math.ceil(lengthMm/4200);n4200++){
+   const n3000=Math.max(0,Math.ceil((lengthMm-n4200*4200-eps)/3000)),count=n4200+n3000,totalMm=n4200*4200+n3000*3000,overlapMm=Math.max(0,totalMm-lengthMm);
+   if(!count||totalMm<lengthMm-eps||(n4200&&lengthMm<4200-eps)||(count===1&&overlapMm>eps))continue;
+   const candidate={n4200,n3000,count,totalMm,overlapMm:Math.round(overlapMm*1000)/1000,lengthMm};
+   if(!best||overlapMm<best.overlapMm-eps||(Math.abs(overlapMm-best.overlapMm)<eps&&count<best.count))best=candidate;
+  }
+  return best;
+ }
  function build(items,config){const c=validate(config),groups=new Map();
   for(let item of items){if(item.source.stockRule)item={...item,name:'Dolu stok pano',size:`${item.source.stockRule.thicknessMm} × 1250 × ${item.source.stockRule.heightMm} mm`,warning:'Özel parça ölçüleri çizimde korunur; stok pano sahada kesilir. Kesim planı büyükten küçüğe sığdırılır; en az pano garantisi verilmez. Katalog dışı ölçülerde çizim eni esas alınır; H payı düşülmez. Testere payı ayrıca tanımlanmadı.'};const key=JSON.stringify([item.group,item.name,item.size]);if(!groups.has(key))groups.set(key,{key,group:item.group,name:item.name,size:item.size,unit:'adet',calculated:0,sources:[],warning:item.warning});const r=groups.get(key);r.calculated++;r.sources.push(item.source);}
   const rows=[...groups.values()].sort((a,b)=>(['Panel','Metal','Kapı / PVC'].indexOf(a.group)-['Panel','Metal','Kapı / PVC'].indexOf(b.group))||a.key.localeCompare(b.key,'tr'));for(const r of rows){r.basis=fingerprint(JSON.stringify(r.sources.slice().sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)))));const a=c.adjustments.find(a=>a.key===r.key);r.stale=!!a&&a.basis!==r.basis;const auto=r.sources.length&&r.sources.every(s=>(s.hRule&&s.hRule.ear!==null)||!!s.cornerRule||!!s.uRule||!!s.stockRule||!!s.postRule);r.packing=r.sources.every(s=>s.stockRule)?packPanels(r.sources.map(s=>({id:s.id,label:s.panelLabel||s.id,cutMm:s.stockRule.cutMm}))):null;r.cutting=r.packing?r.packing.map((b,i)=>`P${i+1}: ${b.parts.map(p=>p.cutMm+" ["+p.label+"]").join(" + ")} mm; artık ${b.leftoverMm} mm`).join(" | "):"";r.leftoverMm=r.packing?r.packing.reduce((n,b)=>n+b.leftoverMm,0):null;r.spare=r.sources.every(s=>s.uRule)?Math.ceil(r.calculated/5):0;r.qty=a?(r.stale?null:a.qty):auto?(r.packing?r.packing.length:r.calculated+r.spare):null;r.reason=a?.reason||(r.packing?'1250 mm stoktan saha kesimi; çizim parça ölçüleri korunur. Katalog dışı parçada çizim eni kullanılır, H payı düşülmez. Testere payı tanımlanmadı.':r.spare?`${r.calculated} çizim + ${r.spare} yedek; her başlayan 5 adede 1 yedek, ölçü bazında.`:'');r.referenceId=a?a.referenceId:(r.sources[0]?.referenceId||'');r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':auto?(r.packing?'Otomatik stok pano':r.sources[0].uRule?'Otomatik U + yedek':r.sources[0].postRule?'Otomatik veranda direği':r.sources[0].cornerRule?'Otomatik köşe direği':'Otomatik H adedi'):'Kural bekliyor';}
@@ -74,6 +87,11 @@
   for(const v of rows.filter(r=>r.name==='Alın V')){const key=JSON.stringify(['Metal','Aşık kapama U','2500 mm']),basis=fingerprint(v.basis+':purlin-cap-verge-one-to-one-v1:'+v.qty),a=c.adjustments.find(a=>a.key===key),stale=!!a&&a.basis!==basis;groups.set(key,true);
    rows.push({key,basis,group:'Metal',name:'Aşık kapama U',size:'2500 mm',unit:'adet',calculated:v.qty??v.calculated,qty:a?(stale?null:a.qty):v.qty,spare:0,status:stale?'Çizim değişti':a?'Manuel doğrulandı':v.qty===null?'Kural bekliyor':'Otomatik aşık kapama U',sources:v.sources.map(s=>({...s,id:'cap:'+s.id,capRule:{rule:'purlin-cap-verge-one-to-one-v1'}})),referenceId:a?a.referenceId:'tuna-37',warning:'Alın V ile bire bir aynı adet; ayrı ürün, stok boyu2500mm. Ek bindirme veya yedek eklenmez.',reason:a?.reason||'Alın V toplam sevk adediyle bire bir bağlı. Stok boyu2500mm; ayrı satır, ek yedek yok.'});
   }
+
+  for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.purlinRule))continue;const a=c.adjustments.find(a=>a.key===r.key);r.calculated=r.sources.reduce((n,s)=>n+s.purlinRule.count,0);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik omega aşık';
+   const plans=new Map();for(const source of r.sources){const q=source.purlinRule,k=JSON.stringify([q.lengthMm,q.n4200,q.n3000,q.overlapMm]);if(!plans.has(k))plans.set(k,{q,labels:[]});plans.get(k).labels.push(q.label);}r.purlinPlan=[...plans.values()].map(({q,labels})=>labels.length+' sıra ('+labels.join(', ')+'): her sıra '+q.lengthMm+' mm = '+q.n4200+' ×4200 + '+q.n3000+' ×3000 − '+q.overlapMm+' mm toplam bindirme').join(' | ');
+   r.reason=a?.reason||'Her sırada önce en az bindirme fazlası, eşitlikte en az parça. Fazlalık kesilmez; ekler arasında bindirilir. Sabit bindirme/yedek eklenmedi. Ek yerleri bu hesapta dağıtılmaz.';
+  }
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};
  }
@@ -83,7 +101,7 @@
   const known=!!r.sources?.length&&r.sources.every(s=>s.uRule||s.frameRule);
   return {base,spare:manual||r.qty==null?null:r.spare||0,label:manual?'Manuel toplam; yedek ayrımı doğrulanmadı':r.qty==null?'Hesap bekliyor':known?'Yedek toplam sevke dahil; tekrar eklemeyin':'Otomatik yedek eklenmedi'};
  }
- function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; çatı, tesisat ve sarf otomatik hesaplanmaz.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Toplam sevk (yedek dahil)' ,'Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler','Yedek','Kesim dağılımı (mm)','Artık toplamı (mm)','Adet','Yedek açıklaması','Net boy (mm)','Kesim payı (mm)','Sevk boyu (mm)'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', '),shipment(r).spare,r.cutting||'',r.leftoverMm??'',shipment(r).base,shipment(r).label,r.netMm??'',r.cutAllowanceMm??'',r.shipLengthMm??''])].map(r=>r.map(cell).join(';')).join('\r\n');}
+ function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; çatı, tesisat ve sarf otomatik hesaplanmaz.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Toplam sevk (yedek dahil)' ,'Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler','Yedek','Kesim dağılımı (mm)','Artık toplamı (mm)','Adet','Yedek açıklaması','Net boy (mm)','Kesim payı (mm)','Sevk boyu (mm)','Aşık sıra / kombinasyon / bindirme'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', '),shipment(r).spare,r.cutting||'',r.leftoverMm??'',shipment(r).base,shipment(r).label,r.netMm??'',r.cutAllowanceMm??'',r.shipLengthMm??'',r.purlinPlan||''])].map(r=>r.map(cell).join(';')).join('\r\n');}
  function classifyH(point,trusses,exterior){
   // Current manufacturing rule: every interior H is earless and without dowels.
   // Keep this separate from exterior support detection for a future explicit revision.
@@ -106,5 +124,5 @@
   const length=Math.round(height*1000)/100-60;
   return {rule:'u-height-minus60-spare-ceil5-v1',widthMm:width,heightMm:length,size:`${width} × ${length} mm`,referenceId:width===60&&height===250?'tuna-29':''};
  }
- return {validate,build,csv,fingerprint,classifyH,cornerProduct,uProduct,packPanels,stockWidth,shipment,topProfiles};
+ return {validate,build,csv,fingerprint,classifyH,cornerProduct,uProduct,packPanels,stockWidth,shipment,topProfiles,purlinStock};
 });
