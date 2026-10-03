@@ -281,3 +281,7 @@ Kullanıcı çalışmayı yarına bıraktı. Program 5.9.36; değişiklik yapıl
 Temiz main, 4c2f1c4 üzerinden f0911ee sürümüne fast-forward güncellendi. Ortak kayıtlar ve gün sonu raporu okundu. tests/loading-stock.cjs ve tests/loading-list.cjs iş bilgisayarında başarılı: Tuna 24 dış dolu parça/22 stok, 13 iç parça/12 stok sonucu yeniden doğrulandı. Canlı tarayıcı sayfası yenilenmedi, plan yüklenmedi; kayıtlı kontrol taslağı ayrı test tarayıcısında kullanıldı.
 
 DEV-025/006 için kullanıcıya 710+520 mm parçaların aynı 1250 mm panodan kesilip kesilemeyeceği soruldu. Yanıt gelmeden Excel23'e uydurmak için stok kuralı değiştirilmedi. Son canlı JSON hâlâ doğrulanmadı (DEV-002). Sıradaki iş sevk tercihini netleştirmek ve kapılı/pencereli ürün reçetelerini incelemek. package.json hâlen5.9.19 yazarken uygulama/rapor5.9.36; bu metadata farkı sonraki sürüm tesliminde uzlaştırılmalı. Diğer açık işler geçerlidir.
+
+## 3 Ekim 2026 — DEV-025 / DEV-006 kullanıcı teyidi
+
+Kullanıcı 710 ve 520 mm dolu parçaların aynı1250mm panodan kesilebileceğini açıkça onayladı:1230mm kullanılır,20mm artık kalır; Tuna dış dolu pano sevki22 olarak korunur. Excel23 sayısına uymak için fazladan stok eklenmeyecek. Excel farkının tarihsel nedeni doğrulanmadı; programın bu kesim tercihi üzerindeki belirsizlik kapandı. Kod değişikliği gerekmedi;5.9.36 hesabı korundu. Testere payı ve diğer ürün reçeteleri ayrı açık konulardır. Sıradaki iş kapılı/pencereli panoların yükleme reçetelerini incelemek; DEV-002 son canlı JSON ve diğer açık işler korunur.

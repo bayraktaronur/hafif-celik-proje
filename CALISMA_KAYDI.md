@@ -208,3 +208,7 @@ Kullanıcı çalışmayı yarına bıraktı. Program 5.9.36; değişiklik yapıl
 - Uygulama5.9.36. loading-stock ve loading-list testleri başarılı;49 panel yuvası,12 açıklık, dış24/22 ve iç13/12 stok hesabı yeniden doğrulandı. Kullanıcının canlı çizimine müdahale edilmedi.
 - DEV-025/006:710+520mm birlikte kesim/sevk tercihi kullanıcıya soruldu; yanıt bekleniyor, reçete değiştirilmedi. DEV-002 son canlı JSON hâlâ doğrulanmadı.
 - Kod değişmedi. package.json5.9.19 / uygulama5.9.36 metadata farkı not edildi. Sıradaki adım sevk tercihi ve kapı/pencere reçeteleri; diğer açık işler korunuyor.
+
+## 3 Ekim 2026 — DEV-025 / DEV-006 kullanıcı teyidi
+
+Kullanıcı 710 ve 520 mm dolu parçaların aynı1250mm panodan kesilebileceğini açıkça onayladı:1230mm kullanılır,20mm artık kalır; Tuna dış dolu pano sevki22 olarak korunur. Excel23 sayısına uymak için fazladan stok eklenmeyecek. Excel farkının tarihsel nedeni doğrulanmadı; programın bu kesim tercihi üzerindeki belirsizlik kapandı. Kod değişikliği gerekmedi;5.9.36 hesabı korundu. Testere payı ve diğer ürün reçeteleri ayrı açık konulardır. Sıradaki iş kapılı/pencereli panoların yükleme reçetelerini incelemek; DEV-002 son canlı JSON ve diğer açık işler korunur.
