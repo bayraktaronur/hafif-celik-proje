@@ -13,3 +13,7 @@ Makaslar yatay doğrultuda, y boyunca125,5cm aralıklarla dizilmiş. Uzun omega 
 ## Yorum ve sınır
 
 2500yerine uzun ürün seçmenin olası sebebi ilgili açıklığı eksiz tek parçada geçmek. Bu bir hipotezdir; bağlantı/taşıma görevi veya zorunlu imalat kuralı olarak onaylanmadı. Kullanıcıdan uzun60lıkomegaların oda içinde açıklık geçen elemanlar olup olmadığı ve3'eradet düzeni teyit edilmeli. Baş makas Z ürün eşlemesi de açık. Kod ve sevk hesapları değişmedi.
+
+## 3 Ekim 2026 — DEV-026 montaj payı kullanıcı onayı
+
+Kullanıcı 368,5cm net açıklık ile368cm omega arasındaki5mm farkı montaj payı olarak kabul etti. Bu eşleşme için3685−5=3680mm onaylıdır. Önceki kayıtlardaki bu farkın belirsizliği kapanmıştır. Bu karar tüm omega boylarından5mm düşme kuralı değildir;4940mm örneği değiştirilmez. Uzun omegaların gerçek yerleşimi/üçer sıra varsayımı ve adet/yedek reçetesi henüz onaylanmadı. Kod5.9.39, çizim geometrisi ve sevk hesabı değişmedi. Sıradaki adım yerleşim ve adet kuralını netleştirmek; diğer açık işler korunur.
