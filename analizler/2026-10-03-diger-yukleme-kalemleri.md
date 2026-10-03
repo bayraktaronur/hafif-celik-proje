@@ -42,3 +42,11 @@ Kullanıcı özel2500/3680/4940boyların çizim/sayım yapan kişinin tek parça
 UI, CSV ve Excel otomatik Duvar omegası satırı eklendi. Tuna21435mm iç duvar toplamı/2500=8,574→9adet60×2500mm. Eski Excel'in özel boy/adetleriyle doğrudan eşleşme iddiası yok; otomatik Tuna referans eşlemesi yapılmadı. Manuel toplam/JSON ve eski karar kontrolü korunur. loading-omega sınırlar/gruplar/manuel-stale; loading-list gerçek iç duvar kapsamı ve9adet; verify-loading-xlsx9/0/9kontrolleri başarılı, build tamam.
 
 Uygulama5.9.42. Canlı çizim ve yerel JSON değişmedi. DEV-026 iç duvar omegası standart hesabı tamam; dış baş makas/saçak omega hesabı ve yedek kararları açık. Veranda kirişinin net+100mm otomatik listelemesi hâlâ tamamlanmamıştır ve öncelikli açık iştir; diğer açık işler korunur.
+
+## 3 Ekim 2026 — DEV-026 veranda omega konumları
+
+Kullanıcının yeni açıklamalı görseli: referanslar/tuna-84m2/2026-10-03-veranda-omega-konumlari.png. Özgün kaynak C:/Users/obayr/AppData/Local/Temp/codex-clipboard-929a3ead-1db4-4616-83a5-81df2f657e74.png; SHA-256: eff98c1751d9536f5ee86f2ed2485b71ffa1df1968b6d8dc856437473713a4fa.
+
+Bu örnekte kırmızı hat duvar omegası: veranda ile ev arasındaki girintili duvar hattı ve iki yan veranda kirişi boyunca çizilmiş. Yeşil ön kiriş hattı baş makas omegası olarak etiketlenmiş. Yan kirişlerde saçak omegası varsayılmamalı. Önceki yalnız iç duvar→duvar omegası sınıflandırması tüm kapsam değildir: verandaya bakan dış ev duvarı ve belirtilen kirişler de duvar omegası alabilir. Geometri duvar/kiriş ayrımı ve çatı/makas konumu birlikte değerlendirilmelidir. Aynı hat iki omega türüne birden sayılmamalı; alt çerçeve veranda hariç kuralı değişmez.
+
+Bu kaynak örnek konumları açıklar; global yönle tüm veranda biçimlerine aynı yön tayin edilmez. Baş makas omegasının Baş Makas Z Sacı ile aynı ürün olduğu ve stok boyu henüz teyit edilmedi. Mevcut5.9.42 yalnız iç duvar omega hesabını kapsar; bu dış duvar/kiriş kapsamı henüz otomatik eklenmedi, tamamlandı sayılmaz. Kullanıcının yedek kuralı verilmedi. Diğer açık işler ve canlı çizim korunur.
