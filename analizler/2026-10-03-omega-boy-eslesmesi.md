@@ -17,3 +17,9 @@ Makaslar yatay doğrultuda, y boyunca125,5cm aralıklarla dizilmiş. Uzun omega 
 ## 3 Ekim 2026 — DEV-026 montaj payı kullanıcı onayı
 
 Kullanıcı 368,5cm net açıklık ile368cm omega arasındaki5mm farkı montaj payı olarak kabul etti. Bu eşleşme için3685−5=3680mm onaylıdır. Önceki kayıtlardaki bu farkın belirsizliği kapanmıştır. Bu karar tüm omega boylarından5mm düşme kuralı değildir;4940mm örneği değiştirilmez. Uzun omegaların gerçek yerleşimi/üçer sıra varsayımı ve adet/yedek reçetesi henüz onaylanmadı. Kod5.9.39, çizim geometrisi ve sevk hesabı değişmedi. Sıradaki adım yerleşim ve adet kuralını netleştirmek; diğer açık işler korunur.
+
+## 3 Ekim 2026 — H payı hatırlatması / DEV-026 ölçü yorumunun düzeltilmesi
+
+Kullanıcı çizimde H'ye ayrı ölçü vermeden0,5cm payı panel yerleşim ölçüsünde tuttuklarını hatırlattı:125cm pano→125,5cm yerleşim. Buradaki0,5cm en/hat doğrultusundaki H birleşim payıdır; duvarın6/10cm kesit kalınlığına otomatik ek değildir. Yerleşim ölçüsü ile net ürün/kesim ölçüsü ayrı tutulmalı; aynı H payı tekrar montaj payı diye düşülmemeli.
+
+Önceki3685→3680mm farkını yalnız bağımsız montaj boşluğu diye etiketleyen yorum, bu hatırlatma ışığında yeniden incelenecek. 3680mm referans ürün boyu korunur; farkın H yerleşim payı içindeki kaynağı bağlantı geometrisiyle doğrulanmadan ikinci bir5mm düşülmez. Her özel boydan evrensel5mm düşme kuralı çıkarılmadı. Önceki üçer sıra/oda açıklığı yerleşimi hâlâ hipotezdir. Kod5.9.39 ve çizim değişmedi. Sıradaki iş H/aks/net boy zincirini omega yerleşimiyle birlikte doğrulamak. Diğer açık işler korunur.
