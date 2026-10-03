@@ -272,3 +272,7 @@ Kullanıcı kuralı: alt çerçeve tüm duvarların altında, üst omega tüm du
 Bu üç üst ürün aynı hatta üst üste sayılmayacak; konuma uygun ürün seçilecek. Kullanıcı henüz baş makas omegasının Excel'deki Baş Makas Z Sacı ile aynı ürün olduğunu söylemedi; eşleştirme varsayılmayacak. Duvar omegası2500/3680/4940boylarının seçimi, baş makas/saçak stok boyları ve yedek kuralları açık. Karma/yavru çatı alanlarında yerel çatı ilişkisi gereklidir; yalnız global yönle tüm dış duvarları sınıflandırmak yeterli sayılmaz. Çatı bilgisi eksikse ürün türü uydurulmayacak.
 
 Karar kaydedildi; otomatik sevk reçetesi henüz eklenmedi. Uygulama5.9.39, canlı plan ve kullanıcı JSON'u değişmedi. DEV-026 sıradaki adım baş makas ürün eşlemesi ve farklı boy seçimini netleştirmek; diğer açık işler devam eder.
+
+## 3 Ekim 2026 — DEV-026 uzun omega aday eşleşmesi
+
+[Kaynaklı boy analizi](analizler/2026-10-03-omega-boy-eslesmesi.md): kayıtlı Tuna planında üst iki yatak odası net derinliği368,5cm, salon494cm. Excel3680/4940mm ile güçlü aday eşleşme; ilkinde5mmfark var, pay varsayılmadı. İki odaya3'er ve salona3adet ihtimali6/3sayısıyla uyumlu ama doğrulanmadı. Bu60mmürünleri10cm dış duvar üstüne atama yapılmadı; oda açıklığını geçen kullanım olasılığı kullanıcıya sorulacak. Boy seçiminin eksiz açıklık geçme amacı hipotezdir. Uygulama5.9.39 ve canlı çizim korundu; sevk reçetesi değiştirilmedi. Diğer açık işler devam eder.
