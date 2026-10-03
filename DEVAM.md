@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.42**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.43**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -437,3 +437,13 @@ Bu kaynak örnek konumları açıklar; global yönle tüm veranda biçimlerine a
 | Kimlik | İş | Durum |
 | --- | --- | --- |
 | DEV-028 | Tüm yükleme kalemleri için özel ölçü sekmesi | Kullanıcı ilerleyen zamanda istedi; planlandı, bu tur uygulanmadı. |
+
+## 4 Ekim 2026 — DEV-029 geçici Z / baş makas omega eşlemesi (5.9.43)
+
+Kullanıcı baş makas Z satırını baş makas omegasına bağlamayı ve ileride değiştirilebileceğini kaydetmeyi istedi. src/loading-reference.js productLinks ayrı, geçici eşleme olarak tuna-41 (Baş Makas Z Sacı, 70×2500, 9 adet) → Baş makas omegası ilişkisini taşır. Özgün referans adı/ölçü/adet değişmedi; ürünlerin aynı olduğu kabul edilmez. Karşılaştırma tablosu ve referans seçiminde geçici not görünür; açık referansı olmayan Baş makas omegası satırı tuna-41 ile karşılaştırılır. 9 adet genel proje miktarı değildir. Otomatik geometri hesabı mevcut olmadığından bu teslim otomatik Z/omega miktar üretimi değildir. DEV-026 dış/veranda omega ve net+100mm kiriş işleri açık kalır.
+
+Kontroller: build ve loading-list geçti; referans bağlantısı ve özgün satırın korunması kontrol edildi. Canlı çizim ve Yeni proje (11).json değiştirilmedi. Karar/kod/dist birlikte gönderilir; kaynak Excel değişmedi.
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-029 | Z / baş makas omega geçici referans bağı | Tamam: 5.9.43, productLinks ve yükleme karşılaştırması; ileride kullanıcı kararıyla revize edilir. Otomatik miktar hesabı DEV-026 kapsamında açık. |

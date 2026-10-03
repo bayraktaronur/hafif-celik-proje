@@ -280,3 +280,6 @@ Bu kaynaklar arayüz ve iş akışı için referanstır. Prefabrik panel ölçü
 
 ### Vitrifiye ve banyo zemini
 Vitrifiye ekle ile gömme/takım klozet, ayaklı/dolaplı lavabo ve duş kabini yerleştirilir. Duş ölçüleri 70×70, 80×80, 90×90, 80×100, 90×100, 80×110 cm; lavabo genişlikleri 50/60/70/80 cm. Ayaklı lavabo, gömme klozet ve takım klozet verilen sabit standart ölçülerle çizilir; ölçü girişi istenmez. Dolaplı lavabo derinliği kullanıcı tarafından girilir. Vitrifiye sembollerinde isim veya ölçü etiketi bulunmaz. Yerleştirme duvar modülünden bağımsız 1 cm veya serbesttir; R döndürür, M aynalar, Esc iptal eder. Seçili ürün sürüklenebilir, ölçüleri değiştirilebilir, silinebilir. Nesneler JSON, yerel yedek, geri/ileri alma ve PNG çıktısında korunur. Banyo, ebeveyn banyo ve WC odalarında 30 cm seramik görünüşü kullanılır (şematik tarama, malzeme hesabını değiştirmez). Açıklık ölçüleri dış duvarlarda dış tarafa yazılır.
+
+### 5.9.43
+Tuna Baş Makas Z satırı, baş makas omegası için geçici karşılaştırma referansı olarak bağlandı. Kaynak ürün korunur; tablo ve seçimde değiştirilebilir eşleme notu gösterilir. Otomatik dış/veranda omega geometrisi bu sürümde eklenmedi.

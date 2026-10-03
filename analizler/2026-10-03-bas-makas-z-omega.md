@@ -9,3 +9,6 @@ K1-280-10-6 sayfasında B41=Baş Makas Z Sacı,C41=70*2500,D41=9. B34=Saçak Ome
 Veranda bu örnekte iç mekan tavanı gibi ele alınır. Duvar omegasının iki kulağı alçıpanı tutar; verandada yeşil alçıpan vardır. Önceki işaretli veranda duvar/kiriş hatlarında duvar omegası kullanımı bu nedenle gereklidir. Baş makas omegası Z sacından farklı üründür; standart boy2500mm. Saçak omegası da standart2500mm; makasın saçak tarafındaki duvar uzunlukları toplamı/250cm yukarı yuvarlanarak adet hesaplanır. Kesim payı ve yedek bu kurala kendiliğinden eklenmez. Gelecekte tüm kalemler için özel ölçü sekmesi kullanıcı isteğiyle planlanacak; şimdi istenen stok standardını değiştirmez.
 
 Mevcut5.9.42yalnız iç duvar omegasını otomatik hesaplar. Veranda kapsamı, baş makas ve saçak omega otomatik sınıflandırması henüz tamamlanmadı. Z/baş makas ürün eşlemesi ve varsa başka ad altındaki referans satırını netleştirmek gerekir. Bu tur analiz ve karar kaydıdır; uygulanmamış işler tamamlandı sayılmadı.
+
+## 4 Ekim kullanıcı kararı
+Baş makas Z satırı, baş makas omegasına geçici referans/adet karşılaştırma bağı ile eşlendi. Bu yeni onay önceki eşleme bekleniyor durumunu kapatır; ürün özdeşliği veya Excel kaynaklı kanıt değildir. Uygulamada productLinks üzerinden ayrıdır ve ileride revize edilebilir. Otomatik omega geometrisi hâlâ DEV-026 kapsamında açıktır.
