@@ -41,3 +41,8 @@ assert sum(1 for r in allrows if r[8]=='tuna-41')==1
 assert [s.cell(4,i).value for i in (16,17,18)]==['Net boy (mm)','Kesim payı (mm)','Sevk boyu (mm)']
 assert sorted((r[15],r[16],r[17]) for r in allrows if r[1]=='Veranda kirişi')==[(645,100,745),(2527.5,100,2627.5),(4970,100,5070)]
 print('PASS XLSX separate head/Z, eaves, and net/allowance/shipping columns')
+
+sheets=[r for r in allrows if r[1]=='Saçak sacı']
+assert len(sheets)==1 and sheets[0][2]=='300 × 2800 mm' and sheets[0][5]==7 and sheets[0][8]=='tuna-35'
+assert '300 mm bindirme' in sheets[0][7]
+print('PASS XLSX separate eaves sheet with overlap explanation')

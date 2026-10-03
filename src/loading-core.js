@@ -59,6 +59,13 @@
   // Temporary 1:1 quantity link. Z is a separate product, never double-count its reference.
   for(const head of rows.filter(r=>r.name==='Baş makas omegası')){const key=JSON.stringify(['Metal','Baş makas Z sacı',head.size]),a=c.adjustments.find(a=>a.key===key),basis=fingerprint(head.basis+':head-z-one-to-one-v1:'+head.qty);groups.set(key,true);const stale=!!a&&a.basis!==basis;
    rows.push({key,basis,group:'Metal',name:'Baş makas Z sacı',size:'70 × 2500 mm · omega grubu '+head.size,unit:'adet',calculated:head.qty??head.calculated,qty:a?(stale?null:a.qty):head.qty,spare:0,status:stale?'Çizim değişti':a?'Manuel doğrulandı':head.qty===null?'Kural bekliyor':'Otomatik Z eşlemesi',stale,sources:head.sources.map(s=>({...s,id:'z:'+s.id,zRule:{rule:'head-z-one-to-one-v1'}})),referenceId:a?a.referenceId:'tuna-41',warning:'Baş makas omegası ile geçici 1:1 adet bağı; ayrı ürün. İleride revize edilebilir.',reason:a?.reason||'Baş makas omegasının toplam sevk adediyle geçici 1:1 bağlantı. Ayrı satır; 2500 mm stok. Ek yedek yok. '+(head.qty===null?'Omega hesabı kontrol bekliyor.':'')});}
+
+  // 2800 mm stock minus 300 mm overlap: same effective 2500 mm as eaves omega.
+  const eaves=rows.filter(r=>r.name==='Saçak omegası');if(eaves.length){
+   const key=JSON.stringify(['Metal','Saçak sacı','300 × 2800 mm']),basis=fingerprint(JSON.stringify(eaves.map(r=>[r.key,r.basis,r.qty]))+':sheet2800-overlap300-v1'),a=c.adjustments.find(a=>a.key===key),stale=!!a&&a.basis!==basis;
+   const qty=eaves.some(r=>r.qty===null)?null:eaves.reduce((n,r)=>n+r.qty,0);groups.set(key,true);
+   rows.push({key,basis,group:'Metal',name:'Saçak sacı',size:'300 × 2800 mm',unit:'adet',calculated:qty??eaves.reduce((n,r)=>n+r.calculated,0),qty:a?(stale?null:a.qty):qty,spare:0,status:stale?'Çizim değişti':a?'Manuel doğrulandı':qty===null?'Kural bekliyor':'Otomatik saçak sacı',sources:eaves.flatMap(r=>r.sources.map(s=>({...s,id:'sheet:'+s.id,sheetRule:{rule:'sheet2800-overlap300-v1',stockMm:2800,overlapMm:300,effectiveMm:2500}}))),referenceId:a?a.referenceId:'tuna-35',warning:'2800 mm sac −300 mm bindirme =2500 mm etkin boy; saçak omegasıyla aynı adet, ayrı ürün. Veranda ek kapsamı ayrıca teyit edilmeli.',reason:a?.reason||'2800 mm stok −300 mm bindirme =2500 mm etkin boy. Saçak omegası toplam sevk adediyle eşleşir; ilave yedek eklenmedi.'});
+  }
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};
  }

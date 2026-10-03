@@ -382,3 +382,7 @@ Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; gör
 ## 4 Ekim 2026 — Saçak sacı aday bağlantısı / DEV-030
 
 [Kaynaklı çıkarım](analizler/2026-10-04-sacak-saci-aday-esleme.md): Tuna saçak omegası ve saçak sacı8eradet. Aday bağlantı yan saçak hattı; stok boyları2500/2800farklı olduğundan otomatik1:1adet kuralı kabul edilmedi. Veranda duvar omegası istisnası nedeniyle yalnız ürün adına bağlamak yeterli değil. Kullanıcı teyidi bekleniyor; kod/çizim değişmedi,5.9.44korundu.
+
+## 4 Ekim 2026 — 5.9.45 / DEV-030 saçak sacı bindirme
+
+[Onay, ürün görselleri/hash ve kontroller](analizler/2026-10-04-sacak-bindirme-kurali.md). Kullanıcı2800mm sacın300mm bindirme ile2500mm etkin olduğunu doğruladı. Ayrı sac satırı saçak omegasıyla aynı adet; Tuna taslak7/7, Excel8/8farkı açık. Görsel ürün kalınlıkları sac0,50mm/omega0,80mm ve seçenekleri kaydedildi; kartlar şimdilik programa eklenmedi. Veranda ek hat kapsamı henüz teyit edilmedi. Build/loading-top/loading-list/verify-loading-xlsx geçti. Kaynak görseller kopyalandı; canlı çizim ve Yeni proje (11).json korundu.

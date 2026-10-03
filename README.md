@@ -286,3 +286,6 @@ Tuna Baş Makas Z satırı, baş makas omegası için geçici karşılaştırma 
 
 ### 5.9.44
 Duvar/veranda, baş makas ve saçak omegası2500mm stok hesabı; ayrı Z satırı geçici1:1 bağlıdır. Veranda kirişlerinde net+100mm sevk boyu, ekranda ve CSV/XLSXte ayrı net/pay/sevk alanları. Belirsiz yön ve eğik veranda manuel kontrol bekler. Detay: analizler/2026-10-04-omega-veranda-uygulama.md.
+
+### 5.9.45
+Saçak sacı ayrı satır:2800mm stok−300mm bindirme=2500mm etkin boy; saçak omegasıyla aynı adet. CSV/XLSX açıklaması ve geçersiz eski karar kontrolü korunur. Ürün görselleri referanslara kaydedildi.

@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.44**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.45**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -462,4 +462,8 @@ Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; gör
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-030 | Saçak sacı hat/kapsam ve adet kuralı | Açık: yan saçak hattı aday; 1:1adet, bindirme ve veranda kapsamı kullanıcı teyidi bekliyor. |
+| DEV-030 | Saçak sacı hat/kapsam ve adet kuralı | 5.9.45: 300mm bindirme,2500mm etkin boy ve omega ile ayrı eşit adet satırı tamam. Rapor: analizler/2026-10-04-sacak-bindirme-kurali.md. Veranda ek hat kapsamı açık. |
+
+## 4 Ekim 2026 — 5.9.45 / DEV-030 saçak sacı bindirme
+
+[Onay, ürün görselleri/hash ve kontroller](analizler/2026-10-04-sacak-bindirme-kurali.md). Kullanıcı2800mm sacın300mm bindirme ile2500mm etkin olduğunu doğruladı. Ayrı sac satırı saçak omegasıyla aynı adet; Tuna taslak7/7, Excel8/8farkı açık. Görsel ürün kalınlıkları sac0,50mm/omega0,80mm ve seçenekleri kaydedildi; kartlar şimdilik programa eklenmedi. Veranda ek hat kapsamı henüz teyit edilmedi. Build/loading-top/loading-list/verify-loading-xlsx geçti. Kaynak görseller kopyalandı; canlı çizim ve Yeni proje (11).json korundu.
