@@ -429,3 +429,11 @@ Kullanıcının yeni açıklamalı görseli: referanslar/tuna-84m2/2026-10-03-ve
 Bu örnekte kırmızı hat duvar omegası: veranda ile ev arasındaki girintili duvar hattı ve iki yan veranda kirişi boyunca çizilmiş. Yeşil ön kiriş hattı baş makas omegası olarak etiketlenmiş. Yan kirişlerde saçak omegası varsayılmamalı. Önceki yalnız iç duvar→duvar omegası sınıflandırması tüm kapsam değildir: verandaya bakan dış ev duvarı ve belirtilen kirişler de duvar omegası alabilir. Geometri duvar/kiriş ayrımı ve çatı/makas konumu birlikte değerlendirilmelidir. Aynı hat iki omega türüne birden sayılmamalı; alt çerçeve veranda hariç kuralı değişmez.
 
 Bu kaynak örnek konumları açıklar; global yönle tüm veranda biçimlerine aynı yön tayin edilmez. Baş makas omegasının Baş Makas Z Sacı ile aynı ürün olduğu ve stok boyu henüz teyit edilmedi. Mevcut5.9.42 yalnız iç duvar omega hesabını kapsar; bu dış duvar/kiriş kapsamı henüz otomatik eklenmedi, tamamlandı sayılmaz. Kullanıcının yedek kuralı verilmedi. Diğer açık işler ve canlı çizim korunur.
+
+## 3 Ekim 2026 — DEV-026 baş makas / saçak stok standardı
+
+[Özgün Excel kontrolü ve kurallar](analizler/2026-10-03-bas-makas-z-omega.md). Baş makas Z ayrı ürün:70×2500mm9adet. Baş makas omegası adıyla satır bulunmadı; eşit adet denemez.100×2500duvar omegası4, saçak omegası8. Baş makas ve saçak omega standart2500mm onaylı. Saçak tarafı duvar toplamı/250cm yukarı yuvarlanacak. Verandada iki kulaklı duvar omegası yeşil alçıpanı tutar; önceki kapsam açıklaması korundu. Bu dış/veranda hesapları henüz kodda uygulanmadı;5.9.42iç omega hesabı korunur. Diğer açık işler devam eder.
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-028 | Tüm yükleme kalemleri için özel ölçü sekmesi | Kullanıcı ilerleyen zamanda istedi; planlandı, bu tur uygulanmadı. |
