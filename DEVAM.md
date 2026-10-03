@@ -305,7 +305,7 @@ DEV-006 sıradaki konu: kapı açıklığı tam pano içindedir; iç kapılı pa
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-026 | Alt çerçeve, omega, veranda profil/kiriş ve çatı kenarı malzemelerinin otomatik yükleme hesabı | Alt çerçeve5.9.37: kalınlığa göre toplam/250 yukarı yuvarla+1yedek uygulandı. Tuna100mm16/15farkı açıklanmalı; Üst omega iç duvar/baş makas/saçak konumuna göre sınıflanacak; ürün boyu/yedek ve veranda/çatı reçeteleri açık. |
+| DEV-026 | Alt çerçeve, omega, veranda profil/kiriş ve çatı kenarı malzemelerinin otomatik yükleme hesabı | Alt çerçeve5.9.37: kalınlığa göre toplam/250 yukarı yuvarla+1yedek uygulandı. Tuna100mm16/15farkı açıklanmalı; Üst omega sınıflandırması kayıtlı; omega boy seçimi kullanıcı isteğiyle ek proje/Excel gelene kadar ertelendi. Yedek ve veranda/çatı reçeteleri açık. |
 
 [Kalemler ve eksik kurallar](analizler/2026-10-03-diger-yukleme-kalemleri.md). 3 Ekim 2026 ev PC: kullanıcı diğer kalemleri ayarlamayı istedi. Git fetch sonrası uzak dal ile eşitlik kontrol edildi. Kaynak ve önceki kayıtlar tarandı; onaysız adet/reçete eklenmedi. Kod5.9.36 değişmedi, canlı plan ve yerel JSON korundu. DEV-006 kapılı pano farkı ve tüm diğer açık işler devam eder. Sıradaki adım alt çerçeve yanıtını kurala ve doğrulama testine dönüştürmek.
 
@@ -359,3 +359,7 @@ Kullanıcı 368,5cm net açıklık ile368cm omega arasındaki5mm farkı montaj p
 Kullanıcı çizimde H'ye ayrı ölçü vermeden0,5cm payı panel yerleşim ölçüsünde tuttuklarını hatırlattı:125cm pano→125,5cm yerleşim. Buradaki0,5cm en/hat doğrultusundaki H birleşim payıdır; duvarın6/10cm kesit kalınlığına otomatik ek değildir. Yerleşim ölçüsü ile net ürün/kesim ölçüsü ayrı tutulmalı; aynı H payı tekrar montaj payı diye düşülmemeli.
 
 Önceki3685→3680mm farkını yalnız bağımsız montaj boşluğu diye etiketleyen yorum, bu hatırlatma ışığında yeniden incelenecek. 3680mm referans ürün boyu korunur; farkın H yerleşim payı içindeki kaynağı bağlantı geometrisiyle doğrulanmadan ikinci bir5mm düşülmez. Her özel boydan evrensel5mm düşme kuralı çıkarılmadı. Önceki üçer sıra/oda açıklığı yerleşimi hâlâ hipotezdir. Kod5.9.39 ve çizim değişmedi. Sıradaki iş H/aks/net boy zincirini omega yerleşimiyle birlikte doğrulamak. Diğer açık işler korunur.
+
+## 3 Ekim 2026 — DEV-026 omega boy seçimi ertelendi
+
+Kullanıcı omega boylarını şimdilik bekletmeyi, göndereceği birkaç başka proje ve Excel üzerinden daha sonra netleştirmeyi istedi. 2500/3680/4940mm referans boyları ve önceki bulgular korunur; üçer sıra, oda açıklığı eşlemesi ve genel H/montaj payı dönüşümü doğrulanmış otomatik reçete değildir. Yeni örnekler gelmeden bu boyları genel kurala dönüştürme veya aynı açıklama sorusunu tekrar tekrar sorma. İç duvar/baş makas/saçak ürün sınıflandırması kararı geçerlidir. Uygulama5.9.39 ve mevcut hesaplar değişmedi; diğer açık işler korunur. Yeniden başlama koşulu: kullanıcının ek proje/Excel sağlaması; kaynakları kaydedip projeler arası eşleştirme yapmak.
