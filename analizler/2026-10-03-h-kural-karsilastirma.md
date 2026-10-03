@@ -14,3 +14,11 @@ Kaynak: kullanıcının inceleme için verdiği açıklamalı ekran görüntüs�
 Doğrulama: tests/loading-h.cjs başarılı. İç H örneği (100,0), axis=x,pos=100,a=0,b=300→kulaklı/dübelsiz üretildi; fark yeniden gösterildi. Tuna kontrol planı H grupları10kulaklı-dübelli,10kulaksız-dübelli,9kulaksız-dübelsiz; üçlü H2/1/4. Bu planda iç kulaklı yok; toplam36 ve alt gruplar bu iç istisnanın kaldırılmasından etkilenmez. Gönderilen görselin tüm planı/adetleri buradan sayılmadı; bu adetler sadece Tuna kontrol dosyasınındır.
 
 Öneri: iç H için kulaksız/dübelsiz önceliğini sabitlemek; algoritma iç H'yi makas mesneti gösterirse otomatik kulaklıya dönüştürmek yerine bağlantı kontrolü uyarısı üretmek. Kullanıcı bu tur karşılaştırma istedi; sınıflandırma kodu ve canlı çizim değiştirilmedi, uygulama5.9.40. İlgili açık iş DEV-022.
+
+## 3 Ekim 2026 — 5.9.41 / DEV-022 iç H kuralı uygulandı
+
+Kullanıcı tüm iç duvar H'lerini şimdilik kulaksız/dübelsiz olarak sabitlemeyi onayladı; iç makas altında kulaklı/dübelsiz kullanım ileride ayrı kararla revize edilebilir. classifyH iç birleşimde makas konumundan ve veri eksikliğinden bağımsız ear=false,dowel=false döndürür; kural kimliği h-interior-earless-no-dowel-v2. Dış gerçek uç mesnet ve dübel hesabı değişmedi. H/üçlü/dörtlü birleşim şekilleri ve U/köşe geometrisi korunur. İç/dış birleşimi exterior olarak sınıflanan dış duvar birleşimi dış kurala tabidir.
+
+UI açıklaması, plan H etiketleri ve Excel sınıfları aynı hesabı kullanır. Kural kimliği değiştiği için eski iç H manuel miktar kararları otomatik geçerli sayılmaz; eski karar denetimi korunur. İç kulaklı istisnası gelecekteki açık ürün kararıdır; mevcut sürümde uygulanmaz. Kullanıcı bu tur mesnet uyarısı istemedi; yeni uyarı eklenmedi.
+
+Build, loading-h (iki yön, iç gerçek mesnet/mesnetsiz/verisiz kulaksız, dış regresyon), loading-list ve verify-loading-xlsx başarılı. Tuna H toplam36ve alt grupları değişmedi: H10/10/9; üçlü H2/1/4. Uygulama5.9.41; canlı çizim ve yerel JSON korunmuştur. DEV-022 mevcut iç sınıflandırma düzeltmesi tamam; gelecekte iç mesnet kulak revizyonu ve diğer açık işler korunur.

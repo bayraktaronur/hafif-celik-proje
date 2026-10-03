@@ -1,6 +1,8 @@
-# Prefabrikten Plan Studio · 5.9.40
+# Prefabrikten Plan Studio · 5.9.41
 
-5.9.40: Veranda direği100×100mm flanşlı profil, boy bina yüksekliği. Yükleme satırında özel boy düzenlenebilir ve JSON ile korunur.
+5.9.41: Tüm iç duvar H birleşimleri makas konumundan bağımsız kulaksız ve dübelsiz hesaplanır. Dış H kuralları ve birleşim şekilleri korunur.
+
+Veranda direği100×100mm flanşlı profil, boy bina yüksekliği. Yükleme satırında özel boy düzenlenebilir ve JSON ile korunur.
 
 Yükleme listesi, Excel ve CSV’de Adet, Yedek ve Toplam sevk ayrı gösterilir. Manuel toplamda yedek ayrımı doğrulanmadı uyarısı vardır.
 

@@ -44,6 +44,9 @@
  }
  function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; çatı, tesisat ve sarf otomatik hesaplanmaz.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Toplam sevk (yedek dahil)' ,'Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler','Yedek','Kesim dağılımı (mm)','Artık toplamı (mm)','Adet','Yedek açıklaması'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', '),shipment(r).spare,r.cutting||'',r.leftoverMm??'',shipment(r).base,shipment(r).label])].map(r=>r.map(cell).join(';')).join('\r\n');}
  function classifyH(point,trusses,exterior){
+  // Current manufacturing rule: every interior H is earless and without dowels.
+  // Keep this separate from exterior support detection for a future explicit revision.
+  if(!exterior)return {rule:'h-interior-earless-no-dowel-v2',ear:false,dowel:false,label:'Kulaksız · dübelsiz',matches:[]};
   const hits=trusses.filter(m=>{const axis=m.axis,cross=axis==='x'?'y':'x';return ['x','y'].includes(axis)&&Math.abs(point[axis]-m.pos)<.6&&Math.min(Math.abs(point[cross]-m.a),Math.abs(point[cross]-m.b))<.6;});
   const supported=hits.filter(m=>m.supported!==false),outside=trusses.length>0&&!hits.length;
   return {rule:'h-end-support-v1',ear:supported.length?true:outside?false:null,dowel:!!exterior,

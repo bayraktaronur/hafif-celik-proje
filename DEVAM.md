@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.40**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.41**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -399,3 +399,11 @@ Kullanıcı açıkça doğruladı: çizimde5550/2560/1880mm net kiriş boyları 
 ## 3 Ekim 2026 — DEV-022 H düzeltme karşılaştırması
 
 [Yeni görsel/kod karşılaştırması](analizler/2026-10-03-h-kural-karsilastirma.md): dış H dübel/kulak kuralları uyumlu; içte tüm H kulaksız/dübelsiz açıklaması mevcut iç uç mesnet→kulaklı/dübelsiz istisnasıyla farklı. İç makas verisi yok durumundaki belirsizlik de yeni mutlak kuralla değişir. Tuna'da bu istisna oluşmuyor, mevcut36Hve alt gruplar korunur. loading-h testi ve iç mesnet örneği çalıştırıldı. Kullanıcı inceleme/karşılaştırma istedi; kod5.9.40 ve çizim değiştirilmedi. DEV-022 iç H istisnasını kaldırma/mesnet uyarısı önerisi açık; üçlü/dörtlü birleşim şekilleri kaldırılmayacak. Diğer açık işler korunur.
+
+## 3 Ekim 2026 — 5.9.41 / DEV-022 iç H kuralı uygulandı
+
+Kullanıcı tüm iç duvar H'lerini şimdilik kulaksız/dübelsiz olarak sabitlemeyi onayladı; iç makas altında kulaklı/dübelsiz kullanım ileride ayrı kararla revize edilebilir. classifyH iç birleşimde makas konumundan ve veri eksikliğinden bağımsız ear=false,dowel=false döndürür; kural kimliği h-interior-earless-no-dowel-v2. Dış gerçek uç mesnet ve dübel hesabı değişmedi. H/üçlü/dörtlü birleşim şekilleri ve U/köşe geometrisi korunur. İç/dış birleşimi exterior olarak sınıflanan dış duvar birleşimi dış kurala tabidir.
+
+UI açıklaması, plan H etiketleri ve Excel sınıfları aynı hesabı kullanır. Kural kimliği değiştiği için eski iç H manuel miktar kararları otomatik geçerli sayılmaz; eski karar denetimi korunur. İç kulaklı istisnası gelecekteki açık ürün kararıdır; mevcut sürümde uygulanmaz. Kullanıcı bu tur mesnet uyarısı istemedi; yeni uyarı eklenmedi.
+
+Build, loading-h (iki yön, iç gerçek mesnet/mesnetsiz/verisiz kulaksız, dış regresyon), loading-list ve verify-loading-xlsx başarılı. Tuna H toplam36ve alt grupları değişmedi: H10/10/9; üçlü H2/1/4. Uygulama5.9.41; canlı çizim ve yerel JSON korunmuştur. DEV-022 mevcut iç sınıflandırma düzeltmesi tamam; gelecekte iç mesnet kulak revizyonu ve diğer açık işler korunur.
