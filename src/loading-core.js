@@ -32,6 +32,12 @@
    r.reason=a?.reason||`Toplam duvar aks uzunluğu ${Math.round(lengthCm*1000)/1000} cm / 250 cm, yukarı yuvarla: ${base} + ${r.spare} yedek. Kapı/pencere dahil; veranda açık kenarları hariç. Kalınlık bazında ortak toplam.`;
    r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik alt çerçeve';
   }
+  for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.omegaRule))continue;
+   const lengthCm=r.sources.reduce((n,s)=>n+s.omegaRule.lengthCm,0),base=Math.ceil(Math.round(lengthCm*1000000)/1000000/250),a=c.adjustments.find(a=>a.key===r.key);
+   r.lengthCm=lengthCm;r.calculated=base;r.spare=0;r.qty=a?(r.stale?null:a.qty):base;
+   r.reason=a?.reason||`İç duvar aks toplamı ${Math.round(lengthCm*1000)/1000} cm / 250 cm, yukarı yuvarla: ${base} adet. Kalınlık bazında; kapı/pencere dahil, dış duvar/veranda hariç. Standart 2500 mm; yedek kuralı verilmedi, yedek eklenmedi.`;
+   r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik duvar omegası';
+  }
   for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.postRule))continue;const a=c.adjustments.find(a=>a.key===r.key);r.postLengthMm=!r.stale&&a?.postLengthMm!==undefined?a.postLengthMm:r.sources[0].postRule.lengthMm;r.size=`100 × 100 × ${r.postLengthMm} mm`;if(r.postLengthMm!==2500)r.referenceId='';}
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};

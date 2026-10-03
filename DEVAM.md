@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.41**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.42**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -305,7 +305,7 @@ DEV-006 sıradaki konu: kapı açıklığı tam pano içindedir; iç kapılı pa
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-026 | Alt çerçeve, omega, veranda profil/kiriş ve çatı kenarı malzemelerinin otomatik yükleme hesabı | Alt çerçeve5.9.37: kalınlığa göre toplam/250 yukarı yuvarla+1yedek uygulandı. Tuna100mm16/15farkı açıklanmalı; Üst omega sınıflandırması kayıtlı; omega boy seçimi kullanıcı isteğiyle ek proje/Excel gelene kadar ertelendi. Yedek ve veranda/çatı reçeteleri açık. |
+| DEV-026 | Alt çerçeve, omega, veranda profil/kiriş ve çatı kenarı malzemelerinin otomatik yükleme hesabı | Alt çerçeve5.9.37: kalınlığa göre toplam/250 yukarı yuvarla+1yedek uygulandı. Tuna100mm16/15farkı açıklanmalı; Üst omega sınıflandırması kayıtlı; iç duvar omegası5.9.42standart2500mm hesabıyla tamamlandı; dış omega kuralları açık. Yedek ve veranda/çatı reçeteleri açık. |
 
 [Kalemler ve eksik kurallar](analizler/2026-10-03-diger-yukleme-kalemleri.md). 3 Ekim 2026 ev PC: kullanıcı diğer kalemleri ayarlamayı istedi. Git fetch sonrası uzak dal ile eşitlik kontrol edildi. Kaynak ve önceki kayıtlar tarandı; onaysız adet/reçete eklenmedi. Kod5.9.36 değişmedi, canlı plan ve yerel JSON korundu. DEV-006 kapılı pano farkı ve tüm diğer açık işler devam eder. Sıradaki adım alt çerçeve yanıtını kurala ve doğrulama testine dönüştürmek.
 
@@ -413,3 +413,11 @@ Build, loading-h (iki yön, iç gerçek mesnet/mesnetsiz/verisiz kulaksız, dı�
 Kullanıcı tüm H kurallarının üçlü ve dörtlü H'leri de kapsadığını açıkça doğruladı. H/H3/X aynı sınıflandırmadan geçer: tüm iç birleşimler kulaksız/dübelsiz; dış birleşimler dübelli, gerçek makas uç mesnedinde kulaklı, diğer dış birleşimler kulaksız. Dış duvarla birleşen iç duvarın ortak birleşimi dış konum olarak değerlendirilir. Birleşimin üçlü/dörtlü şekli korunur, normal iki yönlü H'ye dönüştürülmez.
 
 src/loading-ui.js içindeki ['H','H3','X'] ortak classifyH çağrısı kontrol edildi;5.9.41 bu kapsamı zaten uygular. Yeni uygulama değişikliği/sürüm artışı gerekmedi. Bu kayıt kalıcı kullanıcı teyididir; diğer açık işler ve canlı çizim korunmuştur.
+
+## 3 Ekim 2026 — 5.9.42 / DEV-026 standart iç duvar omegası
+
+Kullanıcı özel2500/3680/4940boyların çizim/sayım yapan kişinin tek parça kullanma tercihinden kaynaklandığını, stok hızını korumak için standart2500mm kullanmamızı istedi. Önceki boy seçimi ertelemesi iç duvar standart hesabı için kalktı. Aynı kalınlıktaki iç duvar aks uzunlukları toplanır; mm toplam/2500 yukarı yuvarlanır. Kalınlık duvardan alınır. Kapı/pencere boşlukları düşülmez; dış duvarlar ve veranda açık kenarları dahil edilmez. Uzun özel boylar veya oda içinde üçer sıra hipotezi kullanılmaz. Kullanıcı bu tur yedek adedi vermedi;0otomatik yedek ve açık açıklama korunur, alt çerçevenin+1yedeği kendiliğinden aktarılmaz.
+
+UI, CSV ve Excel otomatik Duvar omegası satırı eklendi. Tuna21435mm iç duvar toplamı/2500=8,574→9adet60×2500mm. Eski Excel'in özel boy/adetleriyle doğrudan eşleşme iddiası yok; otomatik Tuna referans eşlemesi yapılmadı. Manuel toplam/JSON ve eski karar kontrolü korunur. loading-omega sınırlar/gruplar/manuel-stale; loading-list gerçek iç duvar kapsamı ve9adet; verify-loading-xlsx9/0/9kontrolleri başarılı, build tamam.
+
+Uygulama5.9.42. Canlı çizim ve yerel JSON değişmedi. DEV-026 iç duvar omegası standart hesabı tamam; dış baş makas/saçak omega hesabı ve yedek kararları açık. Veranda kirişinin net+100mm otomatik listelemesi hâlâ tamamlanmamıştır ve öncelikli açık iştir; diğer açık işler korunur.

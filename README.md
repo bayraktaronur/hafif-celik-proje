@@ -1,6 +1,8 @@
-# Prefabrikten Plan Studio · 5.9.41
+# Prefabrikten Plan Studio · 5.9.42
 
-5.9.41: Tüm iç duvar H birleşimleri makas konumundan bağımsız kulaksız ve dübelsiz hesaplanır. Dış H kuralları ve birleşim şekilleri korunur.
+5.9.42: İç duvar omegası kalınlığa göre iç duvar toplamı/2500mm yukarı yuvarlanarak hesaplanır. Yedek eklenmez; dış duvarlar ayrı kapsamdır.
+
+Tüm iç duvar H birleşimleri makas konumundan bağımsız kulaksız ve dübelsiz hesaplanır. Dış H kuralları ve birleşim şekilleri korunur.
 
 Veranda direği100×100mm flanşlı profil, boy bina yüksekliği. Yükleme satırında özel boy düzenlenebilir ve JSON ile korunur.
 

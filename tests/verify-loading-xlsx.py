@@ -29,3 +29,8 @@ assert {r[2]:r[13] for r in frames}=={'100 × 2500 mm':15,'60 × 2500 mm':9}
 manual=[r for r in s.iter_rows(min_row=5,values_only=True) if r[6]=='Manuel doğrulandı']
 assert all(r[10] in (None, '') and 'doğrulanmadı' in r[14] for r in manual)
 print('PASS XLSX explicit spare inclusion and manual uncertainty')
+
+omegas=[r for r in s.iter_rows(min_row=5,values_only=True) if r[1]=='Duvar omegası']
+assert len(omegas)==1 and omegas[0][2]=='60 × 2500 mm'
+assert (omegas[0][5],omegas[0][10],omegas[0][13])==(9,0,9)
+print('PASS XLSX interior omega 9 stock pieces, no spare')
