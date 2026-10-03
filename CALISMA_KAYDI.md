@@ -370,3 +370,11 @@ Bu kaynak örnek konumları açıklar; global yönle tüm veranda biçimlerine a
 Kullanıcı baş makas Z satırını baş makas omegasına bağlamayı ve ileride değiştirilebileceğini kaydetmeyi istedi. src/loading-reference.js productLinks ayrı, geçici eşleme olarak tuna-41 (Baş Makas Z Sacı, 70×2500, 9 adet) → Baş makas omegası ilişkisini taşır. Özgün referans adı/ölçü/adet değişmedi; ürünlerin aynı olduğu kabul edilmez. Karşılaştırma tablosu ve referans seçiminde geçici not görünür; açık referansı olmayan Baş makas omegası satırı tuna-41 ile karşılaştırılır. 9 adet genel proje miktarı değildir. Otomatik geometri hesabı mevcut olmadığından bu teslim otomatik Z/omega miktar üretimi değildir. DEV-026 dış/veranda omega ve net+100mm kiriş işleri açık kalır.
 
 Kontroller: build ve loading-list geçti; referans bağlantısı ve özgün satırın korunması kontrol edildi. Canlı çizim ve Yeni proje (11).json değiştirilmedi. Karar/kod/dist birlikte gönderilir; kaynak Excel değişmedi.
+
+## 4 Ekim 2026 — 5.9.44 / DEV-026 dört kalem uygulandı
+
+[Uygulama, sayısal sonuçlar ve sınırlar](analizler/2026-10-04-omega-veranda-uygulama.md). Verandaya komşu duvarlar ve yan kirişler duvar omegasına dahil; baş makas/saçak2500mm toplamdan yukarı yuvarlanır. Z ayrı satırda geçici1:1 omega bağıdır; tuna-41 iki kez toplanmaz. Veranda kirişinin net+100mm sevk boyu listede/CSV/XLSX'te ayrı alanlarda. Çizim korunur, yedek0.
+
+Tuna: iç omega9,100lük duvar omega5,baş omega8,Z8,saçak7. Kiriş net4970/2527,5/645→sevk5070/2627,5/745mm. Eski Excel/yan kiriş görsel farkları raporda; tam üretim eşitliği iddia edilmez. Belirsiz yerel çatı yönü/eğik veranda otomatik adet verilmeden kontrol bekler.
+
+Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; görsel kontrol yapıldı. Kaynak/dist/karar/testler birlikte gönderilir. Yeni proje (11).json ve canlı çizim korunmuştur; geçici artifacts Git'e alınmaz. DEV-026 onaylı dört uygulama kalemi tamam; DEV-011 imalat farkları ve DEV-028 özel ölçü sekmesi açık.

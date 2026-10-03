@@ -30,7 +30,14 @@ manual=[r for r in s.iter_rows(min_row=5,values_only=True) if r[6]=='Manuel doğ
 assert all(r[10] in (None, '') and 'doğrulanmadı' in r[14] for r in manual)
 print('PASS XLSX explicit spare inclusion and manual uncertainty')
 
-omegas=[r for r in s.iter_rows(min_row=5,values_only=True) if r[1]=='Duvar omegası']
+omegas=[r for r in s.iter_rows(min_row=5,values_only=True) if r[1]=='Duvar omegası' and r[2]=='60 × 2500 mm']
 assert len(omegas)==1 and omegas[0][2]=='60 × 2500 mm'
 assert (omegas[0][5],omegas[0][10],omegas[0][13])==(9,0,9)
 print('PASS XLSX interior omega 9 stock pieces, no spare')
+
+allrows=list(s.iter_rows(min_row=5,values_only=True))
+assert {r[1]:r[5] for r in allrows if r[1] in ('Baş makas omegası','Baş makas Z sacı','Saçak omegası')}=={'Baş makas omegası':8,'Baş makas Z sacı':8,'Saçak omegası':7}
+assert sum(1 for r in allrows if r[8]=='tuna-41')==1
+assert [s.cell(4,i).value for i in (16,17,18)]==['Net boy (mm)','Kesim payı (mm)','Sevk boyu (mm)']
+assert sorted((r[15],r[16],r[17]) for r in allrows if r[1]=='Veranda kirişi')==[(645,100,745),(2527.5,100,2627.5),(4970,100,5070)]
+print('PASS XLSX separate head/Z, eaves, and net/allowance/shipping columns')

@@ -283,3 +283,6 @@ Vitrifiye ekle ile gömme/takım klozet, ayaklı/dolaplı lavabo ve duş kabini 
 
 ### 5.9.43
 Tuna Baş Makas Z satırı, baş makas omegası için geçici karşılaştırma referansı olarak bağlandı. Kaynak ürün korunur; tablo ve seçimde değiştirilebilir eşleme notu gösterilir. Otomatik dış/veranda omega geometrisi bu sürümde eklenmedi.
+
+### 5.9.44
+Duvar/veranda, baş makas ve saçak omegası2500mm stok hesabı; ayrı Z satırı geçici1:1 bağlıdır. Veranda kirişlerinde net+100mm sevk boyu, ekranda ve CSV/XLSXte ayrı net/pay/sevk alanları. Belirsiz yön ve eğik veranda manuel kontrol bekler. Detay: analizler/2026-10-04-omega-veranda-uygulama.md.

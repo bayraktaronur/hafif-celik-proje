@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 3 Ekim 2026, iş bilgisayarı; ev teslimi f0911ee alındı, 5.9.36 yükleme/stok kontrolleri geçti.
+Son güncelleme: 4 Ekim 2026, ev bilgisayarı; 5.9.44 omega/veranda kiriş hesabı uygulandı.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.43**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.44**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -305,7 +305,7 @@ DEV-006 sıradaki konu: kapı açıklığı tam pano içindedir; iç kapılı pa
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-026 | Alt çerçeve, omega, veranda profil/kiriş ve çatı kenarı malzemelerinin otomatik yükleme hesabı | Alt çerçeve5.9.37: kalınlığa göre toplam/250 yukarı yuvarla+1yedek uygulandı. Tuna100mm16/15farkı açıklanmalı; Üst omega sınıflandırması kayıtlı; iç duvar omegası5.9.42standart2500mm hesabıyla tamamlandı; dış omega kuralları açık. Yedek ve veranda/çatı reçeteleri açık. |
+| DEV-026 | Alt çerçeve, omega, veranda profil/kiriş ve çatı kenarı malzemelerinin otomatik yükleme hesabı | 5.9.44: onaylı dört omega/Z/kiriş kalemi uygulandı; tests/loading-top.cjs ve analizler/2026-10-04-omega-veranda-uygulama.md. Alt çerçeve ve direk önceki kuralları korunur. Referans adet/net boy farkları DEV-011, omega yedeği ve diğer çatı kenarı reçeteleri açık. |
 
 [Kalemler ve eksik kurallar](analizler/2026-10-03-diger-yukleme-kalemleri.md). 3 Ekim 2026 ev PC: kullanıcı diğer kalemleri ayarlamayı istedi. Git fetch sonrası uzak dal ile eşitlik kontrol edildi. Kaynak ve önceki kayıtlar tarandı; onaysız adet/reçete eklenmedi. Kod5.9.36 değişmedi, canlı plan ve yerel JSON korundu. DEV-006 kapılı pano farkı ve tüm diğer açık işler devam eder. Sıradaki adım alt çerçeve yanıtını kurala ve doğrulama testine dönüştürmek.
 
@@ -446,4 +446,12 @@ Kontroller: build ve loading-list geçti; referans bağlantısı ve özgün sat�
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-029 | Z / baş makas omega geçici referans bağı | Tamam: 5.9.43, productLinks ve yükleme karşılaştırması; ileride kullanıcı kararıyla revize edilir. Otomatik miktar hesabı DEV-026 kapsamında açık. |
+| DEV-029 | Z / baş makas omega geçici referans bağı | Tamam: 5.9.43, productLinks ve yükleme karşılaştırması; ileride kullanıcı kararıyla revize edilir. 5.9.44te ayrı Z satırı omega adedine bağlı; test/rapor DEV-026. |
+
+## 4 Ekim 2026 — 5.9.44 / DEV-026 dört kalem uygulandı
+
+[Uygulama, sayısal sonuçlar ve sınırlar](analizler/2026-10-04-omega-veranda-uygulama.md). Verandaya komşu duvarlar ve yan kirişler duvar omegasına dahil; baş makas/saçak2500mm toplamdan yukarı yuvarlanır. Z ayrı satırda geçici1:1 omega bağıdır; tuna-41 iki kez toplanmaz. Veranda kirişinin net+100mm sevk boyu listede/CSV/XLSX'te ayrı alanlarda. Çizim korunur, yedek0.
+
+Tuna: iç omega9,100lük duvar omega5,baş omega8,Z8,saçak7. Kiriş net4970/2527,5/645→sevk5070/2627,5/745mm. Eski Excel/yan kiriş görsel farkları raporda; tam üretim eşitliği iddia edilmez. Belirsiz yerel çatı yönü/eğik veranda otomatik adet verilmeden kontrol bekler.
+
+Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; görsel kontrol yapıldı. Kaynak/dist/karar/testler birlikte gönderilir. Yeni proje (11).json ve canlı çizim korunmuştur; geçici artifacts Git'e alınmaz. DEV-026 onaylı dört uygulama kalemi tamam; DEV-011 imalat farkları ve DEV-028 özel ölçü sekmesi açık.
