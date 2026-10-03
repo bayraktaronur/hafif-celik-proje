@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.45**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.46**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -467,3 +467,11 @@ Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; gör
 ## 4 Ekim 2026 — 5.9.45 / DEV-030 saçak sacı bindirme
 
 [Onay, ürün görselleri/hash ve kontroller](analizler/2026-10-04-sacak-bindirme-kurali.md). Kullanıcı2800mm sacın300mm bindirme ile2500mm etkin olduğunu doğruladı. Ayrı sac satırı saçak omegasıyla aynı adet; Tuna taslak7/7, Excel8/8farkı açık. Görsel ürün kalınlıkları sac0,50mm/omega0,80mm ve seçenekleri kaydedildi; kartlar şimdilik programa eklenmedi. Veranda ek hat kapsamı henüz teyit edilmedi. Build/loading-top/loading-list/verify-loading-xlsx geçti. Kaynak görseller kopyalandı; canlı çizim ve Yeni proje (11).json korundu.
+
+## 4 Ekim 2026 — 5.9.46 / DEV-031 Alın V
+
+[Görsel, kural ve test raporu](analizler/2026-10-04-alin-v-kurali.md). Gerçek çatı modelinin açık eğimli alın kenarları toplamı/2800mm yukarı yuvarlanır;220×2800mm ayrı satır, bindirme/yedek0. Çatı yoksa otomatik adet verilmez ve ekranda açıklanır. loading-verge eğimli3Bboy,iki alın,çatı yok,eğim değişince manuel karar invalidasyonu ve XLSX testleri geçti; loading-list/top regresyonları geçti. Kaynak görsel hash ile referanslara kopyalandı. Uygulama/kayıt/görsel birlikte aktarılır. Tuna çatı modeliyle9adet referans karşılaştırması açık; canlı çizim korunur.
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-031 | Alın V eğimli boy hesabı | 5.9.46 tamam; tests/loading-verge.cjs. Tuna9adet karşılaştırması için çatı modeli gerekli. |

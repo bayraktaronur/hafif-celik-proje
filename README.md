@@ -289,3 +289,6 @@ Duvar/veranda, baş makas ve saçak omegası2500mm stok hesabı; ayrı Z satır�
 
 ### 5.9.45
 Saçak sacı ayrı satır:2800mm stok−300mm bindirme=2500mm etkin boy; saçak omegasıyla aynı adet. CSV/XLSX açıklaması ve geçersiz eski karar kontrolü korunur. Ürün görselleri referanslara kaydedildi.
+
+### 5.9.46
+Alın V: çatı modelinin açık eğimli alın kenarlarının gerçek3Btoplamı/2800mm yukarı yuvarlanır. Ayrı yükleme/CSV/XLSX satırı; bindirme ve yedek eklenmez. Çatı bölümü yoksa hesap için açıklama gösterilir.
