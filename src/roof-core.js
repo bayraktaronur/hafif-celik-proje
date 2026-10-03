@@ -292,5 +292,14 @@
     }
     return {faces:fs,edges,cutList,layerCuts,layerTotals,byZone,materials,totals:[...totals.values()],area:byZone.reduce((s,z)=>s+z.area,0),planArea:byZone.reduce((s,z)=>s+z.planArea,0),lengths,warnings};
   }
-  return {connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
+
+  // Millimetres along the slope, starting at the eave ear reference.
+  function purlinStations(lengthMm,spacingMm){
+    if(!Number.isFinite(lengthMm)||lengthMm<462||lengthMm>1000000||![400,800].includes(spacingMm))return null;
+    const end=lengthMm-120,positions=[0,342];
+    for(let x=342+spacingMm;x<end-1e-6;x+=spacingMm)positions.push(x);
+    if(end-positions.at(-1)>1e-6)positions.push(end);
+    return {positions,spacingMm,ridgeOffsetMm:120,eaveIntervalMm:342,remainderMm:positions.length>2?end-positions.at(-2):0};
+  }
+  return {purlinStations,connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
 });

@@ -580,7 +580,16 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
     }
     return {faces:fs,edges,cutList,layerCuts,layerTotals,byZone,materials,totals:[...totals.values()],area:byZone.reduce((s,z)=>s+z.area,0),planArea:byZone.reduce((s,z)=>s+z.planArea,0),lengths,warnings};
   }
-  return {connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
+
+  // Millimetres along the slope, starting at the eave ear reference.
+  function purlinStations(lengthMm,spacingMm){
+    if(!Number.isFinite(lengthMm)||lengthMm<462||lengthMm>1000000||![400,800].includes(spacingMm))return null;
+    const end=lengthMm-120,positions=[0,342];
+    for(let x=342+spacingMm;x<end-1e-6;x+=spacingMm)positions.push(x);
+    if(end-positions.at(-1)>1e-6)positions.push(end);
+    return {positions,spacingMm,ridgeOffsetMm:120,eaveIntervalMm:342,remainderMm:positions.length>2?end-positions.at(-2):0};
+  }
+  return {purlinStations,connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
 });
 
 </script><script>
@@ -5085,7 +5094,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.48',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.49',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5933,7 +5942,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.48';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.49';syncUI();draw();
 })();
 
 </script><script>
@@ -6601,6 +6610,15 @@ window.OpeningCatalog=(function(){
     const wall=z.wallTop??(+G.opt.h||250),floor=z.floorLevel??0;for(const x of [0,z.d]){const p=project({x,y:wall}),q=project({x,y:floor});ctx.fillRect(p.x-3,p.y,6,q.y-p.y);ctx.strokeRect(p.x-3,p.y,6,q.y-p.y);}
     const floorA=project({x:0,y:floor}),floorB=project({x:z.d,y:floor});ctx.beginPath();ctx.moveTo(floorA.x-15,floorA.y);ctx.lineTo(floorB.x+15,floorB.y);ctx.stroke();ctx.font='12px system-ui';ctx.fillStyle='#a8d8ed';ctx.textAlign='left';ctx.fillText('Döşeme +'+number(floor)+' cm',floorA.x,floorA.y+20);ctx.fillText('Duvar üstü +'+number(wall)+' cm',floorA.x,project({x:0,y:wall}).y+20);
     ctx.strokeStyle='#637d95';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(40,project({x:0,y:z.h}).y);ctx.lineTo(w-40,project({x:0,y:z.h}).y);ctx.stroke();ctx.setLineDash([]);ctx.strokeStyle='#efbc70';ctx.lineWidth=3;ctx.beginPath();pts.forEach((p,i)=>{const q=project(p);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y);});ctx.stroke();
+    if(z.type==='besik'){
+      const spacing=C.layers(z,!!G.opt.osb).some(l=>l.id==='osb')?400:z.material==='trapez'?800:null;
+      if(spacing){const peak=pts.reduce((a,b)=>a.y>b.y?a:b),ends=[pts[0],pts.at(-1)],info=[];ctx.save();ctx.fillStyle='#73e5c0';
+       for(const eave of ends){const L=Math.hypot(peak.x-eave.x,peak.y-eave.y)*10,layout=C.purlinStations(L,spacing);if(!layout){info.push('Kısa yüz: uç yerleşimi kontrolü');continue;}
+        for(const mm of layout.positions){const t=mm/L,q=project({x:eave.x+(peak.x-eave.x)*t,y:eave.y+(peak.y-eave.y)*t});ctx.beginPath();ctx.arc(q.x,q.y-5,3,0,Math.PI*2);ctx.fill();}
+        info.push(layout.positions.length+' sıra · son aralık '+number(layout.remainderMm,1)+' mm');}
+       ctx.textAlign='left';ctx.font='11px system-ui';ctx.fillText('Aşık sıra taslağı · '+spacing+' mm · mahya 120 mm · saçak 0 / 342 mm',25,116);ctx.fillText(info.join(' | '),25,133);ctx.restore();
+      }
+    }
     ctx.textAlign='center';ctx.font='12px system-ui';ctx.fillStyle='#dce9f2';pts.forEach(p=>{const q=project(p);ctx.fillText((Math.abs(p.x-min)<.01||Math.abs(p.x-max)<.01?'Saçak +':'Mahya +')+number(p.y,1),q.x,q.y-14);});ctx.textAlign='left';ctx.fillText(z.name+' · yerel Y kesiti / X = '+number(u,1),25,75);ctx.fillText((z.datum==='eave'?'En düşük saçak kotu +':'Duvar yüzünde çatı kotu +')+number(z.h)+' cm · açıklık '+number(z.d)+' cm',25,h-25);ctx.font='11px system-ui';ctx.fillStyle='#9eb2c5';ctx.fillText('Seçili bölümün yerel Y kesiti; birleşen diğer bölümler gösterilmez.',25,96);
   }
   function layerReport(m){if(!m.layerTotals.length)return '';
@@ -7544,8 +7562,8 @@ LoadingReference.productLinks=[{product:'Baş makas omegası',referenceId:'tuna-
  $('loadHLabels').onchange=()=>{const v=$('loadHLabels').checked;commit(c=>{c.showLabels=v;});};
  function open(){try{render();dlg.showModal();}catch(e){Studio.toast(e.message,true);}}
  for(const id of ['loadSearch','loadGroup','loadStatus'])$(id).oninput=render;$('loadRefresh').onclick=render;$('loadAdd').onclick=()=>editor(null);$('loadClose').onclick=()=>dlg.close();
- $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:'5.9.48',date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
- $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:'5.9.48',date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:'5.9.49',date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:'5.9.49',date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
  window.LoadingList={open,calculate,items};
 })();
 

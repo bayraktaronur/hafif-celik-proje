@@ -410,3 +410,7 @@ Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list;
 ## 4 Ekim 2026 — DEV-033 sabit aşık uçları
 
 [Yeni açıklamalı görsel ve kural](analizler/2026-10-04-asik-sabit-uclar.md): saçakta ilk kulak0,sonraki342mm; mahya merkezinden ilk kulak92mm sabit. Ara aralık OSB400mm,trapez800mm,eğim boyunca. Önceki örnek46,21/34,25cm genel sabit değildir. Kalan aralığın hangi uçta veya nasıl dağıtılacağı açıklanmadı; stok/ek kuralı da açık. Görsel/hash ortak referanslara kaydedildi; kod/çizim değişmedi.
+
+## 4 Ekim 2026 — 5.9.49 / DEV-033 120mm mahya ve kalan aralık
+
+[Güncel kural, görseller/hash ve kapsam](analizler/2026-10-04-asik-120mm-mahya.md).92mm yerine120mm; saçak0/342mm,OSB400/trapez800adımlar,kalan mahyada. RoofCore.purlinStations ve dikdörtgen beşik yerel kesit sıra taslağı uygulandı. Serbest sınır/birleşik çatı sıra gösterimi ve stok3000/4200sevk hesabı açık; sıra sayısı ürün sevk adedi değildir. purlin-stations,purlin-section,görsel kontrol,loading-verge/list geçti. Canlı çizim ve kullanıcıJSONu korundu.

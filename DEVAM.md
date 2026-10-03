@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.48**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.49**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -498,8 +498,12 @@ Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list;
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-033 | Omega aşık yerleşimi ve sevk | Açık: OSB400/trapez800mm; mahya92mm,saçak0ve342mm sabit. Kalan mesafe dağılımı ve4200/3000stok kuralı bekliyor. analizler/2026-10-04-asik-sabit-uclar.md |
+| DEV-033 | Omega aşık yerleşimi ve sevk | 5.9.49: mahya120mm,saçak0/342mm,OSB400/trapez800,kalan mahyada; dikdörtgen beşik kesit sıra taslağı tamam. Serbest sınır/birleşik çatı ve3000/4200stok/ek hesabı açık. analizler/2026-10-04-asik-120mm-mahya.md |
 
 ## 4 Ekim 2026 — DEV-033 sabit aşık uçları
 
 [Yeni açıklamalı görsel ve kural](analizler/2026-10-04-asik-sabit-uclar.md): saçakta ilk kulak0,sonraki342mm; mahya merkezinden ilk kulak92mm sabit. Ara aralık OSB400mm,trapez800mm,eğim boyunca. Önceki örnek46,21/34,25cm genel sabit değildir. Kalan aralığın hangi uçta veya nasıl dağıtılacağı açıklanmadı; stok/ek kuralı da açık. Görsel/hash ortak referanslara kaydedildi; kod/çizim değişmedi.
+
+## 4 Ekim 2026 — 5.9.49 / DEV-033 120mm mahya ve kalan aralık
+
+[Güncel kural, görseller/hash ve kapsam](analizler/2026-10-04-asik-120mm-mahya.md).92mm yerine120mm; saçak0/342mm,OSB400/trapez800adımlar,kalan mahyada. RoofCore.purlinStations ve dikdörtgen beşik yerel kesit sıra taslağı uygulandı. Serbest sınır/birleşik çatı sıra gösterimi ve stok3000/4200sevk hesabı açık; sıra sayısı ürün sevk adedi değildir. purlin-stations,purlin-section,görsel kontrol,loading-verge/list geçti. Canlı çizim ve kullanıcıJSONu korundu.

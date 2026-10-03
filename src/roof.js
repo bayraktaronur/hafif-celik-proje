@@ -198,6 +198,15 @@
     const wall=z.wallTop??(+G.opt.h||250),floor=z.floorLevel??0;for(const x of [0,z.d]){const p=project({x,y:wall}),q=project({x,y:floor});ctx.fillRect(p.x-3,p.y,6,q.y-p.y);ctx.strokeRect(p.x-3,p.y,6,q.y-p.y);}
     const floorA=project({x:0,y:floor}),floorB=project({x:z.d,y:floor});ctx.beginPath();ctx.moveTo(floorA.x-15,floorA.y);ctx.lineTo(floorB.x+15,floorB.y);ctx.stroke();ctx.font='12px system-ui';ctx.fillStyle='#a8d8ed';ctx.textAlign='left';ctx.fillText('Döşeme +'+number(floor)+' cm',floorA.x,floorA.y+20);ctx.fillText('Duvar üstü +'+number(wall)+' cm',floorA.x,project({x:0,y:wall}).y+20);
     ctx.strokeStyle='#637d95';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(40,project({x:0,y:z.h}).y);ctx.lineTo(w-40,project({x:0,y:z.h}).y);ctx.stroke();ctx.setLineDash([]);ctx.strokeStyle='#efbc70';ctx.lineWidth=3;ctx.beginPath();pts.forEach((p,i)=>{const q=project(p);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y);});ctx.stroke();
+    if(z.type==='besik'){
+      const spacing=C.layers(z,!!G.opt.osb).some(l=>l.id==='osb')?400:z.material==='trapez'?800:null;
+      if(spacing){const peak=pts.reduce((a,b)=>a.y>b.y?a:b),ends=[pts[0],pts.at(-1)],info=[];ctx.save();ctx.fillStyle='#73e5c0';
+       for(const eave of ends){const L=Math.hypot(peak.x-eave.x,peak.y-eave.y)*10,layout=C.purlinStations(L,spacing);if(!layout){info.push('Kısa yüz: uç yerleşimi kontrolü');continue;}
+        for(const mm of layout.positions){const t=mm/L,q=project({x:eave.x+(peak.x-eave.x)*t,y:eave.y+(peak.y-eave.y)*t});ctx.beginPath();ctx.arc(q.x,q.y-5,3,0,Math.PI*2);ctx.fill();}
+        info.push(layout.positions.length+' sıra · son aralık '+number(layout.remainderMm,1)+' mm');}
+       ctx.textAlign='left';ctx.font='11px system-ui';ctx.fillText('Aşık sıra taslağı · '+spacing+' mm · mahya 120 mm · saçak 0 / 342 mm',25,116);ctx.fillText(info.join(' | '),25,133);ctx.restore();
+      }
+    }
     ctx.textAlign='center';ctx.font='12px system-ui';ctx.fillStyle='#dce9f2';pts.forEach(p=>{const q=project(p);ctx.fillText((Math.abs(p.x-min)<.01||Math.abs(p.x-max)<.01?'Saçak +':'Mahya +')+number(p.y,1),q.x,q.y-14);});ctx.textAlign='left';ctx.fillText(z.name+' · yerel Y kesiti / X = '+number(u,1),25,75);ctx.fillText((z.datum==='eave'?'En düşük saçak kotu +':'Duvar yüzünde çatı kotu +')+number(z.h)+' cm · açıklık '+number(z.d)+' cm',25,h-25);ctx.font='11px system-ui';ctx.fillStyle='#9eb2c5';ctx.fillText('Seçili bölümün yerel Y kesiti; birleşen diğer bölümler gösterilmez.',25,96);
   }
   function layerReport(m){if(!m.layerTotals.length)return '';

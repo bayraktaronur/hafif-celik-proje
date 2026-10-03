@@ -298,3 +298,6 @@ Alın V hesabı kullanıcı düzeltmesiyle300mm bindirme ve2500mm etkin boya ge�
 
 ### 5.9.48
 Aşık kapama U2500mm, Alın V ile bire bir aynı adette ayrı yükleme/CSV/XLSX satırı. Geometri ve manuel Alın V miktarı değişince güncellenir; eski karar kontrolü korunur.
+
+### 5.9.49
+Aşık sıraları: mahya120mm,saçak0/342mm;OSB400/trapez800mm,kalan aralık mahyada. Dikdörtgen beşik çatı kesitinde sıra taslağı ve yüz başına sayı gösterilir. Stok sevk hesabı ve serbest sınır/birleşik çatı gösterimi kapsam dışı.
