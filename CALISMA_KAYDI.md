@@ -201,3 +201,10 @@ Kalınlık/yükseklik grupları, artık ve uygulanabilir büyükten küçüğe s
 ## 3 Ekim 2026 — Gün sonu yedeği, yarın devam
 
 Kullanıcı çalışmayı yarına bıraktı. Program 5.9.36; değişiklik yapılmadı. Son karşılaştırma, yedek envanteri ve yarın ilk adım: [gün sonu devir raporu](analizler/2026-10-03-gun-sonu-devir.md). Mevcut eski JSON ayrı cizimler/2026-10-03-ev-mevcut-yedek-5.9.14.json olarak korundu (SHA-256 raporda); canlı son çizim olduğu doğrulanmadı. DEV-002 açık: file:// sekmesine erişim güvenlik politikası engeli nedeniyle canlı çizim yedeği alınamadı; kullanıcı Kaydet ile son JSON'u dışa aktarmalı. DEV-025/DEV-006: dış pano 22/23 farkı ve kapı/pencere reçeteleri yarın incelenecek; diğer açık işler devam ediyor.
+
+## 3 Ekim 2026 — İş PC — ev tesliminin alınması ve devam kontrolü
+
+- Kullanıcı iş PC'den devam istedi. Temiz main fetch/pull --ff-only ile4c2f1c4→f0911ee güncellendi; AGENTS/DEVAM/CALISMA_KAYDI ve gün sonu raporu okundu.
+- Uygulama5.9.36. loading-stock ve loading-list testleri başarılı;49 panel yuvası,12 açıklık, dış24/22 ve iç13/12 stok hesabı yeniden doğrulandı. Kullanıcının canlı çizimine müdahale edilmedi.
+- DEV-025/006:710+520mm birlikte kesim/sevk tercihi kullanıcıya soruldu; yanıt bekleniyor, reçete değiştirilmedi. DEV-002 son canlı JSON hâlâ doğrulanmadı.
+- Kod değişmedi. package.json5.9.19 / uygulama5.9.36 metadata farkı not edildi. Sıradaki adım sevk tercihi ve kapı/pencere reçeteleri; diğer açık işler korunuyor.

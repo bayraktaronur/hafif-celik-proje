@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 3 Ekim 2026, ev bilgisayarı; 5.9.36 dolu pano stok kesimi ve özel ölçü etiketleri.
+Son güncelleme: 3 Ekim 2026, iş bilgisayarı; ev teslimi f0911ee alındı, 5.9.36 yükleme/stok kontrolleri geçti.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -275,3 +275,9 @@ Kalınlık/yükseklik grupları, artık ve uygulanabilir büyükten küçüğe s
 ## 3 Ekim 2026 — Gün sonu yedeği, yarın devam
 
 Kullanıcı çalışmayı yarına bıraktı. Program 5.9.36; değişiklik yapılmadı. Son karşılaştırma, yedek envanteri ve yarın ilk adım: [gün sonu devir raporu](analizler/2026-10-03-gun-sonu-devir.md). Mevcut eski JSON ayrı cizimler/2026-10-03-ev-mevcut-yedek-5.9.14.json olarak korundu (SHA-256 raporda); canlı son çizim olduğu doğrulanmadı. DEV-002 açık: file:// sekmesine erişim güvenlik politikası engeli nedeniyle canlı çizim yedeği alınamadı; kullanıcı Kaydet ile son JSON'u dışa aktarmalı. DEV-025/DEV-006: dış pano 22/23 farkı ve kapı/pencere reçeteleri yarın incelenecek; diğer açık işler devam ediyor.
+
+## 3 Ekim 2026 — İş bilgisayarında devam
+
+Temiz main, 4c2f1c4 üzerinden f0911ee sürümüne fast-forward güncellendi. Ortak kayıtlar ve gün sonu raporu okundu. tests/loading-stock.cjs ve tests/loading-list.cjs iş bilgisayarında başarılı: Tuna 24 dış dolu parça/22 stok, 13 iç parça/12 stok sonucu yeniden doğrulandı. Canlı tarayıcı sayfası yenilenmedi, plan yüklenmedi; kayıtlı kontrol taslağı ayrı test tarayıcısında kullanıldı.
+
+DEV-025/006 için kullanıcıya 710+520 mm parçaların aynı 1250 mm panodan kesilip kesilemeyeceği soruldu. Yanıt gelmeden Excel23'e uydurmak için stok kuralı değiştirilmedi. Son canlı JSON hâlâ doğrulanmadı (DEV-002). Sıradaki iş sevk tercihini netleştirmek ve kapılı/pencereli ürün reçetelerini incelemek. package.json hâlen5.9.19 yazarken uygulama/rapor5.9.36; bu metadata farkı sonraki sürüm tesliminde uzlaştırılmalı. Diğer açık işler geçerlidir.
