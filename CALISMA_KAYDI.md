@@ -316,3 +316,9 @@ Kullanıcı direklerin her projede100×100mm olduğunu, yalnız boyun bina yüks
 Görsel notu kirişlerin direklerin arasına gireceğini ve her kiriş için+10cm kesim payı verileceğini açıklıyor. Bu toplam100mm/parça boy payıdır; her uca100mm veya fazladan1adet yedek olarak yorumlanmaz. Görselde kiriş1880/2560/5550mm; direk2800mm yazıyor. Yazılı kiriş boylarının100mm payı içerip içermediği henüz açık değil; kullanıcıya bu ayrım sorulacak. Pay iki kez eklenmeyecek, önceki4970/2520/640onaylı değerleri bu açıklama ile sessizce değiştirilmeyecek. Direkler arası net açıklık ve sevk/kesilecek boy ayrı tutulmalı; duvara bağlanan uç geometrisi ayrıca doğrulanmalıdır.
 
 Karar ve görsel kaydedildi; otomatik kiriş hesabı henüz değiştirilmedi. Uygulama5.9.40ve canlı çizim korundu. Omega boyları ertelenmiş; diğer açık işler devam eder.
+
+## 3 Ekim 2026 — DEV-026 net kiriş / sevk boyu kesin kuralı
+
+Kullanıcı açıkça doğruladı: çizimde5550/2560/1880mm net kiriş boyları korunacak; yükleme listesinde her parça boyuna100mm eklenecek. Liste açıklaması “+100 mm kesim payı”. Sonuçlar5550→5650,2560→2660,1880→1980mm. Bu parça başına bir kez eklenen boy payıdır, her uç için ayrı100mm değildir ve yedek adet değildir. Adet/Yedek/Toplam sevk adedi bu boy payından etkilenmez. Listede net boy, kesim payı ve sevk boyu ayrılmalı. Aynı pay ikinci kez eklenmeyecek; çizim ölçüsü sevk boyuna çevrilmeyecek.
+
+Önceki görseldeki payın dahil olup olmadığı belirsizliği kapandı. Genel veranda geometrisinden net kiriş boyu/duvar ucu bağlantısı çıkarımı hâlâ doğrulanmalı; bu tur yalnız kural ve örnekler kaydedildi, otomatik kiriş satırları henüz uygulanmadı. Uygulama5.9.40ve canlı çizim değişmedi. Omega boy ertelemesi ve diğer açık işler korunur.
