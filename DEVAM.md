@@ -455,3 +455,11 @@ Kontroller: build ve loading-list geçti; referans bağlantısı ve özgün sat�
 Tuna: iç omega9,100lük duvar omega5,baş omega8,Z8,saçak7. Kiriş net4970/2527,5/645→sevk5070/2627,5/745mm. Eski Excel/yan kiriş görsel farkları raporda; tam üretim eşitliği iddia edilmez. Belirsiz yerel çatı yönü/eğik veranda otomatik adet verilmeden kontrol bekler.
 
 Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; görsel kontrol yapıldı. Kaynak/dist/karar/testler birlikte gönderilir. Yeni proje (11).json ve canlı çizim korunmuştur; geçici artifacts Git'e alınmaz. DEV-026 onaylı dört uygulama kalemi tamam; DEV-011 imalat farkları ve DEV-028 özel ölçü sekmesi açık.
+
+## 4 Ekim 2026 — Saçak sacı aday bağlantısı / DEV-030
+
+[Kaynaklı çıkarım](analizler/2026-10-04-sacak-saci-aday-esleme.md): Tuna saçak omegası ve saçak sacı8eradet. Aday bağlantı yan saçak hattı; stok boyları2500/2800farklı olduğundan otomatik1:1adet kuralı kabul edilmedi. Veranda duvar omegası istisnası nedeniyle yalnız ürün adına bağlamak yeterli değil. Kullanıcı teyidi bekleniyor; kod/çizim değişmedi,5.9.44korundu.
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-030 | Saçak sacı hat/kapsam ve adet kuralı | Açık: yan saçak hattı aday; 1:1adet, bindirme ve veranda kapsamı kullanıcı teyidi bekliyor. |
