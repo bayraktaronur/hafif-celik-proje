@@ -11,3 +11,7 @@ Kaynak: src/loading-reference.js içindeki SP - 202600185 - Tuna Pref. 84m².xls
 | 5 | Kapı/PVC; satır45–49 | Açıklık ölçüsünden sipariş ölçüsüne dönüşüm, açılış yönü ve ayrı ürün sayımı |
 
 Excel sayıları gelecekteki projeye sabit adet olarak kopyalanmayacak. Önce kullanıcıdan alt çerçeve genişliği, kapı altında devam/kesinti, 2500mm stok ve artık/yedek bilgisi soruldu; yanıt bekleniyor. Bu bilgiler alınmadan otomatik üretim hesabı eklenmedi. Kapılı pano DEV-006 ve dolu stok DEV-025 bağımsız açık kalır. Kod5.9.36 ve canlı çizim korunur.
+
+## 3 Ekim 2026 — DEV-026 alt çerçeve kapsamı onayı
+
+Kullanıcı: alt çerçeve kapılı ve pencereli panolar dahil tüm duvarların altındadır; yalnız veranda kısmında yoktur. Hesapta kapı/pencere boşlukları duvar uzunluğundan düşülmeyecek. Veranda açık sınırları hariç tutulur; verandaya bakan gerçek ev duvarı tüm duvarlar kuralına dahildir. Bu karar yalnız uygulama kapsamını kesinleştirir. 60/100 mm kesit eşlemesi, 2500 mm stok boyunun genelliği, kesilen artığın başka duvarda kullanılması/ek yapılması, köşe-uç boyları ve yedek henüz kullanıcı tarafından doğrulanmadı. Sevk adedi uydurulmadı; uygulama5.9.36 ve çizim değişmedi. Sıradaki adım stok/artık/yedek kurallarını almak; diğer açık işler korunur.

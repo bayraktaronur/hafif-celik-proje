@@ -305,6 +305,10 @@ DEV-006 sıradaki konu: kapı açıklığı tam pano içindedir; iç kapılı pa
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-026 | Alt çerçeve, omega, veranda profil/kiriş ve çatı kenarı malzemelerinin otomatik yükleme hesabı | Açık: referans envanteri çıkarıldı; ilk olarak alt çerçevenin kapı altı devamı, kesit, stok boyu, artık ve yedek kuralı kullanıcıya soruldu. Yanıt bekleniyor. |
+| DEV-026 | Alt çerçeve, omega, veranda profil/kiriş ve çatı kenarı malzemelerinin otomatik yükleme hesabı | Açık: kapı/pencere dahil tüm duvar altında devam, veranda açık kenarları hariç kuralı onaylı. Kesit, stok boyu, artık/ek ve yedek kuralları bekleniyor. |
 
 [Kalemler ve eksik kurallar](analizler/2026-10-03-diger-yukleme-kalemleri.md). 3 Ekim 2026 ev PC: kullanıcı diğer kalemleri ayarlamayı istedi. Git fetch sonrası uzak dal ile eşitlik kontrol edildi. Kaynak ve önceki kayıtlar tarandı; onaysız adet/reçete eklenmedi. Kod5.9.36 değişmedi, canlı plan ve yerel JSON korundu. DEV-006 kapılı pano farkı ve tüm diğer açık işler devam eder. Sıradaki adım alt çerçeve yanıtını kurala ve doğrulama testine dönüştürmek.
+
+## 3 Ekim 2026 — DEV-026 alt çerçeve kapsamı onayı
+
+Kullanıcı: alt çerçeve kapılı ve pencereli panolar dahil tüm duvarların altındadır; yalnız veranda kısmında yoktur. Hesapta kapı/pencere boşlukları duvar uzunluğundan düşülmeyecek. Veranda açık sınırları hariç tutulur; verandaya bakan gerçek ev duvarı tüm duvarlar kuralına dahildir. Bu karar yalnız uygulama kapsamını kesinleştirir. 60/100 mm kesit eşlemesi, 2500 mm stok boyunun genelliği, kesilen artığın başka duvarda kullanılması/ek yapılması, köşe-uç boyları ve yedek henüz kullanıcı tarafından doğrulanmadı. Sevk adedi uydurulmadı; uygulama5.9.36 ve çizim değişmedi. Sıradaki adım stok/artık/yedek kurallarını almak; diğer açık işler korunur.
