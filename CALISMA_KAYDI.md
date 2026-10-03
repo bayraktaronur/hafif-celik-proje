@@ -216,3 +216,8 @@ Kullanıcı 710 ve 520 mm dolu parçaların aynı1250mm panodan kesilebileceğin
 ## 3 Ekim 2026 — DEV-006 kapılı/pencereli pano karşılaştırması
 
 [Karşılaştırma](analizler/2026-10-03-aciklik-panolari.md) kayıtlı kontrol taslağından yeniden üretildi:6pencere ve1dış kapı panosu Excel ile eşleşiyor. İç kapıda program4×1250+1×1220, Excel3×1250+2×1220; toplam5aynı, bir ürün eni farklı. Hazır pano sevk kuralı, doğramanın ayrı sayılması ve farklı iç kapının kimliği kullanıcıyla netleştirilecek. Kod5.9.36 ve canlı plan değişmedi; önceki kapı boşluğu incelemesi erteleme kararı korunuyor. Diğer açık işler sürüyor.
+
+
+## 3 Ekim 2026 — DEV-006 pano yorumu düzeltmesi
+
+Kullanıcı, işaretlenen kapılı duvar bölümlerinin küçük kapı parçaları değil, kapı açıklığı panelin içinde bulunan tam panolar olduğunu açıkladı. 1250/1220 mm imalat eni farkı makas yönü/aks kaynaklı özel kesimle birlikte incelenecek. Önceki anotasyonun konumu hatalı; raporda geçersiz sayıldı. 4×1250+1×1220 ile Excel3×1250+2×1220 farkı çözülmedi; hangi panonun özel kesildiği ve “kasalar geniş” notunun açıklığı açık. Kod ve canlı çizim değişmedi; sevk reçetesi uydurulmadı. [Güncellenen analiz](analizler/2026-10-03-aciklik-panolari.md).

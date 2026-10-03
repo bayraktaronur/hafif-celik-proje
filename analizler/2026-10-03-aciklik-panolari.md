@@ -11,8 +11,13 @@ Kaynak: cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json; 5.9.36 LoadingList.ca
 |İç kapı,60×1250×2500mm|4|3|
 |İç kapı,60×1220×2500mm|1|2|
 
-Toplam12/12 eşit; bir iç kapı panosunun1250/1220 ürün sınıfı farklı. Kaynak Excel ikinci iç kapı satırında bir adedi kasalar geniş notu var. Bu notun hangi kapıya ait olduğu ve farklı panel enini açıklayıp açıklamadığı doğrulanmadı. Programdaki80×210 ve90×210 açıklıklar önceki kullanıcı kararıyla korunmuştu; gerçek sipariş/kasa ölçüleri değildir.
+Önemli kullanıcı düzeltmesi: işaretlenenler kapı boşluğu ölçüsünde küçük parçalar değil; **kapı açıklığı panelin içinde bulunan tam pano**. Pano eni 1250 veya 1220 mm, yerleşim sınırı ve makas yönüne göre yapılan imalat kesimidir. Kapı sembolü ürün/pano boyunu tarif etmez. Programdaki 4×1250 + 1×1220 ve Excel'deki 3×1250 + 2×1220 farkı sayısal olarak duruyor; bunu “hazır kapılı panel sınıfı yanlış” ya da “kapı boşluğu ayrı pano” diye yorumlamayacağız. Excel'deki “1 adedi kasalar geniş” notunun hangi kapı/pano ölçüsüne karşılık geldiği ve diğer özel kesimlerin makas yönüyle ilişkisi imalat çizgisinden doğrulanmalı. Önceki80×210 /90×210 değerleri mimari açıklık sembolleridir, kasa/sipariş ölçüsü değildir.
 
-Netleştirilecek kurallar: (1) kapılı/pencereli her pano fabrikada hazır, çizimdeki net kesim eninde bir ürün mü sevk edilir, dolu stok havuzuna katılmaz mı? (2) iç kapıdaki4+1 mi3+2 mi esas; ikinci1220 varsa plandaki hangi kapı? (3) panel ile kapı/PVC doğraması ayrı sevk satırları mı? PDF sipariş ölçüsü dönüşümü ayrı doğrulanmalı, sabit pay varsayılmamalı.
+Netleştirilecek: makas dizilim yönü ve birleşimlere göre hangi tam panonun 1220 mm kesildiği; Excel notundaki geniş kasa hangi açıklıkla eşleşiyor; panel ve kapı/PVC doğraması sevk listesinde ayrı satırlar mı? Dolu pano stok kesimiyle kapı açıklığı panelinin özel imalat kesimini birbirine karıştırmamalıyız. PDF sipariş ölçüsü dönüşümü ayrıca doğrulanmalı; sabit pay varsayılmamalı.
 
 Bu aşamada ürün miktarı otomatiği veya müşteri geometrisi değiştirilmedi. DEV-006 devam ediyor; kullanıcı yanıtına göre kaynaklı reçete uygulanacak.
+
+
+## Kullanıcı düzeltmesi — pano ile kapı açıklığı
+
+İşaretli dört 1250 ve bir 1220 mm bölüm, kapı boşluğu kadar panel değildir. Her biri tam panelin yerleşimidir; kapı açıklığı bu panelde açılmış olarak çizilir. Özel panel kesimleri makas yönü ve aks yerleşimine bağlıdır. Önceki görsel anotasyondaki konum işaretleri hatalıydı; referans alınmamalı. 4+1 / 3+2 ürün eni farkı açık kalır; doğru özel kesim ve geniş kasa notu DWG imalat detayından eşleştirilmelidir. Kullanıcı son canlı çiziminde değişiklik yapılmadı.
