@@ -491,3 +491,11 @@ Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list;
 | Kimlik | İş | Durum |
 | --- | --- | --- |
 | DEV-032 | Aşık kapama U / Alın V adet bağı | Tamam:5.9.48,tests/loading-top.cjs ve loading-verge.cjs; ayrı2500mm satır. |
+
+## 4 Ekim 2026 — DEV-033 trapez aşık referansı
+
+[Kaynak görsel/hash ve çıkarım](analizler/2026-10-04-trapez-asik-yerlesimi.md). Trapez sac için eğim boyunca80cm aşık aralığı gözlendi;46,21/34,25cm uç değerleri sabit kural yapılmadı. Başlangıç yönü/ilk-son aşık ve kalan mesafe düzeni kullanıcı teyidi bekler.4200/3000stok dağılımı açık. Görsel ortak referanslara kopyalandı; kod/çizim değişmedi,5.9.48korundu.
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-033 | Trapez sac omega aşık yerleşimi ve sevk | Açık: eğim boyunca80cm; uç kuralı ve4200/3000stok dağılımı teyit bekliyor. analizler/2026-10-04-trapez-asik-yerlesimi.md |
