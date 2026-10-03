@@ -227,3 +227,11 @@ Kullanıcı, işaretlenen kapılı duvar bölümlerinin küçük kapı parçalar
 Kullanıcının isteğiyle origin/main üzerinden dört kayıt f0911ee→2c10ab8 fast-forward alındı; yalnız DEVAM, CALISMA_KAYDI ve açıklık panoları raporu değişti. Yerel Yeni proje (11).json ve canlı çizim korundu. Uygulama 5.9.36 değişmedi; bu devirde yeni kod testi gerekmedi.
 
 DEV-006 sıradaki konu: kapı açıklığı tam pano içindedir; iç kapılı pano 4×1250+1×1220 / Excel3×1250+2×1220 farkında hangi panonun makas/aks nedeniyle özel kesildiği, geniş kasa notu ve ayrı doğrama sevki netleştirilecek. İş PC'deki hatalı anotasyon kullanılmayacak. DEV-025 için 710+520 birlikte kesim onaylı, dış dolu pano22 korunur. Kullanıcı önceki ev konuşmasında çizimde değişiklik yapmadığını ve eldeki son JSON ile devam edilebileceğini belirtti; yeniden kayıt talep edilmez. Bu beyan eski 5.9.14 yedeğini Tuna kontrol taslağıyla aynı dosya yapmaz; mevcut analiz kaynağı cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json olarak korunur. Diğer açık işler ve metadata farkı devam eder.
+
+## DEV-026 — Diğer yükleme kalemlerinin reçeteleri
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-026 | Alt çerçeve, omega, veranda profil/kiriş ve çatı kenarı malzemelerinin otomatik yükleme hesabı | Açık: referans envanteri çıkarıldı; ilk olarak alt çerçevenin kapı altı devamı, kesit, stok boyu, artık ve yedek kuralı kullanıcıya soruldu. Yanıt bekleniyor. |
+
+[Kalemler ve eksik kurallar](analizler/2026-10-03-diger-yukleme-kalemleri.md). 3 Ekim 2026 ev PC: kullanıcı diğer kalemleri ayarlamayı istedi. Git fetch sonrası uzak dal ile eşitlik kontrol edildi. Kaynak ve önceki kayıtlar tarandı; onaysız adet/reçete eklenmedi. Kod5.9.36 değişmedi, canlı plan ve yerel JSON korundu. DEV-006 kapılı pano farkı ve tüm diğer açık işler devam eder. Sıradaki adım alt çerçeve yanıtını kurala ve doğrulama testine dönüştürmek.
