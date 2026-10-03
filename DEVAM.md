@@ -517,3 +517,11 @@ Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list;
 [Kurallar, kapsam ve kontroller](analizler/2026-10-04-asik-stok-kombinasyonu.md).4200/3000mm tüm uygun kombinasyonlar: önce en az fazla(bindirme),eşitse en az parça. Kesim/sabit bindirme/yedek yok. Her sıra gerçek saçak dahil çatı boyundan; aynı saçak tekrar eklenmez.3000/4200 ayrı sevk satırları,ekranda/CSV/XLSXte sıra-kombinasyon-bindirme ayrıntısı. Desteklenen dikdörtgen beşik çatı; serbest sınır/diğer çatı veya kısa sıra açık kontrol satırı verir. DEV-033 genel sıra geometrisi ve ek noktaları hâlâ açık.
 
 Build,purlin-stock bağımsız optimum taraması,loading-purlin arayüz/XLSX,stations,loading-list/verge ve verify-loading-xlsx başarılı. Canlı çizim ve Yeni proje (11).json korunur; kaynak/kayıt/test/dist aktarılır,artifacts geçici kalır.
+
+## 4 Ekim 2026 — Tüm çatı tipleri ve montaj paftası hedefi
+
+[Kod incelemesi,ortak veri düzeni ve kabul planı](analizler/2026-10-04-tum-catilar-montaj-plani.md). Kullanıcı tüm çatı tiplerinde aşık hesabı; ileride sağlayacağı örneklerden4200/3000iki renkli parça/bindirme montaj çizimi,makaslar ve diğer malzemeleri istedi. DEV-033genel çatı kapsamı sürüyor,DEV-034ortak montaj modeli açıldı. Yükleme ve çizim aynı parça/ek verisini kullanmalı. Mevcut stok optimumu tekil ek yerlerini henüz belirlemez; montaj çizimi tamamlandı sayılmaz. Yeni örnek montaj dosyası henüz alınmadı. Bu tur kod/çizim değişmedi,5.9.50korundu; kayıtlar gönderilir.
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-034 | Ortak montaj verisi ve otomatik renkli montaj paftaları | Açık:4200/3000parça yerleşimi/tekil bindirme,makas ve diğer üretim malzemeleri; yükleme/PDF/DXF aynı veri. Kullanıcı örnek montaj çizimleri sağlayacak. analizler/2026-10-04-tum-catilar-montaj-plani.md |
