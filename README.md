@@ -295,3 +295,6 @@ Alın V: çatı modelinin açık eğimli alın kenarlarının gerçek3Btoplamı/
 
 ### 5.9.47
 Alın V hesabı kullanıcı düzeltmesiyle300mm bindirme ve2500mm etkin boya geçti. Stok boyu2800mm korunur; çatı geometrisi/eğim değişimi yeniden hesaplanır. Önceki kurala ait manuel kararlar yeniden kontrol ister.
+
+### 5.9.48
+Aşık kapama U2500mm, Alın V ile bire bir aynı adette ayrı yükleme/CSV/XLSX satırı. Geometri ve manuel Alın V miktarı değişince güncellenir; eski karar kontrolü korunur.

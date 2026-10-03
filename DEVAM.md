@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.47**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.48**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -481,3 +481,13 @@ Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; gör
 Kullanıcı39cm yazımını30cm olarak düzeltti. Alın V stok2800mm,bindirme300mm,etkin2500mm. Toplam gerçek eğimli alın uzunluğu/2500yukarı yuvarlanır; yedek0. Önceki5.9.46nın/2800kuralı geçersizdir. Ürün ölçüsü220×2800mm değişmez. Kural kimliği verge2500-overlap300-v2; önceki kuralla kaydedilmiş manuel karar yeniden kontrol ister. Çatı eğimi ve açıklığı değişince adet yeniden hesaplanır; makas omega adedinden türetilmez, gerçek çatı geometrisi esas alınır.
 
 Build,loading-verge(sınır yuvarlama,30%eğimde800cm açıklık7adet,40%eğimde1000cm açıklık9adet,manuel/stale),loading-list ve XLSXstok/bindirme/etkin boy açıklaması kontrolleri geçti. Canlı çizim ve yerel kullanıcı JSONu korunmuştur. DEV-031 kural düzeltmesi tamam; Tuna çatı karşılaştırması ve diğer açık işler sürer.
+
+## 4 Ekim 2026 — 5.9.48 / DEV-032 Aşık kapama U
+
+Kullanıcı Alın V ile bire bir aynı adet onayladı. Aşık kapama U ayrı2500mm stok satırı olarak Alın V toplam sevk adedine bağlandı; tuna-37referansı, ek bindirme/yedek0. Alın V geometrisi/eğimi veya manuel toplamı değişirse U güncellenir; eski karar nedeniyle Alın V adedi belirsizse U da otomatik adet vermez. U bağımsız gerekçeli manuel düzenlenebilir. Çatı/Alın V yokken U üretilmez.
+
+Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list; ayrı XLSX satırlarında7/7,2500mm,tuna-37,0yedek doğrulandı. Canlı çizim ve yerel kullanıcı JSONu değişmedi. DEV-032 tamam; Tuna çatı modeliyle9adet karşılaştırması ve önceki açık işler korunur.
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-032 | Aşık kapama U / Alın V adet bağı | Tamam:5.9.48,tests/loading-top.cjs ve loading-verge.cjs; ayrı2500mm satır. |

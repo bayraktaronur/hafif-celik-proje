@@ -16,3 +16,8 @@ const eave=cm=>({group:'Metal',name:'Saçak omegası',size:'100 × 2500 mm',sour
 for(const [cm,n] of [[2000,8],[1568.75,7],[250,1],[250.01,2]]){const rows=C.build([eave(cm)]).rows;const sheet=rows.find(r=>r.name==='Saçak sacı');assert.equal(sheet.qty,n);assert.equal(sheet.size,'300 × 2800 mm');assert.equal(sheet.sources[0].sheetRule.effectiveMm,2500);assert.equal(sheet.sources[0].sheetRule.overlapMm,300);assert.equal(sheet.spare,0);}
 const er=C.build([eave(2000)]).rows.find(r=>r.name==='Saçak omegası');const ec={manual:[],adjustments:[{key:er.key,basis:er.basis,qty:10,reason:'Sevk kararı',referenceId:''}]};assert.equal(C.build([eave(2000)],ec).rows.find(r=>r.name==='Saçak sacı').qty,10);assert.equal(C.build([eave(2001)],ec).rows.find(r=>r.name==='Saçak sacı').qty,null);
 console.log('PASS sheet overlap, 8/8 reference example, dynamic quantity and stale propagation');
+
+const verge=n=>({group:'Metal',name:'Alın V',size:'220 × 2800 mm',source:{id:'verge',vergeRule:{lengthMm:n}}});
+const vr=C.build([verge(22500)]).rows;const vv=vr.find(r=>r.name==='Alın V'),cap=vr.find(r=>r.name==='Aşık kapama U');assert.equal(cap.qty,9);assert.equal(cap.size,'2500 mm');assert.equal(cap.referenceId,'tuna-37');assert.notEqual(vv.key,cap.key);assert.equal(cap.spare,0);
+const vc={manual:[],adjustments:[{key:vv.key,basis:vv.basis,qty:12,reason:'Ek sevk',referenceId:'tuna-36'}]};assert.equal(C.build([verge(22500)],vc).rows.find(r=>r.name==='Aşık kapama U').qty,12);assert.equal(C.build([verge(22501)],vc).rows.find(r=>r.name==='Aşık kapama U').qty,null);assert.ok(!C.build([]).rows.some(r=>r.name==='Aşık kapama U'));
+console.log('PASS separate purlin U, 9:9, manual parent and stale propagation, no roof');

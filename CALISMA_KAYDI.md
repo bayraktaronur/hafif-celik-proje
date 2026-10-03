@@ -396,3 +396,9 @@ Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; gör
 Kullanıcı39cm yazımını30cm olarak düzeltti. Alın V stok2800mm,bindirme300mm,etkin2500mm. Toplam gerçek eğimli alın uzunluğu/2500yukarı yuvarlanır; yedek0. Önceki5.9.46nın/2800kuralı geçersizdir. Ürün ölçüsü220×2800mm değişmez. Kural kimliği verge2500-overlap300-v2; önceki kuralla kaydedilmiş manuel karar yeniden kontrol ister. Çatı eğimi ve açıklığı değişince adet yeniden hesaplanır; makas omega adedinden türetilmez, gerçek çatı geometrisi esas alınır.
 
 Build,loading-verge(sınır yuvarlama,30%eğimde800cm açıklık7adet,40%eğimde1000cm açıklık9adet,manuel/stale),loading-list ve XLSXstok/bindirme/etkin boy açıklaması kontrolleri geçti. Canlı çizim ve yerel kullanıcı JSONu korunmuştur. DEV-031 kural düzeltmesi tamam; Tuna çatı karşılaştırması ve diğer açık işler sürer.
+
+## 4 Ekim 2026 — 5.9.48 / DEV-032 Aşık kapama U
+
+Kullanıcı Alın V ile bire bir aynı adet onayladı. Aşık kapama U ayrı2500mm stok satırı olarak Alın V toplam sevk adedine bağlandı; tuna-37referansı, ek bindirme/yedek0. Alın V geometrisi/eğimi veya manuel toplamı değişirse U güncellenir; eski karar nedeniyle Alın V adedi belirsizse U da otomatik adet vermez. U bağımsız gerekçeli manuel düzenlenebilir. Çatı/Alın V yokken U üretilmez.
+
+Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list; ayrı XLSX satırlarında7/7,2500mm,tuna-37,0yedek doğrulandı. Canlı çizim ve yerel kullanıcı JSONu değişmedi. DEV-032 tamam; Tuna çatı modeliyle9adet karşılaştırması ve önceki açık işler korunur.

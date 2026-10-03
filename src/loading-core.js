@@ -70,6 +70,10 @@
   for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.vergeRule))continue;const a=c.adjustments.find(a=>a.key===r.key),lengthMm=r.sources.reduce((n,s)=>n+s.vergeRule.lengthMm,0),base=Math.ceil(Math.round(lengthMm*1000000)/1000000/2500);
    r.vergeLengthMm=lengthMm;r.calculated=base;r.spare=0;r.qty=a?(r.stale?null:a.qty):base;r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik alın V';r.reason=a?.reason||('Gerçek eğimli alın kenarları toplamı '+Math.round(lengthMm*100)/100+' mm /2500 mm etkin boy, yukarı yuvarla: '+base+' adet. 2800 mm stok −300 mm bindirme =2500 mm etkin boy; yedek eklenmedi; mahya/dere/saçak dahil değildir.');
   }
+
+  for(const v of rows.filter(r=>r.name==='Alın V')){const key=JSON.stringify(['Metal','Aşık kapama U','2500 mm']),basis=fingerprint(v.basis+':purlin-cap-verge-one-to-one-v1:'+v.qty),a=c.adjustments.find(a=>a.key===key),stale=!!a&&a.basis!==basis;groups.set(key,true);
+   rows.push({key,basis,group:'Metal',name:'Aşık kapama U',size:'2500 mm',unit:'adet',calculated:v.qty??v.calculated,qty:a?(stale?null:a.qty):v.qty,spare:0,status:stale?'Çizim değişti':a?'Manuel doğrulandı':v.qty===null?'Kural bekliyor':'Otomatik aşık kapama U',sources:v.sources.map(s=>({...s,id:'cap:'+s.id,capRule:{rule:'purlin-cap-verge-one-to-one-v1'}})),referenceId:a?a.referenceId:'tuna-37',warning:'Alın V ile bire bir aynı adet; ayrı ürün, stok boyu2500mm. Ek bindirme veya yedek eklenmez.',reason:a?.reason||'Alın V toplam sevk adediyle bire bir bağlı. Stok boyu2500mm; ayrı satır, ek yedek yok.'});
+  }
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};
  }
