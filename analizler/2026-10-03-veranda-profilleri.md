@@ -13,3 +13,11 @@ Görseldeki bu proje için:
 - İki flanşlı direk görselde100×100×2700mm yazıyor. Önceki Excel referans satırı19 ise100×100×2500mm2adet. Bu boy farkı kullanıcıyla netleştirilmeli; bina yüksekliğine otomatik200mm ekleme/düşme yapılmaz.
 
 Kod5.9.39 ve çizim değişmedi. Yeni genel kiriş stok/kesim kuralı, direk boyu, yedek ve ara direk seçimi henüz tamamlanmadı. Omega boy seçimi ek proje/Excel gelene kadar ertelenmiş olarak kalır.
+
+## 3 Ekim 2026 — 5.9.40 / DEV-026 veranda direk boyu
+
+Kullanıcı her binada direk boyunun bina yüksekliği olmasını, özel durumlarda elle müdahale etmeyi istedi. Çizimdeki serbest veranda düğümleri100×100mm flanşlı profil olarak otomatik sayılır; boy bina yüksekliği×10mm. Tuna2adet100×100×2500mm, Excel satır19ile uyumlu. Otomatik yedek eklenmedi, ara direkler kendiliğinden üretilmedi. Kiriş genel reçetesi bu değişiklikte uygulanmadı.
+
+Yükleme satırı Düzenle alanında direk boyu mm olarak değiştirilebilir; değişiklik satırdaki tüm direklere uygulanır. Miktar/gerekçe ve boy JSON'da korunur; çizimde direk geometrisini değiştirmez, sevk ölçüsüdür. Boy2500dışındaysa Tuna2500referansı kaldırılır. Bina yüksekliği değişirse eski gruba ait karar orphan olarak korunur; yeni gruba sessizce taşınmaz. Aynı grubun çizimi değişirse eski manuel karar geçersiz olur.
+
+Build, loading-list, loading-posts (2direk,2500otomatik,2700manuel,JSON,2800yeni bina boyu) ve verify-loading-xlsx geçti. Uygulama5.9.40; canlı çizim ve yerel JSON korunmuştur. Omega boyları ertelenmiş; kiriş stok genellemesi, ara direk ve yedek kararları ile diğer açık işler sürer.

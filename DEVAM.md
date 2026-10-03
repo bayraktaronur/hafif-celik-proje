@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.39**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.40**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -367,3 +367,11 @@ Kullanıcı omega boylarını şimdilik bekletmeyi, göndereceği birkaç başka
 ## 3 Ekim 2026 — DEV-026 veranda profilleri
 
 Kullanıcı flanşlı veranda direğini her zaman100×100mm olarak doğruladı. Yeni görsel ortak referanslara kopyalandı; [kaynak ve kesim raporu](analizler/2026-10-03-veranda-profilleri.md). Bu örnekte4970mm ön kiriş tek stok;2520+640mm yan kirişler bir3500mmstoktan kesilir (nominal340mmartık). Görselde direk2700mm, Excel'de2500mm; boy farkı açık, otomatik bina yüksekliği payı çıkarılmadı. Genel stok boyu, ara direk ve yedek kuralları da açık. Uygulama5.9.39 ve canlı çizim değişmedi. Sıradaki adım direk boyunu netleştirmek; omega boy ertelemesi ve diğer açık işler korunur.
+
+## 3 Ekim 2026 — 5.9.40 / DEV-026 veranda direk boyu
+
+Kullanıcı her binada direk boyunun bina yüksekliği olmasını, özel durumlarda elle müdahale etmeyi istedi. Çizimdeki serbest veranda düğümleri100×100mm flanşlı profil olarak otomatik sayılır; boy bina yüksekliği×10mm. Tuna2adet100×100×2500mm, Excel satır19ile uyumlu. Otomatik yedek eklenmedi, ara direkler kendiliğinden üretilmedi. Kiriş genel reçetesi bu değişiklikte uygulanmadı.
+
+Yükleme satırı Düzenle alanında direk boyu mm olarak değiştirilebilir; değişiklik satırdaki tüm direklere uygulanır. Miktar/gerekçe ve boy JSON'da korunur; çizimde direk geometrisini değiştirmez, sevk ölçüsüdür. Boy2500dışındaysa Tuna2500referansı kaldırılır. Bina yüksekliği değişirse eski gruba ait karar orphan olarak korunur; yeni gruba sessizce taşınmaz. Aynı grubun çizimi değişirse eski manuel karar geçersiz olur.
+
+Build, loading-list, loading-posts (2direk,2500otomatik,2700manuel,JSON,2800yeni bina boyu) ve verify-loading-xlsx geçti. Uygulama5.9.40; canlı çizim ve yerel JSON korunmuştur. Omega boyları ertelenmiş; kiriş stok genellemesi, ara direk ve yedek kararları ile diğer açık işler sürer.

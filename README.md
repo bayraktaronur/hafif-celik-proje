@@ -1,6 +1,8 @@
-# Prefabrikten Plan Studio · 5.9.39
+# Prefabrikten Plan Studio · 5.9.40
 
-5.9.39: Yükleme listesi, Excel ve CSV’de Adet, Yedek ve Toplam sevk ayrı gösterilir. Manuel toplamda yedek ayrımı doğrulanmadı uyarısı vardır.
+5.9.40: Veranda direği100×100mm flanşlı profil, boy bina yüksekliği. Yükleme satırında özel boy düzenlenebilir ve JSON ile korunur.
+
+Yükleme listesi, Excel ve CSV’de Adet, Yedek ve Toplam sevk ayrı gösterilir. Manuel toplamda yedek ayrımı doğrulanmadı uyarısı vardır.
 
 Alt çerçeve aynı kalınlıktaki duvar aks toplamından hesaplanır: toplam/250 cm yukarı yuvarla + 1 yedek. Kapı/pencere dahil, veranda açık kenarları hariç.
 
