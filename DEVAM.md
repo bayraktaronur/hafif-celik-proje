@@ -285,3 +285,7 @@ DEV-025/006 için kullanıcıya 710+520 mm parçaların aynı 1250 mm panodan ke
 ## 3 Ekim 2026 — DEV-025 / DEV-006 kullanıcı teyidi
 
 Kullanıcı 710 ve 520 mm dolu parçaların aynı1250mm panodan kesilebileceğini açıkça onayladı:1230mm kullanılır,20mm artık kalır; Tuna dış dolu pano sevki22 olarak korunur. Excel23 sayısına uymak için fazladan stok eklenmeyecek. Excel farkının tarihsel nedeni doğrulanmadı; programın bu kesim tercihi üzerindeki belirsizlik kapandı. Kod değişikliği gerekmedi;5.9.36 hesabı korundu. Testere payı ve diğer ürün reçeteleri ayrı açık konulardır. Sıradaki iş kapılı/pencereli panoların yükleme reçetelerini incelemek; DEV-002 son canlı JSON ve diğer açık işler korunur.
+
+## 3 Ekim 2026 — DEV-006 kapılı/pencereli pano karşılaştırması
+
+[Karşılaştırma](analizler/2026-10-03-aciklik-panolari.md) kayıtlı kontrol taslağından yeniden üretildi:6pencere ve1dış kapı panosu Excel ile eşleşiyor. İç kapıda program4×1250+1×1220, Excel3×1250+2×1220; toplam5aynı, bir ürün eni farklı. Hazır pano sevk kuralı, doğramanın ayrı sayılması ve farklı iç kapının kimliği kullanıcıyla netleştirilecek. Kod5.9.36 ve canlı plan değişmedi; önceki kapı boşluğu incelemesi erteleme kararı korunuyor. Diğer açık işler sürüyor.
