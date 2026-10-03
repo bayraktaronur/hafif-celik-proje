@@ -247,3 +247,13 @@ Kullanıcı sabit stok boyunu 250cm olarak 60 ve100mm için doğruladı. Aynı k
 Uygulama ölçü tabanı duvar düğümleri arası aks uzunluklarıdır; varsayımsal köşe payı düşülmedi. Kontrol Tuna JSON'unda100mm toplam3659,5cm→15+1=16 (Excel15);60mm toplam2143,5cm→9+1=10 (Excel10). 100mm farkının sebebi kesinleşmedi; Excel'e uydurmak için1yedek kaldırılmadı. Gerekirse referansın yedek ve uzunluk esasını netleştir. UI toplam/bölüm sonucunu, CSV/XLSX açıklaması formülü ve yedeği gösterir. Manuel toplam tekrar yedek eklemez; çizim değişirse eski karar geçersizdir. Tanımsız kalınlıklar onay bekler.
 
 Kontroller: loading-frames sınır/yuvarlama/grup/manuel/eski karar; loading-list kapı/pencere ve veranda hariç kapsamı, JSON ve dışa aktarma; loading-stock regresyonu; verify-loading-xlsx alt çerçeve15+1 ve9+1 dahil geçti. Build başarılı. Sürüm5.9.37; package.json eski sürüm metadatası da eşitlendi. Canlı çizim ve yerel JSON değişmedi. DEV-026 alt çerçeve uygulandı; omega, veranda kirişleri ve çatı profilleri açık. Diğer açık işler devam eder.
+
+## 3 Ekim 2026 — DEV-027 / 5.9.38 yedek görünürlüğü
+
+| Kimlik | İş | Durum |
+| --- | --- | --- |
+| DEV-027 | Yedeksiz ihtiyaç, dahil yedek ve toplam sevkin ayrı gösterilmesi | Tamamlandı: UI, Excel ve CSV; loading-spares ve verify-loading-xlsx kontrolleri. |
+
+Kullanıcı yedeğin ikinci kez eklenmesini önlemek için açık ayrım istedi. U ve alt çerçevede ihtiyaç/yedek/toplam ayrı; yedek toplam sevke dahil, tekrar eklemeyin açıklaması görünür. Dolu panoda yedeksiz ihtiyaç geometrik parça değil stok pano adedidir. Otomatik yedek eklenmeyen satırlarda0 ve açık açıklama bulunur; bu gelecekte yedek gerekmeyeceği kararı değildir. Bekleyen hesap ve manuel toplamda yedek ayrımı bilinmiyor olarak gösterilir; onaylanmış yedek varsayılmaz. Manuel sevk miktarına ikinci kez yedek eklenmez. Mevcut hesap formülleri değişmedi.
+
+UI ayrı sütunlarla görsel kontrol edildi; loading-list, loading-frames, loading-spares ve verify-loading-xlsx geçti. Kod/dağıtım5.9.38. Canlı çizim ve yerel kullanıcı JSON'u korunmuştur. DEV-026 diğer malzeme reçeteleri, alt çerçeve100mm16/15farkı ve önceki açık işler devam eder.

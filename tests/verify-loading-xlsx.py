@@ -20,3 +20,12 @@ print("PASS XLSX U 60x2440: 3 installed + 1 spare = 4 shipped")
 frames=[r for r in s.iter_rows(min_row=5,values_only=True) if r[1]=="Alt çerçeve"]
 assert {r[2]:(r[4],r[5],r[10]) for r in frames}=={"100 × 2500 mm":(15,16,1),"60 × 2500 mm":(9,10,1)}
 print("PASS XLSX bottom frames: base, shipment and spare")
+
+assert s['F4'].value=='Toplam sevk (yedek dahil)'
+assert s['K4'].value=='Toplama dahil yedek'
+assert s['N4'].value=='Yedeksiz ihtiyaç (stok)'
+assert all(r[14]=='Yedek toplam sevke dahil; tekrar eklemeyin' for r in frames+us)
+assert {r[2]:r[13] for r in frames}=={'100 × 2500 mm':15,'60 × 2500 mm':9}
+manual=[r for r in s.iter_rows(min_row=5,values_only=True) if r[6]=='Manuel doğrulandı']
+assert all(r[10] in (None, '') and 'doğrulanmadı' in r[14] for r in manual)
+print('PASS XLSX explicit spare inclusion and manual uncertainty')

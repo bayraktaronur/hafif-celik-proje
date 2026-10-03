@@ -1,6 +1,8 @@
-# Prefabrikten Plan Studio · 5.9.37
+# Prefabrikten Plan Studio · 5.9.38
 
-5.9.37: Alt çerçeve aynı kalınlıktaki duvar aks toplamından hesaplanır: toplam/250 cm yukarı yuvarla + 1 yedek. Kapı/pencere dahil, veranda açık kenarları hariç.
+5.9.38: Yükleme listesi, Excel ve CSV’de yedeksiz ihtiyaç, dahil yedek ve toplam sevk ayrı gösterilir. Manuel toplamda yedek ayrımı doğrulanmadı uyarısı vardır.
+
+Alt çerçeve aynı kalınlıktaki duvar aks toplamından hesaplanır: toplam/250 cm yukarı yuvarla + 1 yedek. Kapı/pencere dahil, veranda açık kenarları hariç.
 
 Önceki sürüm: Dolu pano stok hesabı sabit ölçü listesiyle sınırlı değildir; ondalıklı özel enler de hesaba katılır. Doğrulanmış net kesim kataloğu önceliklidir; diğer ölçülerde çizim eni kullanılır, varsayımsal H payı düşülmez. Aynı kalınlık/yükseklikteki parçalar 1250 mm stoklara sığdırılır; çizim ölçüleri korunur. Testere payı ve kapı/pencere reçeteleri ayrıca doğrulanmalıdır.
 

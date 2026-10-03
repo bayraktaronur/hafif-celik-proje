@@ -34,7 +34,13 @@
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};
  }
- function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; çatı, tesisat ve sarf otomatik hesaplanmaz.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Sevk taslağı','Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler','Hesaplanan yedek','Kesim dağılımı (mm)','Artık toplamı (mm)'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', '),r.spare??0,r.cutting||'',r.leftoverMm??''])].map(r=>r.map(cell).join(';')).join('\r\n');}
+ function shipment(r){
+  const manual=['Manuel doğrulandı','Manuel ek','Çizim değişti'].includes(r.status);
+  const base=r.packing?r.packing.length:r.qty!=null&&!manual?r.calculated:null;
+  const known=!!r.sources?.length&&r.sources.every(s=>s.uRule||s.frameRule);
+  return {base,spare:manual||r.qty==null?null:r.spare||0,label:manual?'Manuel toplam; yedek ayrımı doğrulanmadı':r.qty==null?'Hesap bekliyor':known?'Yedek toplam sevke dahil; tekrar eklemeyin':'Otomatik yedek eklenmedi'};
+ }
+ function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; çatı, tesisat ve sarf otomatik hesaplanmaz.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Toplam sevk (yedek dahil)' ,'Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler','Toplama dahil yedek','Kesim dağılımı (mm)','Artık toplamı (mm)','Yedeksiz ihtiyaç (stok)','Yedek açıklaması'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', '),shipment(r).spare,r.cutting||'',r.leftoverMm??'',shipment(r).base,shipment(r).label])].map(r=>r.map(cell).join(';')).join('\r\n');}
  function classifyH(point,trusses,exterior){
   const hits=trusses.filter(m=>{const axis=m.axis,cross=axis==='x'?'y':'x';return ['x','y'].includes(axis)&&Math.abs(point[axis]-m.pos)<.6&&Math.min(Math.abs(point[cross]-m.a),Math.abs(point[cross]-m.b))<.6;});
   const supported=hits.filter(m=>m.supported!==false),outside=trusses.length>0&&!hits.length;
@@ -54,5 +60,5 @@
   const length=Math.round(height*1000)/100-60;
   return {rule:'u-height-minus60-spare-ceil5-v1',widthMm:width,heightMm:length,size:`${width} × ${length} mm`,referenceId:width===60&&height===250?'tuna-29':''};
  }
- return {validate,build,csv,fingerprint,classifyH,cornerProduct,uProduct,packPanels,stockWidth};
+ return {validate,build,csv,fingerprint,classifyH,cornerProduct,uProduct,packPanels,stockWidth,shipment};
 });
