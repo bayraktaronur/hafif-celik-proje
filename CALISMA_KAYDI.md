@@ -390,3 +390,9 @@ Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; gör
 ## 4 Ekim 2026 — 5.9.46 / DEV-031 Alın V
 
 [Görsel, kural ve test raporu](analizler/2026-10-04-alin-v-kurali.md). Gerçek çatı modelinin açık eğimli alın kenarları toplamı/2800mm yukarı yuvarlanır;220×2800mm ayrı satır, bindirme/yedek0. Çatı yoksa otomatik adet verilmez ve ekranda açıklanır. loading-verge eğimli3Bboy,iki alın,çatı yok,eğim değişince manuel karar invalidasyonu ve XLSX testleri geçti; loading-list/top regresyonları geçti. Kaynak görsel hash ile referanslara kopyalandı. Uygulama/kayıt/görsel birlikte aktarılır. Tuna çatı modeliyle9adet referans karşılaştırması açık; canlı çizim korunur.
+
+## 4 Ekim 2026 — 5.9.47 / DEV-031 bindirme düzeltmesi
+
+Kullanıcı39cm yazımını30cm olarak düzeltti. Alın V stok2800mm,bindirme300mm,etkin2500mm. Toplam gerçek eğimli alın uzunluğu/2500yukarı yuvarlanır; yedek0. Önceki5.9.46nın/2800kuralı geçersizdir. Ürün ölçüsü220×2800mm değişmez. Kural kimliği verge2500-overlap300-v2; önceki kuralla kaydedilmiş manuel karar yeniden kontrol ister. Çatı eğimi ve açıklığı değişince adet yeniden hesaplanır; makas omega adedinden türetilmez, gerçek çatı geometrisi esas alınır.
+
+Build,loading-verge(sınır yuvarlama,30%eğimde800cm açıklık7adet,40%eğimde1000cm açıklık9adet,manuel/stale),loading-list ve XLSXstok/bindirme/etkin boy açıklaması kontrolleri geçti. Canlı çizim ve yerel kullanıcı JSONu korunmuştur. DEV-031 kural düzeltmesi tamam; Tuna çatı karşılaştırması ve diğer açık işler sürer.

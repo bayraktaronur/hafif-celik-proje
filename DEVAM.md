@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.46**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.47**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -474,4 +474,10 @@ Build, loading-top/omega/list/h/frames/posts ve verify-loading-xlsx geçti; gör
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-031 | Alın V eğimli boy hesabı | 5.9.46 tamam; tests/loading-verge.cjs. Tuna9adet karşılaştırması için çatı modeli gerekli. |
+| DEV-031 | Alın V eğimli boy hesabı | 5.9.47: 300mm bindirme ile /2500 etkin boy düzeltmesi tamam; tests/loading-verge.cjs. Tuna9adet karşılaştırması için çatı modeli gerekli. |
+
+## 4 Ekim 2026 — 5.9.47 / DEV-031 bindirme düzeltmesi
+
+Kullanıcı39cm yazımını30cm olarak düzeltti. Alın V stok2800mm,bindirme300mm,etkin2500mm. Toplam gerçek eğimli alın uzunluğu/2500yukarı yuvarlanır; yedek0. Önceki5.9.46nın/2800kuralı geçersizdir. Ürün ölçüsü220×2800mm değişmez. Kural kimliği verge2500-overlap300-v2; önceki kuralla kaydedilmiş manuel karar yeniden kontrol ister. Çatı eğimi ve açıklığı değişince adet yeniden hesaplanır; makas omega adedinden türetilmez, gerçek çatı geometrisi esas alınır.
+
+Build,loading-verge(sınır yuvarlama,30%eğimde800cm açıklık7adet,40%eğimde1000cm açıklık9adet,manuel/stale),loading-list ve XLSXstok/bindirme/etkin boy açıklaması kontrolleri geçti. Canlı çizim ve yerel kullanıcı JSONu korunmuştur. DEV-031 kural düzeltmesi tamam; Tuna çatı karşılaştırması ve diğer açık işler sürer.

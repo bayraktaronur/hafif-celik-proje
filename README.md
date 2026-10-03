@@ -292,3 +292,6 @@ Saçak sacı ayrı satır:2800mm stok−300mm bindirme=2500mm etkin boy; saçak 
 
 ### 5.9.46
 Alın V: çatı modelinin açık eğimli alın kenarlarının gerçek3Btoplamı/2800mm yukarı yuvarlanır. Ayrı yükleme/CSV/XLSX satırı; bindirme ve yedek eklenmez. Çatı bölümü yoksa hesap için açıklama gösterilir.
+
+### 5.9.47
+Alın V hesabı kullanıcı düzeltmesiyle300mm bindirme ve2500mm etkin boya geçti. Stok boyu2800mm korunur; çatı geometrisi/eğim değişimi yeniden hesaplanır. Önceki kurala ait manuel kararlar yeniden kontrol ister.
