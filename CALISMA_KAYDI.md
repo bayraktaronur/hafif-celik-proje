@@ -406,3 +406,7 @@ Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list;
 ## 4 Ekim 2026 — DEV-033 trapez aşık referansı
 
 [Kaynak görsel/hash ve çıkarım](analizler/2026-10-04-trapez-asik-yerlesimi.md). Trapez sac için eğim boyunca80cm aşık aralığı gözlendi;46,21/34,25cm uç değerleri sabit kural yapılmadı. Başlangıç yönü/ilk-son aşık ve kalan mesafe düzeni kullanıcı teyidi bekler.4200/3000stok dağılımı açık. Görsel ortak referanslara kopyalandı; kod/çizim değişmedi,5.9.48korundu.
+
+## 4 Ekim 2026 — DEV-033 sabit aşık uçları
+
+[Yeni açıklamalı görsel ve kural](analizler/2026-10-04-asik-sabit-uclar.md): saçakta ilk kulak0,sonraki342mm; mahya merkezinden ilk kulak92mm sabit. Ara aralık OSB400mm,trapez800mm,eğim boyunca. Önceki örnek46,21/34,25cm genel sabit değildir. Kalan aralığın hangi uçta veya nasıl dağıtılacağı açıklanmadı; stok/ek kuralı da açık. Görsel/hash ortak referanslara kaydedildi; kod/çizim değişmedi.

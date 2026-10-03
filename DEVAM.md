@@ -498,4 +498,8 @@ Kontroller: build,loading-top(9/9,manuel12/12,stale),loading-verge,loading-list;
 
 | Kimlik | İş | Durum |
 | --- | --- | --- |
-| DEV-033 | Trapez sac omega aşık yerleşimi ve sevk | Açık: eğim boyunca80cm; uç kuralı ve4200/3000stok dağılımı teyit bekliyor. analizler/2026-10-04-trapez-asik-yerlesimi.md |
+| DEV-033 | Omega aşık yerleşimi ve sevk | Açık: OSB400/trapez800mm; mahya92mm,saçak0ve342mm sabit. Kalan mesafe dağılımı ve4200/3000stok kuralı bekliyor. analizler/2026-10-04-asik-sabit-uclar.md |
+
+## 4 Ekim 2026 — DEV-033 sabit aşık uçları
+
+[Yeni açıklamalı görsel ve kural](analizler/2026-10-04-asik-sabit-uclar.md): saçakta ilk kulak0,sonraki342mm; mahya merkezinden ilk kulak92mm sabit. Ara aralık OSB400mm,trapez800mm,eğim boyunca. Önceki örnek46,21/34,25cm genel sabit değildir. Kalan aralığın hangi uçta veya nasıl dağıtılacağı açıklanmadı; stok/ek kuralı da açık. Görsel/hash ortak referanslara kaydedildi; kod/çizim değişmedi.
