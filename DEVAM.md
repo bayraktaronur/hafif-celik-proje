@@ -534,3 +534,6 @@ Build,purlin-stock bağımsız optimum taraması,loading-purlin arayüz/XLSX,sta
 | DEV-033 / DEV-034 | Genel çatılar, ek yerleri ve montaj paftaları | Kullanıcı önceliğiyle6Ekim2026'ya kadar ara; tamamlandı sayılmaz. Sonraki adım örneklerle sıra/bindirme montaj modeli. |
 
 Excel291m stok aşık→1000vida;103,32m² sevk sacı alanı→1000vida. Net eğimli alana ikinci oranın uygulanması geçici yaklaşık kabul. Tek dikdörtgen beşik trapez kapsamı; ek yedek yok, referanstaki yedek bilinmiyor. Yerel Yeni proje (11).json korunup cizimler/2026-10-04-vida-karsilastirma-ornek.json olarak kopyalandı;136,92m²/216m→1326/743vida. Bu Tuna veya son canlı çizim değildir. Tuna kayıt JSON'unda çatı yok; birebir vida doğrulaması yapılamadı. Kaynak hashleri raporda. Kaynak/kayıt/örnek JSON bu teslimde gönderilir; canlı tarayıcı değişmedi.
+
+## DEV-035 — Çoklu vida sağlaması (4 Ekim)
+[Alan/boy/parça ve OSB karşılaştırması](analizler/2026-10-04-vida-coklu-saglama.md). Mevcut örnek üç yolla1326/743/848;OSBde1326/1320/1506. Tek Excel üç bağımsız doğrulama değildir. Geçici öneri:sac10/m²;aşık max(10/m²,3,5/metre,12/parça) miktarları. Örnekte1370/1370;OSBde aşık1536. Bu tur yalnız analiz;5.9.51formülleri değiştirilmedi. Kesin asgari bağlantı kuralı açık.
