@@ -118,9 +118,18 @@
       const poly=[{x:a.x+nx,y:a.y+ny},{x:b.x+nx,y:b.y+ny},{x:b.x-nx,y:b.y-ny},{x:a.x-nx,y:a.y-ny}];
       for(let i=0;i<4;i++){const p=poly[i],q=poly[(i+1)%4];items.push({poly:[{...p,z:0},{...q,z:0},{...q,z:top},{...p,z:top}],color:'#35414d',segmentId:s.id,shade:.85+.15*Math.abs(q.x-p.x)/Math.hypot(q.x-p.x,q.y-p.y)});}
       items.push({poly:poly.map(p=>({...p,z:top})),color:'#718292',segmentId:s.id});
-      // Close wall-to-roof gables with betopan, split at actual face boundaries.
-      const cuts=[0,1];roofFaces.forEach(f=>f.poly.forEach((p,i)=>{const q=f.poly[(i+1)%f.poly.length],ex=q.x-p.x,ey=q.y-p.y,D=dx*ey-dy*ex;if(Math.abs(D)<1e-8)return;const t=((p.x-a.x)*ey-(p.y-a.y)*ex)/D,u=((p.x-a.x)*dy-(p.y-a.y)*dx)/D;if(t>0&&t<1&&u>=0&&u<=1)cuts.push(t);}));cuts.sort((a,b)=>a-b);
-      for(let i=1;i<cuts.length;i++){const t=cuts[i-1],u=cuts[i];if(u-t<1e-6)continue;const mid={x:a.x+dx*(t+u)/2,y:a.y+dy*(t+u)/2},f=roofFaces.filter(f=>C.contains(f.poly,mid)).sort((a,b)=>C.height(b,mid)-C.height(a,mid))[0];if(!f)continue;const p={x:a.x+dx*t,y:a.y+dy*t},q={x:a.x+dx*u,y:a.y+dy*u},hp=Math.max(top,C.height(f,p)),hq=Math.max(top,C.height(f,q));if(Math.max(hp,hq)<=top+.01)continue;items.push({kind:'cladding',segmentId:s.id,poly:[{...p,z:top},{...q,z:top},{...q,z:hq},{...p,z:hp}],color:'#bbc2b5',shade:1});}
+    }
+    // Gable infill follows the roof support boundary, independently of floor walls.
+    for(const z of G.roofs){if(z.type!=='besik')continue;const base=z.childJoin?.support?z.childJoin.support.map(p=>C.untransform(z,p)):C.basePolygon(z),faces=C.zoneFaces(z),level=z.wallTop??top;
+     base.forEach((v,i)=>{const w=base[(i+1)%base.length];if(Math.abs(v.x-w.x)>.001)return;const a=C.transform(z,v),b=C.transform(z,w),dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(!L)return;
+      let nx=-dy/L,ny=dx/L;const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};if(C.pointIn(base,C.untransform(z,{x:mid.x+nx*.1,y:mid.y+ny*.1}))){nx=-nx;ny=-ny;}
+      const cuts=[0,1];for(const f of [...faces,...roofFaces])f.poly.forEach((p,j)=>{const q=f.poly[(j+1)%f.poly.length],ex=q.x-p.x,ey=q.y-p.y,D=dx*ey-dy*ex;if(Math.abs(D)<1e-8)return;const t=((p.x-a.x)*ey-(p.y-a.y)*ex)/D,u=((p.x-a.x)*dy-(p.y-a.y)*dx)/D;if(t>0&&t<1&&u>=0&&u<=1)cuts.push(t);});cuts.sort((a,b)=>a-b);
+      for(let j=1;j<cuts.length;j++){const t=cuts[j-1],u=cuts[j];if(u-t<1e-6)continue;const m={x:a.x+dx*(t+u)/2,y:a.y+dy*(t+u)/2};
+       if(G.roofs.some(other=>other.id!==z.id&&other.group===z.group&&C.contains(C.footprint(other),C.untransform(other,{x:m.x+nx*.1,y:m.y+ny*.1}))))continue;
+       const f=faces.find(f=>C.contains(f.poly,m));if(!f)continue;const p={x:a.x+dx*t,y:a.y+dy*t},q={x:a.x+dx*u,y:a.y+dy*u},hp=Math.max(level,C.height(f,p)),hq=Math.max(level,C.height(f,q));if(Math.max(hp,hq)<=level+.01)continue;
+       items.push({kind:'cladding',zone:z.id,roofBoundary:true,poly:[{...p,z:level},{...q,z:level},{...q,z:hq},{...p,z:hp}],color:'#bbc2b5',shade:1});
+      }
+     });
     }
     return items;
   }
@@ -158,7 +167,7 @@
     const drawEdge=(e,project)=>{const p=project(e.p),q=project(e.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=COLORS[e.type];ctx.lineWidth=['ridge','valley'].includes(e.type)?2:1;ctx.stroke();};
     if(mode==='3d'){
       const project=projected3D(m,w,h);
-      const items=planStructure();G.roofs.forEach(z=>{if(z.sourceRoomId){items.push(...verandaStructure(z));return;}
+      const items=planStructure();G.roofs.forEach(z=>{if(z.sourceRoomId){items.push(...verandaStructure(z).filter(item=>item.kind!=='cladding'));return;}
         if(z.parapet){const poly=C.footprint(z).map(p=>C.transform(z,p)),top=Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))))+z.parapet;poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];items.push({poly:[{...p,z:z.h},{...q,z:z.h},{...q,z:top},{...p,z:top}],color:'#77818b',zone:z.id});});}
       });
       m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:mat.color,zone:z.id,shade:Math.min(1.15,Math.max(.65,.9+f.a*.25-f.b*.3)),roof:true});});

@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.57**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.58**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -585,3 +585,7 @@ Testler: tests/roof-child-snap.cjs gerçek duvar yüzü köşelerinde sapmalı t
 Kullanıcı aynı fiziksel köşede dört yakın yakalama noktasının yanıltıcı olduğunu bildirdi. Eski ±yarım kalınlık dört kombinasyonu kaldırıldı. RoofWorkflow.exteriorCorners ortak kaynağı: oda iç/dış tarafı ve dış duvar yüz normallerinden kesişim,her düğümde tek dış köşe; iç duvarlar elenir,kollinear ara noktalar köşe sayılmaz. Duvar köşesi açık veranda kenarına önceliklidir; serbest veranda100mm direğinde dış köşe±5cm. Oda topolojisi bulunmayan açık/eksik çizimde taraf için plan düğüm merkezi yedeği kullanılır; karmaşık eksik topolojide dış taraf ayrıca kontrol edilmelidir.
 Ana ve yavru çatı aynı aday kaynağını kullanır; veranda sınır köşeleri aynı listede. Başlamadan yeşil aday işaretleri gösterilir. Ana çatı kenarına yavru bağlantı yakalaması köşe adayıyla karıştırılmaz,bağlantı etiketi korunur. Mevcut çatı/duvar koordinatları taşınmadı; kat planının genel duvar çizim snap davranışı değiştirilmedi.
 Testler: roof-snap dört yönden aynı köşeye yaklaşımda tek koordinat,iki dolaşım yönü,TunaJSONnodebaşına tekaday,verandadireği±5cm; roof-child-snap,roof-child-u,roof-workflow,loading-list başarılı. DEV-041 tamamlandı. Görseldeki canlı proje yerine ortak Tuna kontrol JSON'u ve sentetik örnekler kullanıldı.
+
+## 4 Ekim 2026 — 5.9.58 / DEV-042 baş makas betopan sınırı
+Kullanıcı çizilen çatının baş makası nerede ise betopan kapamanın orada olmasını,alttaki evin girinti/çıkıntısını izlememesini istedi. src/roof.js planStructure içindeki duvardan çatıya yükselen kapama kaldırıldı. Beşik çatı alınları çatı mesnet sınırının yerel X sabit uçlarından üretilir; üst sınır gerçek çatı yüzeyi,alt sınır bölümün wallTop kotudur. Duvar olmayan/veranda boşluğu üzerindeki alın da kapanır. Aynı gruptaki diğer çatının örttüğü sınırda kör kapama üretilmez; childJoin kot farkı kapaması korunur. Veranda eski üçgeni 3Bde ikinci kez eklenmez; direkler korunur. Kat planı duvar şekli değiştirilmedi.
+Kontroller: roof-gable-boundary alttaki tüm duvarları kaldırınca kapama geometrisi değişmiyor; roof-child-u birleşimler/dört yön/kot farkı; roof-plan-body,roof-workflow,loading-list geçti. Yeni ekran görüntüsü incelendi. Eski child-u testi artık duvar segmenti yerine çatı sınırı kapamasını doğrular. Bu teslim3Bgeometri düzeltmesidir; betopan levha sevk/kesim metrajı eklenmedi. Kırma/tek eğimde ayrı baş makas kapama kuralı bu değişiklikte varsayılmadı. Kaynak ekran görüntüleri konuşmada,canlı plan değiştirilmedi. DEV-042 bu kapsamda tamamlandı.
