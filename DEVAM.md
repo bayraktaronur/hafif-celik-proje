@@ -550,3 +550,6 @@ Kullanıcı alçıpan kurallarının zaten konuşulup uygulandığını hatırla
 
 ## 4 Ekim 2026 — 5.9.52 / DEV-037 tamamlandı
 Kullanıcı kriteri: duvar alçıpanı seçiliyse mevcut sistemin duvar miktarı eklenir, seçili değilse yalnız tavan; beyaz/yeşil ayrı. LoadingList mevcut alcipanHesap ve levhaAdet sonuçlarını alır; ayrı formül yok. Beyaz duvar/tavan,yeşil duvar/tavan,veranda ayrı satırlar; fire dahil,ek yedek0. Kaplama filtresi,CSV/XLSX ve Tuna52/53referansı eklendi. tests/loading-gypsum.cjs yok/hepsi/secili modları ve metraj eşitliği,loading-list regresyonu başarılı. Kaynaklar ve dist yeniden üretildi. DEV-036çoklu proje doğrulaması açık; yeni alçıpan kuralları sorulmadı.
+
+## DEV-037 yeniden açık — Kullanıcı eksik alçıpan kuralı bildirdi
+Son entegrasyonda daha önce konuşulmuş bir alçıpan ayrıntısının atlandığı bildirildi. Kod ve kayıt taraması net iç ölçü,açıklık düşümü,duvar seçimi,renk,veranda ve fireyi buldu; kullanıcının kastettiği ek kural henüz kesin belirlenemedi. Tamamlandı durumu bu düzeltme açısından geri açıldı. Tahmine göre yeni hesap uygulanmadı; kısa açıklama bekleniyor.

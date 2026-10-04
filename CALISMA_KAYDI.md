@@ -443,3 +443,6 @@ Kullanıcı mevcut alçıpan hesabını hatırlattı. Statik kod incelemesinde b
 
 ## 4 Ekim 2026 — Ev / 5.9.52 alçıpan yükleme entegrasyonu
 DEV-037 tamamlandı. Mevcut net alan/fire/levha hesabı aynen kullanılır; duvar kaplama seçimine bağlı duvarlar ve standart tavanlar,renk ve kullanım bazında aktarılır. tests/loading-gypsum.cjs üç seçim modu,mevcut metrajla eşitlik,UI/XLSX; loading-list regresyonu geçti. Build tamamlandı. Kullanıcı JSON'u ve canlı çizim değişmedi. DEV-036 farklı projelerle genel sağlaması bekliyor.
+
+## 4 Ekim 2026 — Alçıpan eksik kural bildirimi
+Kullanıcı önceki alçıpan görüşmesinden bir ayrıntının atlandığını belirtti. engine.js,loading modülleri,DEVAM/CALISMA ve test kayıtları tarandı. Kastedilen ayrıntı kesin tespit edilemedi; DEV-037 yeniden açık. Kod değiştirilmedi; mevcut5.9.52 korunuyor. Açıklama alınıp eksik kural doğrulanmalı.
