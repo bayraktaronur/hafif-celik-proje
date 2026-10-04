@@ -32,3 +32,8 @@ Ayrı çatılı örnek:136,922786 m² eğimli alan;216 m aşık stok;5.5×25=743
 ## Kontroller / açık işler
 5.9.51: screw-ratio (referans1000,ölçekleme,manuel,eski düzeltme), loading-screws (arayüz,çatı yok/destek dışı,XLSX), loading-list,purlin-stock geçti. Excel tekrar okunarak743/1326 ve ayrı yedek açıklamaları doğrulandı; ekran görüntüsü incelendi. Geçici artifacts depoya alınmaz.
 Diğer dört vida için kullanım dağılımı, daha fazla proje ile katsayı sağlaması ve gerçek bağlantı adedi açık. Kullanıcının talebiyle DEV-033/034 diğer çatı/montaj detayları6Ekim2026'ya kadar öncelik dışı; otomatik hatırlatma kurulmadı.
+
+## 4 Ekim 2026 — Alçıpan vidasının gerçek kullanım kapsamı
+Kullanıcı açıklaması: standart tavanlar geçme sistemdir, ileride tanımlanacak tavan mini H profiline geçer; standart tavanlarda vida kullanılmaz. Duvar alçıpanı seçilmemiş bu projede3,5×35vidalar banyo/WC yeşil duvar kaplamasına aittir. Beyaz/yeşil tavan ve standart veranda tavanı alçıpan vidası hesabına katılmaz. Bu, tavan levhası hesabını kaldırmaz.
+Excel92.satır500vida /13yeşil levha(39m²) oranı duvar vidası katsayısı olarak kullanılamaz:13levha tavan ve veranda paylarını da içerir. Önceki rapordaki12,82vida/m² ve38,46vida/levha yalnız sayısal bölümdü; yeni açıklamayla geçerli kullanım katsayısı olmadığı kesinleşti. Referansın yalnız yeşil duvar net alanı doğrulanıp500ile karşılaştırılmalı; henüz adet/m² veya bağlantı başına vida kuralı onaylanmadı. Diğer oda duvarları seçildiğinde kullanılacak vida türü/adedi ayrıca netleşecek.
+Mevcut5.9.53yükleme modülünde otomatik alçıpan vidası yok; yalnız aşık/trapez vidaları otomatik. Dolayısıyla tavanlardan türetilmiş hatalı otomatik vida miktarı mevcut değildir. Bu tur kod değişmedi.

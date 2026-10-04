@@ -557,3 +557,12 @@ Son entegrasyonda daha önce konuşulmuş bir alçıpan ayrıntısının atland�
 ## 4 Ekim 2026 — 5.9.53 / DEV-037 standart ıslak hacim düzeltmesi
 Kesin kullanıcı kuralı: Banyo, ebeveyn banyosu ve WC duvarları genel duvar alçıpanı seçiminden bağımsız, her koşulda yeşil alçıpan. Önceki yalnız tavan ifadesi ve tüm duvarları opsiyonel sayan kayıtlar bu kuralla düzeltilmiştir. Diğer kuru mekân duvarları yok/hepsi/seçili tercihine bağlı; tüm tavanlar ve veranda yeşil tavanı mevcut kuralla korunur.
 odaDuvarAlci tek kaynağı düzeltildi; çizimde yeşil gösterim genel seçim kapalıyken de çalışır. Islak oda ayarında kapatılabilir kutu yerine standart bilgisi gösterilir. Metraj ve yükleme/Excel aynı hesabı kullanır. loading-gypsum üç modda ıslak duvarların kalmasını, kapalı modda beyaz duvarın olmamasını, renk/metraj eşitliğini ve XLSX üretimini; loading-list genel regresyonu doğruladı. DEV-037 bu düzeltmeyle tamamlandı, DEV-036 farklı projelerle genel sağlaması açık. Canlı çizim ve kullanıcı JSON'u değişmedi.
+
+## 4 Ekim 2026 — Alçıpan vidasının gerçek kullanım kapsamı
+Kullanıcı açıklaması: standart tavanlar geçme sistemdir, ileride tanımlanacak tavan mini H profiline geçer; standart tavanlarda vida kullanılmaz. Duvar alçıpanı seçilmemiş bu projede3,5×35vidalar banyo/WC yeşil duvar kaplamasına aittir. Beyaz/yeşil tavan ve standart veranda tavanı alçıpan vidası hesabına katılmaz. Bu, tavan levhası hesabını kaldırmaz.
+Excel92.satır500vida /13yeşil levha(39m²) oranı duvar vidası katsayısı olarak kullanılamaz:13levha tavan ve veranda paylarını da içerir. Önceki rapordaki12,82vida/m² ve38,46vida/levha yalnız sayısal bölümdü; yeni açıklamayla geçerli kullanım katsayısı olmadığı kesinleşti. Referansın yalnız yeşil duvar net alanı doğrulanıp500ile karşılaştırılmalı; henüz adet/m² veya bağlantı başına vida kuralı onaylanmadı. Diğer oda duvarları seçildiğinde kullanılacak vida türü/adedi ayrıca netleşecek.
+Mevcut5.9.53yükleme modülünde otomatik alçıpan vidası yok; yalnız aşık/trapez vidaları otomatik. Dolayısıyla tavanlardan türetilmiş hatalı otomatik vida miktarı mevcut değildir. Bu tur kod değişmedi.
+
+| Kimlik | İş | Durum |
+|---|---|---|
+| DEV-038 | Alçıpan duvar vidası ve geçme tavan mini H | Kapsam netleşti: standart tavan vidasız; duvar kaplama kapalıysa vida yalnız ıslak hacim yeşil duvarlara. Vida tüketim katsayısı ve mini H ölçü/adet kuralı açık. Tavan levhaları hesapta kalır. DEV-035/036 ile ilişkili. |
