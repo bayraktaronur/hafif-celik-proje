@@ -537,3 +537,10 @@ Excel291m stok aşık→1000vida;103,32m² sevk sacı alanı→1000vida. Net eğ
 
 ## DEV-035 — Çoklu vida sağlaması (4 Ekim)
 [Alan/boy/parça ve OSB karşılaştırması](analizler/2026-10-04-vida-coklu-saglama.md). Mevcut örnek üç yolla1326/743/848;OSBde1326/1320/1506. Tek Excel üç bağımsız doğrulama değildir. Geçici öneri:sac10/m²;aşık max(10/m²,3,5/metre,12/parça) miktarları. Örnekte1370/1370;OSBde aşık1536. Bu tur yalnız analiz;5.9.51formülleri değiştirilmedi. Kesin asgari bağlantı kuralı açık.
+
+## 4 Ekim 2026 — Mevcut hesabı koruma ve toplu doğrulama kararı
+Kullanıcı: Şimdilik mevcut durum korunsun; bu proje tamamen bittiğinde birkaç başka proje ile tüm kalemlerin doğruluğu sağlansın. 5.9.51 hesapları değişmedi; son analizdeki maksimum yöntem önerisi uygulanmadı. DEV-035 geçici durumdadır, nihai doğrulama tamamlandı sayılmaz.
+
+| Kimlik | İş | Durum / tamamlanma koşulu |
+|---|---|---|
+| DEV-036 | Proje tamamlandıktan sonra farklı projelerle tüm yükleme kalemlerini doğrulama | Bekliyor. Birkaç projenin çizim ve eşleşen Excel listeleriyle panel, bağlantı, profil, çatı, kaplama, vida ve diğer kalemler satır bazında karşılaştırılacak. Adet, yedek, boy, kesim/bindirme payı ve manuel istisnalar ayrı kontrol edilecek; farkların nedeni kaydedilip gerekiyorsa kurallar revize edilecek. Yalnız vidalarla sınırlı değildir. |

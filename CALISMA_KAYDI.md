@@ -434,3 +434,6 @@ Kullanıcı vida oranlarını önceliklendirdi; diğer çatı detayları6Ekim'e 
 
 ## 4 Ekim 2026 — Ev / DEV-035 çoklu vida sağlaması
 Kullanıcının istediği alan,stokboyu,parça karşılaştırması ve aynı geometrideOSBduyarlılık denemesi yapıldı. [Rapor](analizler/2026-10-04-vida-coklu-saglama.md). Nodegeometri/stockhesabı; dosyalar değiştirilmeden bellekten varyant. Minimum mühendislik sayısı doğrulanmadı; geçici yüksek sevk önerisi sunuldu. Kod/sürümdeğişmedi,5.9.51; karar kayıtları gönderilir.
+
+## 4 Ekim 2026 — Ev / mevcut durumu koruma kararı
+Kullanıcı mevcut hesabın şimdilik kalmasını ve proje tamamlandıktan sonra birkaç başka proje ile tüm kalemlerin doğrulanmasını istedi. DEV-036 açıldı; DEV-035 geçici hesabı korundu. Uygulama 5.9.51, formüller ve çizimler değişmedi; maksimum vida önerisi uygulanmadı. Git uzak farkı0/0; yalnız kayıt güncellemesi, uygulama testi gerektiren kod değişikliği yok. Sonraki doğrulama için eşleşen çizim/Excel örnekleri gerekecek. Kullanıcının takipsiz Yeni proje (11).json dosyası korundu.
