@@ -82,9 +82,24 @@
   try{const z=makeOutline(draft.points,draft);const ok=R.commit(()=>{G.roofs.push(z);synchronize();});if(!ok)return false;draft=null;hover=null;R.select(z.id);R.fit();draw();return true;}
   catch(e){R.notice(e.message,true);return false;}
  }
+ function childSnap(p,refs,radius){
+  const parent=G.roofs.find(z=>z.id===draft.parentId),poly=C.footprint(parent).map(v=>C.transform(parent,v)),count=draft.points.length;
+  const project=(p,a,b)=>{const dx=b.x-a.x,dy=b.y-a.y,L=dx*dx+dy*dy,t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/L));return {x:a.x+t*dx,y:a.y+t*dy};};
+  const anchor=count?draft.points[0]:p;
+  const edges=poly.map((a,i)=>{const b=poly[(i+1)%poly.length],q=project(anchor,a,b);return {a,b,q,d:Math.hypot(q.x-anchor.x,q.y-anchor.y)};}).filter(e=>!count||!draft.points[0].hostNormal||(draft.points[0].hostNormal==='y'?Math.abs(e.a.y-e.b.y)<.001:Math.abs(e.a.x-e.b.x)<.001)).sort((a,b)=>a.d-b.d),edge=edges[0];
+  const horizontal=Math.abs(edge.a.y-edge.b.y)<.001,tangent=horizontal?'x':'y',normal=horizontal?'y':'x';
+  if(!count){let q={...edge.q};let best=radius;for(const r of refs){const d=Math.abs(r[tangent]-p[tangent]);if(d<best&&r[tangent]>=Math.min(edge.a[tangent],edge.b[tangent])&&r[tangent]<=Math.max(edge.a[tangent],edge.b[tangent])){q[tangent]=r[tangent];best=d;}}return {...q,snapLabel:'Ana çatı kenarı',hostNormal:normal,invalid:edge.d>radius};}
+  if(count>=3){const q={...draft.points[2]};q[normal]=draft.points[0][normal];delete q.ref;return {...q,snapLabel:'Aynı ana kenara bağlantı',invalid:Math.hypot(q.x-p.x,q.y-p.y)>radius||q[tangent]<Math.min(edge.a[tangent],edge.b[tangent])||q[tangent]>Math.max(edge.a[tangent],edge.b[tangent])};}
+  let q={x:Math.round(p.x),y:Math.round(p.y)},best=radius;
+  for(const r of refs){const d=Math.hypot(r.x-p.x,r.y-p.y);if(d<best&&(count===1||Math.abs(r[normal]-draft.points[1][normal])<.001)){q={...r};best=d;}}
+  if(count===1){if(!q.ref)q[tangent]=draft.points[0][tangent];}
+  else q[normal]=draft.points[1][normal];
+  return {...q,snapLabel:q.ref?'Duvar köşesi yakalandı':'U kenar hizası',invalid:q[tangent]<Math.min(edge.a[tangent],edge.b[tangent])||q[tangent]>Math.max(edge.a[tangent],edge.b[tangent])};
+ }
  function snap(p){
   const radius=12/Math.max(.001,Math.abs(R.canvasPoint({x:1,y:0}).x-R.canvasPoint({x:0,y:0}).x)),refs=[];
   for(const s of G.segs){const a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)continue;const half=s.tip==='veranda'?0:s.k/2;for(const n of [a,b])for(const [dx,dy] of [[-half,-half],[half,half],[-half,half],[half,-half]])refs.push({x:n.x+dx,y:n.y+dy,ref:{nodeId:n.id,dx,dy}});}
+  if(draft?.openU)return childSnap(p,refs,radius);
   refs.push(...(draft?.points||[]));let q={x:Math.round(p.x),y:Math.round(p.y)},best=radius;
   for(const n of refs){const d=Math.hypot(n.x-p.x,n.y-p.y);if(d<best&&(!draft?.points.length||Math.min(Math.abs(n.x-draft.points.at(-1).x),Math.abs(n.y-draft.points.at(-1).y))<.001)){q={...n};best=d;}}
   if(best===radius)for(const axis of ['x','y']){let d=radius;for(const n of refs)if(Math.abs(n[axis]-p[axis])<d){d=Math.abs(n[axis]-p[axis]);q[axis]=n[axis];}}
@@ -129,7 +144,7 @@
   if(draft){const ps=draft.points.concat(hover&&(!draft.points.length||Math.hypot(hover.x-draft.points.at(-1).x,hover.y-draft.points.at(-1).y)>.001)?[hover]:[]);ctx.strokeStyle='#74d8ed';ctx.setLineDash([5,4]);line(ctx,ps,project,false);ctx.setLineDash([]);
    if(ps.length===2){const [a,b]=ps,L=Math.hypot(b.x-a.x,b.y-a.y);if(L){const nx=-(b.y-a.y)/L*draft.eave,ny=(b.x-a.x)/L*draft.eave;ctx.strokeStyle='#ffd374';ctx.setLineDash([3,5]);const center=G.nodes.length?G.nodes.reduce((v,p)=>({x:v.x+p.x/G.nodes.length,y:v.y+p.y/G.nodes.length}),{x:0,y:0}):null;if(center){const side=(center.x-(a.x+b.x)/2)*nx+(center.y-(a.y+b.y)/2)*ny;const sign=side>0?-1:1;line(ctx,ps.map(p=>({x:p.x+sign*nx,y:p.y+sign*ny})),project,false);}ctx.setLineDash([]);}}
    if(ps.length>=3)try{let boundary;if(!draft.parentId){const poly=simplify(ps);C.checkOutline(poly);boundary=C.offsetOutline(poly,poly.map(()=>draft.eave));}else{const z=makeOutline(ps,draft);boundary=C.footprint(z).map(p=>C.transform(z,p));}ctx.strokeStyle='#ffd374';ctx.lineWidth=2;line(ctx,boundary,project,true);}catch(_){}
-   if(hover){const p=project(hover);ctx.strokeStyle=hover.ref?'#5dffad':'#74d8ed';ctx.lineWidth=2;ctx.strokeRect(p.x-7,p.y-7,14,14);ctx.fillStyle=ctx.strokeStyle;ctx.font='12px system-ui';ctx.fillText(hover.ref?'Köşe yakalandı':'Hiza / dik kenar',p.x+12,p.y-12);}
+   if(hover){const p=project(hover);ctx.strokeStyle=hover.invalid?'#ff837b':hover.ref||hover.snapLabel?'#5dffad':'#74d8ed';ctx.lineWidth=2;ctx.strokeRect(p.x-7,p.y-7,14,14);ctx.fillStyle=ctx.strokeStyle;ctx.font='12px system-ui';ctx.fillText(hover.invalid?'Ana kenardaki hedefi yakalayın':hover.snapLabel||(hover.ref?'Köşe yakalandı':'Hiza / dik kenar'),p.x+12,p.y-12);}
    if(draft.points.length){const p=project(draft.points[0]);ctx.strokeStyle='#8be5ae';ctx.strokeRect(p.x-5,p.y-5,10,10);}
   }else{const z=G.roofs.find(z=>z.id===R.getSelected());if(z?.outline){ctx.strokeStyle='#74d8ed';ctx.setLineDash([4,4]);line(ctx,C.basePolygon(z).map(p=>C.transform(z,p)),project,true);}}
   ctx.restore();
@@ -162,7 +177,7 @@
    const ok=R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;synchronize();});draw();return ok;
   }catch(e){R.notice(e.message,true);return false;}
  }
- const cv=$('roofCanvas');cv.addEventListener('pointerdown',e=>{if(!draft||e.button!==0)return;e.stopImmediatePropagation();e.preventDefault();if(draft.openU&&draft.points.length>=4){R.notice('Dört nokta hazır. Çatıyı oluştur düğmesine basın; düzeltmek için son çizim noktasını silin.');return;}const raw=R.world(e),q=snap(raw),first=draft.points[0];if(first&&draft.points.length>=3&&Math.hypot(R.canvasPoint(first).x-R.canvasPoint(raw).x,R.canvasPoint(first).y-R.canvasPoint(raw).y)<14){finish();return;}if(!draft.points.length||Math.hypot(q.x-draft.points.at(-1).x,q.y-draft.points.at(-1).y)>.01)draft.points.push(q);hover=null;hint('plan');R.repaint();},true);
+ const cv=$('roofCanvas');cv.addEventListener('pointerdown',e=>{if(!draft||e.button!==0)return;e.stopImmediatePropagation();e.preventDefault();if(draft.openU&&draft.points.length>=4){R.notice('Dört nokta hazır. Çatıyı oluştur düğmesine basın; düzeltmek için son çizim noktasını silin.');return;}const raw=R.world(e),q=snap(raw),first=draft.points[0];if(q.invalid){R.notice('Gösterilen ana çatı bağlantı noktasına yaklaşın.',true);return;}R.notice('');if(draft.openU&&draft.points.length===1){const a=draft.points[0],horizontal=a.hostNormal==='y';a[horizontal?'x':'y']=q[horizontal?'x':'y'];}if(!draft.openU&&first&&draft.points.length>=3&&Math.hypot(R.canvasPoint(first).x-R.canvasPoint(raw).x,R.canvasPoint(first).y-R.canvasPoint(raw).y)<14){finish();return;}if(!draft.points.length||Math.hypot(q.x-draft.points.at(-1).x,q.y-draft.points.at(-1).y)>.01)draft.points.push(q);hover=null;hint('plan');R.repaint();},true);
  cv.addEventListener('pointermove',e=>{if(!draft)return;hover=snap(R.world(e));R.repaint();},true);
  window.addEventListener('keydown',e=>{if(!draft||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(['Enter','Escape','Backspace'].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();if(e.key==='Enter')finish();else if(e.key==='Escape'){draft=null;hover=null;R.render();}else{draft.points.pop();hover=null;hint('plan');R.repaint();}}},true);
  // The roof dialog's older capture listener predates this module. Handle the

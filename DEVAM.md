@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.55**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.56**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -576,3 +576,7 @@ Kullanıcı görsel köşe snap,tek taraflı dış saçak önizlemesi ve dört k
 Ana çatı önizlemesinde tam calculate yerine yalnız sınır offseti hesaplanır. Yavru çatı bağlantı hesabı korunur. tests/roof-snap.cjs iki dolaşım yönü,köşeye yakın tıklama,dört nokta/Enter; tests/roof-workflow.cjs çokgen,birleşim,yön,undo,kayıt; loading-list regresyonu geçti. artifacts/roof-snap.png incelendi. Canlı çizim değiştirilmedi; bütün özel geometrilerde hatasızlık iddiası yok. DEV-033/034 montaj/metraj detaylarının ertelenmesi sürer; bu kullanıcı isteğiyle çizim arayüzü düzeltmesidir.
 
 Kanıt: analizler/2026-10-04-cati-snap.md; DEV-039 tamamlandı.
+
+## 4 Ekim 2026 — 5.9.56 / DEV-040 yavru çatı yakalama
+Kullanıcı yavru çatı U çiziminde sorunun sürdüğünü bildirdi. Kaynak src/roof-workflow.js: genel snap, ortogonal kilit ve her adımda ana kenar projeksiyonu birbirine karışıyordu. Ayrı dört aşamalı childSnap: ilk noktada ana kenar ve teğet duvar hizası; ilk dış köşede gerçek duvar köşesini koruyup başlangıcı aynı ana kenarda hizalama; ikinci dış köşede ön kenar hizası; sonda başlangıçla aynı ana kenara tam dönüş. Ana kenar normali korunur; yanlış son tıklama reddedilir,hedef/kırmızı uyarı gösterilir. Yavru çizimde ilk köşeye yakın tıklama genel çokgen kapanmasını tetiklemez. Geçerli tıklama eski uyarıyı temizler.
+Testler: tests/roof-child-snap.cjs gerçek duvar yüzü köşelerinde sapmalı tıklamalar,başlangıç kaydırma,yanlış dördüncü tıklama reddi,Enter; roof-child-u dört dönüş ve ters dolaşım,alın/yan birleşim,kot hatası,undo/kayıt; roof-snap,roof-workflow,loading-list başarılı. Görsel artifacts/roof-child-snap.png incelendi. Kullanıcının canlı plan JSON'u alınmadığı için ekrandaki özel plan birebir doğrulandı iddiası yok; aynı hata mekanizması kontrollü örnekte test edildi. Eğik/özel sınır desteği genişletilmedi; bütün olası çatılar için koşulsuz sorunsuzluk garantisi verilmez. Canlı çizim değişmedi. DEV-040 bu kapsamda tamamlandı.
