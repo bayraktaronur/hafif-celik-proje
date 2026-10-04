@@ -1,10 +1,20 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 4 Ekim 2026, ev bilgisayarı; 5.9.51 geçici standart çatı vida oranları.
+Son güncelleme: 4 Ekim 2026, ev bilgisayarı; 5.9.58 sonrası ev/iş devir kontrolü.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
 **Çalışma düzeni: gündüz iş bilgisayarı, gece ev bilgisayarı.** Aynı program dönüşümlü geliştirilir. Teslim geçmişi: [CALISMA_KAYDI.md](CALISMA_KAYDI.md).
+
+
+## Önce buradan devam et — 4 Ekim son devir
+Program **5.9.58**. [Güncel kararlar, uygulanmayan öneriler ve açık işler](analizler/2026-10-04-ev-is-devir.md). [Dosya/hash envanteri](analizler/2026-10-04-devir-envanteri.json). Önce bu özeti oku; aşağıdaki tarihsel kararların sonradan düzeltilenlerini yeniden uygulama.
+
+| Kimlik | İş | Durum |
+|---|---|---|
+| DEV-043 | Son canlı ana/yavru çatı planını iki bilgisayara aktarma | BEKLİYOR: kullanıcı Kaydet ile güncel JSON'u almalı. Mevcut JSON yedeği ve9ekran görüntüsü korunmuş olsa da son canlı çizim doğrulanmadı. Yeni dosya ayrı adla cizimler'e alınmalı,hash/push doğrulanmalı. |
+
+Ev veya iş fark etmez:git kontrolü/fetch ve güvenli güncelleme,bu dosya,CALISMA_KAYDI,son devir özeti. Sonra güncel JSON doğrulaması; kayıtlı kurallar kullanıcıya yeniden sorulmaz. Kod/kararlar aktarımı ile tarayıcı çizimi aktarımı ayrı işlerdir.
 
 ## Açık işler ve devir durumu
 
@@ -15,7 +25,7 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
 | DEV-004 | Aynı sohbeti cihazlar arasında kullanma | Kurulmadı. Ortak proje kayıtları bundan bağımsız çalışır; hesapta desteklenen bağlantı ayrıca değerlendirilmeli. |
 
-Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
+Tarihsel aktarım (aşağıdaki güncel devir özetinden öncedir): program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı kontrol taslağı ortak kayıttadır. Son canlı müşteri planı bundan ayrıdır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
