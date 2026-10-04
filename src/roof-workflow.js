@@ -86,18 +86,22 @@
   const radius=12/Math.max(.001,Math.abs(R.canvasPoint({x:1,y:0}).x-R.canvasPoint({x:0,y:0}).x)),refs=[];
   for(const s of G.segs){const a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)continue;const half=s.tip==='veranda'?0:s.k/2;for(const n of [a,b])for(const [dx,dy] of [[-half,-half],[half,half],[-half,half],[half,-half]])refs.push({x:n.x+dx,y:n.y+dy,ref:{nodeId:n.id,dx,dy}});}
   refs.push(...(draft?.points||[]));let q={x:Math.round(p.x),y:Math.round(p.y)},best=radius;
-  for(const n of refs){const d=Math.hypot(n.x-p.x,n.y-p.y);if(d<best){q={...n};best=d;}}
+  for(const n of refs){const d=Math.hypot(n.x-p.x,n.y-p.y);if(d<best&&(!draft?.points.length||Math.min(Math.abs(n.x-draft.points.at(-1).x),Math.abs(n.y-draft.points.at(-1).y))<.001)){q={...n};best=d;}}
   if(best===radius)for(const axis of ['x','y']){let d=radius;for(const n of refs)if(Math.abs(n[axis]-p[axis])<d){d=Math.abs(n[axis]-p[axis]);q[axis]=n[axis];}}
   if(draft?.points.length){const a=draft.points.at(-1),before={...q};if(Math.abs(q.x-a.x)>=Math.abs(q.y-a.y))q.y=a.y;else q.x=a.x;if(q.x!==before.x||q.y!==before.y)delete q.ref;}
   if(draft?.parentId){const parent=G.roofs.find(z=>z.id===draft.parentId),poly=C.footprint(parent).map(v=>C.transform(parent,v));let best=radius,hit=null;
    poly.forEach((a,i)=>{const b=poly[(i+1)%poly.length],dx=b.x-a.x,dy=b.y-a.y,L=dx*dx+dy*dy,t=Math.max(0,Math.min(1,((q.x-a.x)*dx+(q.y-a.y)*dy)/L)),v={x:a.x+t*dx,y:a.y+t*dy};const last=draft.points.at(-1);if(last&&Math.abs(v.x-last.x)>.001&&Math.abs(v.y-last.y)>.001)return;const d=Math.hypot(v.x-q.x,v.y-q.y);if(d<best){best=d;hit=v;}});if(hit)q=hit;
+  }
+  if(draft?.points.length>=3&&!draft.openU){const first=draft.points[0],last=draft.points.at(-1);
+   if(Math.abs(q.x-last.x)<.001&&Math.abs(q.y-first.y)<radius){q.y=first.y;delete q.ref;}
+   else if(Math.abs(q.y-last.y)<.001&&Math.abs(q.x-first.x)<radius){q.x=first.x;delete q.ref;}
   }
   return q;
  }
  function hint(mode){
   $('roofBoundaryFinish').hidden=$('roofBoundaryBack').hidden=!draft;$('roofBoundaryFinish').disabled=!draft||(draft.openU?draft.points.length!==4:draft.points.length<4);$('roofBoundaryBack').disabled=!draft?.points.length;$('roofBoundaryBack').textContent='Son çizim noktasını sil';$('roofBoundaryBack').title='Yalnızca devam eden çizimin son noktasını siler. Mevcut çatıları değiştirmez.';$('roofBoundaryFinish').textContent=draft?.openU?'Çatıyı oluştur · Enter':'Sınırı kapat · Enter';
   if(draft?.openU&&mode==='plan'){$('roofHint').textContent=['1/4: Ana çatı kenarında başlangıç noktasına tıklayın.','2/4: Dışarıdaki ilk duvar köşesine tıklayın.','3/4: Dışarıdaki ikinci duvar köşesine tıklayın.','4/4: Aynı ana çatı kenarına dönerek son noktaya tıklayın.','Dört nokta hazır. Çatıyı oluştur düğmesine veya Enter’a basın.'][Math.min(4,draft.points.length)]+' · Backspace: son noktayı sil · Esc: iptal';return;}
-  if(draft&&mode==='plan')$('roofHint').textContent='Mesnet sınırı: '+draft.points.length+' köşe · saçak '+draft.eave+' cm · '+(draft.openU?'U uçları ana kenarda · Enter: bağla':'ilk köşeye tıkla / Enter: kapat')+' · Backspace: son köşe · Esc: iptal';
+  if(draft&&mode==='plan')$('roofHint').textContent='Mesnet sınırı: '+draft.points.length+' köşe · saçak '+draft.eave+' cm · '+(draft.openU?'U uçları ana kenarda · Enter: bağla':(draft.points.length>=4?'Köşeler hazır · Enter veya Sınırı kapat ile oluştur':'ilk köşeye tıkla / Enter: kapat'))+' · Backspace: son köşe · Esc: iptal';
  }
  function line(ctx,points,project,close){if(!points.length)return;ctx.beginPath();points.forEach((p,i)=>{const v=project(p);if(i)ctx.lineTo(v.x,v.y);else ctx.moveTo(v.x,v.y);});if(close)ctx.closePath();ctx.stroke();}
  function trusses(z){
@@ -122,9 +126,10 @@
   // Down-slope arrows come from the same planes used for quantities and 3D.
   ctx.strokeStyle='#8edbd4';ctx.lineWidth=1.5;
   const seen=new Set();R.model().faces.forEach(f=>{if(seen.has(f.key))return;seen.add(f.key);const m=f.poly.reduce((a,p)=>({x:a.x+p.x/f.poly.length,y:a.y+p.y/f.poly.length}),{x:0,y:0}),p=project(m),g=project({x:m.x-f.a,y:m.y-f.b}),L=Math.hypot(g.x-p.x,g.y-p.y);if(!L)return;const dx=(g.x-p.x)/L,dy=(g.y-p.y)/L,q={x:p.x+dx*24,y:p.y+dy*24};ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.moveTo(q.x-dx*7-dy*4,q.y-dy*7+dx*4);ctx.lineTo(q.x,q.y);ctx.lineTo(q.x-dx*7+dy*4,q.y-dy*7-dx*4);ctx.stroke();});
-  if(draft){const ps=draft.points.concat(hover?[hover]:[]);ctx.strokeStyle='#74d8ed';ctx.setLineDash([5,4]);line(ctx,ps,project,false);ctx.setLineDash([]);
-   if(ps.length===2){const [a,b]=ps,L=Math.hypot(b.x-a.x,b.y-a.y);if(L){const nx=-(b.y-a.y)/L*draft.eave,ny=(b.x-a.x)/L*draft.eave;ctx.strokeStyle='#ffd374';ctx.setLineDash([3,5]);for(const sign of [-1,1])line(ctx,ps.map(p=>({x:p.x+sign*nx,y:p.y+sign*ny})),project,false);ctx.setLineDash([]);}}
-   if(ps.length>=3)try{const z=makeOutline(ps,draft);ctx.strokeStyle='#ffd374';ctx.lineWidth=2;line(ctx,C.footprint(z).map(p=>C.transform(z,p)),project,true);}catch(_){}
+  if(draft){const ps=draft.points.concat(hover&&(!draft.points.length||Math.hypot(hover.x-draft.points.at(-1).x,hover.y-draft.points.at(-1).y)>.001)?[hover]:[]);ctx.strokeStyle='#74d8ed';ctx.setLineDash([5,4]);line(ctx,ps,project,false);ctx.setLineDash([]);
+   if(ps.length===2){const [a,b]=ps,L=Math.hypot(b.x-a.x,b.y-a.y);if(L){const nx=-(b.y-a.y)/L*draft.eave,ny=(b.x-a.x)/L*draft.eave;ctx.strokeStyle='#ffd374';ctx.setLineDash([3,5]);const center=G.nodes.length?G.nodes.reduce((v,p)=>({x:v.x+p.x/G.nodes.length,y:v.y+p.y/G.nodes.length}),{x:0,y:0}):null;if(center){const side=(center.x-(a.x+b.x)/2)*nx+(center.y-(a.y+b.y)/2)*ny;const sign=side>0?-1:1;line(ctx,ps.map(p=>({x:p.x+sign*nx,y:p.y+sign*ny})),project,false);}ctx.setLineDash([]);}}
+   if(ps.length>=3)try{let boundary;if(!draft.parentId){const poly=simplify(ps);C.checkOutline(poly);boundary=C.offsetOutline(poly,poly.map(()=>draft.eave));}else{const z=makeOutline(ps,draft);boundary=C.footprint(z).map(p=>C.transform(z,p));}ctx.strokeStyle='#ffd374';ctx.lineWidth=2;line(ctx,boundary,project,true);}catch(_){}
+   if(hover){const p=project(hover);ctx.strokeStyle=hover.ref?'#5dffad':'#74d8ed';ctx.lineWidth=2;ctx.strokeRect(p.x-7,p.y-7,14,14);ctx.fillStyle=ctx.strokeStyle;ctx.font='12px system-ui';ctx.fillText(hover.ref?'Köşe yakalandı':'Hiza / dik kenar',p.x+12,p.y-12);}
    if(draft.points.length){const p=project(draft.points[0]);ctx.strokeStyle='#8be5ae';ctx.strokeRect(p.x-5,p.y-5,10,10);}
   }else{const z=G.roofs.find(z=>z.id===R.getSelected());if(z?.outline){ctx.strokeStyle='#74d8ed';ctx.setLineDash([4,4]);line(ctx,C.basePolygon(z).map(p=>C.transform(z,p)),project,true);}}
   ctx.restore();
