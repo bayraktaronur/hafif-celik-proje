@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.53**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.54**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -566,3 +566,7 @@ Mevcut5.9.53yükleme modülünde otomatik alçıpan vidası yok; yalnız aşık/
 | Kimlik | İş | Durum |
 |---|---|---|
 | DEV-038 | Alçıpan duvar vidası ve geçme tavan mini H | Kapsam netleşti: standart tavan vidasız; duvar kaplama kapalıysa vida yalnız ıslak hacim yeşil duvarlara. Vida tüketim katsayısı ve mini H ölçü/adet kuralı açık. Tavan levhaları hesapta kalır. DEV-035/036 ile ilişkili. |
+
+## 4 Ekim 2026 — 5.9.54 / DEV-038 yeşil duvar vidası
+Kullanıcı hesabı düzeltmeyi onayladı. Tuna kontrol JSON'unda alcipanHesap: yeşil duvar brüt21,2625m² − açıklık1,92m² = net19,3425m². Excel92satır500adet /19,3425m² katsayısı; yeni miktar ceil(net yeşil duvar alanı ×500/19,3425). Katsayı yuvarlanmaz. Standart tavan/veranda,levha firesi ve ek yedek dahil değil. Referans sevk yedeği ayrımı bilinmiyor. Kontrol taslağına dayalı geçici orandır, kaynak hashleri önceki vida raporunda; gerçek bağlantı başına tüketim değildir.
+Yükleme listesi ve XLSX'e3.5×35mm ayrı satır eklendi. Beyaz duvar seçilirse henüz doğrulanmamış vida türü/oranı için ayrı kural bekliyor satırı görünür; yeşil oran otomatik uygulanmaz. tests/loading-gypsum500kalibrasyon ve fire/çatı bağımsızlığı,üç duvar modu,loading-list ve screw-ratio geçti. Mini H sayım kuralı ve farklı projelerle DEV-036doğrulaması açık. Canlı çizim ve kullanıcı dosyası değişmedi.

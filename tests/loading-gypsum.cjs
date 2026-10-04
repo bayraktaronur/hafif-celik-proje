@@ -7,6 +7,9 @@ for(const mode of ['yok','hepsi','secili']){
  const wet=await p.evaluate(()=>['banyo','ebanyo','wc'].map(tip=>odaDuvarAlci({tip,duvarAlci:false})));assert.deepEqual(wet,[true,true,true]);
  if(mode==='hepsi')assert.ok(result.rows.some(r=>r.name.includes('Duvar')));
 }
+const screw=await p.evaluate(()=>{G.opt.alciDuvar='yok';return LoadingList.calculate().rows.find(r=>r.referenceId==='tuna-92')});assert.equal(screw.qty,500);assert.equal(screw.sources[0].screwRule.amount,19.3425);
+await p.evaluate(()=>{ALCI.FIRE=40;G.roofs=[];});assert.equal(await p.evaluate(()=>LoadingList.calculate().rows.find(r=>r.referenceId==='tuna-92').qty),500);
+await p.evaluate(()=>{G.opt.alciDuvar='hepsi'});assert.ok(await p.evaluate(()=>LoadingList.calculate().rows.some(r=>r.name.startsWith('Beyaz duvar alçıpan vidası')&&r.qty===null)));
 await p.locator('#loadingOpen').click();await p.locator('#loadGroup').selectOption('Kaplama');assert.ok(await p.locator('#loadTable').innerText().then(t=>t.includes('alçıpan')));
 const [dl]=await Promise.all([p.waitForEvent('download'),p.locator('#loadExcel').click()]);await dl.saveAs('artifacts/loading-gypsum.xlsx');assert.equal(errors.length,0);console.log('PASS existing gypsum quantities for no/all/selected walls, colors, veranda, UI and XLSX');
 }finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});

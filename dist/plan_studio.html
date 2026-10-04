@@ -739,9 +739,9 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
   }
   for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.screwRule))continue;
    const a=c.adjustments.find(a=>a.key===r.key),q=r.sources[0].screwRule,total=r.sources.reduce((n,s)=>n+s.screwRule.amount,0);
-   r.calculated=Math.ceil(total*1000/q.referenceAmount-1e-9);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;
+   r.calculated=Math.ceil(total*(q.referenceQty??1000)/q.referenceAmount-1e-9);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;
    r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Geçici vida oranı';
-   r.reason=a?.reason||`${total.toFixed(3)} ${q.unit} × (1000 / ${q.referenceAmount}) = ${r.calculated} adet (yukarı yuvarlandı). Tuna Excel sevk oranı; bağlantı başına vida kuralı değildir. Referans yedek ayrımı bilinmiyor; ek yedek yok.`;
+   r.reason=a?.reason||`${total.toFixed(3)} ${q.unit} × (${q.referenceQty??1000} / ${q.referenceAmount}) = ${r.calculated} adet (yukarı yuvarlandı). Tuna Excel sevk oranı; bağlantı başına vida kuralı değildir. Referans yedek ayrımı bilinmiyor; ek yedek yok.`;
   }
   for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.gypsumRule))continue;
    const q=r.sources[0].gypsumRule,a=c.adjustments.find(a=>a.key===r.key);r.unit='levha';r.calculated=r.sources.reduce((n,s)=>n+s.gypsumRule.count,0);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;
@@ -5144,7 +5144,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.53',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.54',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5992,7 +5992,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.53';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.54';syncUI();draw();
 })();
 
 </script><script>
@@ -7549,6 +7549,8 @@ LoadingReference.rows.push({id:"tuna-96",row:96,group:"Metal",name:"Çatı aşı
 
 LoadingReference.rows.push({id:"tuna-52",row:52,group:"Kaplama",name:"Asma tavan alçıpan",size:"12 × 1200 × 2500 mm",qty:21},{id:"tuna-53",row:53,group:"Kaplama",name:"Yeşil alçıpan",size:"12 × 1200 × 2500 mm",qty:13});
 
+LoadingReference.rows.push({id:"tuna-92",row:92,group:"Metal",name:"Yeşil alçıpan vidası",size:"3.5 × 35 mm",qty:500});
+
 </script><script>
 /* Small dependency-free OOXML export; all user strings are inline text, never formulas. */
 (function(root){
@@ -7609,6 +7611,8 @@ LoadingReference.rows.push({id:"tuna-52",row:52,group:"Kaplama",name:"Asma tavan
   for(const [field,name,ref] of [['beyazDuvar','Beyaz alçıpan — Duvar','tuna-52'],['beyazTavan','Beyaz alçıpan — Tavan','tuna-52'],['yesilDuvar','Yeşil alçıpan — Duvar','tuna-53'],['yesilTavan','Yeşil alçıpan — Tavan','tuna-53'],['verTavan','Yeşil alçıpan — Veranda tavanı','tuna-53']])if(al[field]>0){
    out.push({group:'Kaplama',name,size:`${ALCI.EN} × ${ALCI.BOY} cm`,source:source('gypsum:'+field,[],null,{gypsumRule:{area:al[field],fire:ALCI.FIRE,count:levhaAdet(al[field]),field},rooms:al.odalar,mode:G.opt.alciDuvar,referenceId:ref}),warning:'Mevcut Metraj Listesi hesabı. Banyo/WC duvarları her zaman yeşil; diğer duvarlar kaplama seçiliyse; fire hesaba dahil, ayrıca yedek eklenmez.'});
   }
+  if(al.yesilDuvar>0)out.push({group:'Metal',name:'Yeşil duvar alçıpan vidası',size:'3.5 × 35 mm',warning:'Yalnız net yeşil duvar alanı. Standart geçme tavanlar ve veranda tavanı vidasız; levha firesi eklenmez. Tuna kontrol taslağına göre geçici sevk oranı.',source:source('gypsum-wall-screw',[],null,{screwRule:{rule:'tuna-green-wall500-v1',amount:al.yesilDuvar,referenceAmount:19.3425,referenceQty:500,unit:'m² net yeşil duvar'},referenceId:'tuna-92'})});
+  if(al.beyazDuvar>0)out.push({group:'Metal',name:'Beyaz duvar alçıpan vidası — kural bekliyor',size:'Vida türü / tüketimi doğrulanmalı',warning:'Yeşil duvar katsayısı beyaz duvarlara varsayımla uygulanmaz. Tavanlar hariç.',source:source('gypsum-white-wall-screw',[],null,{whiteWallArea:al.beyazDuvar})});
   return out;
  }
  function calculate(){return LoadingCore.build(items(),G.loading);}
@@ -7634,8 +7638,8 @@ LoadingReference.rows.push({id:"tuna-52",row:52,group:"Kaplama",name:"Asma tavan
  $('loadHLabels').onchange=()=>{const v=$('loadHLabels').checked;commit(c=>{c.showLabels=v;});};
  function open(){try{render();dlg.showModal();}catch(e){Studio.toast(e.message,true);}}
  for(const id of ['loadSearch','loadGroup','loadStatus'])$(id).oninput=render;$('loadRefresh').onclick=render;$('loadAdd').onclick=()=>editor(null);$('loadClose').onclick=()=>dlg.close();
- $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:'5.9.53',date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
- $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:'5.9.53',date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:'5.9.54',date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:'5.9.54',date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
  window.LoadingList={open,calculate,items};
 })();
 

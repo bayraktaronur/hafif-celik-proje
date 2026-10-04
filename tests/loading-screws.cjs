@@ -1,11 +1,11 @@
 const fs=require('fs'),path=require('path'),assert=require('node:assert/strict'),{pathToFileURL}=require('url');let pw;try{pw=require('playwright')}catch{pw=require(path.resolve(path.dirname(process.execPath),'../node_modules/playwright'))}
 (async()=>{const b=await pw.chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{const p=await b.newPage({viewport:{width:1500,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(pathToFileURL(path.resolve('dist/plan_studio.html')).href);await p.evaluate(d=>Studio.loadProject(d),JSON.parse(fs.readFileSync('cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json')));await p.evaluate(()=>G.roofs=[RoofStudio.make({w:1000,d:800,type:'besik',pitch:30,eaves:[30,30,30,30],material:'trapez',layers:[]})]);
-const rows=await p.evaluate(()=>LoadingList.calculate().rows.filter(r=>r.sources.some(s=>s.screwRule)));
+const rows=await p.evaluate(()=>LoadingList.calculate().rows.filter(r=>r.sources.some(s=>s.screwRule?.rule==='tuna-standard-screw-ratio-v1')));
 assert.equal(rows.length,2);for(const r of rows){const q=r.sources[0].screwRule;assert.equal(r.qty,Math.ceil(q.amount*1000/q.referenceAmount));assert.equal(r.spare,0);}
 
-await p.evaluate(()=>G.roofs[0].type='kirma');assert.equal(await p.evaluate(()=>LoadingList.calculate().rows.filter(r=>r.sources.some(s=>s.screwRule)).length),0);
-await p.evaluate(()=>G.roofs=[]);assert.equal(await p.evaluate(()=>LoadingList.calculate().rows.filter(r=>r.sources.some(s=>s.screwRule)).length),0);
+await p.evaluate(()=>G.roofs[0].type='kirma');assert.equal(await p.evaluate(()=>LoadingList.calculate().rows.filter(r=>r.sources.some(s=>s.screwRule?.rule==='tuna-standard-screw-ratio-v1')).length),0);
+await p.evaluate(()=>G.roofs=[]);assert.equal(await p.evaluate(()=>LoadingList.calculate().rows.filter(r=>r.sources.some(s=>s.screwRule?.rule==='tuna-standard-screw-ratio-v1')).length),0);
 await p.evaluate(d=>Studio.loadProject(d),JSON.parse(fs.readFileSync('cizimler/2026-10-04-vida-karsilastirma-ornek.json')));
-console.log(JSON.stringify(await p.evaluate(()=>({area:RoofStudio.model().area,rows:LoadingList.calculate().rows.filter(r=>r.sources.some(s=>s.screwRule)).map(r=>({name:r.name,qty:r.qty,reason:r.reason}))})),null,2));
+console.log(JSON.stringify(await p.evaluate(()=>({area:RoofStudio.model().area,rows:LoadingList.calculate().rows.filter(r=>r.sources.some(s=>s.screwRule?.rule==='tuna-standard-screw-ratio-v1')).map(r=>({name:r.name,qty:r.qty,reason:r.reason}))})),null,2));
 await p.locator('#loadingOpen').click();await p.locator('#loadSearch').fill('vidas');await p.screenshot({path:'artifacts/loading-screws.png'});const [dl]=await Promise.all([p.waitForEvent('download'),p.locator('#loadExcel').click()]);await dl.saveAs('artifacts/loading-screws.xlsx');assert.equal(errors.length,0);console.log('PASS screw ratios, unsupported roof and missing roof');
 }finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});

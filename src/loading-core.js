@@ -94,9 +94,9 @@
   }
   for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.screwRule))continue;
    const a=c.adjustments.find(a=>a.key===r.key),q=r.sources[0].screwRule,total=r.sources.reduce((n,s)=>n+s.screwRule.amount,0);
-   r.calculated=Math.ceil(total*1000/q.referenceAmount-1e-9);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;
+   r.calculated=Math.ceil(total*(q.referenceQty??1000)/q.referenceAmount-1e-9);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;
    r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Geçici vida oranı';
-   r.reason=a?.reason||`${total.toFixed(3)} ${q.unit} × (1000 / ${q.referenceAmount}) = ${r.calculated} adet (yukarı yuvarlandı). Tuna Excel sevk oranı; bağlantı başına vida kuralı değildir. Referans yedek ayrımı bilinmiyor; ek yedek yok.`;
+   r.reason=a?.reason||`${total.toFixed(3)} ${q.unit} × (${q.referenceQty??1000} / ${q.referenceAmount}) = ${r.calculated} adet (yukarı yuvarlandı). Tuna Excel sevk oranı; bağlantı başına vida kuralı değildir. Referans yedek ayrımı bilinmiyor; ek yedek yok.`;
   }
   for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.gypsumRule))continue;
    const q=r.sources[0].gypsumRule,a=c.adjustments.find(a=>a.key===r.key);r.unit='levha';r.calculated=r.sources.reduce((n,s)=>n+s.gypsumRule.count,0);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;

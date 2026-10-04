@@ -40,6 +40,8 @@
   for(const [field,name,ref] of [['beyazDuvar','Beyaz alçıpan — Duvar','tuna-52'],['beyazTavan','Beyaz alçıpan — Tavan','tuna-52'],['yesilDuvar','Yeşil alçıpan — Duvar','tuna-53'],['yesilTavan','Yeşil alçıpan — Tavan','tuna-53'],['verTavan','Yeşil alçıpan — Veranda tavanı','tuna-53']])if(al[field]>0){
    out.push({group:'Kaplama',name,size:`${ALCI.EN} × ${ALCI.BOY} cm`,source:source('gypsum:'+field,[],null,{gypsumRule:{area:al[field],fire:ALCI.FIRE,count:levhaAdet(al[field]),field},rooms:al.odalar,mode:G.opt.alciDuvar,referenceId:ref}),warning:'Mevcut Metraj Listesi hesabı. Banyo/WC duvarları her zaman yeşil; diğer duvarlar kaplama seçiliyse; fire hesaba dahil, ayrıca yedek eklenmez.'});
   }
+  if(al.yesilDuvar>0)out.push({group:'Metal',name:'Yeşil duvar alçıpan vidası',size:'3.5 × 35 mm',warning:'Yalnız net yeşil duvar alanı. Standart geçme tavanlar ve veranda tavanı vidasız; levha firesi eklenmez. Tuna kontrol taslağına göre geçici sevk oranı.',source:source('gypsum-wall-screw',[],null,{screwRule:{rule:'tuna-green-wall500-v1',amount:al.yesilDuvar,referenceAmount:19.3425,referenceQty:500,unit:'m² net yeşil duvar'},referenceId:'tuna-92'})});
+  if(al.beyazDuvar>0)out.push({group:'Metal',name:'Beyaz duvar alçıpan vidası — kural bekliyor',size:'Vida türü / tüketimi doğrulanmalı',warning:'Yeşil duvar katsayısı beyaz duvarlara varsayımla uygulanmaz. Tavanlar hariç.',source:source('gypsum-white-wall-screw',[],null,{whiteWallArea:al.beyazDuvar})});
   return out;
  }
  function calculate(){return LoadingCore.build(items(),G.loading);}
@@ -65,7 +67,7 @@
  $('loadHLabels').onchange=()=>{const v=$('loadHLabels').checked;commit(c=>{c.showLabels=v;});};
  function open(){try{render();dlg.showModal();}catch(e){Studio.toast(e.message,true);}}
  for(const id of ['loadSearch','loadGroup','loadStatus'])$(id).oninput=render;$('loadRefresh').onclick=render;$('loadAdd').onclick=()=>editor(null);$('loadClose').onclick=()=>dlg.close();
- $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:'5.9.53',date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
- $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:'5.9.53',date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:'5.9.54',date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:'5.9.54',date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
  window.LoadingList={open,calculate,items};
 })();
