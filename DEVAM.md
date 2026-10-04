@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.51**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.52**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -547,3 +547,6 @@ Kullanıcı: Şimdilik mevcut durum korunsun; bu proje tamamen bittiğinde birka
 
 ## DEV-037 — Mevcut alçıpan metrajını yükleme listesine bağlama
 Kullanıcı alçıpan kurallarının zaten konuşulup uygulandığını hatırlattı; tekrar kullanım yeri sorulması hatalıydı. [Kod kontrolü](analizler/2026-10-04-alcipan-mevcut-hesap.md): engine.js hesabı ve Metraj Listesi mevcut; yeni yükleme modülüne aktarım açık. Kural yeniden tanımlanmayacak. Durum: açık; tek hesap kaynağı, fire/yedek ayrımı ve mükerrer sayım kontrolüyle aktarım tamamlanmalı. Bu tur kod değişmedi.
+
+## 4 Ekim 2026 — 5.9.52 / DEV-037 tamamlandı
+Kullanıcı kriteri: duvar alçıpanı seçiliyse mevcut sistemin duvar miktarı eklenir, seçili değilse yalnız tavan; beyaz/yeşil ayrı. LoadingList mevcut alcipanHesap ve levhaAdet sonuçlarını alır; ayrı formül yok. Beyaz duvar/tavan,yeşil duvar/tavan,veranda ayrı satırlar; fire dahil,ek yedek0. Kaplama filtresi,CSV/XLSX ve Tuna52/53referansı eklendi. tests/loading-gypsum.cjs yok/hepsi/secili modları ve metraj eşitliği,loading-list regresyonu başarılı. Kaynaklar ve dist yeniden üretildi. DEV-036çoklu proje doğrulaması açık; yeni alçıpan kuralları sorulmadı.

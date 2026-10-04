@@ -5,3 +5,5 @@ window.LoadingReference={"file": "SP - 202600185 - Tuna Pref. 84m².xlsx", "shee
 LoadingReference.productLinks=[{product:'Baş makas omegası',referenceId:'tuna-41',temporary:true,note:'Geçici adet eşlemesi: Baş makas Z sacı ↔ baş makas omegası. Ayrı ürünlerdir; ileride değiştirilebilir. Referanstaki 9 adet tüm projelere sabitlenmez.'}];
 
 LoadingReference.rows.push({id:"tuna-96",row:96,group:"Metal",name:"Çatı aşıkları vidası",size:"5.5 × 25 mm",qty:1000},{id:"tuna-97",row:97,group:"Metal",name:"Trapez sac vidası",size:"5.5 × 60 mm",qty:1000});
+
+LoadingReference.rows.push({id:"tuna-52",row:52,group:"Kaplama",name:"Asma tavan alçıpan",size:"12 × 1200 × 2500 mm",qty:21},{id:"tuna-53",row:53,group:"Kaplama",name:"Yeşil alçıpan",size:"12 × 1200 × 2500 mm",qty:13});

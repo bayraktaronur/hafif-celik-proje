@@ -440,3 +440,6 @@ Kullanıcı mevcut hesabın şimdilik kalmasını ve proje tamamlandıktan sonra
 
 ## 4 Ekim 2026 — Ev / Alçıpan devam noktası düzeltmesi
 Kullanıcı mevcut alçıpan hesabını hatırlattı. Statik kod incelemesinde beyaz/yeşil/veranda,opsiyonel duvar,net alan,açıklık düşümü,120×250levha ve fire hesabı doğrulandı. Metraj Listesi mevcut; yükleme entegrasyonu eksik,DEV-037 açıldı. [Bulgular](analizler/2026-10-04-alcipan-mevcut-hesap.md). Uygulama5.9.51korundu; çalışma zamanı testi yapılmadı,kod/çizim değişmedi. Sonraki adım mevcut sonucu yüklemeye bağlamak.
+
+## 4 Ekim 2026 — Ev / 5.9.52 alçıpan yükleme entegrasyonu
+DEV-037 tamamlandı. Mevcut net alan/fire/levha hesabı aynen kullanılır; duvar kaplama seçimine bağlı duvarlar ve standart tavanlar,renk ve kullanım bazında aktarılır. tests/loading-gypsum.cjs üç seçim modu,mevcut metrajla eşitlik,UI/XLSX; loading-list regresyonu geçti. Build tamamlandı. Kullanıcı JSON'u ve canlı çizim değişmedi. DEV-036 farklı projelerle genel sağlaması bekliyor.
