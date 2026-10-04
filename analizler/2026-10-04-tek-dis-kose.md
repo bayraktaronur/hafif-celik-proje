@@ -1,0 +1,6 @@
+# Tek dış yüz köşesi
+
+## 4 Ekim 2026 — 5.9.57 / DEV-041 tek dış köşe
+Kullanıcı aynı fiziksel köşede dört yakın yakalama noktasının yanıltıcı olduğunu bildirdi. Eski ±yarım kalınlık dört kombinasyonu kaldırıldı. RoofWorkflow.exteriorCorners ortak kaynağı: oda iç/dış tarafı ve dış duvar yüz normallerinden kesişim,her düğümde tek dış köşe; iç duvarlar elenir,kollinear ara noktalar köşe sayılmaz. Duvar köşesi açık veranda kenarına önceliklidir; serbest veranda100mm direğinde dış köşe±5cm. Oda topolojisi bulunmayan açık/eksik çizimde taraf için plan düğüm merkezi yedeği kullanılır; karmaşık eksik topolojide dış taraf ayrıca kontrol edilmelidir.
+Ana ve yavru çatı aynı aday kaynağını kullanır; veranda sınır köşeleri aynı listede. Başlamadan yeşil aday işaretleri gösterilir. Ana çatı kenarına yavru bağlantı yakalaması köşe adayıyla karıştırılmaz,bağlantı etiketi korunur. Mevcut çatı/duvar koordinatları taşınmadı; kat planının genel duvar çizim snap davranışı değiştirilmedi.
+Testler: roof-snap dört yönden aynı köşeye yaklaşımda tek koordinat,iki dolaşım yönü,TunaJSONnodebaşına tekaday,verandadireği±5cm; roof-child-snap,roof-child-u,roof-workflow,loading-list başarılı. DEV-041 tamamlandı. Görseldeki canlı proje yerine ortak Tuna kontrol JSON'u ve sentetik örnekler kullanıldı.
