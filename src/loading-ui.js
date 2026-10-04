@@ -38,7 +38,7 @@
   for(const e of G.elemanlar){const s=getSeg(e.segId),a=getNode(s.n1),b=getNode(s.n2);out.push({group:'Kapı / PVC',name:e.tip_==='pencere'?'PVC pencere':s.dis?'Dış kapı':'İç kapı',size:`Açıklık ${e.en}/${e.yuk} cm`,warning:'Sipariş/kasa ölçüsü açıklık ölçüsünden ayrı doğrulanmalı.',source:source(e.id,[s.id],{x:a.x+(b.x-a.x)*e.t,y:a.y+(b.y-a.y)*e.t},{type:e.kapiTip||'',hinge:e.mentese||'',side:e.yan||0})});}
   const al=alcipanHesap();
   for(const [field,name,ref] of [['beyazDuvar','Beyaz alçıpan — Duvar','tuna-52'],['beyazTavan','Beyaz alçıpan — Tavan','tuna-52'],['yesilDuvar','Yeşil alçıpan — Duvar','tuna-53'],['yesilTavan','Yeşil alçıpan — Tavan','tuna-53'],['verTavan','Yeşil alçıpan — Veranda tavanı','tuna-53']])if(al[field]>0){
-   out.push({group:'Kaplama',name,size:`${ALCI.EN} × ${ALCI.BOY} cm`,source:source('gypsum:'+field,[],null,{gypsumRule:{area:al[field],fire:ALCI.FIRE,count:levhaAdet(al[field]),field},rooms:al.odalar,mode:G.opt.alciDuvar,referenceId:ref}),warning:'Mevcut Metraj Listesi hesabı. Duvarlar yalnız kaplama seçiliyse; fire hesaba dahil, ayrıca yedek eklenmez.'});
+   out.push({group:'Kaplama',name,size:`${ALCI.EN} × ${ALCI.BOY} cm`,source:source('gypsum:'+field,[],null,{gypsumRule:{area:al[field],fire:ALCI.FIRE,count:levhaAdet(al[field]),field},rooms:al.odalar,mode:G.opt.alciDuvar,referenceId:ref}),warning:'Mevcut Metraj Listesi hesabı. Banyo/WC duvarları her zaman yeşil; diğer duvarlar kaplama seçiliyse; fire hesaba dahil, ayrıca yedek eklenmez.'});
   }
   return out;
  }
@@ -65,7 +65,7 @@
  $('loadHLabels').onchange=()=>{const v=$('loadHLabels').checked;commit(c=>{c.showLabels=v;});};
  function open(){try{render();dlg.showModal();}catch(e){Studio.toast(e.message,true);}}
  for(const id of ['loadSearch','loadGroup','loadStatus'])$(id).oninput=render;$('loadRefresh').onclick=render;$('loadAdd').onclick=()=>editor(null);$('loadClose').onclick=()=>dlg.close();
- $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:'5.9.52',date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
- $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:'5.9.52',date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:'5.9.53',date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:'5.9.53',date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
  window.LoadingList={open,calculate,items};
 })();

@@ -3,7 +3,8 @@ const fs=require('fs'),path=require('path'),assert=require('node:assert/strict')
 for(const mode of ['yok','hepsi','secili']){
  const result=await p.evaluate(mode=>{G.opt.alciDuvar=mode;G.rooms.forEach((r,i)=>r.duvarAlci=i===0);const al=alcipanHesap(),rows=LoadingList.calculate().rows.filter(r=>r.sources.some(s=>s.gypsumRule));return {mode,rows,expected:Object.fromEntries(['beyazDuvar','beyazTavan','yesilDuvar','yesilTavan','verTavan'].map(k=>[k,al[k]>0?levhaAdet(al[k]):0]))}},mode);
  for(const [field,n] of Object.entries(result.expected)){const r=result.rows.find(r=>r.sources[0].gypsumRule.field===field);assert.equal(r?.qty||0,n);if(r){assert.equal(r.unit,'levha');assert.equal(r.spare,0);}}
- if(mode==='yok')assert.ok(result.rows.every(r=>!r.name.includes('Duvar')));
+ if(mode==='yok'){assert.ok(result.rows.some(r=>r.name==='Yeşil alçıpan — Duvar'&&r.qty>0));assert.ok(result.rows.every(r=>r.name!=='Beyaz alçıpan — Duvar'));}
+ const wet=await p.evaluate(()=>['banyo','ebanyo','wc'].map(tip=>odaDuvarAlci({tip,duvarAlci:false})));assert.deepEqual(wet,[true,true,true]);
  if(mode==='hepsi')assert.ok(result.rows.some(r=>r.name.includes('Duvar')));
 }
 await p.locator('#loadingOpen').click();await p.locator('#loadGroup').selectOption('Kaplama');assert.ok(await p.locator('#loadTable').innerText().then(t=>t.includes('alçıpan')));

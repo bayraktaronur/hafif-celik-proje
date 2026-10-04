@@ -9,3 +9,7 @@ Sonraki adım: tek hesap kaynağını kullanarak yükleme aktarımını tamamlam
 
 ## Güncelleme — 5.9.52
 Kullanıcı seçim kriterini teyit etti; yükleme entegrasyonu tamamlandı. LoadingList.items alcipanHesap/levhaAdet çağırır; LoadingCore yalnız hazır levha sayısını aktarır. Net alan,fire ve oda kaynakları düzeltme parmak izine dahildir. Yok/hepsi/secili ve beyaz/yeşil/veranda eşitliği tests/loading-gypsum.cjs ile doğrulandı; loading-list regresyonu geçti. Geometrik tek kaynak noktası olmayan toplu alçıpan satırında Planda göster düğmesi sunulmaz. H/U/köşe çizimleri değiştirilmedi.
+
+## 4 Ekim 2026 — 5.9.53 / DEV-037 standart ıslak hacim düzeltmesi
+Kesin kullanıcı kuralı: Banyo, ebeveyn banyosu ve WC duvarları genel duvar alçıpanı seçiminden bağımsız, her koşulda yeşil alçıpan. Önceki yalnız tavan ifadesi ve tüm duvarları opsiyonel sayan kayıtlar bu kuralla düzeltilmiştir. Diğer kuru mekân duvarları yok/hepsi/seçili tercihine bağlı; tüm tavanlar ve veranda yeşil tavanı mevcut kuralla korunur.
+odaDuvarAlci tek kaynağı düzeltildi; çizimde yeşil gösterim genel seçim kapalıyken de çalışır. Islak oda ayarında kapatılabilir kutu yerine standart bilgisi gösterilir. Metraj ve yükleme/Excel aynı hesabı kullanır. loading-gypsum üç modda ıslak duvarların kalmasını, kapalı modda beyaz duvarın olmamasını, renk/metraj eşitliğini ve XLSX üretimini; loading-list genel regresyonu doğruladı. DEV-037 bu düzeltmeyle tamamlandı, DEV-036 farklı projelerle genel sağlaması açık. Canlı çizim ve kullanıcı JSON'u değişmedi.

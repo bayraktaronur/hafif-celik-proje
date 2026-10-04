@@ -446,3 +446,7 @@ DEV-037 tamamlandı. Mevcut net alan/fire/levha hesabı aynen kullanılır; duva
 
 ## 4 Ekim 2026 — Alçıpan eksik kural bildirimi
 Kullanıcı önceki alçıpan görüşmesinden bir ayrıntının atlandığını belirtti. engine.js,loading modülleri,DEVAM/CALISMA ve test kayıtları tarandı. Kastedilen ayrıntı kesin tespit edilemedi; DEV-037 yeniden açık. Kod değiştirilmedi; mevcut5.9.52 korunuyor. Açıklama alınıp eksik kural doğrulanmalı.
+
+## 4 Ekim 2026 — 5.9.53 / DEV-037 standart ıslak hacim düzeltmesi
+Kesin kullanıcı kuralı: Banyo, ebeveyn banyosu ve WC duvarları genel duvar alçıpanı seçiminden bağımsız, her koşulda yeşil alçıpan. Önceki yalnız tavan ifadesi ve tüm duvarları opsiyonel sayan kayıtlar bu kuralla düzeltilmiştir. Diğer kuru mekân duvarları yok/hepsi/seçili tercihine bağlı; tüm tavanlar ve veranda yeşil tavanı mevcut kuralla korunur.
+odaDuvarAlci tek kaynağı düzeltildi; çizimde yeşil gösterim genel seçim kapalıyken de çalışır. Islak oda ayarında kapatılabilir kutu yerine standart bilgisi gösterilir. Metraj ve yükleme/Excel aynı hesabı kullanır. loading-gypsum üç modda ıslak duvarların kalmasını, kapalı modda beyaz duvarın olmamasını, renk/metraj eşitliğini ve XLSX üretimini; loading-list genel regresyonu doğruladı. DEV-037 bu düzeltmeyle tamamlandı, DEV-036 farklı projelerle genel sağlaması açık. Canlı çizim ve kullanıcı JSON'u değişmedi.

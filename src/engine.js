@@ -766,7 +766,7 @@ function optPanelGuncelle(){
   var html=
     '<div class="sr"><span class="sl">İç duvar</span>'+sel('ic',o.ic,[[6,'6 cm'],[10,'10 cm'],[15,'15 cm']])+'</div>'+
     '<div class="sr"><span class="sl">Dış duvar</span>'+sel('dis',o.dis||10,[[6,'6 cm'],[10,'10 cm'],[15,'15 cm']])+'</div>'+
-    '<div class="sr"><span class="sl">Duvar alçıpanı</span>'+sel('alciDuvar',o.alciDuvar,[['yok','Yok (standart)'],['hepsi','Tüm odalar'],['secili','Seçili odalar']])+'</div>'+
+    '<div class="sr"><span class="sl">Duvar alçıpanı</span>'+sel('alciDuvar',o.alciDuvar,[['yok','Yalnız banyo / WC (standart)'],['hepsi','Tüm odalar'],['secili','Seçili odalar + banyo / WC']])+'</div>'+
     (o.alciDuvar==='secili'?'<div style="font-size:10px;color:#8b949e;margin:-2px 0 4px">Odayı seçip kenar çubuğundan işaretleyin</div>':'')+
     '<div class="sr"><span class="sl">Dış cephe</span>'+sel('cephe',o.cephe,[['yok','Yok'],['tasonit','Taşonit'],['yalipan','Yalıpan']])+'</div>'+
     (o.cephe!=='yok'?'<div class="sr"><span class="sl">Plaka (en×boy)</span><input class="si" style="width:80px" value="'+esc(o.plaka)+'" onchange="optUygula(\'plaka\',this.value)"></div>'+
@@ -792,7 +792,7 @@ function optPanelGuncelle(){
 }
 // Planda göster: duvarına alçıpan gelen odaların iç yüzü (beyaz → sarı, ıslak → yeşil kesikli çizgi)
 function drawAlciGorsel(){
-  if(!isPref()||G.opt.alciDuvar==='yok')return;
+  if(!isPref())return;
   ctx.save();ctx.setLineDash([8,4]);ctx.lineWidth=2;
   G.rooms.forEach(function(r){
     if(!odaDuvarAlci(r))return;var g=odaIcGeometri(r);if(!g)return;
@@ -806,6 +806,7 @@ function drawAlciGorsel(){
 }
 function odaDuvarAlci(r){
   if(r.tip==='veranda')return false;
+  if(ALCI.ISLAK[r.tip])return true;
   if(G.opt.alciDuvar==='hepsi')return true;
   if(G.opt.alciDuvar==='secili')return !!r.duvarAlci;
   return false;
@@ -3868,7 +3869,7 @@ function updateSidebar(){
       '<button class="sib p" onclick="openOdaModal(G.secili)" style="margin-top:4px">✏️ Ad & Tip Düzenle</button>'+
       ((o.lblDx||o.lblDy)?'<button class="sib" onclick="etiketOrtala()" style="margin-top:4px">↺ Etiketi ortala</button>':'')+
       (isPref()&&o.tip!=='veranda'?
-        (G.opt.alciDuvar==='secili'?'<label style="display:flex;gap:6px;align-items:center;font-size:11px;margin-top:6px;cursor:pointer"><input type="checkbox" '+(o.duvarAlci?'checked':'')+' onchange="odaDuvarAlciCevir()"> Duvarlara alçıpan ('+(ALCI.ISLAK[o.tip]?'yeşil':'beyaz')+')</label>':
+        (ALCI.ISLAK[o.tip]?'<div style="font-size:11px;color:#3fb950;margin-top:4px">Yeşil alçıpan duvar: standart, her zaman dahil.</div>':G.opt.alciDuvar==='secili'?'<label style="display:flex;gap:6px;align-items:center;font-size:11px;margin-top:6px;cursor:pointer"><input type="checkbox" '+(o.duvarAlci?'checked':'')+' onchange="odaDuvarAlciCevir()"> Duvarlara alçıpan ('+(ALCI.ISLAK[o.tip]?'yeşil':'beyaz')+')</label>':
          '<div style="font-size:10px;color:#8b949e;margin-top:4px">Duvar alçıpanı: '+(G.opt.alciDuvar==='hepsi'?'var (tüm odalar)':'yok — Opsiyonlar\'dan açılır')+'</div>'):'');
   }
 }
