@@ -437,3 +437,6 @@ Kullanıcının istediği alan,stokboyu,parça karşılaştırması ve aynı geo
 
 ## 4 Ekim 2026 — Ev / mevcut durumu koruma kararı
 Kullanıcı mevcut hesabın şimdilik kalmasını ve proje tamamlandıktan sonra birkaç başka proje ile tüm kalemlerin doğrulanmasını istedi. DEV-036 açıldı; DEV-035 geçici hesabı korundu. Uygulama 5.9.51, formüller ve çizimler değişmedi; maksimum vida önerisi uygulanmadı. Git uzak farkı0/0; yalnız kayıt güncellemesi, uygulama testi gerektiren kod değişikliği yok. Sonraki doğrulama için eşleşen çizim/Excel örnekleri gerekecek. Kullanıcının takipsiz Yeni proje (11).json dosyası korundu.
+
+## 4 Ekim 2026 — Ev / Alçıpan devam noktası düzeltmesi
+Kullanıcı mevcut alçıpan hesabını hatırlattı. Statik kod incelemesinde beyaz/yeşil/veranda,opsiyonel duvar,net alan,açıklık düşümü,120×250levha ve fire hesabı doğrulandı. Metraj Listesi mevcut; yükleme entegrasyonu eksik,DEV-037 açıldı. [Bulgular](analizler/2026-10-04-alcipan-mevcut-hesap.md). Uygulama5.9.51korundu; çalışma zamanı testi yapılmadı,kod/çizim değişmedi. Sonraki adım mevcut sonucu yüklemeye bağlamak.

@@ -544,3 +544,6 @@ Kullanıcı: Şimdilik mevcut durum korunsun; bu proje tamamen bittiğinde birka
 | Kimlik | İş | Durum / tamamlanma koşulu |
 |---|---|---|
 | DEV-036 | Proje tamamlandıktan sonra farklı projelerle tüm yükleme kalemlerini doğrulama | Bekliyor. Birkaç projenin çizim ve eşleşen Excel listeleriyle panel, bağlantı, profil, çatı, kaplama, vida ve diğer kalemler satır bazında karşılaştırılacak. Adet, yedek, boy, kesim/bindirme payı ve manuel istisnalar ayrı kontrol edilecek; farkların nedeni kaydedilip gerekiyorsa kurallar revize edilecek. Yalnız vidalarla sınırlı değildir. |
+
+## DEV-037 — Mevcut alçıpan metrajını yükleme listesine bağlama
+Kullanıcı alçıpan kurallarının zaten konuşulup uygulandığını hatırlattı; tekrar kullanım yeri sorulması hatalıydı. [Kod kontrolü](analizler/2026-10-04-alcipan-mevcut-hesap.md): engine.js hesabı ve Metraj Listesi mevcut; yeni yükleme modülüne aktarım açık. Kural yeniden tanımlanmayacak. Durum: açık; tek hesap kaynağı, fire/yedek ayrımı ve mükerrer sayım kontrolüyle aktarım tamamlanmalı. Bu tur kod değişmedi.
