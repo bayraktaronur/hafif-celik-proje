@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 4 Ekim 2026, ev bilgisayarı; 5.9.44 omega/veranda kiriş hesabı uygulandı.
+Son güncelleme: 4 Ekim 2026, ev bilgisayarı; 5.9.51 geçici standart çatı vida oranları.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -31,7 +31,7 @@ Aktarım: program 5.9.36; kaynak belgeler, ölçülü karşılaştırma ve ayrı
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.50**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.51**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
@@ -525,3 +525,12 @@ Build,purlin-stock bağımsız optimum taraması,loading-purlin arayüz/XLSX,sta
 | Kimlik | İş | Durum |
 | --- | --- | --- |
 | DEV-034 | Ortak montaj verisi ve otomatik renkli montaj paftaları | Açık:4200/3000parça yerleşimi/tekil bindirme,makas ve diğer üretim malzemeleri; yükleme/PDF/DXF aynı veri. Kullanıcı örnek montaj çizimleri sağlayacak. analizler/2026-10-04-tum-catilar-montaj-plani.md |
+
+
+## 4 Ekim 2026 — Vida önceliği / 5.9.51
+| Kimlik | İş | Durum / kanıt |
+|---|---|---|
+| DEV-035 | Çizim–Excel vida karşılaştırması ve standart çatı oranı | İki çatı vidası geçici uygulandı; diğer dört vida kullanım dağılımı açık. [Rapor](analizler/2026-10-04-vida-oranlari.md), tests/screw-ratio.cjs ve tests/loading-screws.cjs. |
+| DEV-033 / DEV-034 | Genel çatılar, ek yerleri ve montaj paftaları | Kullanıcı önceliğiyle6Ekim2026'ya kadar ara; tamamlandı sayılmaz. Sonraki adım örneklerle sıra/bindirme montaj modeli. |
+
+Excel291m stok aşık→1000vida;103,32m² sevk sacı alanı→1000vida. Net eğimli alana ikinci oranın uygulanması geçici yaklaşık kabul. Tek dikdörtgen beşik trapez kapsamı; ek yedek yok, referanstaki yedek bilinmiyor. Yerel Yeni proje (11).json korunup cizimler/2026-10-04-vida-karsilastirma-ornek.json olarak kopyalandı;136,92m²/216m→1326/743vida. Bu Tuna veya son canlı çizim değildir. Tuna kayıt JSON'unda çatı yok; birebir vida doğrulaması yapılamadı. Kaynak hashleri raporda. Kaynak/kayıt/örnek JSON bu teslimde gönderilir; canlı tarayıcı değişmedi.

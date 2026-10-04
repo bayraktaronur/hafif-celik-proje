@@ -92,16 +92,23 @@
    const plans=new Map();for(const source of r.sources){const q=source.purlinRule,k=JSON.stringify([q.lengthMm,q.n4200,q.n3000,q.overlapMm]);if(!plans.has(k))plans.set(k,{q,labels:[]});plans.get(k).labels.push(q.label);}r.purlinPlan=[...plans.values()].map(({q,labels})=>labels.length+' sıra ('+labels.join(', ')+'): her sıra '+q.lengthMm+' mm = '+q.n4200+' ×4200 + '+q.n3000+' ×3000 − '+q.overlapMm+' mm toplam bindirme').join(' | ');
    r.reason=a?.reason||'Her sırada önce en az bindirme fazlası, eşitlikte en az parça. Fazlalık kesilmez; ekler arasında bindirilir. Sabit bindirme/yedek eklenmedi. Ek yerleri bu hesapta dağıtılmaz.';
   }
+  for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.screwRule))continue;
+   const a=c.adjustments.find(a=>a.key===r.key),q=r.sources[0].screwRule,total=r.sources.reduce((n,s)=>n+s.screwRule.amount,0);
+   r.calculated=Math.ceil(total*1000/q.referenceAmount-1e-9);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;
+   r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Geçici vida oranı';
+   r.reason=a?.reason||`${total.toFixed(3)} ${q.unit} × (1000 / ${q.referenceAmount}) = ${r.calculated} adet (yukarı yuvarlandı). Tuna Excel sevk oranı; bağlantı başına vida kuralı değildir. Referans yedek ayrımı bilinmiyor; ek yedek yok.`;
+  }
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};
  }
  function shipment(r){
   const manual=['Manuel doğrulandı','Manuel ek','Çizim değişti'].includes(r.status);
   const base=r.packing?r.packing.length:r.qty!=null&&!manual?r.calculated:null;
+  if(r.sources?.some(s=>s.screwRule)&&!manual&&r.qty!=null)return {base:r.calculated,spare:0,label:'Referans yedek ayrımı bilinmiyor; ayrıca yedek eklenmedi'};
   const known=!!r.sources?.length&&r.sources.every(s=>s.uRule||s.frameRule);
   return {base,spare:manual||r.qty==null?null:r.spare||0,label:manual?'Manuel toplam; yedek ayrımı doğrulanmadı':r.qty==null?'Hesap bekliyor':known?'Yedek toplam sevke dahil; tekrar eklemeyin':'Otomatik yedek eklenmedi'};
  }
- function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; çatı, tesisat ve sarf otomatik hesaplanmaz.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Toplam sevk (yedek dahil)' ,'Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler','Yedek','Kesim dağılımı (mm)','Artık toplamı (mm)','Adet','Yedek açıklaması','Net boy (mm)','Kesim payı (mm)','Sevk boyu (mm)','Aşık sıra / kombinasyon / bindirme'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', '),shipment(r).spare,r.cutting||'',r.leftoverMm??'',shipment(r).base,shipment(r).label,r.netMm??'',r.cutAllowanceMm??'',r.shipLengthMm??'',r.purlinPlan||''])].map(r=>r.map(cell).join(';')).join('\r\n');}
+ function csv(rows,meta={}){const cell=v=>'"'+String(v??'').replace(/^[=+\-@\t\r]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+[['TASLAK YÜKLEME LİSTESİ — imalat/sevkiyat onayı değildir'],['Proje',meta.project||'','Sürüm',meta.version||'','Tarih',meta.date||''],['Kapsam','Panel, bağlantı ve açıklık sayımları; desteklenen çatı kalemleri ve geçici vida oranları dahildir; diğer sarf kalemleri manuel.'],['Çizimde karşılığı kalmayan düzeltme',meta.orphan||0],['Grup','Malzeme','Ölçü','Birim','Çizim adedi','Toplam sevk (yedek dahil)' ,'Durum','Gerekçe','Excel referans satırı','Kaynak kimlikler','Yedek','Kesim dağılımı (mm)','Artık toplamı (mm)','Adet','Yedek açıklaması','Net boy (mm)','Kesim payı (mm)','Sevk boyu (mm)','Aşık sıra / kombinasyon / bindirme'],...rows.map(r=>[r.group,r.name,r.size,r.unit,r.calculated,r.qty,r.status,r.reason,r.referenceId,(r.sources||[]).map(s=>s.id).join(', '),shipment(r).spare,r.cutting||'',r.leftoverMm??'',shipment(r).base,shipment(r).label,r.netMm??'',r.cutAllowanceMm??'',r.shipLengthMm??'',r.purlinPlan||''])].map(r=>r.map(cell).join(';')).join('\r\n');}
  function classifyH(point,trusses,exterior){
   // Current manufacturing rule: every interior H is earless and without dowels.
   // Keep this separate from exterior support detection for a future explicit revision.

@@ -428,3 +428,6 @@ Build,purlin-stock bağımsız optimum taraması,loading-purlin arayüz/XLSX,sta
 ## 4 Ekim 2026 — Tüm çatı tipleri ve montaj paftası hedefi
 
 [Kod incelemesi,ortak veri düzeni ve kabul planı](analizler/2026-10-04-tum-catilar-montaj-plani.md). Kullanıcı tüm çatı tiplerinde aşık hesabı; ileride sağlayacağı örneklerden4200/3000iki renkli parça/bindirme montaj çizimi,makaslar ve diğer malzemeleri istedi. DEV-033genel çatı kapsamı sürüyor,DEV-034ortak montaj modeli açıldı. Yükleme ve çizim aynı parça/ek verisini kullanmalı. Mevcut stok optimumu tekil ek yerlerini henüz belirlemez; montaj çizimi tamamlandı sayılmaz. Yeni örnek montaj dosyası henüz alınmadı. Bu tur kod/çizim değişmedi,5.9.50korundu; kayıtlar gönderilir.
+
+## 4 Ekim 2026 — Ev / 5.9.51 / DEV-035
+Kullanıcı vida oranlarını önceliklendirdi; diğer çatı detayları6Ekim'e bırakıldı. [Karşılaştırma, kaynak hashleri ve sınırlamalar](analizler/2026-10-04-vida-oranlari.md). İki vida ayrı paydalı geçici hesap, manuel düzeltme, Excel referansları, adet/yedek açıklaması. Dört başka vida için gözlenen oran/eksik bilgi raporda; uydurma otomatik kural yok. Build,screw-ratio,loading-screws,loading-list,purlin-stock ve üretilen XLSX tekrar okuma geçti; görsel incelendi. Kullanıcının yerel JSON'u değiştirilmedi, ayrı karşılaştırma kopyası ortak kayda eklendi. Açık işler DEV-033/034 ve diğer vida katsayı sağlaması.
