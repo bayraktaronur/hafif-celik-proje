@@ -479,3 +479,9 @@ Kontroller: roof-gable-boundary alttaki tüm duvarları kaldırınca kapama geom
 
 ## 4 Ekim 2026 — Ev/iş ayrımı olmadan devam için devir
 Kullanıcı sonraki çalışmanın hangi bilgisayarda olacağının belirsiz olduğunu,detayların kaybolmamasını istedi.5.9.58korundu; fetch0/0,kod temiz. DEVAMbaşlığı ve öncelikli devam özeti düzeltildi; analizler/2026-10-04-ev-is-devir.md kararlar/uygulanmayan öneriler/açık işler kaydı.9son çatı görseli kopyalanıp hash envanteri tutuldu. Takipsiz kullanıcı JSON'u kayıtlı örnekle hash olarakaynı; orijinal korundu. artifacts/plot.loggeçici. DEV-043son canlı çatı JSON'u bekliyor; görüntüler veya eski yedek güncel çizim ilan edilmedi. Sonraki adım Kaydet dosyasının ortak depoya alınması;ardından açık işlerden devam. Belgeler/referanslar bu adımda gönderilir; kod sürümü artırılmadı.
+
+## 5 Ekim 2026 — İş PC — son kayıtları bulma
+
+İş klonunun 5.9.36 kaydı eskiydi; izinli fetch ile GitHub'daki 49 yeni commit bulundu ve pull --ff-only ile e0b1800 / 5.9.58 alındı. Son ev görüşmelerinin kararları DEVAM/CALISMA ve ev-is-devir raporundan okundu; evin ayrı sohbeti bu PC'nin erişilebilir sohbet listesinde bulunmadı. İş Downloads içindeki en yeni JSON Yeni proje (6).json (3 Ekim 09:51, 5.9.36), orijinali korunup cizimler/2026-10-03-is-kayit-6-5.9.36.json olarak hash doğrulamasıyla kopyalandı. 9 son çatı görseli envanterle eşleşti. [Bulunan kayıtlar ve açık kalan yedek](analizler/2026-10-05-son-kayit-kurtarma.md).
+
+DEV-043 açık: 4 Ekim son canlı ana/yavru çatı JSON'u ortak depoda yok. Yeni bulunan iş yedeği son canlı plan ilan edilmedi. Takipsiz eski pano görseli ve tarayıcı çizimi korundu. Kod/sürüm değişmedi; yalnız yedek/devir kayıtları gönderilir. Sıradaki adım son canlı planın Kaydet dosyasını belirlemek; diğer açık işler son ev devir raporundaki haliyle korunur.

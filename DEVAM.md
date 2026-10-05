@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 4 Ekim 2026, ev bilgisayarı; 5.9.58 sonrası ev/iş devir kontrolü.
+Son güncelleme: 5 Ekim 2026, iş bilgisayarı; 4 Ekim ev teslimi (5.9.58) alındı, son konuşma/yedek kayıtları bulundu.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -599,3 +599,9 @@ Testler: roof-snap dört yönden aynı köşeye yaklaşımda tek koordinat,iki d
 ## 4 Ekim 2026 — 5.9.58 / DEV-042 baş makas betopan sınırı
 Kullanıcı çizilen çatının baş makası nerede ise betopan kapamanın orada olmasını,alttaki evin girinti/çıkıntısını izlememesini istedi. src/roof.js planStructure içindeki duvardan çatıya yükselen kapama kaldırıldı. Beşik çatı alınları çatı mesnet sınırının yerel X sabit uçlarından üretilir; üst sınır gerçek çatı yüzeyi,alt sınır bölümün wallTop kotudur. Duvar olmayan/veranda boşluğu üzerindeki alın da kapanır. Aynı gruptaki diğer çatının örttüğü sınırda kör kapama üretilmez; childJoin kot farkı kapaması korunur. Veranda eski üçgeni 3Bde ikinci kez eklenmez; direkler korunur. Kat planı duvar şekli değiştirilmedi.
 Kontroller: roof-gable-boundary alttaki tüm duvarları kaldırınca kapama geometrisi değişmiyor; roof-child-u birleşimler/dört yön/kot farkı; roof-plan-body,roof-workflow,loading-list geçti. Yeni ekran görüntüsü incelendi. Eski child-u testi artık duvar segmenti yerine çatı sınırı kapamasını doğrular. Bu teslim3Bgeometri düzeltmesidir; betopan levha sevk/kesim metrajı eklenmedi. Kırma/tek eğimde ayrı baş makas kapama kuralı bu değişiklikte varsayılmadı. Kaynak ekran görüntüleri konuşmada,canlı plan değiştirilmedi. DEV-042 bu kapsamda tamamlandı.
+
+## 5 Ekim 2026 — İş PC — son kayıtları bulma
+
+İş klonunun 5.9.36 kaydı eskiydi; izinli fetch ile GitHub'daki 49 yeni commit bulundu ve pull --ff-only ile e0b1800 / 5.9.58 alındı. Son ev görüşmelerinin kararları DEVAM/CALISMA ve ev-is-devir raporundan okundu; evin ayrı sohbeti bu PC'nin erişilebilir sohbet listesinde bulunmadı. İş Downloads içindeki en yeni JSON Yeni proje (6).json (3 Ekim 09:51, 5.9.36), orijinali korunup cizimler/2026-10-03-is-kayit-6-5.9.36.json olarak hash doğrulamasıyla kopyalandı. 9 son çatı görseli envanterle eşleşti. [Bulunan kayıtlar ve açık kalan yedek](analizler/2026-10-05-son-kayit-kurtarma.md).
+
+DEV-043 açık: 4 Ekim son canlı ana/yavru çatı JSON'u ortak depoda yok. Yeni bulunan iş yedeği son canlı plan ilan edilmedi. Takipsiz eski pano görseli ve tarayıcı çizimi korundu. Kod/sürüm değişmedi; yalnız yedek/devir kayıtları gönderilir. Sıradaki adım son canlı planın Kaydet dosyasını belirlemek; diğer açık işler son ev devir raporundaki haliyle korunur.
