@@ -350,14 +350,20 @@ function pfAnaliz(){
   });
   // 4) paneller + numaralar
   if(window.Modular&&Modular.strict()){
-    var panelRefs={};
+    var panelRefs={},fixedPanelRefs={};
     runs.forEach(function(r){
       if(r.makasParalel)return;
       var axis=Math.abs(r.ux)>.999?'x':'y',key=comp[r.nodes[0].nid]+axis;
       var start=(axis==='x'?r.ax:r.ay)+(r.s0||0);
       panelRefs[key]=Math.min(panelRefs[key]===undefined?Infinity:panelRefs[key],start);
+      r.items.forEach(function(it){var anchor=it.seg.panelGridAnchor,n=getNode(it.seg.n1);
+        if(anchor&&anchor.axis===axis&&n&&Number.isFinite(anchor.offset)){
+          var value=n[axis]+anchor.offset;
+          fixedPanelRefs[key]=Math.min(fixedPanelRefs[key]===undefined?Infinity:fixedPanelRefs[key],value);
+        }
+      });
     });
-    runs.forEach(function(r){if(!r.makasParalel){var axis=Math.abs(r.ux)>.999?'x':'y';r.panelOrg=panelRefs[comp[r.nodes[0].nid]+axis];}});
+    runs.forEach(function(r){if(!r.makasParalel){var axis=Math.abs(r.ux)>.999?'x':'y';var key=comp[r.nodes[0].nid]+axis;r.panelOrg=fixedPanelRefs[key]===undefined?panelRefs[key]:fixedPanelRefs[key];}});
   }
   runs.forEach(function(r){r.slots=pfDizilim(r);r.mx=r.ax+r.ux*r.L/2;r.my=r.ay+r.uy*r.L/2;});
   runs.sort(function(p,q){return (q.dis-p.dis)||(Math.round(p.my)-Math.round(q.my))||(p.mx-q.mx);});
@@ -577,7 +583,27 @@ function cizimKoseDuzelt(sn,en,varOlanaKapaniyor){
   var pYat=Math.abs(puy)<0.02,pDik=Math.abs(pux)<0.02;
   // A new outside corner needs its end allowance. Only an existing opposite
   // run or an explicit closing target fixes the axis and requires a cut panel.
-  if(production&&(varOlanaKapaniyor||Modular.cornerConstrained(sn,ps)))return;
+  if(production&&varOlanaKapaniyor){
+    // Closing an existing outline must not re-phase its physical H grid when
+    // a free end becomes a corner. Store a node-relative anchor for JSON/undo.
+    var component=_bilesenler(),existing=pfAnaliz().runs;
+    var oldIssues=new Set(Modular.inspect().map(function(i){return i.key;}));
+    var probe={id:'__closing_grid_probe',n1:sn.id,n2:en.id,k:G.defaultK};
+    G.segs.push(probe);
+    var shiftsExistingGrid;
+    try{shiftsExistingGrid=Modular.inspect().some(function(i){return i.code==='module-width'&&i.id!==probe.id&&!oldIssues.has(i.key);});}
+    finally{G.segs.splice(G.segs.indexOf(probe),1);}
+    // An unconstrained fresh rectangle still needs its normal corner phase.
+    // Pin only when re-phasing would invalidate already manufactured panels.
+    if(!shiftsExistingGrid)return;
+    existing.forEach(function(r){
+      if(!Number.isFinite(r.panelOrg)||component[r.nodes[0].nid]!==component[sn.id])return;
+      var axis=Math.abs(r.ux)>.999?'x':'y';
+      r.items.forEach(function(it){var n=getNode(it.seg.n1);it.seg.panelGridAnchor={axis:axis,offset:r.panelOrg-n[axis]};});
+    });
+    return;
+  }
+  if(production&&Modular.cornerConstrained(sn,ps))return;
   if(production){
     // A reverse turn forms a step, not another outside corner. Keep its
     // endpoint on the shared H axis; the corner face trims the last panel.
