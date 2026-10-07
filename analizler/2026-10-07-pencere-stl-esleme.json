@@ -19,11 +19,11 @@
     },
     {
       "file": "160-120 pencereli panel-h250cm.stl",
-      "measuredWidth": 165,
+      "measuredWidth": 166,
       "targetWidth": 166,
-      "status": "revision3_width_mismatch",
+      "status": "revision4_outer_dimensions_match",
       "allowUniformScaling": false,
-      "activeReference": "referanslar/2026-10-07-pencere-stl/rev3/160-120 pencereli panel-h250cm.stl",
+      "activeReference": "referanslar/2026-10-07-pencere-stl/rev4/160-120 pencereli panel-h250cm.stl",
       "measuredHeight": 250
     },
     {
