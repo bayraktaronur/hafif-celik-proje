@@ -56,7 +56,7 @@
     if(z.type==='tek')planes=[{a:0,b:p,c:z.h}];
     else if(z.type==='besik'){const ridge=z.d*z.ridge/100,other=p*ridge/(z.d-ridge);planes=[{a:0,b:p,c:z.h},{a:0,b:-other,c:z.h+other*z.d}];}
     else planes=base.map((v,i)=>{const q=base[(i+1)%base.length],e=edgePlane(v,q),L=Math.hypot(e.a,e.b);return {a:e.a/L*p,b:e.b/L*p,c:z.h+e.c/L*p};});
-    if(z.datum==='eave'){const low=Math.min(...outline.flatMap(pt=>planes.map(f=>height(f,pt))));planes.forEach(f=>f.c+=z.h-low);}
+    if(z.datum==='eave'||z.datum==='trim'){const low=Math.min(...outline.flatMap(pt=>planes.map(f=>height(f,pt))));planes.forEach(f=>f.c+=z.h-low+(z.datum==='trim'?Math.max(12,z.fasciaDepth??12):0));}
     const t=z.angle*Math.PI/180,c=Math.cos(t),s=Math.sin(t);
     return planes.flatMap((plane,i)=>triangulate(outline).flatMap(part=>{
       let poly=part;planes.forEach((other,j)=>{if(i!==j)poly=clip(poly,other.a-plane.a,other.b-plane.b,other.c-plane.c);});if(!poly.length)return [];
@@ -161,7 +161,7 @@
       if(z.childJoin&&(!z.production||z.production.role!=='child'||!Array.isArray(z.childJoin.points)||z.childJoin.points.length!==4||z.childJoin.points.some(p=>!p||!num(p.x,-1e6,1e6)||!num(p.y,-1e6,1e6))||!Array.isArray(z.childJoin.support)||z.childJoin.support.length!==4||z.childJoin.support.some(p=>!p||!num(p.x,-1e6,1e6)||!num(p.y,-1e6,1e6))))fail('U bağlantı sınırı geçersiz.');
       if(z.childJoin?.requestedSideEaves&&(!Array.isArray(z.childJoin.requestedSideEaves)||z.childJoin.requestedSideEaves.length!==2||z.childJoin.requestedSideEaves.some(e=>!num(e,0,500))))fail('U yan saçak değerleri geçersiz.');
       if(z.production&&(!['main','child'].includes(z.production.role)||![0,90].includes(z.production.relative)||typeof z.production.parentId!=='string'))fail('üretim yönü bağlantısı geçersiz.');
-      if(z.datum!==undefined&&!['wall','eave'].includes(z.datum))fail('kot referansı geçersiz.');
+      if(z.datum!==undefined&&!['wall','eave','trim'].includes(z.datum))fail('kot referansı geçersiz.');
       if(z.layers!==undefined){if(!Array.isArray(z.layers)||z.layers.length>3)fail('alt katman listesi geçersiz.');const seen=new Set();for(const l of z.layers){if(!l||!LAYERS.some(d=>d.id===l.id)||seen.has(l.id)||!num(l.width,10,500)||!num(l.length,10,20000)||!num(l.overlapWidth,0,l.width-1)||!num(l.overlapLength,0,l.length-1)||!num(l.fire,0,100))fail('katman ölçüsü / bindirmesi geçersiz.');seen.add(l.id);}}
       if(z.vergeWidth!==undefined&&!num(z.vergeWidth,1,5000))fail('Alın V profil ölçüsü 1–5000 mm olmalı.');
       if(z.eaveRule&&(!num(z.eaveRule.gableMm,1,5000)||!num(z.eaveRule.sideMm,0,5000)))fail('Alın / yan saçak ölçüleri geçersiz.');
