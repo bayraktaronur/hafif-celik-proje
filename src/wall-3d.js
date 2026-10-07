@@ -23,9 +23,15 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    if(!r.slots.length||a<Math.min(...r.slots.map(p=>p.a))-.5||b>Math.max(...r.slots.map(p=>p.b))+.5)reasons.push(mesh.width+' cm pano duvar sınırına sığmıyor');
    if(holes.some(q=>q!==o&&q.b>a&&q.a<b))reasons.push(mesh.width+' cm pano başka açıklıkla çakışıyor');
    if(reasons.length){warnings.add(label+': '+reasons.join('; ')+'. Şematik gösteriliyor.');continue;}
-   models.push({o,a,b});const meta={kind:'windowSTL',partId:'opening:'+o.e.id,openingId:o.e.id,source:mesh.source,schematic:false};
+   const center=(o.a+o.b)/2,mid={x:r.ax+r.ux*center,y:r.ay+r.uy*center};
+   const rooms=(G.rooms||[]).filter(q=>q.tip!=='veranda').map(q=>(q.nodeIds||[]).map(getNode)).filter(q=>q.length>=3&&q.every(Boolean));
+   const inside=side=>rooms.some(poly=>ptInPolygon(mid.x-r.uy*side*6,mid.y+r.ux*side*6,poly));
+   const left=inside(1),right=inside(-1),insideSide=left!==right?(left?1:-1):null;
+   const flip=insideSide==null?1:insideSide/mesh.handleSide;
+   if(insideSide==null)warnings.add('Pencerenin iç tarafı kapalı oda sınırından belirlenemedi; kaynak model yönü korunuyor.');
+   models.push({o,a,b});const meta={kind:'windowSTL',partId:'opening:'+o.e.id,openingId:o.e.id,source:mesh.source,schematic:false,insideSide,handleSide:mesh.handleSide*flip};
    parts.push({...meta,widthMm:mesh.width*10,heightMm:mesh.height*10});
-   for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+mesh.vertices[i+j]-mesh.centerX,y=mesh.vertices[i+j+1]-mesh.wallCenterY;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:mesh.vertices[i+j+2]});}
+   for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+(mesh.vertices[i+j]-mesh.centerX)*flip,y=(mesh.vertices[i+j+1]-mesh.wallCenterY)*flip;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:mesh.vertices[i+j+2]});}
     const u={x:poly[1].x-poly[0].x,y:poly[1].y-poly[0].y,z:poly[1].z-poly[0].z},v={x:poly[2].x-poly[0].x,y:poly[2].y-poly[0].y,z:poly[2].z-poly[0].z},nx=u.y*v.z-u.z*v.y,ny=u.z*v.x-u.x*v.z,nz=u.x*v.y-u.y*v.x,L=Math.hypot(nx,ny,nz);
     const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?'#e3e0d3':material==='pvc'?'#ffffff':'#85b9cb';
     if(L>1e-8)surfaces.push({...meta,poly,color,material,alpha:material==='glass'?.38:1,shade:Math.abs(nz)/L>.9?1:.78+.18*Math.abs(ny)/L});
