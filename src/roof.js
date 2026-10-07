@@ -163,8 +163,9 @@
   }
   // Building walls belong to the floor plan, never to a roof's bounding box.
   function planStructure(){
-    const items=[],top=Number(G.opt.h)||280,roofFaces=model().faces;
-    for(const z of G.roofs){if(!z.childJoin)continue;const parent=G.roofs.find(p=>p.id===z.production?.parentId);if(!parent)continue;const joined=C.connectChild(z,parent);for(const poly of joined.childJoin.cladding||[])items.push({kind:'cladding',zone:z.id,poly,color:'#bbc2b5',shade:1});}
+    const items=[],top=Number(G.opt.h)||280,roofFaces=model().faces,betopan=Wall3D.panelColor;
+    const claddingShade=poly=>{const a=poly[0],b=poly.find(p=>Math.hypot(p.x-a.x,p.y-a.y)>.001)||a;return .78+.18*Math.abs(b.x-a.x)/Math.max(.001,Math.hypot(b.x-a.x,b.y-a.y));};
+    for(const z of G.roofs){if(!z.childJoin)continue;const parent=G.roofs.find(p=>p.id===z.production?.parentId);if(!parent)continue;const joined=C.connectChild(z,parent);for(const poly of joined.childJoin.cladding||[])items.push({kind:'cladding',zone:z.id,poly,color:betopan,shade:claddingShade(poly)});}
     for(const s of G.segs){
       if(s.tip==='veranda')continue;
       const a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)continue;
@@ -183,11 +184,19 @@
       else if(footprint.length===base.length){v={...v,y:footprint[i].y};w={...w,y:footprint[(i+1)%base.length].y};}
       const a=C.transform(z,v),b=C.transform(z,w),dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(!L)return;
       let nx=-dy/L,ny=dx/L;const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};if(C.pointIn(base,C.untransform(z,{x:mid.x+nx*.1,y:mid.y+ny*.1}))){nx=-nx;ny=-ny;}
-      const cuts=[0,1];for(const f of [...faces,...roofFaces])f.poly.forEach((p,j)=>{const q=f.poly[(j+1)%f.poly.length],ex=q.x-p.x,ey=q.y-p.y,D=dx*ey-dy*ex;if(Math.abs(D)<1e-8)return;const t=((p.x-a.x)*ey-(p.y-a.y)*ex)/D,u=((p.x-a.x)*dy-(p.y-a.y)*dx)/D;if(t>0&&t<1&&u>=0&&u<=1)cuts.push(t);});cuts.sort((a,b)=>a-b);
+      const otherFaces=G.roofs.filter(other=>other.id!==z.id&&other.group===z.group).flatMap(other=>C.zoneFaces(other));
+      const cuts=[0,1];for(const f of [...faces,...roofFaces,...otherFaces])f.poly.forEach((p,j)=>{const q=f.poly[(j+1)%f.poly.length],ex=q.x-p.x,ey=q.y-p.y,D=dx*ey-dy*ex;if(Math.abs(D)<1e-8)return;const t=((p.x-a.x)*ey-(p.y-a.y)*ex)/D,u=((p.x-a.x)*dy-(p.y-a.y)*dx)/D;if(t>0&&t<1&&u>=0&&u<=1)cuts.push(t);});cuts.sort((a,b)=>a-b);
       for(let j=1;j<cuts.length;j++){const t=cuts[j-1],u=cuts[j];if(u-t<1e-6)continue;const m={x:a.x+dx*(t+u)/2,y:a.y+dy*(t+u)/2};
-       if(G.roofs.some(other=>other.id!==z.id&&other.group===z.group&&C.contains(C.footprint(other),C.untransform(other,{x:m.x+nx*.1,y:m.y+ny*.1}))))continue;
+
        const f=faces.find(f=>C.contains(f.poly,m));if(!f)continue;const p={x:a.x+dx*t,y:a.y+dy*t},q={x:a.x+dx*u,y:a.y+dy*u},hp=Math.max(level,C.height(f,p)),hq=Math.max(level,C.height(f,q));if(Math.max(hp,hq)<=level+.01)continue;
-       items.push({kind:'cladding',zone:z.id,roofBoundary:true,poly:[{...p,z:level},{...q,z:level},{...q,z:hq},{...p,z:hp}],color:'#bbc2b5',shade:1});
+       let poly=[{...p,z:level},{...q,z:level},{...q,z:hq},{...p,z:hp}];
+       // A neighbouring footprint hides only the portion below its roof,
+       // not the whole gable. Keep exposed infill above lower roofs.
+       for(const cover of otherFaces.filter(f=>C.contains(f.poly,{x:m.x+nx*.1,y:m.y+ny*.1}))){
+        const clipped=[],delta=v=>v.z-C.height(cover,{x:v.x+nx*.1,y:v.y+ny*.1});
+        poly.forEach((v,k)=>{const w=poly[(k+1)%poly.length],a=delta(v),b=delta(w);if(a>=0)clipped.push(v);if((a>=0)!==(b>=0)){const t=a/(a-b);clipped.push({x:v.x+(w.x-v.x)*t,y:v.y+(w.y-v.y)*t,z:v.z+(w.z-v.z)*t});}});poly=clipped;if(poly.length<3)break;
+       }
+       if(poly.length>=3)items.push({kind:'cladding',zone:z.id,roofBoundary:true,poly,color:betopan,shade:claddingShade(poly)});
       }
      });
     }

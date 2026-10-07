@@ -644,3 +644,7 @@ Yeni proje (10) üst duvar kapanışında köşe payı ortak panel fazını5cm k
 ## 8 Ekim2026 — İş PC — DEV-065 /5.9.81
 
 Panel düzenle hızlı modu: sol tık menüsü ve komşu panele sürükleyerek yer değişimi. Mevcut panel işlemlerini kullanır; önceden desteklenen makas H mesnedi kaldırılırsa atomik reddeder. Özel uçlar ortak modül aksında bölünür;120.5=62.75+57.75 testi geçti. Serbest sürükleme/başka duvara transfer yok; komşu kapsamı. Panel-quick fare/menü/sürükle/rollback/undo/JSON ve prefab77/77. Rapor analizler/2026-10-08-hizli-panel.md. DEV-062 ayrı açık iş.
+
+## 8 Ekim2026 — İş PC — DEV-066/067 /5.9.82
+
+Baş makas kaplaması başka çatı plan sınırına denk geldiğinde tamamen siliniyordu; komşu yüzey yüksekliğiyle düşey kırpma eklendi, alçak çatı üstündeki kaplama kalır. Wall3D ortak betopan renk/gölgesi baş makas ve kot farkı kaplamasına bağlandı. roof-gable-cover,roof-gable-boundary,roof-soffit,roof-child-datum,wall-3d geçti.3referans/hash kaydedildi. Ekrandaki son çatılı JSON verilmediği için birebir boşluk teyidi yok. Omega ölçüleri soruldu; henüz yanıt yok, DEV-067 açık, model/metraj eklenmedi. Rapor analizler/2026-10-08-bas-makas.md.

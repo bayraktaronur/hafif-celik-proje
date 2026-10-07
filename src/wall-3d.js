@@ -1,6 +1,7 @@
 /* Plan-derived fabrication preview. Coordinates are centimetres. */
 (function(){
 'use strict';
+const panelColor='#e3e0d3';
 function build(){
  const surfaces=[],parts=[],warnings=new Set(),height=Number(G.opt.h)||280,A=pfAnaliz();
  function box(poly,z0,z1,color,meta){if(z1<=z0)return;
@@ -33,7 +34,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    parts.push({...meta,widthMm:mesh.width*10,heightMm:height*10});
    for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+(mesh.vertices[i+j]-mesh.centerX)*flip,y=(mesh.vertices[i+j+1]-mesh.wallCenterY)*flip;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:Math.abs(mesh.vertices[i+j+2]-mesh.height)<.001?height:mesh.vertices[i+j+2]});}
     const u={x:poly[1].x-poly[0].x,y:poly[1].y-poly[0].y,z:poly[1].z-poly[0].z},v={x:poly[2].x-poly[0].x,y:poly[2].y-poly[0].y,z:poly[2].z-poly[0].z},nx=u.y*v.z-u.z*v.y,ny=u.z*v.x-u.x*v.z,nz=u.x*v.y-u.y*v.x,L=Math.hypot(nx,ny,nz);
-    const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?'#e3e0d3':material==='pvc'?'#ffffff':'#85b9cb';
+    const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?panelColor:material==='pvc'?'#ffffff':'#85b9cb';
     if(L>1e-8)surfaces.push({...meta,poly,color,material,alpha:material==='glass'?.38:1,shade:Math.abs(nz)/L>.9?1:.78+.18*Math.abs(ny)/L});
    }
    warnings.add(label+' pano: STL pencere ölçüleri korunur; pano '+height+' cm. PVC beyaz; cam yarı saydam. Malzeme ayrımı geometriden tahmin edilir.');
@@ -47,7 +48,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    const xs=[a,b],zs=[0,height];for(const m of models){if(m.b>a&&m.a<b)xs.push(Math.max(a,m.a),Math.min(b,m.b));}for(const o of holes){if(o.b<=a||o.a>=b)continue;xs.push(Math.max(a,o.a),Math.min(b,o.b));zs.push(Math.max(0,Math.min(height,o.z)),Math.max(0,Math.min(height,o.top)));}
    xs.sort((a,b)=>a-b);zs.sort((a,b)=>a-b);
    for(let i=1;i<xs.length;i++)for(let j=1;j<zs.length;j++){const l=xs[i-1],u=xs[i],lo=zs[j-1],hi=zs[j];if(u-l<.001||hi-lo<.001||models.some(m=>(l+u)/2>m.a&&(l+u)/2<m.b)||holes.some(o=>(l+u)/2>o.a&&(l+u)/2<o.b&&(lo+hi)/2>o.z&&(lo+hi)/2<o.top))continue;
-    if(core==null)rect(r,l,u,-t/2,t/2,lo,hi,'#e3e0d3',meta);else{rect(r,l,u,-core/2,core/2,lo,hi,'#d8d4bd',{...meta,layer:'eps'});rect(r,l,u,-t/2,-core/2,lo,hi,'#e3e0d3',{...meta,layer:'betopan'});rect(r,l,u,core/2,t/2,lo,hi,'#e3e0d3',{...meta,layer:'betopan'});}
+    if(core==null)rect(r,l,u,-t/2,t/2,lo,hi,panelColor,meta);else{rect(r,l,u,-core/2,core/2,lo,hi,'#d8d4bd',{...meta,layer:'eps'});rect(r,l,u,-t/2,-core/2,lo,hi,panelColor,{...meta,layer:'betopan'});rect(r,l,u,core/2,t/2,lo,hi,panelColor,{...meta,layer:'betopan'});}
    }
   }
   for(const o of holes){if(models.some(m=>m.o===o))continue;const e=o.e,door=e.tip_==='kapi',cat=OpeningCatalog.find(c=>c.id===e.catalogId),style=cat?.style||e.kapiTip,cols=cat?.cols||(['surme','cift-kanat'].includes(e.penTip)||['cift','double','double-glass','sliding'].includes(style)?2:1),meta={kind:'opening',partId:'opening:'+e.id,openingId:e.id,schematic:true};
@@ -85,5 +86,5 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
  }
  return {surfaces,parts,warnings:[...warnings]};
 }
-window.Wall3D={build};
+window.Wall3D={build,panelColor};
 })();

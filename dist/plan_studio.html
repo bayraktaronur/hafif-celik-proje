@@ -5185,7 +5185,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.81',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.82',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6157,7 +6157,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.81';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.82';syncUI();draw();
 })();
 
 </script><script>
@@ -6673,6 +6673,7 @@ window.WindowSTLModels=[{"handleSide":-1,"materialIds":["panel","panel","panel",
 /* Plan-derived fabrication preview. Coordinates are centimetres. */
 (function(){
 'use strict';
+const panelColor='#e3e0d3';
 function build(){
  const surfaces=[],parts=[],warnings=new Set(),height=Number(G.opt.h)||280,A=pfAnaliz();
  function box(poly,z0,z1,color,meta){if(z1<=z0)return;
@@ -6705,7 +6706,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    parts.push({...meta,widthMm:mesh.width*10,heightMm:height*10});
    for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+(mesh.vertices[i+j]-mesh.centerX)*flip,y=(mesh.vertices[i+j+1]-mesh.wallCenterY)*flip;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:Math.abs(mesh.vertices[i+j+2]-mesh.height)<.001?height:mesh.vertices[i+j+2]});}
     const u={x:poly[1].x-poly[0].x,y:poly[1].y-poly[0].y,z:poly[1].z-poly[0].z},v={x:poly[2].x-poly[0].x,y:poly[2].y-poly[0].y,z:poly[2].z-poly[0].z},nx=u.y*v.z-u.z*v.y,ny=u.z*v.x-u.x*v.z,nz=u.x*v.y-u.y*v.x,L=Math.hypot(nx,ny,nz);
-    const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?'#e3e0d3':material==='pvc'?'#ffffff':'#85b9cb';
+    const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?panelColor:material==='pvc'?'#ffffff':'#85b9cb';
     if(L>1e-8)surfaces.push({...meta,poly,color,material,alpha:material==='glass'?.38:1,shade:Math.abs(nz)/L>.9?1:.78+.18*Math.abs(ny)/L});
    }
    warnings.add(label+' pano: STL pencere ölçüleri korunur; pano '+height+' cm. PVC beyaz; cam yarı saydam. Malzeme ayrımı geometriden tahmin edilir.');
@@ -6719,7 +6720,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    const xs=[a,b],zs=[0,height];for(const m of models){if(m.b>a&&m.a<b)xs.push(Math.max(a,m.a),Math.min(b,m.b));}for(const o of holes){if(o.b<=a||o.a>=b)continue;xs.push(Math.max(a,o.a),Math.min(b,o.b));zs.push(Math.max(0,Math.min(height,o.z)),Math.max(0,Math.min(height,o.top)));}
    xs.sort((a,b)=>a-b);zs.sort((a,b)=>a-b);
    for(let i=1;i<xs.length;i++)for(let j=1;j<zs.length;j++){const l=xs[i-1],u=xs[i],lo=zs[j-1],hi=zs[j];if(u-l<.001||hi-lo<.001||models.some(m=>(l+u)/2>m.a&&(l+u)/2<m.b)||holes.some(o=>(l+u)/2>o.a&&(l+u)/2<o.b&&(lo+hi)/2>o.z&&(lo+hi)/2<o.top))continue;
-    if(core==null)rect(r,l,u,-t/2,t/2,lo,hi,'#e3e0d3',meta);else{rect(r,l,u,-core/2,core/2,lo,hi,'#d8d4bd',{...meta,layer:'eps'});rect(r,l,u,-t/2,-core/2,lo,hi,'#e3e0d3',{...meta,layer:'betopan'});rect(r,l,u,core/2,t/2,lo,hi,'#e3e0d3',{...meta,layer:'betopan'});}
+    if(core==null)rect(r,l,u,-t/2,t/2,lo,hi,panelColor,meta);else{rect(r,l,u,-core/2,core/2,lo,hi,'#d8d4bd',{...meta,layer:'eps'});rect(r,l,u,-t/2,-core/2,lo,hi,panelColor,{...meta,layer:'betopan'});rect(r,l,u,core/2,t/2,lo,hi,panelColor,{...meta,layer:'betopan'});}
    }
   }
   for(const o of holes){if(models.some(m=>m.o===o))continue;const e=o.e,door=e.tip_==='kapi',cat=OpeningCatalog.find(c=>c.id===e.catalogId),style=cat?.style||e.kapiTip,cols=cat?.cols||(['surme','cift-kanat'].includes(e.penTip)||['cift','double','double-glass','sliding'].includes(style)?2:1),meta={kind:'opening',partId:'opening:'+e.id,openingId:e.id,schematic:true};
@@ -6757,7 +6758,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
  }
  return {surfaces,parts,warnings:[...warnings]};
 }
-window.Wall3D={build};
+window.Wall3D={build,panelColor};
 })();
 
 </script><script>
@@ -6937,8 +6938,9 @@ window.Wall3D={build};
   }
   // Building walls belong to the floor plan, never to a roof's bounding box.
   function planStructure(){
-    const items=[],top=Number(G.opt.h)||280,roofFaces=model().faces;
-    for(const z of G.roofs){if(!z.childJoin)continue;const parent=G.roofs.find(p=>p.id===z.production?.parentId);if(!parent)continue;const joined=C.connectChild(z,parent);for(const poly of joined.childJoin.cladding||[])items.push({kind:'cladding',zone:z.id,poly,color:'#bbc2b5',shade:1});}
+    const items=[],top=Number(G.opt.h)||280,roofFaces=model().faces,betopan=Wall3D.panelColor;
+    const claddingShade=poly=>{const a=poly[0],b=poly.find(p=>Math.hypot(p.x-a.x,p.y-a.y)>.001)||a;return .78+.18*Math.abs(b.x-a.x)/Math.max(.001,Math.hypot(b.x-a.x,b.y-a.y));};
+    for(const z of G.roofs){if(!z.childJoin)continue;const parent=G.roofs.find(p=>p.id===z.production?.parentId);if(!parent)continue;const joined=C.connectChild(z,parent);for(const poly of joined.childJoin.cladding||[])items.push({kind:'cladding',zone:z.id,poly,color:betopan,shade:claddingShade(poly)});}
     for(const s of G.segs){
       if(s.tip==='veranda')continue;
       const a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)continue;
@@ -6957,11 +6959,19 @@ window.Wall3D={build};
       else if(footprint.length===base.length){v={...v,y:footprint[i].y};w={...w,y:footprint[(i+1)%base.length].y};}
       const a=C.transform(z,v),b=C.transform(z,w),dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(!L)return;
       let nx=-dy/L,ny=dx/L;const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};if(C.pointIn(base,C.untransform(z,{x:mid.x+nx*.1,y:mid.y+ny*.1}))){nx=-nx;ny=-ny;}
-      const cuts=[0,1];for(const f of [...faces,...roofFaces])f.poly.forEach((p,j)=>{const q=f.poly[(j+1)%f.poly.length],ex=q.x-p.x,ey=q.y-p.y,D=dx*ey-dy*ex;if(Math.abs(D)<1e-8)return;const t=((p.x-a.x)*ey-(p.y-a.y)*ex)/D,u=((p.x-a.x)*dy-(p.y-a.y)*dx)/D;if(t>0&&t<1&&u>=0&&u<=1)cuts.push(t);});cuts.sort((a,b)=>a-b);
+      const otherFaces=G.roofs.filter(other=>other.id!==z.id&&other.group===z.group).flatMap(other=>C.zoneFaces(other));
+      const cuts=[0,1];for(const f of [...faces,...roofFaces,...otherFaces])f.poly.forEach((p,j)=>{const q=f.poly[(j+1)%f.poly.length],ex=q.x-p.x,ey=q.y-p.y,D=dx*ey-dy*ex;if(Math.abs(D)<1e-8)return;const t=((p.x-a.x)*ey-(p.y-a.y)*ex)/D,u=((p.x-a.x)*dy-(p.y-a.y)*dx)/D;if(t>0&&t<1&&u>=0&&u<=1)cuts.push(t);});cuts.sort((a,b)=>a-b);
       for(let j=1;j<cuts.length;j++){const t=cuts[j-1],u=cuts[j];if(u-t<1e-6)continue;const m={x:a.x+dx*(t+u)/2,y:a.y+dy*(t+u)/2};
-       if(G.roofs.some(other=>other.id!==z.id&&other.group===z.group&&C.contains(C.footprint(other),C.untransform(other,{x:m.x+nx*.1,y:m.y+ny*.1}))))continue;
+
        const f=faces.find(f=>C.contains(f.poly,m));if(!f)continue;const p={x:a.x+dx*t,y:a.y+dy*t},q={x:a.x+dx*u,y:a.y+dy*u},hp=Math.max(level,C.height(f,p)),hq=Math.max(level,C.height(f,q));if(Math.max(hp,hq)<=level+.01)continue;
-       items.push({kind:'cladding',zone:z.id,roofBoundary:true,poly:[{...p,z:level},{...q,z:level},{...q,z:hq},{...p,z:hp}],color:'#bbc2b5',shade:1});
+       let poly=[{...p,z:level},{...q,z:level},{...q,z:hq},{...p,z:hp}];
+       // A neighbouring footprint hides only the portion below its roof,
+       // not the whole gable. Keep exposed infill above lower roofs.
+       for(const cover of otherFaces.filter(f=>C.contains(f.poly,{x:m.x+nx*.1,y:m.y+ny*.1}))){
+        const clipped=[],delta=v=>v.z-C.height(cover,{x:v.x+nx*.1,y:v.y+ny*.1});
+        poly.forEach((v,k)=>{const w=poly[(k+1)%poly.length],a=delta(v),b=delta(w);if(a>=0)clipped.push(v);if((a>=0)!==(b>=0)){const t=a/(a-b);clipped.push({x:v.x+(w.x-v.x)*t,y:v.y+(w.y-v.y)*t,z:v.z+(w.z-v.z)*t});}});poly=clipped;if(poly.length<3)break;
+       }
+       if(poly.length>=3)items.push({kind:'cladding',zone:z.id,roofBoundary:true,poly,color:betopan,shade:claddingShade(poly)});
       }
      });
     }
