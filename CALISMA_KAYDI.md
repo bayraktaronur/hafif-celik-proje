@@ -512,3 +512,7 @@ Kot farkının üst kenarları Alın V görünüşüne ve yükleme hesabına ekl
 ## 7 Ekim 2026 — İş PC — 5.9.63 / DEV-049
 
 Mahya kapaması Alın V altında kalacak şekilde şematik yüzey sırası ve çizgi örtülmesi düzeltildi. Net metraj değişmedi. roof-trims piksel/ürün/JSON ve roof-panels-3d testleri geçti; ana/yavru ekran incelendi. Kullanıcı görseli hash ile kopyalandı. Rapor analizler/2026-10-07-mahya-alin-v-bindirme.md. DEV-043/047 ve önceki açık işler korunur.
+
+## 7 Ekim 2026 — İş PC — DEV-050 detaylı 3B talebi
+
+Kullanıcı plandaki tüm imalat detaylarını 3B istedi ve eksik teknik modelleri sağlayacağını belirtti. Kütle üretimi, panel motoru, şematik PVC görünüşü ve önceki kesit belirsizlikleri incelendi. Eksik profil/pano/PVC teknik paket listesi ve ortak veri üzerinden uygulama sırası analizler/2026-10-07-detayli-3b-imalat.md dosyasına kaydedildi. Teknik kaynaklar bekleniyor; uygulama değiştirilmedi, sürüm5.9.63. Diğer açık işler korunur.

@@ -12,6 +12,7 @@ Program **5.9.63**. [Mahya/Alın V bindirme sırası](analizler/2026-10-07-mahya
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-050 | Plana bağlı detaylı 3B imalat modeli | AÇIK: mevcut kütle kodu incelendi; H/U/köşe ve açıklıklı pano/PVC gerçek kesitleri bekleniyor. [Kapsam ve teknik paket](analizler/2026-10-07-detayli-3b-imalat.md). |
 | DEV-049 | Mahya Alın V altında | TAMAMLANDI: 5.9.63; kapama yüksekliği ve çizgi örtülmesi, roof-trims piksel testi ve 3B ekran kontrolü. |
 | DEV-048 | Kot farkında Alın V ve koyu mahya | TAMAMLANDI: 5.9.62; görünüş/metraj ortak kenarlar, malzemeye bağlı renk; roof-trims ve ilgili çatı/yükleme testleri geçti. |
 | DEV-047 | Alın V ve mahya ayrımı, 3B ve metraj | 5.9.61: şematik kapamalar, 220/400 seçimi (varsayılan220), ayrı stok ve tek U toplamı tamamlandı. Mahya stok/bindirme ve tam profil büküm ölçüleri bekliyor. |
