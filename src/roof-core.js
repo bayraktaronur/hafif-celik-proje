@@ -168,7 +168,7 @@
       if(z.wallTop!==undefined&&!num(z.wallTop,0,20000))fail('duvar üst kotu geçersiz.');
       if(z.floorLevel!==undefined&&(!num(z.floorLevel,0,20000)||z.floorLevel>=(z.wallTop??z.h)))fail('döşeme kotu duvar üstünden aşağıda olmalı.');
       const m=mat.get(z.material);if(!m||!num(z.width,10,500)||(m.unit==='sheet'&&!m.widths.includes(z.width))||!num(z.packageArea,.1,100)||!num(z.fire,0,100)||!num(z.allowance,0,100)||!num(z.maxLength,0,20000)||!num(z.lap,0,200)||z.maxLength>0&&z.maxLength<=z.lap)fail('kaplama eni, boyu veya bindirmesi geçersiz.');
-    }for(const z of zones)if(z.production?.role==='child'&&!zones.some(p=>p.id===z.production.parentId&&p.id!==z.id&&p.production?.role!=='child'))fail('yavru çatının ana çatı bağlantısı geçersiz.');return true;
+    }for(const z of zones){const seen=new Set([z.id]);let current=z;while(current.production?.role==='child'){const parent=zones.find(p=>p.id===current.production.parentId);if(!parent||seen.has(parent.id))fail('yavru çatının bağlantısı eksik veya döngülü.');seen.add(parent.id);current=parent;}}return true;
   }
   function faces(zones){
     const raw=zones.flatMap(zoneFaces),out=[];

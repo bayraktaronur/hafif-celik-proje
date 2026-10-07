@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.59
+# Prefabrikten Plan Studio · 5.9.60
+
+5.9.60: İkinci yavru çatı mevcut yavrunun kenarına da bağlanabilir. İlk tıklama en yakın bağlantı kenarını seçer ve bölüm adını gösterir; model bağlı çatıyı önce hesaplar. [Rapor ve kontroller](analizler/2026-10-07-ikinci-yavru-cati.md).
 
 5.9.59: Makas aksları referans alınarak köşe payları ve uç kesimler birlikte güncellenir; panel adetleri ve ara panel ölçüleri korunur. Plan/CAD köşe geometrisi ortak, kademeli çizim payları doğrulanır. Yavru U üçüncü noktası uzaktaki duvar hizasına yakalanır ve ana kenara dik döner. [Testler ve kalan özel pano mesnetleri](analizler/2026-10-07-makas-kose-uyumu.md).
 

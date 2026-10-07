@@ -494,3 +494,8 @@ DEV-043 açık: 4 Ekim son canlı ana/yavru çatı JSON'u ortak depoda yok. Yeni
 Paket testleri geçti; eski PNG testleri mevcut çıktı diyaloguna uyarlandı. Kaynak/dağıtım production-direction, roof-child-snap, roof-child-u, roof-snap, roof-workflow; PDF/DXF, H/köşe ve yükleme kontrolleri başarılı. 80 ve49 pano korunuyor, ara ölçüler değişmiyor; özel pencere/mesnet uyarıları DEV-011’de açık. CSV/XLSX revizyonu artık kayıttan alınır. Beş kaynak görsel orijinalleri korunarak hash ile kopyalandı. Rapor: analizler/2026-10-07-makas-kose-uyumu.md; envanter: analizler/2026-10-07-makas-kose-kaynaklari.json.
 
 DEV-043 son canlı JSON hâlâ bekliyor; açık tarayıcı çizimi değiştirilmedi. İlgisiz eski pano görseli commit dışında korundu. Önceki DEV-006/007/008/011/033/034/036/038 işleri tamamlandı sayılmadı. Sonraki adım kullanıcının Kaydet JSON’u ile gerçek planı doğrulamak; kod/karar/referans teslimini main’e gönderip uzak SHA eşitliğini kontrol etmek.
+
+
+## 7 Ekim 2026 — İş PC — 5.9.60 / DEV-046
+
+Kullanıcı ilk yavrudan sonra ikinci yavru köşelerinin seçilmediğini gösterdi. Hedef listesi/model yalnız ana çatı kabul ediyordu; görselde ilk yavrunun dış kenarına tıklanıyordu. Liste ana+yavru, ilk tıklamada en yakın hedef ve adı, çizim boyunca sabit hedef; bağımlılık sırasıyla senkronizasyon, eksik/döngülü bağ kontrolü eklendi. roof-child-chain üç ardışık yavruyu kardeş/zincir şeklinde, undo/redo/JSON ve ters kayıt sırasıyla doğruladı. Çatı/snap/U/workflow/yön/başmakas/yükleme ilgili testleri geçti. Kaynak görsel hash ile korundu. Rapor analizler/2026-10-07-ikinci-yavru-cati.md. Önceki 5.9.59 numarası tekrar kullanılmadı; 5.9.60 build hazır. Canlı çizim değiştirilmedi; DEV-043/011 ve diğer açık işler korunur.

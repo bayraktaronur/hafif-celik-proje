@@ -43,5 +43,11 @@
     "source": "cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json",
     "sha256": "43862690c526c8ac6a13de8f8242fcee9d9f4a7c63d6c57e80b600efc92b719f",
     "status": "mevcut yedek, son canli plan oldugu dogrulanmadi"
+  },
+  {
+    "source": "C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-e1437ae0-e823-4940-a7a1-ac22ec7aa5b5.png",
+    "target": "referanslar/2026-10-07-makas-kose-u/06-ikinci-yavru-reddi.png",
+    "sha256": "65a8edfc704b03d4a4d5a6f0be9a3d86436177fae77bdcdf60f9f87f7f277d78",
+    "verified": true
   }
 ]
