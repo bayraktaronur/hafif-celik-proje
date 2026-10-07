@@ -12,6 +12,7 @@ Program **5.9.75**. [Saçak alt uç kotu](analizler/2026-10-07-sacak-alt-kot.md)
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-059 | Dört nokta sonrası yavru oluşmuyor | AÇIK: yaklaşık ölçüyle dar ana çatı / geniş yavru birleşim reddi üretildi; eski/yeni kot aynı. Kesin teşhis için kullanıcının güncel JSON çizimi gerekli. [İnceleme](analizler/2026-10-07-yavru-baglanti-inceleme.md). |
 | DEV-058 | Saçak alt ucunun duvar kotunda bitmesi | TAMAMLANDI 5.9.75: yeni trim kotu/12 cm kapama; 30-40 cm taşma sabit. Eski ana/yavrulara tek düğme ve undo; veranda bağlantıları hariç. [Rapor](analizler/2026-10-07-sacak-alt-kot.md). |
 | DEV-057 | Alın / yan saçak ayrımı | TAMAMLANDI 5.9.74: yeni 220/300 mm; 220/400 ve 300/400 + özel; eski JSON otomatik değişmez, bölüm bazlı uygulama/undo. Bağlı U uçları yeni kenara taşınır. [Rapor](analizler/2026-10-07-sacak-ayrimi.md). |
 | DEV-056 | Alın V montaj kesiti | KISMEN: 5.9.73 üst 8 / ön 12 / alt 22-40 cm; test geçti. Dudaklar, kesit doğrultusu teyidi, omega/trapez ayrıntıları açık. [Rapor](analizler/2026-10-07-alin-v-montaj.md). |
