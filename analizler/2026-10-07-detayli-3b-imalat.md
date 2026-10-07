@@ -13,3 +13,9 @@ Tercih: ölçülü kesit DXF ve okunabilir PDF; gerçek katı model STEP/STP, g�
 Uygulama sırası: ortak panel/parça kimliklerinden 3B geometri; açıklıklı panolar ve PVC/kapı; doğrulanmış kesitlerden H/U/köşe; çatı kaldırma ve parça seçimiyle plan/metraj eşlemesi. Panel ve açıklık adet/ölçüleri ortak veriden doğrulanacak; bilinmeyen büküm ve montaj ayrıntıları uydurulmayacak.
 
 Durum: teknik paket bekleniyor. Henüz detaylı 3B imalat özelliği uygulanmadı. Canlı çizime müdahale edilmedi; DEV-043 güncel JSON hâlâ doğrulanmadı.
+
+## İlk teknik paket alındı
+
+Standart en1250 mm; yükseklikler2500/2800/3000 mm. 10luk panel8+80+8=96 mm, 6lık panel8+40+8=56 mm. Nadir panel8+130+8=146 mm; kullanıcı adını yine6lık yazdı, 15lik eşlemesi soruldu ve henüz teyit edilmedi. H/H3 sacı1 mm. Görseller birleşim biçimlerini ve çatı omega/saçak kesitini gösteriyor; ölçüsüz çizgilerden kesit ölçüsü türetilmedi. Köşedeki100/50/70/30 mm yazıları korunuyor; hangi yüz/uzantıya ait olduğu ve köşe sac kalınlığı teyit bekliyor. H kanat/net kanal ölçüleri soruldu.
+
+Kesin değerler analizler/2026-10-07-panel-uretim-olculeri.json dosyasında ayrı üretim referansı; uygulamaya henüz bağlanmadı. Dört görsel orijinalleri korunarak referanslar/2026-10-07-panel-birlesim klasörüne kopyalandı, hash envanteri doğrulandı. Planın nominal kalınlıkları ve1255 mm aks modülü, gerçek panel1250 mm ile karıştırılmayacak.

@@ -516,3 +516,7 @@ Mahya kapaması Alın V altında kalacak şekilde şematik yüzey sırası ve ç
 ## 7 Ekim 2026 — İş PC — DEV-050 detaylı 3B talebi
 
 Kullanıcı plandaki tüm imalat detaylarını 3B istedi ve eksik teknik modelleri sağlayacağını belirtti. Kütle üretimi, panel motoru, şematik PVC görünüşü ve önceki kesit belirsizlikleri incelendi. Eksik profil/pano/PVC teknik paket listesi ve ortak veri üzerinden uygulama sırası analizler/2026-10-07-detayli-3b-imalat.md dosyasına kaydedildi. Teknik kaynaklar bekleniyor; uygulama değiştirilmedi, sürüm5.9.63. Diğer açık işler korunur.
+
+## 7 Ekim 2026 — DEV-050 ilk panel/birleşim teknik paketi
+
+Standart panel katmanları96/56/146 mm,1250 en,2500/2800/3000 yükseklik ve H1 mm sac kaydedildi. Nadir146 mm panelin nominal adı çelişkili; H kanat/kanal ve köşe sac/ölçü yorumları kullanıcıya soruldu. Dört kaynak görsel kopyalanıp SHA256 doğrulandı. analizler/2026-10-07-panel-uretim-olculeri.json henüz uygulamaya bağlı olmayan referanstır. Kod ve canlı plan değiştirilmedi, sürüm5.9.63; DEV-050 açık.

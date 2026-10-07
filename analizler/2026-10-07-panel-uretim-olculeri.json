@@ -1,0 +1,52 @@
+{
+  "units": "mm",
+  "source": "Kullanıcının 7 Ekim 2026 açıklaması ve panel-birlesim referansları",
+  "panelWidth": 1250,
+  "panelHeights": [
+    2500,
+    2800,
+    3000
+  ],
+  "panels": [
+    {
+      "nominalCm": 10,
+      "layers": [
+        8,
+        80,
+        8
+      ],
+      "actualThickness": 96
+    },
+    {
+      "nominalCm": 6,
+      "layers": [
+        8,
+        40,
+        8
+      ],
+      "actualThickness": 56
+    },
+    {
+      "nominalCm": null,
+      "reportedNominalCm": 6,
+      "proposedNominalCm": 15,
+      "nominalStatus": "confirmation_required",
+      "layers": [
+        8,
+        130,
+        8
+      ],
+      "actualThickness": 146
+    }
+  ],
+  "facingMaterial": "Betopan",
+  "coreMaterial": "Yüksek yoğunluklu polystyrene / strafor",
+  "hSheetThickness": 1,
+  "missing": [
+    "H/H3 kanat genişlikleri ve net kanal ölçüleri",
+    "Köşe direği sac kalınlığı",
+    "Köşe 100×50 gövde, 70/30 uzantı yorumunun teyidi",
+    "146 mm ürün nominal adı"
+  ],
+  "note": "Plan yerleşim modülü ve nominal duvar ölçüsü bu üretim kalınlıklarıyla otomatik değiştirilmez; JSON üretim referansıdır, uygulamaya bağlanmış katalog değildir."
+}
