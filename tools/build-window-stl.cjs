@@ -3,7 +3,11 @@ const root=path.resolve(__dirname,'..'),models=[];
 for(const [key,file,width] of [
  ['160x120','rev4/160-120 pencereli panel-h250cm.stl',166],
  ['160x180','rev6/160-180 pencereli panel-h250cm.stl',166],
- ['120x120','120-120 pencereli panel-h250cm.stl',125]
+ ['120x120','120-120 pencereli panel-h250cm.stl',125],
+ ['120x180','120-180 pencereli panel-h250cm.stl',125],
+ ['50x180','50-180 pencereli panel-h250cm.stl',125],
+ ['60x40','60-40 vasistaslı panel-h250cm.stl',125],
+ ['80x125','80-125 pencereli panel-h250cm.stl',125]
 ]){
  const source='referanslar/2026-10-07-pencere-stl/'+file,b=fs.readFileSync(path.join(root,source)),vertices=[],min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
  if(b.length!==84+b.readUInt32LE(80)*50)throw Error('Invalid binary STL');
