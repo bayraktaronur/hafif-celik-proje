@@ -107,7 +107,7 @@
   if(options.parentId&&options.openU){
    const parent=G.roofs.find(z=>z.id===options.parentId);
    let z=R.make({name:'Yavru çatı '+(G.roofs.length+1),type:options.type,pitch:options.pitch,h:options.h,eaves:[options.eave,0,options.eave,options.eave],childJoin:{points:points.map(p=>({x:p.x,y:p.y}))},production:{role:'child',parentId:options.parentId,relative:0}});
-   z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;if(options.eaveRule){z.datum='trim';z.fasciaDepth=12;}applyEaveRule(z);z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;C.validate([...G.roofs,z],G.roofMaterials);return z;
+   z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;if(options.eaveRule){z.datum=parent?(parent.datum??'wall'):'trim';z.fasciaDepth=parent?(parent.fasciaDepth??(z.datum==='trim'?12:15)):12;}applyEaveRule(z);z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;C.validate([...G.roofs,z],G.roofMaterials);return z;
   }
   const ps=simplify(points),world=ps;const x=Math.min(...ps.map(p=>p.x)),y=Math.min(...ps.map(p=>p.y)),w=Math.max(...ps.map(p=>p.x))-x,d=Math.max(...ps.map(p=>p.y))-y;
   const parent=G.roofs.find(z=>z.id===options.parentId),local=ps.map(p=>({x:p.x-x,y:p.y-y}));C.checkOutline(local);

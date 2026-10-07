@@ -1,0 +1,268 @@
+{
+  "v": "5",
+  "revision": "5.9.75",
+  "projectName": "Yeni proje",
+  "sheetInfo": {},
+  "loading": {
+    "adjustments": [],
+    "manual": []
+  },
+  "sistem": "prefabrik",
+  "catiYon": "yatay",
+  "opt": {
+    "h": 250,
+    "dis": 10,
+    "ic": 6,
+    "alciDuvar": "yok",
+    "cephe": "yok",
+    "plaka": "40x250",
+    "bindirme": 3,
+    "cepheFire": 5,
+    "cati": "besik",
+    "egim": 33,
+    "sacak": 30,
+    "trapezEn": 100,
+    "kaplama": "trapez",
+    "osb": false,
+    "catiFire": 5,
+    "suRulo": 75,
+    "suBindirme": 10,
+    "parcaBoy": 200,
+    "parcaBind": 10,
+    "vidaM2": 5,
+    "inisAralik": 10,
+    "aksAcik": false
+  },
+  "n": [
+    {
+      "id": "e26",
+      "x": -627.5,
+      "y": -313.75
+    },
+    {
+      "id": "e27",
+      "x": 376.5,
+      "y": -313.75
+    },
+    {
+      "id": "e29",
+      "x": 376.5,
+      "y": 574.75
+    },
+    {
+      "id": "e31",
+      "x": -188.25,
+      "y": 574.75
+    },
+    {
+      "id": "e33",
+      "x": -188.25,
+      "y": 256
+    },
+    {
+      "id": "e35",
+      "x": -627.5,
+      "y": 256
+    }
+  ],
+  "s": [
+    {
+      "id": "e28",
+      "n1": "e26",
+      "n2": "e27",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e30",
+      "n1": "e27",
+      "n2": "e29",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "e32",
+      "n1": "e29",
+      "n2": "e31",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e34",
+      "n1": "e31",
+      "n2": "e33",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e36",
+      "n1": "e33",
+      "n2": "e35",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e37",
+      "n1": "e35",
+      "n2": "e26",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true
+    }
+  ],
+  "e": [],
+  "r": [
+    {
+      "id": "e38",
+      "sig": "e26,e27,e29,e31,e33,e35",
+      "nodeIds": [
+        "e29",
+        "e31",
+        "e33",
+        "e35",
+        "e26",
+        "e27"
+      ],
+      "area": 75.20430625,
+      "cx": -72.92908957216463,
+      "cy": 77.46365433154634,
+      "ad": "Oda 1",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 62.75,
+      "ly": 19.4375
+    }
+  ],
+  "annotations": [],
+  "fixtures": [],
+  "counters": [],
+  "roofs": [
+    {
+      "id": "roof_muyl0nen_m17rs",
+      "name": "Ana çatı 1",
+      "type": "besik",
+      "group": "roof_muyl0nen_m17rs",
+      "x": -632.5,
+      "y": -318.75,
+      "w": 1014,
+      "d": 579.75,
+      "h": 250,
+      "angle": 0,
+      "pitch": 33,
+      "ridge": 50,
+      "eaves": [
+        22,
+        22,
+        30,
+        30
+      ],
+      "material": "trapez",
+      "width": 100,
+      "packageArea": 2.52,
+      "fire": 5,
+      "allowance": 0,
+      "maxLength": 0,
+      "lap": 20,
+      "parapet": 0,
+      "gutters": true,
+      "layers": [],
+      "datum": "eave",
+      "wallTop": 250,
+      "floorLevel": 0,
+      "outline": [
+        {
+          "x": 1014,
+          "y": 0
+        },
+        {
+          "x": 1014,
+          "y": 579.75
+        },
+        {
+          "x": 0,
+          "y": 579.75
+        },
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "boundaryRefs": [
+        null,
+        null,
+        null,
+        {
+          "nodeId": "e26",
+          "dx": -5,
+          "dy": -5
+        }
+      ],
+      "edgeEaves": [
+        22,
+        30,
+        22,
+        30
+      ],
+      "joinEdges": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "production": {
+        "role": "main",
+        "parentId": "",
+        "relative": 0
+      },
+      "eaveRule": {
+        "gableMm": 220,
+        "sideMm": 300
+      },
+      "vergeWidth": 220
+    }
+  ],
+  "roofMaterials": [],
+  "ky": 250,
+  "dy": 320,
+  "fire": 10,
+  "settings": {
+    "panelDrawMode": "mixed",
+    "trussOverrides": [],
+    "snapGrid": true,
+    "snapWall": true,
+    "pnlEtiket": true,
+    "makasGoster": true,
+    "ortho": false,
+    "panelSync": true,
+    "moveAlign": false,
+    "moveModule": false,
+    "moduleAxisSnap": true,
+    "snapTargets": {},
+    "gridCm": 62.75,
+    "defaultK": 10,
+    "elStep": 5,
+    "freeSnapStep": 5,
+    "selectionMode": "wall",
+    "olcuModu": "panel",
+    "duvarYakala": "h",
+    "inputUnit": "panel"
+  }
+}

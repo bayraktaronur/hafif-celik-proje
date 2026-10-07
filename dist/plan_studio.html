@@ -5153,7 +5153,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.75',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.76',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6069,7 +6069,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.75';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.76';syncUI();draw();
 })();
 
 </script><script>
@@ -7072,7 +7072,7 @@ window.Wall3D={build};
   if(options.parentId&&options.openU){
    const parent=G.roofs.find(z=>z.id===options.parentId);
    let z=R.make({name:'Yavru çatı '+(G.roofs.length+1),type:options.type,pitch:options.pitch,h:options.h,eaves:[options.eave,0,options.eave,options.eave],childJoin:{points:points.map(p=>({x:p.x,y:p.y}))},production:{role:'child',parentId:options.parentId,relative:0}});
-   z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;if(options.eaveRule){z.datum='trim';z.fasciaDepth=12;}applyEaveRule(z);z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;C.validate([...G.roofs,z],G.roofMaterials);return z;
+   z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;if(options.eaveRule){z.datum=parent?(parent.datum??'wall'):'trim';z.fasciaDepth=parent?(parent.fasciaDepth??(z.datum==='trim'?12:15)):12;}applyEaveRule(z);z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;C.validate([...G.roofs,z],G.roofMaterials);return z;
   }
   const ps=simplify(points),world=ps;const x=Math.min(...ps.map(p=>p.x)),y=Math.min(...ps.map(p=>p.y)),w=Math.max(...ps.map(p=>p.x))-x,d=Math.max(...ps.map(p=>p.y))-y;
   const parent=G.roofs.find(z=>z.id===options.parentId),local=ps.map(p=>({x:p.x-x,y:p.y-y}));C.checkOutline(local);
