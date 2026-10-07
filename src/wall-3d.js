@@ -12,11 +12,17 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
 
  function openings(r){return r.items.flatMap(it=>G.elemanlar.filter(e=>e.segId===it.seg.id).map(e=>{const a=it.rev?it.off+it.L-e.t*it.L-e.en:it.off+e.t*it.L,z=e.tip_==='kapi'?0:210-e.yuk;return {e,a,b:a+e.en,z,top:z+e.yuk};}));}
  for(const r of A.runs){const holes=openings(r),models=[];
-  for(const o of holes){if(o.e.tip_!=='pencere'||Math.abs(o.e.en-160)>.01||Math.abs(o.e.yuk-120)>.01||!window.WindowSTL)continue;
+  for(const o of holes){if(o.e.tip_!=='pencere')continue;
+   const label=Number(o.e.en)+'×'+Number(o.e.yuk)+' cm';
+   if(Math.abs(o.e.en-160)>.01||Math.abs(o.e.yuk-120)>.01){warnings.add(label+': gerçek STL henüz bağlı değil; şematik pencere.');continue;}
+   if(!window.WindowSTL){warnings.add(label+': STL kaynağı yüklenemedi; şematik pencere.');continue;}
    const a=(o.a+o.b)/2-83,b=a+166;
-   if(height!==250||r.slots.some(p=>p.b>a&&p.a<b&&p.k!==10)||!r.slots.length||a<r.slots[0].a-.5||b>r.slots[r.slots.length-1].b+.5||holes.some(q=>q!==o&&q.b>a&&q.a<b)){
-    warnings.add('160×120 STL için 250 cm yüksekliğinde 10’luk duvar ve çakışmasız 166 cm pano alanı gerekir; bu açıklık temsilî gösterilir.');continue;
-   }
+   const reasons=[];
+   if(Math.abs(height-250)>.01)reasons.push('duvar yüksekliği '+height+' cm; model 250 cm');
+   if(r.slots.some(p=>p.b>a&&p.a<b&&Number(p.k)!==10))reasons.push('model 10’luk duvar içindir');
+   if(!r.slots.length||a<Math.min(...r.slots.map(p=>p.a))-.5||b>Math.max(...r.slots.map(p=>p.b))+.5)reasons.push('166 cm pano duvar sınırına sığmıyor');
+   if(holes.some(q=>q!==o&&q.b>a&&q.a<b))reasons.push('166 cm pano başka açıklıkla çakışıyor');
+   if(reasons.length){warnings.add(label+': '+reasons.join('; ')+'. Şematik gösteriliyor.');continue;}
    models.push({o,a,b});const mesh=WindowSTL,meta={kind:'windowSTL',partId:'opening:'+o.e.id,openingId:o.e.id,source:mesh.source,schematic:false};
    parts.push({...meta,widthMm:1660,heightMm:2500});
    for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+mesh.vertices[i+j]-mesh.centerX,y=mesh.vertices[i+j+1]-mesh.wallCenterY;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:mesh.vertices[i+j+2]});}
