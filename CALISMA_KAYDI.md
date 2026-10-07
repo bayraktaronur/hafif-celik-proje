@@ -582,3 +582,16 @@ Kullanıcı250cm/10luk duvarda hâlâ şematik pencere gördü. Canlı file:// s
 ## 7 Ekim 2026 — İş PC — DEV-055 /5.9.72
 
 5.9.72: Kullanıcı280/300cm panoları yeniden çizmek yerine programda uyarlamamızı istedi. Yedi250cm kaynak STLde220cm üzerinde yalnız250cm üst kenar düğümleri olduğu ve bu düğümlerin yalnızpanel malzemesine ait olduğu kontrol edildi. Runtime250cm üst kenar düğümlerini seçilen280/300kota taşır; diğer tüm koordinatlar korunur. Pencere/PVC/cam/kol boyutları,zeminden kotları,en,kalınlık,malzemeler ve içe dönüş kuralı değişmez; üst dolu pano30/50cm uzar. KopyaSTLler ölçeklenmedi veya üzerine yazılmadı. Parça metadata gerçek pano yüksekliği,kaynak250ve uzatma miktarını taşır. Özel275gibi diğer yükseklikler henüz uyarlanmıyor; açıklayıcı şematik fallback korunur. Mevcut10luk duvar kapsamı sürer. window-stl21model/yükseklik durumu(7×280/300/250): topoloji,üst kenar dışında tüm koordinatlar,cam/PVC koordinatları,kaynak veplan değişmezliği,gerçekyükseklik ve şematik tekrar olmaması; wall-3d regresyonu geçti. artifacts/window-stl-300.png incelendi. Kullanıcının canlı planına müdahale edilmedi. İlk karşılaştırma testi yavaş olduğu için durduruldu,aynı yüzleri indeksle karşılaştıran test başarılı tamamlandı.
+
+## 7 Ekim 2026 — İş PC — DEV-056 / 5.9.73
+
+Kaynak: kullanıcının dört montaj görseli, ../referanslar/2026-10-07-alin-v-montaj/envanter.json içinde kaynak yolları ve SHA-256 kayıtlı. Orijinaller korundu.
+
+Üst kanat artık 8 cm; ön kapama 12 cm; alt dönüş 22/40 cm. Önceki 22/40 cm üst bant ve 6,8 cm ön yüz kaldırıldı. Alt dönüş çatı içine uzanır; ana/yavru çatı kot farkında yüksek çatı yüzüne bağlanır. Mahya daha aşağıda kalır. Saçak taşması, çatı alanı ve stok/metraj uzunlukları değişmez.
+
+Sınırlar: 12 cm bu sürümde düşey yükseklik olarak uygulanır; eğimli kenara dik net kesit yorumu ayrıca doğrulanmalıdır. Küçük dönüş dudaklarının ölçüleri ve büküm yarıçapları verilmedi; uydurulmadı. Sac yüzeyleri sıfır kalınlıklı görselleştirilir, stok kaydı 0,50 mm kalır. Omega/trapez gerçek kesit geometrileri henüz bu modelde yoktur; montajın bu parçalarla çakışma kontrolü yapılmış değildir. Verilen görsellere göre kapama yerleşimi geliştirilmiştir, tam imalat modeli tamamlandı sayılmaz.
+
+Kontroller: roof-trims; 8 cm sabit üst kanat, 22/40 cm alt dönüş ve 12 cm ön yüz koordinatları, undo/JSON, alan ve taşma değişmezliği, stok satırları, kot farkı ve mahya örtülmesi geçti. Bağımsız ana/yavru çatı ekranı incelendi. Canlı çizime müdahale edilmedi.
+
+Sıradaki: kenar dudak ölçüleri, 12 cm ölçü doğrultusu ve omega/trapez kesitleriyle montajı tamamlamak.
+

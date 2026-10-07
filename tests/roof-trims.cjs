@@ -2,7 +2,16 @@ const assert=require('node:assert/strict'),path=require('path'),{pathToFileURL}=
 (async()=>{const b=await pw.chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{const p=await b.newPage({viewport:{width:1550,height:1050}}),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(pathToFileURL(path.resolve('dist/plan_studio.html')).href);
 await p.evaluate(()=>{Studio.loadProject({v:'5',sistem:'prefabrik',n:[],s:[],e:[],r:[]});RoofStudio.open();RoofStudio.add(RoofStudio.make({id:'a',w:1000,d:800,h:280,pitch:33}));});
 const before=await p.evaluate(()=>({area:RoofStudio.model().area,eaves:G.roofs[0].eaves,trim:RoofStudio.trimSurfaces(RoofStudio.model()).map(x=>x.kind)}));assert.ok(before.trim.includes('ridgeCap'));assert.ok(before.trim.includes('vergeTrim'));assert.equal(await p.inputValue('#rz_vergeWidth'),'220');
+// Measured cross section on an isolated gable: top stays 8, bottom follows stock variant.
+async function section(){return p.evaluate(()=>{
+ const m=RoofStudio.model(),e=m.edges.find(e=>e.type==='verge'),L=Math.hypot(e.q.x-e.p.x,e.q.y-e.p.y);
+ const distance=p=>Math.abs((e.q.x-e.p.x)*(p.y-e.p.y)-(e.q.y-e.p.y)*(p.x-e.p.x))/L;
+ const surfaces=RoofStudio.trimSurfaces({...m,edges:[e]});
+ return {top:Math.max(...surfaces.filter(s=>s.kind==='vergeTrim').flatMap(s=>s.poly.map(distance))),bottom:Math.max(...surfaces.filter(s=>s.kind==='vergeBottom').flatMap(s=>s.poly.map(distance))),web:surfaces.find(s=>s.kind==='vergeLip').poly};
+ });}
+let cross=await section();assert.ok(Math.abs(cross.top-8)<1e-6);assert.ok(Math.abs(cross.bottom-22)<1e-6);assert.ok(Math.abs(cross.web[0].z-cross.web[3].z-12)<1e-6);
 await p.selectOption('#rz_vergeWidth','400');await p.locator('#roofForm button[type=submit]').click();
+cross=await section();assert.ok(Math.abs(cross.top-8)<1e-6);assert.ok(Math.abs(cross.bottom-40)<1e-6);
 assert.equal(await p.evaluate(()=>G.roofs[0].vergeWidth),400);assert.equal(await p.evaluate(()=>RoofStudio.model().area),before.area);assert.deepEqual(await p.evaluate(()=>G.roofs[0].eaves),before.eaves);
 await p.evaluate(()=>geriAl());assert.equal(await p.evaluate(()=>G.roofs[0].vergeWidth??220),220);await p.evaluate(()=>ileriAl());
 const saved=await p.evaluate(()=>Studio.state());await p.evaluate(d=>Studio.loadProject(d),saved);assert.equal(await p.evaluate(()=>G.roofs[0].vergeWidth),400);
