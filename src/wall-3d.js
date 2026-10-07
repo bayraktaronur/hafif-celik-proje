@@ -14,22 +14,22 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
  for(const r of A.runs){const holes=openings(r),models=[];
   for(const o of holes){if(o.e.tip_!=='pencere')continue;
    const label=Number(o.e.en)+'×'+Number(o.e.yuk)+' cm';
-   if(Math.abs(o.e.en-160)>.01||Math.abs(o.e.yuk-120)>.01){warnings.add(label+': gerçek STL henüz bağlı değil; şematik pencere.');continue;}
-   if(!window.WindowSTL){warnings.add(label+': STL kaynağı yüklenemedi; şematik pencere.');continue;}
-   const a=(o.a+o.b)/2-83,b=a+166;
+   const mesh=(window.WindowSTLModels||[]).find(m=>m.key===Number(o.e.en)+'x'+Number(o.e.yuk));
+   if(!mesh){warnings.add(label+': gerçek STL henüz bağlı değil; şematik pencere.');continue;}
+   const a=(o.a+o.b)/2-mesh.width/2,b=a+mesh.width;
    const reasons=[];
    if(Math.abs(height-250)>.01)reasons.push('duvar yüksekliği '+height+' cm; model 250 cm');
    if(r.slots.some(p=>p.b>a&&p.a<b&&Number(p.k)!==10))reasons.push('model 10’luk duvar içindir');
-   if(!r.slots.length||a<Math.min(...r.slots.map(p=>p.a))-.5||b>Math.max(...r.slots.map(p=>p.b))+.5)reasons.push('166 cm pano duvar sınırına sığmıyor');
-   if(holes.some(q=>q!==o&&q.b>a&&q.a<b))reasons.push('166 cm pano başka açıklıkla çakışıyor');
+   if(!r.slots.length||a<Math.min(...r.slots.map(p=>p.a))-.5||b>Math.max(...r.slots.map(p=>p.b))+.5)reasons.push(mesh.width+' cm pano duvar sınırına sığmıyor');
+   if(holes.some(q=>q!==o&&q.b>a&&q.a<b))reasons.push(mesh.width+' cm pano başka açıklıkla çakışıyor');
    if(reasons.length){warnings.add(label+': '+reasons.join('; ')+'. Şematik gösteriliyor.');continue;}
-   models.push({o,a,b});const mesh=WindowSTL,meta={kind:'windowSTL',partId:'opening:'+o.e.id,openingId:o.e.id,source:mesh.source,schematic:false};
-   parts.push({...meta,widthMm:1660,heightMm:2500});
+   models.push({o,a,b});const meta={kind:'windowSTL',partId:'opening:'+o.e.id,openingId:o.e.id,source:mesh.source,schematic:false};
+   parts.push({...meta,widthMm:mesh.width*10,heightMm:mesh.height*10});
    for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+mesh.vertices[i+j]-mesh.centerX,y=mesh.vertices[i+j+1]-mesh.wallCenterY;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:mesh.vertices[i+j+2]});}
     const u={x:poly[1].x-poly[0].x,y:poly[1].y-poly[0].y,z:poly[1].z-poly[0].z},v={x:poly[2].x-poly[0].x,y:poly[2].y-poly[0].y,z:poly[2].z-poly[0].z},nx=u.y*v.z-u.z*v.y,ny=u.z*v.x-u.x*v.z,nz=u.x*v.y-u.y*v.x,L=Math.hypot(nx,ny,nz);
     if(L>1e-8)surfaces.push({...meta,poly,color:'#dfdfd8',shade:.65+.35*Math.abs((nx*.3+ny*.4+nz*.866)/L)});
    }
-   warnings.add('160×120 pano: gerçek STL, ölçek 1:1. STL malzeme bilgisi içermediği için renkler nötrdür.');
+   warnings.add(label+' pano: gerçek STL, ölçek 1:1. STL malzeme bilgisi içermediği için renkler nötrdür.');
   }
   for(const p of r.slots){
    const core=({6:4,10:8,15:13})[p.k],cut=LoadingCore.stockWidth(p.w,Modular.cutMm(p.w))?.cutMm;
