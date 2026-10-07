@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.62
+# Prefabrikten Plan Studio · 5.9.63
+
+5.9.63: Mahya kapaması birleşimlerde Alın V altında; koyu çizgi ve yüzey çakışmaları giderildi.
 
 5.9.62: Kot farkı üst kenarlarında Alın V kapaması ve metrajı; çatı rengine bağlı koyu mahya. [Rapor](analizler/2026-10-07-alin-v-kot-farki.md).
 

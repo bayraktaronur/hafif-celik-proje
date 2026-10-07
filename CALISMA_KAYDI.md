@@ -508,3 +508,7 @@ Kullanıcı kırmızı kenarları Alın V, yeşil hattı mahya diye tanımladı;
 ## 7 Ekim 2026 — İş PC — 5.9.62 / DEV-048
 
 Kot farkının üst kenarları Alın V görünüşüne ve yükleme hesabına eklendi. Mahya kapaması ve 3B çizgisi çatı malzemesinin koyu tonunu kullanır. Kaynak görsel orijinali korunarak hash ile kopyalandı. roof-trims, roof, roof-child-chain, roof-gable-boundary, loading-verge, loading-list geçti; bağımsız ekran incelendi. Rapor: analizler/2026-10-07-alin-v-kot-farki.md. DEV-047 imalat ölçüsü belirsizlikleri ve DEV-043 canlı JSON bekliyor; diğer açık işler korunur.
+
+## 7 Ekim 2026 — İş PC — 5.9.63 / DEV-049
+
+Mahya kapaması Alın V altında kalacak şekilde şematik yüzey sırası ve çizgi örtülmesi düzeltildi. Net metraj değişmedi. roof-trims piksel/ürün/JSON ve roof-panels-3d testleri geçti; ana/yavru ekran incelendi. Kullanıcı görseli hash ile kopyalandı. Rapor analizler/2026-10-07-mahya-alin-v-bindirme.md. DEV-043/047 ve önceki açık işler korunur.

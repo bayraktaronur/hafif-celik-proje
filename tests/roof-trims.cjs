@@ -18,5 +18,12 @@ const step=await p.evaluate(()=>{
  RoofStudio.setView('3d');RoofStudio.fit();
  return {steps:m.edges.filter(e=>e.type==='step').length,trimSteps:trims.filter(t=>t.edgeType==='step'&&t.kind==='vergeTrim').length,expected:RoofStudio.vergeEdges(m).reduce((n,e)=>n+e.length*1000,0),actual:rows.reduce((n,r)=>n+r.vergeLengthMm,0),colors,edges:RoofStudio.edges3D(m).filter(e=>['ridge','hip'].includes(e.type)).map(e=>e.color)};
 });assert.ok(step.steps>0);assert.ok(step.trimSteps>0);assert.ok(Math.abs(step.expected-step.actual)<.001);assert.ok(step.colors.every(c=>c.length>0));assert.notEqual(step.colors[0][0].color,step.colors[1][0].color);assert.ok(step.colors.flat().every(c=>c.shade<1));assert.ok(step.edges.every(c=>/^#[0-9a-f]{6}$/.test(c)));await p.screenshot({path:'artifacts/roof-trims-step.png'});
+const overlap=await p.evaluate(()=>{
+ const canvas=document.createElement('canvas');canvas.width=40;canvas.height=40;const ctx=canvas.getContext('2d');
+ const poly=z=>[{x:5,y:5,z},{x:35,y:5,z},{x:35,y:35,z},{x:5,y:35,z}];
+ const items=[{kind:'vergeTrim',poly:poly(.8),color:'#ffffff'},{kind:'ridgeCap',poly:poly(.4),color:'#660000'}];
+ RoofStudio.raster3D(ctx,40,40,items,[{type:'ridge',color:'#330000',p:{x:0,y:20,z:0},q:{x:39,y:20,z:0}}],p=>({x:p.x,y:p.y,depth:p.z}));
+ return Array.from(ctx.getImageData(20,20,1,1).data);
+});assert.deepEqual(overlap,[255,255,255,255],'Alın V covers both ridge surface and line even when ridge renders last');
 assert.deepEqual(errors,[]);console.log('PASS trim visualization, 220/400 selector, unchanged overhang/roof area, undo/JSON, mixed-width stock rows, aggregated U and invalid width rejection');
 }finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});

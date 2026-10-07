@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 7 Ekim 2026, iş bilgisayarı; 5.9.62 Alın V kot farkı kenarları ve çatı rengine bağlı koyu mahya.
+Son güncelleme: 7 Ekim 2026, iş bilgisayarı; 5.9.63 mahya kapaması Alın V altında.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -8,10 +8,11 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 
 
 ## Önce buradan devam et — 7 Ekim teslimi
-Program **5.9.62**. [Kot farkı kapamaları ve mahya rengi](analizler/2026-10-07-alin-v-kot-farki.md). [Alın V ve mahya](analizler/2026-10-07-alin-v-mahya.md). [İkinci yavru çatı bağlantısı](analizler/2026-10-07-ikinci-yavru-cati.md). [Son değişiklik, kesin kullanıcı kuralı, testler ve sınırlar](analizler/2026-10-07-makas-kose-uyumu.md). Makas aksları referans; panel adetleri/ara ölçüler korunur, köşe uçları yeniden kesilir ve bina ölçüsü köşe paylarıyla değişir. Eski 5.9.18 dondurma kuralı uygulanmaz.  [Güncel kararlar, uygulanmayan öneriler ve açık işler](analizler/2026-10-04-ev-is-devir.md). [Dosya/hash envanteri](analizler/2026-10-04-devir-envanteri.json). Önce bu özeti oku; aşağıdaki tarihsel kararların sonradan düzeltilenlerini yeniden uygulama.
+Program **5.9.63**. [Mahya/Alın V bindirme sırası](analizler/2026-10-07-mahya-alin-v-bindirme.md). [Kot farkı kapamaları ve mahya rengi](analizler/2026-10-07-alin-v-kot-farki.md). [Alın V ve mahya](analizler/2026-10-07-alin-v-mahya.md). [İkinci yavru çatı bağlantısı](analizler/2026-10-07-ikinci-yavru-cati.md). [Son değişiklik, kesin kullanıcı kuralı, testler ve sınırlar](analizler/2026-10-07-makas-kose-uyumu.md). Makas aksları referans; panel adetleri/ara ölçüler korunur, köşe uçları yeniden kesilir ve bina ölçüsü köşe paylarıyla değişir. Eski 5.9.18 dondurma kuralı uygulanmaz.  [Güncel kararlar, uygulanmayan öneriler ve açık işler](analizler/2026-10-04-ev-is-devir.md). [Dosya/hash envanteri](analizler/2026-10-04-devir-envanteri.json). Önce bu özeti oku; aşağıdaki tarihsel kararların sonradan düzeltilenlerini yeniden uygulama.
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-049 | Mahya Alın V altında | TAMAMLANDI: 5.9.63; kapama yüksekliği ve çizgi örtülmesi, roof-trims piksel testi ve 3B ekran kontrolü. |
 | DEV-048 | Kot farkında Alın V ve koyu mahya | TAMAMLANDI: 5.9.62; görünüş/metraj ortak kenarlar, malzemeye bağlı renk; roof-trims ve ilgili çatı/yükleme testleri geçti. |
 | DEV-047 | Alın V ve mahya ayrımı, 3B ve metraj | 5.9.61: şematik kapamalar, 220/400 seçimi (varsayılan220), ayrı stok ve tek U toplamı tamamlandı. Mahya stok/bindirme ve tam profil büküm ölçüleri bekliyor. |
 | DEV-046 | İlk yavrudan sonra yeni yavru köşelerinin seçilememesi | TAMAMLANDI: 5.9.60; mevcut yavruya bağlantı ve ilk tıklamada hedef kenar seçimi. roof-child-chain kardeş/zincir bağlantı, geri alma ve JSON testleri geçti. |
