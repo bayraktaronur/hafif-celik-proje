@@ -1,0 +1,57 @@
+{
+  "units": "cm",
+  "unitConfirmed": true,
+  "panelHeight": 250,
+  "models": [
+    {
+      "file": "120-120 pencereli panel-h250cm.stl",
+      "measuredWidth": 125,
+      "targetWidth": 125,
+      "status": "unit_confirmed",
+      "allowUniformScaling": false
+    },
+    {
+      "file": "120-180 pencereli panel-h250cm.stl",
+      "measuredWidth": 125,
+      "targetWidth": 125,
+      "status": "unit_confirmed",
+      "allowUniformScaling": false
+    },
+    {
+      "file": "160-120 pencereli panel-h250cm.stl",
+      "measuredWidth": 171,
+      "targetWidth": 166,
+      "status": "source_correction_required",
+      "allowUniformScaling": false
+    },
+    {
+      "file": "160-180 pencereli panel-h250cm.stl",
+      "measuredWidth": 171,
+      "targetWidth": 166,
+      "status": "source_correction_required",
+      "allowUniformScaling": false
+    },
+    {
+      "file": "50-180 pencereli panel-h250cm.stl",
+      "measuredWidth": 125,
+      "targetWidth": 125,
+      "status": "unit_confirmed",
+      "allowUniformScaling": false
+    },
+    {
+      "file": "60-40 vasistaslı panel-h250cm.stl",
+      "measuredWidth": 125,
+      "targetWidth": 125,
+      "status": "unit_confirmed",
+      "allowUniformScaling": false
+    },
+    {
+      "file": "80-125 pencereli panel-h250cm.stl",
+      "measuredWidth": 125.00000000000001,
+      "targetWidth": 125,
+      "status": "unit_confirmed",
+      "allowUniformScaling": false
+    }
+  ],
+  "note": "Kullanıcı160lık pencereli panellerin171cm modellenmesinin hata olduğunu ve166cm olması gerektiğini doğruladı. PVC/profil ölçülerini değiştiren bütünsel ölçek uygulanmaz."
+}

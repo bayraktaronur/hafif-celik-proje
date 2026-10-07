@@ -9,3 +9,7 @@ Dosyalar yalnız pencere değil panelle birlikte geometri içeriyor; önizlemede
 Geometrik sınırlar/üçgen ve bileşen dökümü analizler/2026-10-07-pencere-stl-geometri.json; önizleme analizler/2026-10-07-pencere-stl-onizleme.png. Boylar250 olduğu için280/300 panolara tüm modeli esnetmek pencereyi de bozar; ayrı pano uzatma veya kullanıcı modeli gerekir.
 
 Durum: kaynaklar alındı ve incelendi; canlı uygulamaya henüz bağlanmadı, sürüm5.9.65. Birim ve171cm kapsamı yanıtı sonrası yerleştirme dönüşümü ve ürün eşlemesi hazırlanacak. Mevcut canlı çizim değişmedi.
+
+## Kullanıcı teyidi
+
+Birim santimetre.160×120 ve160×180 modellerinde171cm en hatalı; doğru pano eni166cm. Bu bir pervaz açıklaması değil kaynak model hatasıdır. İki dosya orijinal haliyle korunur; pencere/profil geometrisini bozmamak için tüm model166/171 ölçeklenmez. Doğru kaynak veya hangi parçanın düzeltileceği gerekir. Diğer beş kaynağın birimi teyit edildi. Eşleme analizler/2026-10-07-pencere-stl-esleme.json.

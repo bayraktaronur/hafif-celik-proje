@@ -536,3 +536,5 @@ Plan slotlarından katmanlı dolu panolar,10luk H ve makasa bağlı köşe geome
 ## 7 Ekim 2026 — DEV-052 STL kaynakları
 
 Yedi pencereli panel STL H sürücüsünden orijinalleri korunarak kopyalandı, SHA256 eşitliği doğrulandı. Binary uzunluk/sonlu koordinat kontrolü ve geometri önizlemesi yapıldı. Hepsi250birim yüksek,125 veya171birim geniş. Birim ve171genişlik kapsamı kullanıcıya soruldu; yanıt bekleniyor. Kaynak/envanter/rapor/önizleme Git aktarımına dahil. Uygulama5.9.65 değişmedi; DEV-050 ve diğer açık işler korunur.
+
+DEV-052 ek teyit: STL birimi cm.160×120/180 kaynaklarının171cm eni hatalı, hedef166cm. Orijinaller korunur; üniform ölçek yasak, pencere/profil kesitleri korunmalı. Eşleme kaydı eklendi; uygulamaya aktarım henüz yok.
