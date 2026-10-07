@@ -6,7 +6,7 @@
  const mainAngle=()=>G.catiYon==='dikey'?90:0;
  const panel=document.createElement('section');panel.className='roof-workflow';
  panel.innerHTML=`<h3>SINIRDAN ÇATI ÇİZ</h3>
- <label>Saçak mesafesi · cm<input id="roofDrawEave" type="number" min="0" max="500" value="30"></label>
+ <label>Alın / baş makas taşması · mm<input id="roofDrawGable" type="number" min="1" max="5000" value="220" list="roofGableSizes"></label><datalist id="roofGableSizes"><option value="220"><option value="400"></datalist><label>Yan saçak taşması · mm<input id="roofDrawSide" type="number" min="0" max="5000" value="300" list="roofSideSizes"></label><datalist id="roofSideSizes"><option value="300"><option value="400"></datalist><p>Listeden standart ölçüyü seçin veya özel ölçü yazın. Alın taşması Alın V alt kanadıyla birlikte ayarlanır.</p><input id="roofDrawEave" type="hidden" value="30">
  <label>Çatı tipi<select id="roofBoundaryType"><option value="besik">Beşik</option><option value="kirma">Kırma</option><option value="tek">Tek eğim</option></select></label>
  <label>Saçak kotu · cm<input id="roofDrawHeight" type="number" min="1" max="20000" value="280"></label>
  <label>Eğim · %<input id="roofDrawPitch" type="number" min="1" max="200" value="33"></label>
@@ -30,15 +30,38 @@
   if(Math.abs(current-0)>.001&&Math.abs(current-90)>.001)throw Error('Eğik açılı eski çatı var. Ortak üretim yönü için sınırını yeniden çizin.');
   return C.turn(z,1);
  }
- function synchronize(){
-  G.roofs=G.roofs.map(z=>mainOf(z)?align(z,mainAngle()):z);
+ // Opt-in rule: legacy roof objects keep their exact existing edge offsets.
+ function applyEaveRule(z){
+  if(!z.eaveRule)return z;
+  const {gableMm,sideMm}=z.eaveRule,g=gableMm/10,v=sideMm/10;
+  if(!Number.isFinite(g)||g<=0||g>500||!Number.isFinite(v)||v<0||v>500)throw Error('Alın 1–5000 mm, yan saçak 0–5000 mm olmalı.');
+  const end=z.type==='kirma'?v:g;
+  z.eaves=[end,z.childJoin?0:end,v,v];z.vergeWidth=gableMm;
+  if(z.outline)z.edgeEaves=z.outline.map((p,i)=>{const q=z.outline[(i+1)%z.outline.length];return z.joinEdges?.[i]?0:Math.abs(q.x-p.x)<.01?end:v;});
+  if(z.childJoin)z.childJoin.requestedSideEaves=[v,v];return z;
+ }
+ function reanchor(child,oldParent,parent){
+  if(!oldParent||!child.childJoin)return;
+  const old=C.footprint(oldParent).map(p=>C.transform(oldParent,p)),now=C.footprint(parent).map(p=>C.transform(parent,p));
+  if(JSON.stringify(old)===JSON.stringify(now))return;
+  if(old.length!==now.length)throw Error('Ana çatı kenar sayısı değişti; yavru bağlantısını yeniden çiziniz.');
+  const ps=child.childJoin.points,on=(p,a,b)=>{const dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);return L&&Math.abs(dx*(p.y-a.y)-dy*(p.x-a.x))/L<.02&&(p.x-a.x)*(p.x-b.x)+(p.y-a.y)*(p.y-b.y)<=.02;};
+  const i=old.findIndex((a,i)=>on(ps[0],a,old[(i+1)%old.length])&&on(ps[3],a,old[(i+1)%old.length]));
+  if(i<0)throw Error('Eski yavru bağlantı kenarı bulunamadı. Değişiklik uygulanmadı.');
+  const a=old[i],b=old[(i+1)%old.length],dx=b.x-a.x,dy=b.y-a.y;
+  const candidates=now.map((u,j)=>({u,v:now[(j+1)%now.length]})).filter(({u,v})=>Math.abs(dx*(v.y-u.y)-dy*(v.x-u.x))<.01&&dx*(v.x-u.x)+dy*(v.y-u.y)>0).sort((m,n)=>Math.hypot(m.u.x+m.v.x-a.x-b.x,m.u.y+m.v.y-a.y-b.y)-Math.hypot(n.u.x+n.v.x-a.x-b.x,n.u.y+n.v.y-a.y-b.y));
+  if(!candidates.length)throw Error('Yeni bağlantı kenarı bulunamadı.');const {u,v}=candidates[0];
+  for(const k of [0,3]){const t=((ps[k].x-a.x)*dx+(ps[k].y-a.y)*dy)/(dx*dx+dy*dy);const q={x:u.x+t*(v.x-u.x),y:u.y+t*(v.y-u.y)};ps[k]=q;const outer=k===0?1:2;if(Math.abs(dx)>Math.abs(dy))ps[outer].x=q.x;else ps[outer].y=q.y;}
+ }
+ function synchronize(previous=[]){
+  G.roofs=G.roofs.map(z=>applyEaveRule(mainOf(z)?align(z,mainAngle()):z));
   const resolved=new Map(),visiting=new Set();
   function resolve(z){
    if(resolved.has(z.id))return resolved.get(z.id);
    if(visiting.has(z.id))throw Error('Çatı bağlantılarında döngü var.');visiting.add(z.id);
    if(z.production?.role==='child'){
     const source=G.roofs.find(r=>r.id===z.production.parentId);if(!source)throw Error('Yavru çatının bağlandığı çatı bulunamadı.');const parent=resolve(source);
-    if(z.childJoin){z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;}else z=align(z,((parent.angle%180)+z.production.relative)%180);z.group=parent.group;
+    if(z.childJoin){reanchor(z,previous.find(p=>p.id===parent.id),parent);z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;}else z=align(z,((parent.angle%180)+z.production.relative)%180);z.group=parent.group;
    }
    visiting.delete(z.id);resolved.set(z.id,z);return z;
   }
@@ -69,29 +92,29 @@
   });
  }
  function direction(yon){
-  try{checkDirection(yon);if(yon===G.catiYon)return true;const ok=R.commit(()=>{setDirection(yon);synchronize();},{preserveLayout:true});catiBtnGuncelle();draw();if(ok){const warnings=Prefab.issues().filter(i=>['truss-support','opening-joint','module-width','module-axis','module-junction'].includes(i.code));const message='Köşe payları ölçülere yansıtıldı; köşe direkleri, panel uçları ve H ekleri yeni makas akslarına göre hesaplandı.'+(warnings.length?' '+warnings.length+' kesim / mesnet kontrolü Plan kontrolünde.':'');R.notice(message,!!warnings.length);Studio.toast(message,!!warnings.length);}return ok;}
+  try{checkDirection(yon);if(yon===G.catiYon)return true;const previous=copy(G.roofs),ok=R.commit(()=>{setDirection(yon);synchronize(previous);},{preserveLayout:true});catiBtnGuncelle();draw();if(ok){const warnings=Prefab.issues().filter(i=>['truss-support','opening-joint','module-width','module-axis','module-junction'].includes(i.code));const message='Köşe payları ölçülere yansıtıldı; köşe direkleri, panel uçları ve H ekleri yeni makas akslarına göre hesaplandı.'+(warnings.length?' '+warnings.length+' kesim / mesnet kontrolü Plan kontrolünde.':'');R.notice(message,!!warnings.length);Studio.toast(message,!!warnings.length);}return ok;}
   catch(e){R.notice(e.message,true);Studio.toast(e.message,true);$('roofProductionDirection').value=G.catiYon;return false;}
  }
  window.catiYonAyarla=function(yon){return direction(yon);};
  function start(child){
   const parent=child?G.roofs.find(z=>z.id===$('roofDrawParent').value):null;
   if(child&&!parent){R.notice('Önce ana çatı çizin veya listeden seçin.',true);return;}
-  const eave=+$('roofDrawEave').value,h=+$('roofDrawHeight').value,pitch=+$('roofDrawPitch').value;
-  if(!Number.isFinite(eave)||eave<0||eave>500||!(h>0&&h<=20000)||!(pitch>=1&&pitch<=200)){R.notice('Saçak, kot ve eğim değerlerini kontrol edin.',true);return;}
-  R.setView('plan');draft={points:[],eave,h,pitch,type:$('roofBoundaryType').value,parentId:parent?.id||'',openU:!!child,relative:child?+$('roofChildDirection').value:0};hover=null;R.render();hint('plan');
+  const eave=+$('roofDrawSide').value/10,eaveRule={gableMm:+$('roofDrawGable').value,sideMm:+$('roofDrawSide').value},h=+$('roofDrawHeight').value,pitch=+$('roofDrawPitch').value;
+  if(!Number.isFinite(eaveRule.gableMm)||eaveRule.gableMm<=0||eaveRule.gableMm>5000||!Number.isFinite(eave)||eave<0||eave>500||!(h>0&&h<=20000)||!(pitch>=1&&pitch<=200)){R.notice('Saçak, kot ve eğim değerlerini kontrol edin.',true);return;}
+  R.setView('plan');draft={points:[],eave,eaveRule,h,pitch,type:$('roofBoundaryType').value,parentId:parent?.id||'',openU:!!child,relative:child?+$('roofChildDirection').value:0};hover=null;R.render();hint('plan');
  }
  function makeOutline(points,options){
   if(options.parentId&&options.openU){
    const parent=G.roofs.find(z=>z.id===options.parentId);
    let z=R.make({name:'Yavru çatı '+(G.roofs.length+1),type:options.type,pitch:options.pitch,h:options.h,eaves:[options.eave,0,options.eave,options.eave],childJoin:{points:points.map(p=>({x:p.x,y:p.y}))},production:{role:'child',parentId:options.parentId,relative:0}});
-   z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;C.validate([...G.roofs,z],G.roofMaterials);return z;
+   z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;applyEaveRule(z);z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;C.validate([...G.roofs,z],G.roofMaterials);return z;
   }
   const ps=simplify(points),world=ps;const x=Math.min(...ps.map(p=>p.x)),y=Math.min(...ps.map(p=>p.y)),w=Math.max(...ps.map(p=>p.x))-x,d=Math.max(...ps.map(p=>p.y))-y;
   const parent=G.roofs.find(z=>z.id===options.parentId),local=ps.map(p=>({x:p.x-x,y:p.y-y}));C.checkOutline(local);
   const joins=ps.map((a,i)=>{if(!parent)return false;const b=ps[(i+1)%ps.length],base=C.basePolygon(parent).map(p=>C.transform(parent,p));return [a,b,{x:(a.x+b.x)/2,y:(a.y+b.y)/2}].every(mid=>C.pointIn(base,mid)||base.some((p,j)=>{const q=base[(j+1)%base.length],dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy);return L&&Math.abs(dx*(mid.y-p.y)-dy*(mid.x-p.x))/L<.01&&(mid.x-p.x)*(mid.x-q.x)+(mid.y-p.y)*(mid.y-q.y)<=.01;}));});
   let z=R.make({name:parent?'Yavru çatı '+(G.roofs.length+1):'Ana çatı '+(G.roofs.length+1),x,y,w,d,outline:local,boundaryRefs:ps.map(p=>p.ref||null),eaves:[options.eave,options.eave,options.eave,options.eave],edgeEaves:joins.map(j=>j?0:options.eave),joinEdges:joins,type:options.type,pitch:options.pitch,h:options.h,group:parent?.group,production:{role:parent?'child':'main',parentId:parent?.id||'',relative:options.relative||0}});
   if(parent){const pp=C.footprint(parent).map(p=>C.transform(parent,p));if(!C.triangulate(pp).some(a=>C.triangulate(world).some(b=>C.intersect(a,b).length)))throw Error('Yavru çatı ana çatıyla birleşmiyor. Sınırı ana çatı yüzeyine kadar uzatın.');}
-  z=align(z,((parent?parent.angle:mainAngle())+(options.relative||0))%180);C.validate(parent?[parent,z]:[z],G.roofMaterials);C.calculate(parent?[parent,z]:[z],G.roofMaterials);return z;
+  z=align(z,((parent?parent.angle:mainAngle())+(options.relative||0))%180);z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;applyEaveRule(z);C.validate(parent?[parent,z]:[z],G.roofMaterials);C.calculate(parent?[parent,z]:[z],G.roofMaterials);return z;
  }
  function finish(){
   if(!draft)return false;
@@ -198,8 +221,8 @@
   ctx.strokeStyle='#8edbd4';ctx.lineWidth=1.5;
   const seen=new Set();R.model().faces.forEach(f=>{if(seen.has(f.key))return;seen.add(f.key);const m=f.poly.reduce((a,p)=>({x:a.x+p.x/f.poly.length,y:a.y+p.y/f.poly.length}),{x:0,y:0}),p=project(m),g=project({x:m.x-f.a,y:m.y-f.b}),L=Math.hypot(g.x-p.x,g.y-p.y);if(!L)return;const dx=(g.x-p.x)/L,dy=(g.y-p.y)/L,q={x:p.x+dx*24,y:p.y+dy*24};ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.moveTo(q.x-dx*7-dy*4,q.y-dy*7+dx*4);ctx.lineTo(q.x,q.y);ctx.lineTo(q.x-dx*7+dy*4,q.y-dy*7-dx*4);ctx.stroke();});
   if(draft){ctx.fillStyle='#5dffad';for(const corner of exteriorCorners()){const p=project(corner);ctx.fillRect(p.x-2,p.y-2,4,4);}const ps=draft.points.concat(hover&&(!draft.points.length||Math.hypot(hover.x-draft.points.at(-1).x,hover.y-draft.points.at(-1).y)>.001)?[hover]:[]);ctx.strokeStyle='#74d8ed';ctx.setLineDash([5,4]);line(ctx,ps,project,false);ctx.setLineDash([]);
-   if(ps.length===2){const [a,b]=ps,L=Math.hypot(b.x-a.x,b.y-a.y);if(L){const nx=-(b.y-a.y)/L*draft.eave,ny=(b.x-a.x)/L*draft.eave;ctx.strokeStyle='#ffd374';ctx.setLineDash([3,5]);const center=G.nodes.length?G.nodes.reduce((v,p)=>({x:v.x+p.x/G.nodes.length,y:v.y+p.y/G.nodes.length}),{x:0,y:0}):null;if(center){const side=(center.x-(a.x+b.x)/2)*nx+(center.y-(a.y+b.y)/2)*ny;const sign=side>0?-1:1;line(ctx,ps.map(p=>({x:p.x+sign*nx,y:p.y+sign*ny})),project,false);}ctx.setLineDash([]);}}
-   if(ps.length>=3)try{let boundary;if(!draft.parentId){const poly=simplify(ps);C.checkOutline(poly);boundary=C.offsetOutline(poly,poly.map(()=>draft.eave));}else{const z=makeOutline(ps,draft);boundary=C.footprint(z).map(p=>C.transform(z,p));}ctx.strokeStyle='#ffd374';ctx.lineWidth=2;line(ctx,boundary,project,true);}catch(_){}
+   if(ps.length===2){const [a,b]=ps,L=Math.hypot(b.x-a.x,b.y-a.y);if(L){const local=C.untransform({x:a.x,y:a.y,angle:mainAngle()},b),edgeEave=draft.eaveRule&&!draft.parentId&&draft.type!=='kirma'&&Math.abs(local.x)<.01?draft.eaveRule.gableMm/10:draft.eave;const nx=-(b.y-a.y)/L*edgeEave,ny=(b.x-a.x)/L*edgeEave;ctx.strokeStyle='#ffd374';ctx.setLineDash([3,5]);const center=G.nodes.length?G.nodes.reduce((v,p)=>({x:v.x+p.x/G.nodes.length,y:v.y+p.y/G.nodes.length}),{x:0,y:0}):null;if(center){const side=(center.x-(a.x+b.x)/2)*nx+(center.y-(a.y+b.y)/2)*ny;const sign=side>0?-1:1;line(ctx,ps.map(p=>({x:p.x+sign*nx,y:p.y+sign*ny})),project,false);}ctx.setLineDash([]);}}
+   if(ps.length>=3)try{let boundary;{const z=makeOutline(ps,draft);boundary=C.footprint(z).map(p=>C.transform(z,p));}ctx.strokeStyle='#ffd374';ctx.lineWidth=2;line(ctx,boundary,project,true);}catch(_){}
    if(hover){const p=project(hover);ctx.strokeStyle=hover.invalid?'#ff837b':hover.ref||hover.snapLabel?'#5dffad':'#74d8ed';ctx.lineWidth=2;ctx.strokeRect(p.x-7,p.y-7,14,14);ctx.fillStyle=ctx.strokeStyle;ctx.font='12px system-ui';ctx.fillText(hover.invalid?'Bağlantı kenarındaki hedefi yakalayın':hover.snapLabel||(hover.ref?'Köşe yakalandı':'Hiza / dik kenar'),p.x+12,p.y-12);}
    if(draft.points.length){const p=project(draft.points[0]);ctx.strokeStyle='#8be5ae';ctx.strokeRect(p.x-5,p.y-5,10,10);}
   }else{const z=G.roofs.find(z=>z.id===R.getSelected());if(z?.outline){ctx.strokeStyle='#74d8ed';ctx.setLineDash([4,4]);line(ctx,C.basePolygon(z).map(p=>C.transform(z,p)),project,true);}}
@@ -211,6 +234,12 @@
   if(!z)return;
   const directionText=((z.angle%180)+180)%180<45?'X →':'Y ↓';
   const info=document.createElement('p');info.className='panel-help';info.textContent='Makas dizilim yönü: '+directionText+' · Mahya: '+(z.type==='tek'?'yok':z.type==='kirma'?'kırma yüzey birleşimlerinden hesaplanır':directionText)+' · Eğim: '+(z.type==='tek'?'tek yöne':'mahyanın iki tarafına')+'.';$('roofForm').prepend(info);if(z.childJoin?.cornerTrimmed){const trim=document.createElement('p');trim.className='panel-help';trim.textContent='Ortak köşede yan saçak ana çatı kenarında sınırlandı; ikinci kez dışarı taşırılmadı.';$('roofForm').prepend(trim);}if(z.childJoin){const note=document.createElement('p');note.className='panel-help';note.textContent=z.childJoin.mode==='gable'?'Bağlantı: ana çatı alnına dayalı. Kot farkı betopanla kapatılır.':'Bağlantı: ana çatı yüzeyine saplanma.';$('roofForm').prepend(note);}
+  if(!z.attachment){
+   const section=document.createElement('fieldset');section.innerHTML='<legend>Alın ve yan saçak</legend><label class="roof-check"><input type="checkbox" name="useEaveRule" id="roofUseEaveRule" '+(z.eaveRule?'checked':'')+'> Ayrı alın / yan ölçülerini uygula</label><label>Alın / baş makas · mm<input name="gableMm" id="roofGableMm" type="number" min="1" max="5000" list="roofGableSizes" value="'+(z.eaveRule?.gableMm??z.vergeWidth??220)+'"></label><label>Yan saçak · mm<input name="sideMm" id="roofSideMm" type="number" min="0" max="5000" list="roofSideSizes" value="'+(z.eaveRule?.sideMm??z.eaves[2]*10)+'"></label><p>Standart veya özel ölçü. İşaretlenince Alın V alt kanadı alın taşmasına eşitlenir. Kırma çatıda bütün dış kenarlar yan saçak ölçüsünü kullanır. Birleşim kenarında ikinci taşma eklenmez.</p>';
+   $('roofForm').prepend(section);presets('roofGableMm',[220,400]);presets('roofSideMm',[300,400]);
+   const sync=()=>{if(!section.isConnected)return;const active=$('roofUseEaveRule').checked;for(const id of ['rz_vergeWidth','rz_vergeCustom','roofBoundaryEave'])if($(id))$(id).disabled=active;for(let i=0;i<4;i++)$('rz_e'+i).disabled=active||!!z.outline||(!!z.childJoin&&i===1);};
+   for(const id of ['roofGableMm','roofSideMm'])$(id).oninput=()=>{$('roofUseEaveRule').checked=true;sync();};$('roofUseEaveRule').onchange=sync;queueMicrotask(sync);
+  }
   $('rz_angle').disabled=true;
   if(z.boundaryRefs?.some((ref,i)=>{if(!ref)return false;const n=getNode(ref.nodeId),p=C.transform(z,z.outline[i]);return !n||Math.hypot(p.x-n.x-ref.dx,p.y-n.y-ref.dy)>.01;})){
    const warning=document.createElement('p');warning.className='roof-warning';warning.textContent='Kat planındaki bağlı köşe değişti. Mesnet sınırını yeniden çizerek çatıya aktarın; çatı sınırı kendiliğinden taşınmadı.';$('roofForm').prepend(warning);
@@ -224,13 +253,16 @@
  }
  function apply(z,next,steps,data){
   try{
+   const previous=copy(G.roofs);
+   if(data.has('useEaveRule'))next.eaveRule={gableMm:Number(data.get('gableMm')),sideMm:Number(data.get('sideMm'))};else delete next.eaveRule;
    if(next.childJoin)next.childJoin.requestedSideEaves=[next.eaves[2],next.eaves[3]];
-   if(z.outline){const e=Number(data.get('boundaryEave'));if(!Number.isFinite(e)||e<0||e>500)throw Error('Saçak 0–500 cm olmalı.');next.eaves=[e,e,e,e];next.edgeEaves=z.outline.map((_,i)=>z.joinEdges?.[i]?0:e);}
-   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;setDirection(yon);synchronize();catiBtnGuncelle();},{preserveLayout:true});}
+   if(z.outline&&!next.eaveRule){const e=Number(data.get('boundaryEave'));if(!Number.isFinite(e)||e<0||e>500)throw Error('Saçak 0–500 cm olmalı.');if(e!==z.eaves[0]){next.eaves=[e,e,e,e];next.edgeEaves=z.outline.map((_,i)=>z.joinEdges?.[i]?0:e);}}
+   applyEaveRule(next);
+   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;setDirection(yon);synchronize(previous);catiBtnGuncelle();},{preserveLayout:true});}
    if(steps&&next.childJoin)throw Error('Saplanma yönünü değiştirmek için U sınırını yeniden çizin.');
    if(steps===1&&next.production?.role==='child')next.production.relative=next.production.relative===90?0:90;
    else if(steps)next=C.turn(next,steps);
-   const ok=R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;synchronize();});draw();return ok;
+   const ok=R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;synchronize(previous);});draw();return ok;
   }catch(e){R.notice(e.message,true);return false;}
  }
  const cv=$('roofCanvas');cv.addEventListener('pointerdown',e=>{if(!draft||e.button!==0)return;e.stopImmediatePropagation();e.preventDefault();if(draft.openU&&draft.points.length>=4){R.notice('Dört nokta hazır. Çatıyı oluştur düğmesine basın; düzeltmek için son çizim noktasını silin.');return;}const raw=R.world(e),q=snap(raw),first=draft.points[0];if(q.invalid){R.notice('Gösterilen ana çatı bağlantı noktasına yaklaşın.',true);return;}R.notice('');if(draft.openU&&!draft.points.length&&q.hostId){draft.parentId=q.hostId;$('roofDrawParent').value=q.hostId;}if(draft.openU&&draft.points.length===1){const a=draft.points[0],horizontal=a.hostNormal==='y';a[horizontal?'x':'y']=q[horizontal?'x':'y'];}if(!draft.openU&&first&&draft.points.length>=3&&Math.hypot(R.canvasPoint(first).x-R.canvasPoint(raw).x,R.canvasPoint(first).y-R.canvasPoint(raw).y)<14){finish();return;}if(!draft.points.length||Math.hypot(q.x-draft.points.at(-1).x,q.y-draft.points.at(-1).y)>.01)draft.points.push(q);hover=null;hint('plan');R.repaint();},true);
@@ -240,6 +272,9 @@
  // drawing shortcuts there via a hook, before it consumes the event.
  function key(e){if(!draft||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return false;if(!['Enter','Escape','Backspace'].includes(e.key))return false;e.preventDefault();if(e.key==='Enter')finish();else if(e.key==='Escape'){draft=null;hover=null;R.render();}else{draft.points.pop();hover=null;hint('plan');R.repaint();}return true;}
  $('roofBoundaryMain').onclick=()=>start(false);$('roofBoundaryChild').onclick=()=>start(true);$('roofBoundaryFinish').onclick=finish;$('roofBoundaryBack').onclick=()=>{draft?.points.pop();hover=null;hint('plan');R.repaint();};$('roofProductionDirection').onchange=e=>direction(e.target.value);
+ // Visible presets keep the standard dimensions discoverable; inputs accept custom millimetres.
+ function presets(inputId,values){const input=$(inputId);if(!input||input.nextElementSibling?.dataset.presets)return;const row=document.createElement('div');row.dataset.presets='1';for(const value of values){const button=document.createElement('button');button.type='button';button.textContent=value+' mm';button.onclick=()=>{input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));};row.append(button);}input.after(row);}
+ presets('roofDrawGable',[220,400]);presets('roofDrawSide',[300,400]);
  const previousAnalysis=window.makasAnaliz;window.makasAnaliz=function(){
   if(!G.roofs.length)return previousAnalysis();const makaslar=[];
   G.roofs.forEach(z=>{const axis=z.angle%180<45?'x':'y',cross=axis==='x'?'y':'x',bounds=C.basePolygon(z).map(p=>C.transform(z,p)[axis]);

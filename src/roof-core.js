@@ -163,7 +163,8 @@
       if(z.production&&(!['main','child'].includes(z.production.role)||![0,90].includes(z.production.relative)||typeof z.production.parentId!=='string'))fail('üretim yönü bağlantısı geçersiz.');
       if(z.datum!==undefined&&!['wall','eave'].includes(z.datum))fail('kot referansı geçersiz.');
       if(z.layers!==undefined){if(!Array.isArray(z.layers)||z.layers.length>3)fail('alt katman listesi geçersiz.');const seen=new Set();for(const l of z.layers){if(!l||!LAYERS.some(d=>d.id===l.id)||seen.has(l.id)||!num(l.width,10,500)||!num(l.length,10,20000)||!num(l.overlapWidth,0,l.width-1)||!num(l.overlapLength,0,l.length-1)||!num(l.fire,0,100))fail('katman ölçüsü / bindirmesi geçersiz.');seen.add(l.id);}}
-      if(z.vergeWidth!==undefined&&![220,400].includes(z.vergeWidth))fail('Alın V profil ölçüsü 220 veya 400 mm olmalı.');
+      if(z.vergeWidth!==undefined&&!num(z.vergeWidth,1,5000))fail('Alın V profil ölçüsü 1–5000 mm olmalı.');
+      if(z.eaveRule&&(!num(z.eaveRule.gableMm,1,5000)||!num(z.eaveRule.sideMm,0,5000)))fail('Alın / yan saçak ölçüleri geçersiz.');
       if(z.fasciaDepth!==undefined&&!num(z.fasciaDepth,0,50))fail('görsel alın / saçak kapaması 0–50 cm olmalı.');
       if(z.attachment){const l=z.attachment,b=l.base;if(!l||!['tek','besik','karga'].includes(l.mode)||typeof l.parentId!=='string'||!b||!num(b.x,-1e6,1e6)||!num(b.y,-1e6,1e6)||!num(b.w,10,20000)||!num(b.d,10,20000)||!num(b.angle,0,360)||!Array.isArray(b.eaves)||b.eaves.length!==4||b.eaves.some(e=>!num(e,0,500))||!num(l.pitch,1,200)||!num(l.gap,0,100)||!num(l.minClearance,100,500))fail('veranda bağlantı ayarları geçersiz.');}
       if(z.wallTop!==undefined&&!num(z.wallTop,0,20000))fail('duvar üst kotu geçersiz.');

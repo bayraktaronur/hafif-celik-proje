@@ -17,7 +17,7 @@ await p.evaluate(()=>geriAl());assert.equal(await p.evaluate(()=>G.roofs[0].verg
 const saved=await p.evaluate(()=>Studio.state());await p.evaluate(d=>Studio.loadProject(d),saved);assert.equal(await p.evaluate(()=>G.roofs[0].vergeWidth),400);
 await p.evaluate(()=>RoofStudio.add(RoofStudio.make({id:'b',x:1400,w:500,d:400,vergeWidth:220})));
 const rows=await p.evaluate(()=>LoadingList.calculate().rows.filter(r=>['Alın V','Aşık kapama U'].includes(r.name)));assert.equal(rows.filter(r=>r.name==='Alın V').length,2);assert.equal(rows.filter(r=>r.name==='Aşık kapama U').length,1);assert.equal(rows.find(r=>r.name==='Aşık kapama U').qty,rows.filter(r=>r.name==='Alın V').reduce((n,r)=>n+r.qty,0));assert.ok(rows.some(r=>r.size==='400 × 2800 mm'));
-assert.equal(await p.evaluate(()=>{const d=Studio.state();d.roofs[0].vergeWidth=300;try{Studio.loadProject(d);return false;}catch{return true;}}),true);
+assert.equal(await p.evaluate(()=>{const d=Studio.state();d.roofs[0].vergeWidth=-1;try{Studio.loadProject(d);return false;}catch{return true;}}),true);
 await p.evaluate(d=>{Studio.loadProject(d);RoofStudio.open();RoofStudio.setView('3d');},saved);await p.screenshot({path:'artifacts/roof-trims-3d.png'});
 const step=await p.evaluate(()=>{
  Studio.loadProject({v:'5',sistem:'prefabrik',n:[],s:[],e:[],r:[]});RoofStudio.add(RoofStudio.make({id:'main',w:1000,d:1000,h:280,datum:'eave',production:{role:'main',parentId:'',relative:0}}));
