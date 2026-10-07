@@ -594,4 +594,3 @@ Sınırlar: 12 cm bu sürümde düşey yükseklik olarak uygulanır; eğimli ken
 Kontroller: roof-trims; 8 cm sabit üst kanat, 22/40 cm alt dönüş ve 12 cm ön yüz koordinatları, undo/JSON, alan ve taşma değişmezliği, stok satırları, kot farkı ve mahya örtülmesi geçti. Bağımsız ana/yavru çatı ekranı incelendi. Canlı çizime müdahale edilmedi.
 
 Sıradaki: kenar dudak ölçüleri, 12 cm ölçü doğrultusu ve omega/trapez kesitleriyle montajı tamamlamak.
-
