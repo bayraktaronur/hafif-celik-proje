@@ -5185,7 +5185,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.80',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.81',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5761,10 +5761,14 @@ updateStatus();
     plans.forEach(({moves})=>moves.forEach(({e})=>{const error=Studio.openingError(e);if(error)throw Error(error);}));
     return{next,peers:peers.length};
   }
+  let quickGuard=false;
+  function supportedAxes(){const M=makasAnaliz();if(!M)return [];const out=[];pfAnaliz().runs.forEach(r=>{const a=axis(r),normal=a==='x'?r.ay:r.ax;M.makaslar.forEach(m=>{if((m.axis||(M.yatay?'x':'y'))===a&&m.pos>origin(r)+r.s0+.6&&m.pos<origin(r)+r.L-r.s1-.6&&normal>=m.a-.6&&normal<=m.b+.6&&r.slots.slice(1).some(p=>Math.abs(origin(r)+p.a-m.pos)<.6))out.push(r.owner.id+'|'+m.pos);});});return out;}
+  function quick(action,dir){quickGuard=true;try{return ({split,merge,swap})[action]?.(dir)||false;}finally{quickGuard=false;}}
   function operation(mutator){
     const current=resolve();if(!current){Studio.toast('Önce bir panel seçin.',true);return false;}
     let selected,peerCount=1;
-    const ok=Studio.edit(()=>{const result=mutator(current);selected=result?.selected;peerCount=result?.peers||1;});
+    const protectedAxes=quickGuard?supportedAxes():[];
+    const ok=Studio.edit(()=>{const result=mutator(current);selected=result?.selected;peerCount=result?.peers||1;if(quickGuard){const next=new Set(supportedAxes());if(protectedAxes.some(k=>!next.has(k)))throw Error('Bu işlem sabit makas aksındaki H mesnedini kaldırıyor. Başka bir komşu panel seçin.');}});
     if(ok){
       if(selected){const r=pfAnaliz().runs.find(r=>r.items.some(it=>it.seg.id===selected.ownerId));const p=r?.slots.find(p=>Math.abs(p.a-selected.a)<.1&&Math.abs(p.b-selected.b)<.1);if(p)select(r,p);}
       Studio.toast(peerCount>1?peerCount+' duvar hattının panel ekleri birlikte güncellendi.':'Panel düzeni güncellendi.');
@@ -5799,10 +5803,12 @@ updateStatus();
     return{...result,selected:ref(run,result.next[selectedIndex])};
   });}
   function split(){return operation(({run,panel,index})=>{
-    if(Math.abs(panel.w-PF.PANEL)>.1)throw Error('Bu işlem 125,5 cm tam paneli iki 62,75 cm panele böler.');
-    const mid=(panel.a+panel.b)/2;
+    if(!quickGuard&&Math.abs(panel.w-PF.PANEL)>.1)throw Error('Bu işlem 125,5 cm tam paneli iki 62,75 cm panele böler.');
+    const base=Number.isFinite(run.panelOrg)?run.panelOrg:run.makasOrg;
+    const mid=quickGuard?base+Math.round((origin(run)+(panel.a+panel.b)/2-base)/PF.YARIM)*PF.YARIM-origin(run):(panel.a+panel.b)/2;
+    if(mid-panel.a<10||panel.b-mid<10)throw Error('Bu panelin içinde uygun bir yarım modül aksı yok.');
     if(openings(run).some(o=>o.a<mid-EPS&&o.b>mid+EPS))throw Error('Yeni H noktası kapı/pencere boşluğuna denk geliyor. Önce açıklığı taşıyın.');
-    const items=pieces(run);items.splice(index,1,{w:PF.YARIM,key:'half-a'},{w:PF.YARIM,key:'half-b'});
+    const items=pieces(run);items.splice(index,1,{w:mid-panel.a,key:'half-a'},{w:panel.b-mid,key:'half-b'});
     const result=rebuildLayout(run,items,{moveOpenings:false});return{...result,selected:ref(run,result.next[index])};
   });}
   function merge(dir){return operation(({run,panel,index})=>{
@@ -6133,7 +6139,7 @@ updateStatus();
     });
     return [...groups.values()].sort((a,b)=>a.grup.localeCompare(b.grup,'tr')).concat([...lengths.values()].map(r=>({...r,adet:Math.round(r.adet*100)/100})),original.filter(r=>!r.grup.startsWith('Paneller —')&&r.grup!=='Duvar uzunlukları'));
   };
-  window.Prefab={resolve,linked,swap,swapLocal,split,merge,mergeSelected,makeFull,fitWideWindow,remove,issues,rebuildLayout,reorientProduction,snapTargets,trussMove,trussSelect,
+  window.Prefab={quick,resolve,linked,swap,swapLocal,split,merge,mergeSelected,makeFull,fitWideWindow,remove,issues,rebuildLayout,reorientProduction,snapTargets,trussMove,trussSelect,
     select(ownerId,index){const r=pfAnaliz().runs.find(r=>r.owner.id===ownerId||r.items.some(it=>it.seg.id===ownerId));if(r?.slots[index])select(r,r.slots[index]);},
     mode(value){G.selectionMode=value;G.secili=null;G.seciliTip=null;G.selPanels=[];G.panelAnchor=null;G.selSegs=[];setTool('sec');updateSidebar();draw();}
   };
@@ -6151,7 +6157,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.80';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.81';syncUI();draw();
 })();
 
 </script><script>
@@ -6333,6 +6339,24 @@ updateStatus();
   const render=drawPanels;
   window.drawPanels=function(){render();box.hidden=!isPref();$('panelDrawMode').value=G.panelDrawMode||'mixed';$('moduleAxisSnap').checked=G.moduleAxisSnap!==false;};
   G.panelDrawMode=G.panelDrawMode||'mixed';draw();
+})();
+
+</script><script>
+/* Quick panel actions reuse the validated manufacturing transactions. */
+(()=>{
+ const button=document.createElement('button');button.id='panelQuickToggle';button.className='t';button.textContent='Panel düzenle';button.title='Sol tık: böl / birleştir · sürükle: komşuyla değiştir';document.getElementById('selectionMode').after(button);
+ let enabled=false,drag=null;const menu=document.createElement('div');menu.id='panelQuickMenu';menu.hidden=true;menu.style.cssText='position:fixed;z-index:5000;background:#182331;color:#eef4fa;border:1px solid #69d6b2;border-radius:8px;padding:12px;max-width:300px;box-shadow:0 8px 30px #0008';document.body.append(menu);
+ const hint=document.createElement('div');hint.hidden=true;hint.style.cssText='position:fixed;z-index:5001;background:#182331;color:#69d6b2;padding:8px;border:1px solid #69d6b2;pointer-events:none';document.body.append(hint);
+ function close(){menu.hidden=true;}
+ button.onclick=()=>{enabled=!enabled;button.classList.toggle('active',enabled);button.setAttribute('aria-pressed',String(enabled));close();if(enabled){setTool('sec');G.selectionMode='panel';updateSidebar();draw();Studio.toast('Panel: sol tık menü · komşuya sürükle yer değiştir. Makas mesnetleri korunur.');}};
+ function hit(e){const b=cv.getBoundingClientRect();return hitTestAll(e.clientX-b.left,e.clientY-b.top);}
+ function show(e){const c=Prefab.resolve();if(!c)return;menu.replaceChildren();const title=document.createElement('strong');title.textContent=fmtCm(c.panel.w)+' cm panel';menu.append(title);const note=document.createElement('p');note.textContent='Makas aksları sabit. Eşlenen duvarlar birlikte kontrol edilir.';menu.append(note);
+ for(const [label,action,dir] of [['Aks üzerinden ikiye böl','split'],['Öncekiyle birleştir','merge',-1],['Sonrakiyle birleştir','merge',1],['← Öncekiyle değiştir','swap',-1],['Sonrakiyle değiştir →','swap',1]]){const b=document.createElement('button');b.className='sib';b.textContent=label;b.dataset.action=action;b.dataset.dir=dir||0;b.style.cssText='display:block;width:100%;margin:5px 0';b.disabled=!!dir&&!c.run.slots[c.index+dir];b.onclick=()=>{close();Prefab.quick(action,dir);};menu.append(b);}
+ const b=document.createElement('button');b.textContent='Kapat';b.className='sib';b.onclick=close;menu.append(b);menu.hidden=false;menu.style.left=Math.max(8,Math.min(e.clientX+12,innerWidth-menu.offsetWidth-8))+'px';menu.style.top=Math.max(8,Math.min(e.clientY+12,innerHeight-menu.offsetHeight-8))+'px';}
+ window.addEventListener('mousedown',e=>{if(!menu.contains(e.target))close();if(!enabled||e.target!==cv||e.button!==0||!isPref()||G.tool!=='sec'||e.ctrlKey||e.shiftKey||e.metaKey)return;const h=hit(e);if(h?.tip!=='panel')return;const c=Prefab.resolve(h.obj);if(!c)return;e.preventDefault();e.stopImmediatePropagation();Prefab.select(c.run.owner.id,c.index);drag={ref:h.obj,index:c.index,owner:c.run.owner.id,x:e.clientX,y:e.clientY,moved:false};},true);
+ window.addEventListener('mousemove',e=>{if(!drag)return;e.preventDefault();e.stopImmediatePropagation();if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>6)drag.moved=true;if(!drag.moved)return;const h=e.target===cv?hit(e):null,c=h?.tip==='panel'?Prefab.resolve(h.obj):null;hint.hidden=false;hint.textContent=c&&c.run.owner.id===drag.owner&&Math.abs(c.index-drag.index)===1?'Bırak: komşu panelleri değiştir':'Aynı duvardaki komşu panelin üzerine bırakın';hint.style.left=Math.min(e.clientX+12,innerWidth-310)+'px';hint.style.top=(e.clientY+15)+'px';},true);
+ window.addEventListener('mouseup',e=>{if(!drag)return;const d=drag;drag=null;hint.hidden=true;e.preventDefault();e.stopImmediatePropagation();if(!d.moved){show(e);return;}const h=e.target===cv?hit(e):null,c=h?.tip==='panel'?Prefab.resolve(h.obj):null;if(!c||c.run.owner.id!==d.owner||Math.abs(c.index-d.index)!==1){Studio.toast('Yer değiştirmek için aynı duvardaki komşu paneli seçin.',true);return;}Prefab.select(d.owner,d.index);Prefab.quick('swap',c.index-d.index);},true);
+ window.addEventListener('keydown',e=>{if(e.key==='Escape'){close();drag=null;hint.hidden=true;}} ,true);window.addEventListener('blur',()=>{drag=null;hint.hidden=true;close();});
 })();
 
 </script><script>
@@ -8105,3 +8129,4 @@ LoadingReference.rows.push({id:"tuna-92",row:92,group:"Metal",name:"Yeşil alç�
 })();
 
 </script></body></html>
+

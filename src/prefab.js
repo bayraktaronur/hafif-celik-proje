@@ -203,10 +203,14 @@
     plans.forEach(({moves})=>moves.forEach(({e})=>{const error=Studio.openingError(e);if(error)throw Error(error);}));
     return{next,peers:peers.length};
   }
+  let quickGuard=false;
+  function supportedAxes(){const M=makasAnaliz();if(!M)return [];const out=[];pfAnaliz().runs.forEach(r=>{const a=axis(r),normal=a==='x'?r.ay:r.ax;M.makaslar.forEach(m=>{if((m.axis||(M.yatay?'x':'y'))===a&&m.pos>origin(r)+r.s0+.6&&m.pos<origin(r)+r.L-r.s1-.6&&normal>=m.a-.6&&normal<=m.b+.6&&r.slots.slice(1).some(p=>Math.abs(origin(r)+p.a-m.pos)<.6))out.push(r.owner.id+'|'+m.pos);});});return out;}
+  function quick(action,dir){quickGuard=true;try{return ({split,merge,swap})[action]?.(dir)||false;}finally{quickGuard=false;}}
   function operation(mutator){
     const current=resolve();if(!current){Studio.toast('Önce bir panel seçin.',true);return false;}
     let selected,peerCount=1;
-    const ok=Studio.edit(()=>{const result=mutator(current);selected=result?.selected;peerCount=result?.peers||1;});
+    const protectedAxes=quickGuard?supportedAxes():[];
+    const ok=Studio.edit(()=>{const result=mutator(current);selected=result?.selected;peerCount=result?.peers||1;if(quickGuard){const next=new Set(supportedAxes());if(protectedAxes.some(k=>!next.has(k)))throw Error('Bu işlem sabit makas aksındaki H mesnedini kaldırıyor. Başka bir komşu panel seçin.');}});
     if(ok){
       if(selected){const r=pfAnaliz().runs.find(r=>r.items.some(it=>it.seg.id===selected.ownerId));const p=r?.slots.find(p=>Math.abs(p.a-selected.a)<.1&&Math.abs(p.b-selected.b)<.1);if(p)select(r,p);}
       Studio.toast(peerCount>1?peerCount+' duvar hattının panel ekleri birlikte güncellendi.':'Panel düzeni güncellendi.');
@@ -241,10 +245,12 @@
     return{...result,selected:ref(run,result.next[selectedIndex])};
   });}
   function split(){return operation(({run,panel,index})=>{
-    if(Math.abs(panel.w-PF.PANEL)>.1)throw Error('Bu işlem 125,5 cm tam paneli iki 62,75 cm panele böler.');
-    const mid=(panel.a+panel.b)/2;
+    if(!quickGuard&&Math.abs(panel.w-PF.PANEL)>.1)throw Error('Bu işlem 125,5 cm tam paneli iki 62,75 cm panele böler.');
+    const base=Number.isFinite(run.panelOrg)?run.panelOrg:run.makasOrg;
+    const mid=quickGuard?base+Math.round((origin(run)+(panel.a+panel.b)/2-base)/PF.YARIM)*PF.YARIM-origin(run):(panel.a+panel.b)/2;
+    if(mid-panel.a<10||panel.b-mid<10)throw Error('Bu panelin içinde uygun bir yarım modül aksı yok.');
     if(openings(run).some(o=>o.a<mid-EPS&&o.b>mid+EPS))throw Error('Yeni H noktası kapı/pencere boşluğuna denk geliyor. Önce açıklığı taşıyın.');
-    const items=pieces(run);items.splice(index,1,{w:PF.YARIM,key:'half-a'},{w:PF.YARIM,key:'half-b'});
+    const items=pieces(run);items.splice(index,1,{w:mid-panel.a,key:'half-a'},{w:panel.b-mid,key:'half-b'});
     const result=rebuildLayout(run,items,{moveOpenings:false});return{...result,selected:ref(run,result.next[index])};
   });}
   function merge(dir){return operation(({run,panel,index})=>{
@@ -575,7 +581,7 @@
     });
     return [...groups.values()].sort((a,b)=>a.grup.localeCompare(b.grup,'tr')).concat([...lengths.values()].map(r=>({...r,adet:Math.round(r.adet*100)/100})),original.filter(r=>!r.grup.startsWith('Paneller —')&&r.grup!=='Duvar uzunlukları'));
   };
-  window.Prefab={resolve,linked,swap,swapLocal,split,merge,mergeSelected,makeFull,fitWideWindow,remove,issues,rebuildLayout,reorientProduction,snapTargets,trussMove,trussSelect,
+  window.Prefab={quick,resolve,linked,swap,swapLocal,split,merge,mergeSelected,makeFull,fitWideWindow,remove,issues,rebuildLayout,reorientProduction,snapTargets,trussMove,trussSelect,
     select(ownerId,index){const r=pfAnaliz().runs.find(r=>r.owner.id===ownerId||r.items.some(it=>it.seg.id===ownerId));if(r?.slots[index])select(r,r.slots[index]);},
     mode(value){G.selectionMode=value;G.secili=null;G.seciliTip=null;G.selPanels=[];G.panelAnchor=null;G.selSegs=[];setTool('sec');updateSidebar();draw();}
   };
@@ -593,5 +599,5 @@
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.80';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.81';syncUI();draw();
 })();

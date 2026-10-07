@@ -640,3 +640,7 @@ Yeni proje (10) üst duvar kapanışında köşe payı ortak panel fazını5cm k
 ## 8 Ekim2026 — İş PC — DEV-064 /5.9.80
 
 İç duvar eklenince5cm panel hatası: splitSeg,5.9.78ankrajını yeni n1e göre dönüştürmeden kopyalıyordu. Yeni offset eski dünya referansını korur. Önizleme T noktalarını geçici grafikte normalize eder; mevcut makas fazı/gerçek birleşim payları görünür. Derin eleman kopyası ve ID geri yükleme ile önizleme modele dokunmaz. Son JSON10dan üstü kapatılmış planla8varyant, gerçek fare2oda, undo/redo/JSON, panel-close ve prefab77/77 geçti.2referans/hash kaydedildi; canlı çizim değiştirilmedi. Rapor analizler/2026-10-08-ic-duvar-kapanis.md. DEV-062 ayrı açık iş.
+
+## 8 Ekim2026 — İş PC — DEV-065 /5.9.81
+
+Panel düzenle hızlı modu: sol tık menüsü ve komşu panele sürükleyerek yer değişimi. Mevcut panel işlemlerini kullanır; önceden desteklenen makas H mesnedi kaldırılırsa atomik reddeder. Özel uçlar ortak modül aksında bölünür;120.5=62.75+57.75 testi geçti. Serbest sürükleme/başka duvara transfer yok; komşu kapsamı. Panel-quick fare/menü/sürükle/rollback/undo/JSON ve prefab77/77. Rapor analizler/2026-10-08-hizli-panel.md. DEV-062 ayrı açık iş.
