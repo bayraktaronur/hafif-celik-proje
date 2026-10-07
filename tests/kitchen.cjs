@@ -24,7 +24,7 @@ const assert=require('node:assert/strict'),path=require('path');let pw;try{pw=re
  await click(100,45);assert.equal(await p.evaluate(()=>G.seciliTip),'counter');await p.click('#counterDelete');assert.equal(await p.evaluate(()=>G.counters.length),0);assert.equal(await p.evaluate(()=>G.fixtures.length),3);await p.evaluate(()=>geriAl());
  const text=await p.evaluate(()=>{G.secili=null;G.seciliTip=null;const labels=[],old=ctx.fillText;ctx.fillText=function(t,...a){labels.push(t);return old.call(this,t,...a);};drawElemanlar();ctx.fillText=old;return labels;});assert.deepEqual(text,[]);
  await p.screenshot({path:'artifacts/kitchen-5.9.11.png'});
- const dl=p.waitForEvent('download');await p.evaluate(()=>pngIndir());await(await dl).saveAs('artifacts/kitchen-export-5.9.11.png');
+ const dl=p.waitForEvent('download');await p.evaluate(()=>pngIndir());await p.locator('#exportSubmit').click();await(await dl).saveAs('artifacts/kitchen-export-5.9.11.png');
  await p.click('#t-kitchen');await p.click('#counterStart');await p.keyboard.press('Escape');assert.equal(await p.evaluate(()=>G.tool),'sec');
  assert.deepEqual(errors,[]);console.log('PASS kitchen real placement, L/straight inner faces, four orientations, thickness, bounds/door guards, product snapping, undo, persistence, invalid import, selection, delete, PNG and cancellation');await b.close();
 })().catch(e=>{console.error(e);process.exit(1)});

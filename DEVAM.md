@@ -1,17 +1,19 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 5 Ekim 2026, iş bilgisayarı; 4 Ekim ev teslimi (5.9.58) alındı, son konuşma/yedek kayıtları bulundu.
+Son güncelleme: 7 Ekim 2026, iş bilgisayarı; 5.9.59 makas/köşe payı ve yavru çatı dik hiza düzeltmeleri.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
 **Çalışma düzeni: gündüz iş bilgisayarı, gece ev bilgisayarı.** Aynı program dönüşümlü geliştirilir. Teslim geçmişi: [CALISMA_KAYDI.md](CALISMA_KAYDI.md).
 
 
-## Önce buradan devam et — 4 Ekim son devir
-Program **5.9.58**. [Güncel kararlar, uygulanmayan öneriler ve açık işler](analizler/2026-10-04-ev-is-devir.md). [Dosya/hash envanteri](analizler/2026-10-04-devir-envanteri.json). Önce bu özeti oku; aşağıdaki tarihsel kararların sonradan düzeltilenlerini yeniden uygulama.
+## Önce buradan devam et — 7 Ekim teslimi
+Program **5.9.59**. [Son değişiklik, kesin kullanıcı kuralı, testler ve sınırlar](analizler/2026-10-07-makas-kose-uyumu.md). Makas aksları referans; panel adetleri/ara ölçüler korunur, köşe uçları yeniden kesilir ve bina ölçüsü köşe paylarıyla değişir. Eski 5.9.18 dondurma kuralı uygulanmaz.  [Güncel kararlar, uygulanmayan öneriler ve açık işler](analizler/2026-10-04-ev-is-devir.md). [Dosya/hash envanteri](analizler/2026-10-04-devir-envanteri.json). Önce bu özeti oku; aşağıdaki tarihsel kararların sonradan düzeltilenlerini yeniden uygulama.
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-044 | Makas yönü, köşe direği, H aksları ve yeni kademeli çizim | TAMAMLANDI: 5.9.59; production-direction testi, 80/49 panel adedi ve ara ölçüler korundu. Gerçek özel pano mesnetleri DEV-011 kapsamında açık. |
+| DEV-045 | Yavru U çiziminde uzak duvar hizasına tam dik yakalama | TAMAMLANDI: 5.9.59; roof-child-snap dört yön/sapmalı tıklama, roof-child-u ve roof-workflow geçti. |
 | DEV-043 | Son canlı ana/yavru çatı planını iki bilgisayara aktarma | BEKLİYOR: kullanıcı Kaydet ile güncel JSON'u almalı. Mevcut JSON yedeği ve9ekran görüntüsü korunmuş olsa da son canlı çizim doğrulanmadı. Yeni dosya ayrı adla cizimler'e alınmalı,hash/push doğrulanmalı. |
 
 Ev veya iş fark etmez:git kontrolü/fetch ve güvenli güncelleme,bu dosya,CALISMA_KAYDI,son devir özeti. Sonra güncel JSON doğrulaması; kayıtlı kurallar kullanıcıya yeniden sorulmaz. Kod/kararlar aktarımı ile tarayıcı çizimi aktarımı ayrı işlerdir.
@@ -41,11 +43,11 @@ Tarihsel aktarım (aşağıdaki güncel devir özetinden öncedir): program 5.9.
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.58**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.59**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
-- 5.9.18: Makas/çatı üretim yönü değişirken mevcut duvarlar, köşe payları, panel dizilimleri ve açıklıklar korunur; H mesnet uyumsuzluğu uyarılır.
+- 5.9.18 (tarihsel; yön/köşe davranışı 5.9.59 kullanıcı kararıyla değişti): Makas/çatı üretim yönü değişirken mevcut duvarlar, köşe payları, panel dizilimleri ve açıklıklar korunur; H mesnet uyumsuzluğu uyarılır.
 - Bu son iki sürüm GitHub'dan ev bilgisayarına alındı. Kaynak ile uzak dalın commit eşitliği doğrulandı.
 - 5.9.19: Drawing1 etiketlerinden dört ek kesim eşlemesi; ölçülü karşılaştırma ve ayrı 250 cm kontrol planı. Prefab 77/77, temel testler 31/31, CAD pano eşleme ve JSON tekrar açma kontrolleri başarılı.
 

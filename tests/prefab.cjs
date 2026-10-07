@@ -333,9 +333,9 @@ async function test(name,fn){try{await fn();console.log('PASS '+name);results.pu
    assert.equal(await page.locator('#mergeSelectedPanels').isEnabled(),false);const snapshot=await page.evaluate(()=>Studio.snapshot());assert.equal(await page.evaluate(()=>Prefab.mergeSelected()),false);assert.equal(await page.evaluate(()=>Studio.snapshot()),snapshot);
   }
  });
- await test('Production direction preserves existing panels and frame without requiring exception mode',async()=>{
+ await test('Production direction exchanges corner allowances without changing rectangular panel sizes/counts',async()=>{
   const d=fixture();d.settings={panelDrawMode:'mixed'};d.n=[{id:'a',x:0,y:0},{id:'b',x:1004,y:0},{id:'c',x:1004,y:1139.5},{id:'d',x:0,y:1139.5}];d.s=d.n.map((n,i)=>({id:'w'+i,n1:n.id,n2:d.n[(i+1)%4].id,k:10,kSabit:true}));await load(d);
-  const shape=()=>page.evaluate(()=>JSON.stringify({nodes:G.nodes.map(n=>[n.id,n.x,n.y]),panels:pfAnaliz().runs.map(r=>r.slots.map(p=>[p.a,p.b,p.w]))}));
+  const shape=()=>page.evaluate(()=>JSON.stringify(pfAnaliz().runs.map(r=>r.slots.map(p=>p.w))));
   const before=await shape();assert.equal(await page.evaluate(()=>catiYonAyarla('dikey')),true);assert.equal(await shape(),before);assert.equal(await page.evaluate(()=>G.panelDrawMode),'mixed');
   await load(d);await page.locator('#moduleEditor summary').click();await page.locator('#outerWidth').fill('1014');await page.locator('#outerHeight').fill('1139.5');await page.getByRole('button',{name:'Net dış ölçüyü uygula',exact:true}).click();assert.equal(await page.evaluate(()=>G.panelDrawMode),'exception');
  });

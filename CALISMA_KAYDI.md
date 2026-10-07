@@ -485,3 +485,12 @@ Kullanıcı sonraki çalışmanın hangi bilgisayarda olacağının belirsiz old
 İş klonunun 5.9.36 kaydı eskiydi; izinli fetch ile GitHub'daki 49 yeni commit bulundu ve pull --ff-only ile e0b1800 / 5.9.58 alındı. Son ev görüşmelerinin kararları DEVAM/CALISMA ve ev-is-devir raporundan okundu; evin ayrı sohbeti bu PC'nin erişilebilir sohbet listesinde bulunmadı. İş Downloads içindeki en yeni JSON Yeni proje (6).json (3 Ekim 09:51, 5.9.36), orijinali korunup cizimler/2026-10-03-is-kayit-6-5.9.36.json olarak hash doğrulamasıyla kopyalandı. 9 son çatı görseli envanterle eşleşti. [Bulunan kayıtlar ve açık kalan yedek](analizler/2026-10-05-son-kayit-kurtarma.md).
 
 DEV-043 açık: 4 Ekim son canlı ana/yavru çatı JSON'u ortak depoda yok. Yeni bulunan iş yedeği son canlı plan ilan edilmedi. Takipsiz eski pano görseli ve tarayıcı çizimi korundu. Kod/sürüm değişmedi; yalnız yedek/devir kayıtları gönderilir. Sıradaki adım son canlı planın Kaydet dosyasını belirlemek; diğer açık işler son ev devir raporundaki haliyle korunur.
+
+
+## 7 Ekim 2026 — İş PC — 5.9.59 / DEV-044 ve DEV-045
+
+5 Ekim’den kalan yerel çalışma tamamlandı. Kullanıcı makas akslarını referans belirledi: panel adetleri ve ara ölçüler sabit; köşe payları yönle değişir, uçlar H/makaslara göre kesilir, bina ölçüleri değişebilir. Eski köşe yönünü dondurma kaldırıldı; ortak plan/CAD direk geometrisi, kademede karşılıklı uç payı, çatı dönüşlerinde dünya aksından dizilim ve ana/yavru sınır eşlemesi düzeltildi. 7 Ekim görselindeki U üçüncü noktasına uzak duvar hizası izdüşümü eklendi; dört yönde sapmalı tıklamayla tam dik dönüş ve çatı oluşumu doğrulandı.
+
+Paket testleri geçti; eski PNG testleri mevcut çıktı diyaloguna uyarlandı. Kaynak/dağıtım production-direction, roof-child-snap, roof-child-u, roof-snap, roof-workflow; PDF/DXF, H/köşe ve yükleme kontrolleri başarılı. 80 ve49 pano korunuyor, ara ölçüler değişmiyor; özel pencere/mesnet uyarıları DEV-011’de açık. CSV/XLSX revizyonu artık kayıttan alınır. Beş kaynak görsel orijinalleri korunarak hash ile kopyalandı. Rapor: analizler/2026-10-07-makas-kose-uyumu.md; envanter: analizler/2026-10-07-makas-kose-kaynaklari.json.
+
+DEV-043 son canlı JSON hâlâ bekliyor; açık tarayıcı çizimi değiştirilmedi. İlgisiz eski pano görseli commit dışında korundu. Önceki DEV-006/007/008/011/033/034/036/038 işleri tamamlandı sayılmadı. Sonraki adım kullanıcının Kaydet JSON’u ile gerçek planı doğrulamak; kod/karar/referans teslimini main’e gönderip uzak SHA eşitliğini kontrol etmek.

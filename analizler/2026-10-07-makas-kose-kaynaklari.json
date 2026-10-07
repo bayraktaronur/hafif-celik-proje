@@ -1,0 +1,47 @@
+[
+  {
+    "source": "C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-97ec5213-233f-4e9f-823f-dd96d3c400e7.png",
+    "target": "referanslar/2026-10-07-makas-kose-u/01-makas-x.png",
+    "sha256": "b19e0ede60625e1aafde41605ccf27bef43bd26d373501dd2139b766da501333",
+    "bytes": 202879,
+    "verified": true
+  },
+  {
+    "source": "C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-6e76da12-96a6-4184-893e-110f1ef774e4.png",
+    "target": "referanslar/2026-10-07-makas-kose-u/02-makas-y.png",
+    "sha256": "5e77ab8126df8e35c199f150e2fcd1f580b78251492b989dac2bbfbde07575e9",
+    "bytes": 221069,
+    "verified": true
+  },
+  {
+    "source": "C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-699fe6bd-d326-4c37-bdfb-839fd2ecf311.png",
+    "target": "referanslar/2026-10-07-makas-kose-u/03-kademe-hatasi.png",
+    "sha256": "f16e15a6f8543a03e661f824991957eb12c90ada8812030819be64e4139edc9b",
+    "bytes": 197868,
+    "verified": true
+  },
+  {
+    "source": "C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-aa383ef8-0b38-46f6-af64-c8b01117c94b.png",
+    "target": "referanslar/2026-10-07-makas-kose-u/04-kademe-onizleme.png",
+    "sha256": "b0b73166fba3a95910e64d27c8290223128341e61c02625890b3d3eee1a63306",
+    "bytes": 186929,
+    "verified": true
+  },
+  {
+    "source": "C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-d9a11ff5-1bc1-42d4-85e9-d6636658b7f3.png",
+    "target": "referanslar/2026-10-07-makas-kose-u/05-yavru-dik-hiza.png",
+    "sha256": "f265dba665622ed7de805815032cae9af60cc22eb84e5158b0fbd4ffa068cce8",
+    "bytes": 89050,
+    "verified": true
+  },
+  {
+    "source": "cizimler/2026-10-03-is-kayit-6-5.9.36.json",
+    "sha256": "6ff71f855d47ba3a930e69dc7a0123ea08d1224ea811db40b89c3d6348318404",
+    "status": "mevcut yedek, son canli plan oldugu dogrulanmadi"
+  },
+  {
+    "source": "cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json",
+    "sha256": "43862690c526c8ac6a13de8f8242fcee9d9f4a7c63d6c57e80b600efc92b719f",
+    "status": "mevcut yedek, son canli plan oldugu dogrulanmadi"
+  }
+]

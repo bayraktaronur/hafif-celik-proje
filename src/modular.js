@@ -55,6 +55,17 @@
         r.slots.forEach((p,i)=>{
           const atEnd=i===0||i===r.slots.length-1;
           const deductions=atEnd?[0,r.s0,r.s1,r.s0+r.s1]:[0];
+          // At a step, an ending parallel wall and the next starting wall
+          // share the corner axis. Their faces lie on opposite sides of it:
+          // both real allowances shorten this panel (e.g. 125.5 - 5 - 5).
+          // Only accept the second allowance at that measured shared endpoint,
+          // not as an arbitrary extra tolerance on every special panel.
+          if(i===0&&r.s0>0)group.forEach(({r:peer})=>{
+            if(peer!==r&&peer.s1>0&&Math.abs((axis==='x'?peer.ax:peer.ay)+peer.L-org)<TOL)deductions.push(r.s0+peer.s1);
+          });
+          if(i===r.slots.length-1&&r.s1>0)group.forEach(({r:peer})=>{
+            if(peer!==r&&peer.s0>0&&Math.abs((axis==='x'?peer.ax:peer.ay)-(org+r.L))<TOL)deductions.push(r.s1+peer.s0);
+          });
           // During an open outline the allowance for the still-free first
           // corner can temporarily sit at the other end of the panel sequence.
           const freeEnd=atEnd&&[r.nodes[0].nid,r.nodes.at(-1).nid].some(id=>G.segs.filter(s=>s.n1===id||s.n2===id).length===1);

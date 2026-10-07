@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.42
+# Prefabrikten Plan Studio · 5.9.59
+
+5.9.59: Makas aksları referans alınarak köşe payları ve uç kesimler birlikte güncellenir; panel adetleri ve ara panel ölçüleri korunur. Plan/CAD köşe geometrisi ortak, kademeli çizim payları doğrulanır. Yavru U üçüncü noktası uzaktaki duvar hizasına yakalanır ve ana kenara dik döner. [Testler ve kalan özel pano mesnetleri](analizler/2026-10-07-makas-kose-uyumu.md).
 
 5.9.42: İç duvar omegası kalınlığa göre iç duvar toplamı/2500mm yukarı yuvarlanarak hesaplanır. Yedek eklenmez; dış duvarlar ayrı kapsamdır.
 
@@ -38,7 +40,7 @@ Alt çerçeve aynı kalınlıktaki duvar aks toplamından hesaplanır: toplam/25
 
 5.9.19: Drawing1.dwg referansındaki 52,75 / 71,375 / 102,75 / 166 cm yerleşimler için 520 / 710 / 1020 / 1660 mm kesim eşlemeleri eklendi. Genel sabit pay çıkarma kuralı uygulanmaz. İş JSON'u ile ölçülü karşılaştırma ve orijinalleri değiştirmeyen ayrı kontrol taslağı hazırlandı: [karşılaştırma raporu](analizler/2026-10-02-tuna84-karsilastirma.md). Bu teslim bir üretim onayı değildir; makas/H mesnet, ürün listesi, kapı boşluğu ve çatı/tesisat ayrıntıları raporda açık tutulur. Mevcut kullanıcı çizimleri kendiliğinden dönüştürülmez.
 
-5.9.18: Kat planı ve çatı planından makas yönü değiştirilirken mevcut duvar koordinatları, köşe payları, panel dizilimleri ve açıklıklar korunur. Otomatik paneller mevcut ölçüleriyle açık dizilim olarak saklanır; yön değişimi artık 10 cm gibi yeni panel artıkları üretmez. Çatı geometrisi ortak yönle güncellenir; H mesnet uyumsuzluğu Plan kontrolünde uyarılır. Elle taşınmış makasların önce otomatik aksa döndürülmesi gerekir. Dikdörtgen ve girintili plan, iki arayüz, geri/ileri alma ve JSON yeniden açma testleri eklenmiştir.
+5.9.18 (tarihsel; yön/köşe davranışı 5.9.59 ile değişti): Kat planı ve çatı planından makas yönü değiştirilirken mevcut duvar koordinatları, köşe payları, panel dizilimleri ve açıklıklar korunur. Otomatik paneller mevcut ölçüleriyle açık dizilim olarak saklanır; yön değişimi artık 10 cm gibi yeni panel artıkları üretmez. Çatı geometrisi ortak yönle güncellenir; H mesnet uyumsuzluğu Plan kontrolünde uyarılır. Elle taşınmış makasların önce otomatik aksa döndürülmesi gerekir. Dikdörtgen ve girintili plan, iki arayüz, geri/ileri alma ve JSON yeniden açma testleri eklenmiştir.
 
 5.9.16: Tefriş yerleştirme ve taşıma sırasında yakındaki ürünlerin dış kenarlarına ve merkezlerine ekran mesafesine göre hizalama eklenmiştir. Geçici kesikli kılavuzlar yalnız çalışma görünümündedir. Yerleştirme penceresi ve seçili ürün panelindeki Kenar / merkez hizalama tikiyle kapatılabilir (oturum ayarı). Alt + sürükle ürünü özgün ölçü/dönüş/aynalama bilgileriyle yeni kimlik altında kopyalar; asıl ürün korunur. Kilitli üründen alınan kopya kilitsizdir. Alt + yalnız tıklama kopya oluşturmaz; Esc vazgeçer. Sağ panelde Kopyala düğmesiyle tıklayarak yerleştirme de vardır. Shift taşımanın sabit eksenini korur. Tezgâha bağlı ilk yerleştirme ve buzdolabı arka hizalaması önceliklidir. Tek adım geri al/ileri al ve JSON kaydı test edilmiştir.
 

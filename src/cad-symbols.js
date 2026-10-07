@@ -16,11 +16,7 @@
   const line=points=>out.push({layer,points}),rect=(x,y,w,h)=>out.push({layer,closed:true,points:[{x,y},{x:x+w,y},{x:x+w,y:y+h},{x,y:y+h}]});
   const k=parseFloat(b.k)||10;
   if(b.tip==='kose'){
-   const vertical=(G.catiYon!=='dikey')!==!!n.koseTers,w=vertical?k/2:k,h=vertical?k:k/2;
-   const incident=G.segs.filter(s=>s.tip!=='veranda'&&(s.n1===b.nid||s.n2===b.nid));
-   const inward=incident.map(s=>{const a=getNode(s.n1===b.nid?s.n2:s.n1);return {x:a.x-n.x,y:a.y-n.y};}).find(d=>vertical?Math.abs(d.x)>Math.abs(d.y):Math.abs(d.y)>Math.abs(d.x));
-   const dx=vertical&&inward?-Math.sign(inward.x)*w/2:0,dy=!vertical&&inward?-Math.sign(inward.y)*h/2:0;
-   rect(n.x+dx-w/2,n.y+dy-h/2,w,h);return out;
+   const p=pfKoseRect(b.nid,k);rect(p.x,p.y,p.w,p.h);return out;
   }
   const r=b.run,ux=r?r.ux:1,uy=r?r.uy:0,P=(a,o)=>({x:n.x+ux*a-uy*o,y:n.y+uy*a+ux*o});
   if(b.tip==='H'){line([P(0,-k/2),P(0,k/2)]);line([P(-2.5,-k/2),P(2.5,-k/2)]);line([P(-2.5,k/2),P(2.5,k/2)]);}

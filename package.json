@@ -1,12 +1,12 @@
 {
   "name": "prefabrikten-plan-studio",
-  "version": "5.9.58",
+  "version": "5.9.59",
   "private": true,
   "description": "Prefabrik panel ve hafif çelik kat planı çalışma alanı",
   "scripts": {
     "start": "node tools/serve.cjs",
     "build": "node tools/build.cjs",
-    "test": "node tests/view-filters.cjs && node tests/run.cjs && node tests/prefab.cjs && node tests/fixtures.cjs && node tests/fixture-alignment.cjs && node tests/kitchen.cjs && node tests/fridge-counter.cjs && node tests/furniture.cjs && node tests/bedroom-layout.cjs && node tests/furniture-openings.cjs && node tests/roof.cjs && node tests/architecture.cjs && node tests/roof-directions.cjs && node tests/veranda-joins.cjs && node tests/roof-layers.cjs && node tests/roof-plan-body.cjs && node tests/roof-workflow.cjs && node tests/roof-child-u.cjs && node tests/roof-panels-3d.cjs"
+    "test": "node tests/view-filters.cjs && node tests/run.cjs && node tests/prefab.cjs && node tests/production-direction.cjs && node tests/fixtures.cjs && node tests/fixture-alignment.cjs && node tests/kitchen.cjs && node tests/fridge-counter.cjs && node tests/furniture.cjs && node tests/bedroom-layout.cjs && node tests/furniture-openings.cjs && node tests/roof.cjs && node tests/architecture.cjs && node tests/roof-directions.cjs && node tests/veranda-joins.cjs && node tests/roof-layers.cjs && node tests/roof-plan-body.cjs && node tests/roof-workflow.cjs && node tests/roof-child-u.cjs && node tests/roof-panels-3d.cjs"
   },
   "devDependencies": {
     "playwright": "^1.55.0"

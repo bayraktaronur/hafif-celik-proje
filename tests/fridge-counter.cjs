@@ -36,7 +36,7 @@ let pw;try{pw=require('playwright')}catch{pw=require(path.resolve(path.dirname(p
  await p.evaluate(()=>{G.secili=G.fixtures[0];G.seciliTip='fixture';Fixtures.move();});await click(200,40);assert.equal(await p.evaluate(()=>Kitchen.effective(G.counters[0]).area),before.area-4500);
  assert.equal(await p.evaluate(()=>Kitchen.effective(G.counters[0]).contains({x:200,y:30})),false);
  await p.evaluate(()=>{G.secili=null;G.seciliTip=null;draw();});await p.screenshot({path:'artifacts/fridge-counter-5.9.12.png'});
- const dl=p.waitForEvent('download');await p.evaluate(()=>pngIndir());await(await dl).saveAs('artifacts/fridge-counter-export-5.9.12.png');
+ const dl=p.waitForEvent('download');await p.evaluate(()=>pngIndir());await p.locator('#exportSubmit').click();await(await dl).saveAs('artifacts/fridge-counter-export-5.9.12.png');
  assert.deepEqual(await p.evaluate(()=>({n:Studio.state().n,s:Studio.state().s})),{n:before.state.n,s:before.state.s});assert.deepEqual(errors,[]);
  console.log('PASS refrigerator rear alignment and orientation, four walls, L leg, drag/click move, cut area, restoration, undo/redo, JSON, PNG, overlapping and rotated cuts');await b.close();
 })().catch(e=>{console.error(e);process.exit(1)});

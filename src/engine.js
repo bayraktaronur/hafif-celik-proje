@@ -269,11 +269,19 @@ function pfDizilim(run){
 function panelKod(p){return p.acik==='kapi'?'K':p.acik==='pencere'?'P':p.tip==='yarim'?'Y':p.tip==='ozel'?'Ö':'T';}
 // Köşede (L) hangi duvar devam eder? Varsayılan: yatay olan (görseldeki gibi: yatay duvar aksa kadar,
 // dikey duvar yatayın iç yüzünden başlar). Node'da koseTers=true ise tersi.
+function pfKoseYatay(nid){return catiYatay()!==!!getNode(nid)?.koseTers;}
+function pfKoseRect(nid,k){
+  var n=getNode(nid),vertical=pfKoseYatay(nid),w=vertical?k/2:k,h=vertical?k:k/2;
+  var inward=G.segs.filter(function(s){return s.tip!=='veranda'&&(s.n1===nid||s.n2===nid);}).map(function(s){
+    var a=getNode(s.n1===nid?s.n2:s.n1);return{x:a.x-n.x,y:a.y-n.y};
+  }).find(function(d){return vertical?Math.abs(d.x)>Math.abs(d.y):Math.abs(d.y)>Math.abs(d.x);});
+  var dx=vertical&&inward?-Math.sign(inward.x)*w/2:0,dy=!vertical&&inward?-Math.sign(inward.y)*h/2:0;
+  return{x:n.x+dx-w/2,y:n.y+dy-h/2,w:w,h:h};
+}
 function _koseAna(r1,r2,nid){
   // Makas yönüne paralel duvar köşede devam eder
-  var n=getNode(nid),par1=catiYatay()?Math.abs(r1.uy)<=Math.abs(r2.uy):Math.abs(r1.ux)<=Math.abs(r2.ux);
+  var par1=pfKoseYatay(nid)?Math.abs(r1.uy)<=Math.abs(r2.uy):Math.abs(r1.ux)<=Math.abs(r2.ux);
   var ana=par1?r1:r2;
-  if(n&&n.koseTers)ana=(ana===r1?r2:r1);
   return ana;
 }
 function pfAnaliz(){
@@ -495,12 +503,11 @@ function drawPanels(){
       if(b.tip==='kose'){
         // A hollow 1:2 post stays readable at low zoom; its long side is
         // perpendicular to the truss direction, including a local override.
-        var longSide=Math.max(8,parseFloat(b.k||10)*s),shortSide=longSide/2;
-        var vertical=(G.catiYon!=='dikey')!==!!nd.koseTers;
-        var pw=vertical?shortSide:longSide,ph=vertical?longSide:shortSide;
+        var rect=pfKoseRect(b.nid,parseFloat(b.k)||10),center=toCv(rect.x+rect.w/2,rect.y+rect.h/2);
+        var scale=Math.max(s,8/Math.max(rect.w,rect.h)),pw=rect.w*scale,ph=rect.h*scale;
         ctx.fillStyle=TH.opening;ctx.strokeStyle=TH.wall;ctx.lineWidth=1.2;
-        ctx.fillRect(c.x-pw/2,c.y-ph/2,pw,ph);
-        ctx.strokeRect(c.x-pw/2,c.y-ph/2,pw,ph);
+        ctx.fillRect(center.x-pw/2,center.y-ph/2,pw,ph);
+        ctx.strokeRect(center.x-pw/2,center.y-ph/2,pw,ph);
       }
       else if(b.tip==='uc'){ctx.fillStyle=col;ctx.beginPath();ctx.arc(c.x,c.y,R*0.45,0,Math.PI*2);ctx.fill();}
       else{

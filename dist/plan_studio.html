@@ -1199,11 +1199,19 @@ function pfDizilim(run){
 function panelKod(p){return p.acik==='kapi'?'K':p.acik==='pencere'?'P':p.tip==='yarim'?'Y':p.tip==='ozel'?'Ö':'T';}
 // Köşede (L) hangi duvar devam eder? Varsayılan: yatay olan (görseldeki gibi: yatay duvar aksa kadar,
 // dikey duvar yatayın iç yüzünden başlar). Node'da koseTers=true ise tersi.
+function pfKoseYatay(nid){return catiYatay()!==!!getNode(nid)?.koseTers;}
+function pfKoseRect(nid,k){
+  var n=getNode(nid),vertical=pfKoseYatay(nid),w=vertical?k/2:k,h=vertical?k:k/2;
+  var inward=G.segs.filter(function(s){return s.tip!=='veranda'&&(s.n1===nid||s.n2===nid);}).map(function(s){
+    var a=getNode(s.n1===nid?s.n2:s.n1);return{x:a.x-n.x,y:a.y-n.y};
+  }).find(function(d){return vertical?Math.abs(d.x)>Math.abs(d.y):Math.abs(d.y)>Math.abs(d.x);});
+  var dx=vertical&&inward?-Math.sign(inward.x)*w/2:0,dy=!vertical&&inward?-Math.sign(inward.y)*h/2:0;
+  return{x:n.x+dx-w/2,y:n.y+dy-h/2,w:w,h:h};
+}
 function _koseAna(r1,r2,nid){
   // Makas yönüne paralel duvar köşede devam eder
-  var n=getNode(nid),par1=catiYatay()?Math.abs(r1.uy)<=Math.abs(r2.uy):Math.abs(r1.ux)<=Math.abs(r2.ux);
+  var par1=pfKoseYatay(nid)?Math.abs(r1.uy)<=Math.abs(r2.uy):Math.abs(r1.ux)<=Math.abs(r2.ux);
   var ana=par1?r1:r2;
-  if(n&&n.koseTers)ana=(ana===r1?r2:r1);
   return ana;
 }
 function pfAnaliz(){
@@ -1425,12 +1433,11 @@ function drawPanels(){
       if(b.tip==='kose'){
         // A hollow 1:2 post stays readable at low zoom; its long side is
         // perpendicular to the truss direction, including a local override.
-        var longSide=Math.max(8,parseFloat(b.k||10)*s),shortSide=longSide/2;
-        var vertical=(G.catiYon!=='dikey')!==!!nd.koseTers;
-        var pw=vertical?shortSide:longSide,ph=vertical?longSide:shortSide;
+        var rect=pfKoseRect(b.nid,parseFloat(b.k)||10),center=toCv(rect.x+rect.w/2,rect.y+rect.h/2);
+        var scale=Math.max(s,8/Math.max(rect.w,rect.h)),pw=rect.w*scale,ph=rect.h*scale;
         ctx.fillStyle=TH.opening;ctx.strokeStyle=TH.wall;ctx.lineWidth=1.2;
-        ctx.fillRect(c.x-pw/2,c.y-ph/2,pw,ph);
-        ctx.strokeRect(c.x-pw/2,c.y-ph/2,pw,ph);
+        ctx.fillRect(center.x-pw/2,center.y-ph/2,pw,ph);
+        ctx.strokeRect(center.x-pw/2,center.y-ph/2,pw,ph);
       }
       else if(b.tip==='uc'){ctx.fillStyle=col;ctx.beginPath();ctx.arc(c.x,c.y,R*0.45,0,Math.PI*2);ctx.fill();}
       else{
@@ -5144,7 +5151,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.58',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.59',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5536,6 +5543,74 @@ updateStatus();
     const error=Studio.openingError(e);if(error)throw Error(error);
   }
   function pieces(run){return run.slots.map((p,i)=>({w:p.w,key:i}));}
+  function reorientProduction(yon){
+    // The truss/H grid is the reference. Preserve its panel bays, exchange
+    // the two corner allowances, then trim end pieces to the new faces.
+    const before=pfAnaliz().runs,comp=_bilesenler(),openingPoints=[];
+    before.forEach(r=>openings(r).forEach(o=>{
+      openingPoints.push({e:o.e,axis:axis(r),component:comp[r.nodes[0].nid],p:{x:r.ax+r.ux*(o.a+o.e.en/2),y:r.ay+r.uy*(o.a+o.e.en/2)}});
+    }));
+    G.catiYon=yon;
+    G.nodes.forEach(n=>delete n.koseTers);
+    const turned=pfAnaliz().runs,frames=[];
+    for(const component of new Set(before.map(r=>comp[r.nodes[0].nid]))){
+      const runs=before.filter(r=>comp[r.nodes[0].nid]===component),ids=new Set(runs.flatMap(r=>r.nodes.map(n=>n.nid))),nodes=G.nodes.filter(n=>ids.has(n.id)),frame={component};
+      for(const a of ['x','y']){
+        const lo=Math.min(...nodes.map(n=>n[a])),hi=Math.max(...nodes.map(n=>n[a]));
+        const parallel=runs.filter(r=>axis(r)===a).sort((p,q)=>Number(q.dis)-Number(p.dis)||q.L-p.L);
+        const first=parallel.find(r=>Math.abs(origin(r)-lo)<EPS),last=parallel.find(r=>Math.abs(origin(r)+r.L-hi)<EPS);
+        const change=(r,end)=>r?(turned.find(q=>q.owner.id===r.owner.id)[end]-r[end]):0;
+        frame[a]={lo,hi,lead:change(first,'s0'),tail:change(last,'s1')};
+      }
+      frames.push(frame);
+    }
+    const frameFor=p=>frames.filter(f=>p.x>=f.x.lo-500&&p.x<=f.x.hi+500&&p.y>=f.y.lo-500&&p.y<=f.y.hi+500).sort((a,b)=>{
+      const distance=f=>Math.max(f.x.lo-p.x,0,p.x-f.x.hi)**2+Math.max(f.y.lo-p.y,0,p.y-f.y.hi)**2;
+      return distance(a)-distance(b);
+    })[0];
+    const move=(p,component)=>{
+      const f=component===undefined?frameFor(p):frames.find(f=>f.component===component);if(!f)return {...p};
+      const out={...p};for(const a of ['x','y']){const v=f[a];out[a]+=p[a]<=v.lo+EPS?0:p[a]>=v.hi-EPS?v.lead+v.tail:v.lead;}return out;
+    };
+    move.forPoint=p=>{const f=frameFor(p);return q=>f?move(q,f.component):{...q};};
+    G.nodes.forEach(n=>Object.assign(n,move(n,comp[n.id])));
+    for(const o of openingPoints){
+      const p=move(o.p,o.component),s=getSeg(o.e.segId),a=getNode(s.n1),b=getNode(s.n2),L=_segLen(s),ux=(b.x-a.x)/L,uy=(b.y-a.y)/L;
+      o.e.t=((p.x-a.x)*ux+(p.y-a.y)*uy-o.e.en/2)/L;
+      const error=Studio.openingError(o.e);if(error)throw Error(error);
+    }
+    G.segs.filter(s=>s.tip!=='veranda').forEach(s=>{delete s.pnlCfg;delete s.pnlTers;});
+    pfAnaliz().runs.forEach(r=>{
+      const old=before.find(q=>q.owner.id===r.owner.id),a=axis(r),els=openings(r);
+      for(const o of els){
+        if(o.a<r.s0-EPS||o.b>r.L-r.s1+EPS)throw Error('Yeni köşe payı kapı/pencere boşluğuna taşıyor. Önce açıklığın konumunu düzenleyin.');
+      }
+      if(!old?.slots.length||!a)return;
+      const allowance=Math.max(...r.items.map(it=>it.seg.k/2)),joints=[r.s0];
+      old.slots.slice(1).forEach(p=>{
+        const world=move({x:old.ax+old.ux*p.a,y:old.ay+old.uy*p.a},comp[old.nodes[0].nid]);let pos=world[a]-origin(r);
+        if(r.makasParalel){
+          const onGrid=r.makasOrg+Math.round((world[a]-r.makasOrg)/PF.YARIM)*PF.YARIM-origin(r);
+          if(Math.abs(onGrid-pos)<=allowance+EPS&&onGrid>r.s0+EPS&&onGrid<r.L-r.s1-EPS&&!els.some(o=>onGrid>o.a+EPS&&onGrid<o.b-EPS))pos=onGrid;
+        }
+        joints.push(pos);
+      });
+      joints.push(r.L-r.s1);
+      const widths=joints.slice(1).map((x,i)=>x-joints[i]);
+      if(widths.some(w=>w<.1))throw Error('Köşe payı bu hattaki küçük paneli tüketiyor. Panel adedini koruyarak yön değiştirilemiyor; uç paneli düzenleyin.');
+      if(widths.slice(1,-1).some((w,i)=>Math.abs(w-old.slots[i+1].w)>EPS))throw Error('Yeni makas aksı bu hattaki ara panelin ölçüsünü değiştiriyor. Ara paneller korunacağı için önce H/panel dizilimini düzenleyin.');
+      r.owner.pnlCfg={dizi:widths,explicit:true};
+      for(const o of els)if(!joints.slice(1).some((b,i)=>o.a>=joints[i]-EPS&&o.b<=b+EPS)&&old.slots.some(p=>{
+        const prior=openingPoints.find(q=>q.e.id===o.e.id),start=(prior.p.x-old.ax)*old.ux+(prior.p.y-old.ay)*old.uy-o.e.en/2;
+        return start>=p.a-EPS&&start+o.e.en<=p.b+EPS;
+      }))throw Error('Yeni H aksı kapı/pencereye taşıyor. Panel adedini korumak için açıklık panosunu düzenleyin.');
+    });
+    // Selection references contain old panel limits, so they cannot survive a reflow.
+    G.selPanels=[];G.panelAnchor=null;
+    if(G.seciliTip==='panel'){G.secili=null;G.seciliTip=null;}
+    G.snapPt=null;G.snapNodeId=null;G._snapInfo=null;G.drawPreviewPt=null;G.numBuf='';
+    return move;
+  }
   function layoutSlots(run,items){let pos=run.s0;return items.map(item=>{const p={...item,a:pos,b:pos+item.w};pos=p.b;return p;});}
   function setWidths(run,slots,support){
     run.items.forEach(it=>{delete it.seg.pnlCfg;delete it.seg.pnlTers;});
@@ -5942,10 +6017,10 @@ updateStatus();
     if(!isPref()||!G.segs.length)return[];
     const A=pfAnaliz(),list=[];
     A.runs.forEach(r=>openings(r).forEach(o=>{if(!r.slots.some(p=>o.a>=p.a-EPS&&o.b<=p.b+EPS))list.push({level:'warning',code:'opening-joint',message:'Açıklık bir panel ekini aşıyor. Panel sırasını düzenleyin.',id:o.e.id,type:'eleman'});}));
-    const M=makasAnaliz();if(!M)return list;const a=M.yatay?'x':'y';
-    A.runs.filter(r=>axis(r)===a).forEach(r=>{
-      const lo=origin(r)+r.s0,hi=origin(r)+r.L-r.s1,normal=M.yatay?r.ay:r.ax;
-      const bad=M.makaslar.filter(m=>m.pos>lo+.6&&m.pos<hi-.6&&normal>=m.a-.6&&normal<=m.b+.6&&!r.slots.slice(1).some(p=>Math.abs(origin(r)+p.a-m.pos)<.6));
+    const M=makasAnaliz();if(!M)return list;
+    A.runs.filter(r=>axis(r)).forEach(r=>{
+      const a=axis(r),lo=origin(r)+r.s0,hi=origin(r)+r.L-r.s1,normal=a==='x'?r.ay:r.ax;
+      const bad=M.makaslar.filter(m=>(m.axis||(M.yatay?'x':'y'))===a&&m.pos>lo+.6&&m.pos<hi-.6&&normal>=m.a-.6&&normal<=m.b+.6&&!r.slots.slice(1).some(p=>Math.abs(origin(r)+p.a-m.pos)<.6));
       if(bad.length)list.push({level:'warning',code:'truss-support',message:bad.length+' makas bu hattın H noktasına oturmuyor. Panel eşleşmesini kontrol edin.',id:r.owner.id,type:'seg'});
     });return list;
   }
@@ -5974,7 +6049,7 @@ updateStatus();
     });
     return [...groups.values()].sort((a,b)=>a.grup.localeCompare(b.grup,'tr')).concat([...lengths.values()].map(r=>({...r,adet:Math.round(r.adet*100)/100})),original.filter(r=>!r.grup.startsWith('Paneller —')&&r.grup!=='Duvar uzunlukları'));
   };
-  window.Prefab={resolve,linked,swap,swapLocal,split,merge,mergeSelected,makeFull,fitWideWindow,remove,issues,rebuildLayout,snapTargets,trussMove,trussSelect,
+  window.Prefab={resolve,linked,swap,swapLocal,split,merge,mergeSelected,makeFull,fitWideWindow,remove,issues,rebuildLayout,reorientProduction,snapTargets,trussMove,trussSelect,
     select(ownerId,index){const r=pfAnaliz().runs.find(r=>r.owner.id===ownerId||r.items.some(it=>it.seg.id===ownerId));if(r?.slots[index])select(r,r.slots[index]);},
     mode(value){G.selectionMode=value;G.secili=null;G.seciliTip=null;G.selPanels=[];G.panelAnchor=null;G.selSegs=[];setTool('sec');updateSidebar();draw();}
   };
@@ -5992,7 +6067,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.58';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.59';syncUI();draw();
 })();
 
 </script><script>
@@ -6053,6 +6128,17 @@ updateStatus();
         r.slots.forEach((p,i)=>{
           const atEnd=i===0||i===r.slots.length-1;
           const deductions=atEnd?[0,r.s0,r.s1,r.s0+r.s1]:[0];
+          // At a step, an ending parallel wall and the next starting wall
+          // share the corner axis. Their faces lie on opposite sides of it:
+          // both real allowances shorten this panel (e.g. 125.5 - 5 - 5).
+          // Only accept the second allowance at that measured shared endpoint,
+          // not as an arbitrary extra tolerance on every special panel.
+          if(i===0&&r.s0>0)group.forEach(({r:peer})=>{
+            if(peer!==r&&peer.s1>0&&Math.abs((axis==='x'?peer.ax:peer.ay)+peer.L-org)<TOL)deductions.push(r.s0+peer.s1);
+          });
+          if(i===r.slots.length-1&&r.s1>0)group.forEach(({r:peer})=>{
+            if(peer!==r&&peer.s0>0&&Math.abs((axis==='x'?peer.ax:peer.ay)-(org+r.L))<TOL)deductions.push(r.s1+peer.s0);
+          });
           // During an open outline the allowance for the still-free first
           // corner can temporarily sit at the other end of the panel sequence.
           const freeEnd=atEnd&&[r.nodes[0].nid,r.nodes.at(-1).nid].some(id=>G.segs.filter(s=>s.n1===id||s.n2===id).length===1);
@@ -6481,7 +6567,7 @@ window.OpeningCatalog=(function(){
   function get(){return G.roofs.find(z=>z.id===selected);}
   function materials(){return [...C.MATERIALS,...G.roofMaterials];}
   function model(){const key=JSON.stringify([G.roofs,G.roofMaterials,G.opt.osb]);if(key!==cacheKey){cache=C.calculate(G.roofs,G.roofMaterials,!!G.opt.osb);cacheKey=key;}return cache;}
-  function commit(mutate){let failure='';const ok=Studio.edit(()=>{try{mutate();if(window.RoofWorkflow)RoofWorkflow.synchronize();C.validate(G.roofs,G.roofMaterials);G.roofs=G.roofs.map(z=>z.attachment?C.attachVeranda(z,G.roofs.find(p=>p.id===z.attachment.parentId)):z);}catch(e){failure=e.message;throw e;}C.validate(G.roofs,G.roofMaterials);C.calculate(G.roofs,G.roofMaterials);});if(ok){cacheKey='';render();notice('Çatı güncellendi. Projeyle birlikte kaydedilir; geri alma kullanılabilir.');}else notice(failure||'Değişiklik uygulanamadı. Ölçüleri kontrol edin.',true);return ok;}
+  function commit(mutate,options){let failure='';const ok=Studio.edit(()=>{try{mutate();if(window.RoofWorkflow)RoofWorkflow.synchronize();C.validate(G.roofs,G.roofMaterials);G.roofs=G.roofs.map(z=>z.attachment?C.attachVeranda(z,G.roofs.find(p=>p.id===z.attachment.parentId)):z);}catch(e){failure=e.message;throw e;}C.validate(G.roofs,G.roofMaterials);C.calculate(G.roofs,G.roofMaterials);},options);if(ok){cacheKey='';render();notice('Çatı güncellendi. Projeyle birlikte kaydedilir; geri alma kullanılabilir.');}else notice(failure||'Değişiklik uygulanamadı. Ölçüleri kontrol edin.',true);return ok;}
   function id(){return 'roof_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);}
   function make(overrides={}){const z=C.defaults({id:id(),layers:G.opt.osb?[{...C.LAYERS[0]}]:[],datum:'eave',wallTop:+G.opt.h||250,floorLevel:0,pitch:+G.opt.egim||33,eaves:Array(4).fill(+G.opt.sacak||0),h:+G.opt.h||280,material:G.opt.kaplama,width:+G.opt.trapezEn||100,fire:+G.opt.catiFire||0,...overrides});if(!materials().some(m=>m.id===z.material))z.material='trapez';const mat=materials().find(m=>m.id===z.material);if(mat.unit==='sheet'&&!mat.widths.includes(z.width))z.width=mat.widths.at(-1);z.group=overrides.group||z.id;return z;}
   function add(z){if(commit(()=>G.roofs.push(z))){selected=z.id;action=null;render();fit();}return z;}
@@ -6769,17 +6855,26 @@ window.OpeningCatalog=(function(){
  }
  function setDirection(yon){
   if(yon===G.catiYon)return;
-  // Roof production may rotate after walls have been laid out. Keep their
-  // physical joints and panels instead of regenerating them from the new axis.
-  if(isPref()){
-   const runs=pfAnaliz().runs;
-   runs.forEach(r=>{if(r.slots.length)r.owner.pnlCfg={...r.owner.pnlCfg,dizi:r.slots.map(p=>p.w),explicit:true};});
-   G.nodes.forEach(n=>{if(G.segs.some(s=>s.tip!=='veranda'&&(s.n1===n.id||s.n2===n.id)))n.koseTers=!n.koseTers;});
-  }
-  G.catiYon=yon;
+  if(!isPref()){G.catiYon=yon;return;}
+  const move=Prefab.reorientProduction(yon);
+  // Move the mesnet boundary with its building, keeping the eaves separate.
+  // Plan, section, 3D and quantities still consume these same roof objects.
+  G.roofs=G.roofs.map(z=>{
+   const shift=move.forPoint(C.transform(z,{x:z.w/2,y:z.d/2}));
+   if(z.childJoin){z.childJoin.points=z.childJoin.points.map(shift);z.childJoin.support=z.childJoin.support.map(shift);return z;}
+   const source=z.attachment?z.attachment.base:z;
+   const world=C.basePolygon(source).map((p,i)=>{
+    const ref=z.boundaryRefs?.[i],n=ref&&getNode(ref.nodeId);
+    return n?{x:n.x+ref.dx,y:n.y+ref.dy}:shift(C.transform(source,p));
+   }),local=world.map(p=>C.untransform(source,p));
+   const x=Math.min(...local.map(p=>p.x)),y=Math.min(...local.map(p=>p.y)),w=Math.max(...local.map(p=>p.x))-x,d=Math.max(...local.map(p=>p.y))-y;
+   const start=C.transform(source,{x,y});
+   if(z.attachment){z.attachment.base={...source,...start,w,d};return z;}
+   return {...z,...start,w,d,outline:z.outline?local.map(p=>({x:p.x-x,y:p.y-y})):undefined};
+  });
  }
  function direction(yon){
-  try{checkDirection(yon);const ok=R.commit(()=>{setDirection(yon);synchronize();});catiBtnGuncelle();draw();if(ok){const warnings=Prefab.issues().filter(i=>i.code==='truss-support');const message='Makas yönü değiştirildi; duvarlar ve panel birleşimleri korundu.'+(warnings.length?' '+warnings.length+' duvar hattında makas / H mesnet uyumunu Plan kontrolünden inceleyin.':'');R.notice(message,!!warnings.length);Studio.toast(message,!!warnings.length);}return ok;}
+  try{checkDirection(yon);if(yon===G.catiYon)return true;const ok=R.commit(()=>{setDirection(yon);synchronize();},{preserveLayout:true});catiBtnGuncelle();draw();if(ok){const warnings=Prefab.issues().filter(i=>['truss-support','opening-joint','module-width','module-axis','module-junction'].includes(i.code));const message='Köşe payları ölçülere yansıtıldı; köşe direkleri, panel uçları ve H ekleri yeni makas akslarına göre hesaplandı.'+(warnings.length?' '+warnings.length+' kesim / mesnet kontrolü Plan kontrolünde.':'');R.notice(message,!!warnings.length);Studio.toast(message,!!warnings.length);}return ok;}
   catch(e){R.notice(e.message,true);Studio.toast(e.message,true);$('roofProductionDirection').value=G.catiYon;return false;}
  }
  window.catiYonAyarla=function(yon){return direction(yon);};
@@ -6842,8 +6937,17 @@ window.OpeningCatalog=(function(){
   let q={x:Math.round(p.x),y:Math.round(p.y)},best=radius;
   for(const r of refs){const d=Math.hypot(r.x-p.x,r.y-p.y);if(d<best&&(count===1||Math.abs(r[normal]-draft.points[1][normal])<.001)){q={...r};best=d;}}
   if(count===1){if(!q.ref)q[tangent]=draft.points[0][tangent];}
-  else q[normal]=draft.points[1][normal];
-  return {...q,snapLabel:q.ref?'Duvar köşesi yakalandı':'U kenar hizası',invalid:q[tangent]<Math.min(edge.a[tangent],edge.b[tangent])||q[tangent]>Math.max(edge.a[tangent],edge.b[tangent])};
+  else{
+   q[normal]=draft.points[1][normal];
+   // The second outer point is constrained to the U front. Snap its other
+   // coordinate to wall/host-edge alignments even when the corner itself is
+   // far away, so a near click retains the exact perpendicular return.
+   if(!q.ref){let distance=radius;for(const r of refs.concat([edge.a,edge.b])){
+    const d=Math.abs(r[tangent]-p[tangent]);
+    if(d<distance&&r[tangent]>=Math.min(edge.a[tangent],edge.b[tangent])&&r[tangent]<=Math.max(edge.a[tangent],edge.b[tangent])){q[tangent]=r[tangent];distance=d;q.snapLabel='Duvar hizası · ana kenara dik';}
+   }}
+  }
+  return {...q,snapLabel:q.ref?'Duvar köşesi yakalandı':q.snapLabel||'U kenar hizası',invalid:q[tangent]<Math.min(edge.a[tangent],edge.b[tangent])||q[tangent]>Math.max(edge.a[tangent],edge.b[tangent])};
  }
  function snap(p){
   const radius=12/Math.max(.001,Math.abs(R.canvasPoint({x:1,y:0}).x-R.canvasPoint({x:0,y:0}).x)),refs=[];
@@ -6871,10 +6975,14 @@ window.OpeningCatalog=(function(){
  function trusses(z){
   const poly=z.childJoin?z.childJoin.support.map(p=>C.untransform(z,p)):C.basePolygon(z),out=[],lo=Math.min(...poly.map(p=>p.x)),hi=Math.max(...poly.map(p=>p.x));
   const candidates=G.nodes.map(p=>C.untransform(z,p)).filter(p=>p.x>=lo-15&&p.x<=hi+15&&p.y>=-15&&p.y<=z.d+15).map(p=>p.x).sort((a,b)=>a-b);
-  const origin=candidates.length?candidates[0]:lo,positions=[];
-  for(let x=origin;x<hi-.001;x+=125.5)if(x>=lo-.001)positions.push(x);
-  const end=candidates.length?candidates.at(-1):hi;if(end>=lo&&end<=hi&&(!positions.length||Math.abs(positions.at(-1)-end)>.01))positions.push(end);
-  const axis=z.angle%180<45?'x':'y';
+  const axis=z.angle%180<45?'x':'y',zero=C.transform(z,{x:0,y:0})[axis],sign=C.transform(z,{x:1,y:0})[axis]-zero,positions=[];
+  // Start from the low WORLD axis even at 180°/270°. Starting at local min X
+  // shifted every truss by half a module after a second turn of a half-bay roof.
+  const world=candidates.map(x=>zero+sign*x),low=Math.min(zero+sign*lo,zero+sign*hi),high=Math.max(zero+sign*lo,zero+sign*hi);
+  const origin=world.length?Math.min(...world):low,end=world.length?Math.max(...world):high;
+  for(let x=origin;x<high-.001;x+=125.5)if(x>=low-.001)positions.push((x-zero)/sign);
+  if(end>=low&&end<=high&&!positions.some(x=>Math.abs(zero+sign*x-end)<.01))positions.push((end-zero)/sign);
+  positions.sort((a,b)=>sign*(a-b));
   for(const original of positions){let x=original;const world=C.transform(z,{x,y:0}),defaultPos=world[axis],edit=(G.trussOverrides||[]).find(e=>e.axis===axis&&(!e.zoneId||e.zoneId===z.id)&&Math.abs(e.from-world[axis])<.001&&candidates.length);
    if(edit){world[axis]=edit.to;x=C.untransform(z,world).x;}
    const cuts=[];poly.forEach((a,i)=>{const b=poly[(i+1)%poly.length];if(Math.abs(a.x-b.x)>.001&&x>=Math.min(a.x,b.x)-.001&&x<=Math.max(a.x,b.x)+.001)cuts.push(a.y+(x-a.x)*(b.y-a.y)/(b.x-a.x));});cuts.sort((a,b)=>a-b);
@@ -6919,7 +7027,7 @@ window.OpeningCatalog=(function(){
   try{
    if(next.childJoin)next.childJoin.requestedSideEaves=[next.eaves[2],next.eaves[3]];
    if(z.outline){const e=Number(data.get('boundaryEave'));if(!Number.isFinite(e)||e<0||e>500)throw Error('Saçak 0–500 cm olmalı.');next.eaves=[e,e,e,e];next.edgeEaves=z.outline.map((_,i)=>z.joinEdges?.[i]?0:e);}
-   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;setDirection(yon);synchronize();catiBtnGuncelle();});}
+   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;setDirection(yon);synchronize();catiBtnGuncelle();},{preserveLayout:true});}
    if(steps&&next.childJoin)throw Error('Saplanma yönünü değiştirmek için U sınırını yeniden çizin.');
    if(steps===1&&next.production?.role==='child')next.production.relative=next.production.relative===90?0:90;
    else if(steps)next=C.turn(next,steps);
@@ -7455,11 +7563,7 @@ window.OpeningCatalog=(function(){
   const line=points=>out.push({layer,points}),rect=(x,y,w,h)=>out.push({layer,closed:true,points:[{x,y},{x:x+w,y},{x:x+w,y:y+h},{x,y:y+h}]});
   const k=parseFloat(b.k)||10;
   if(b.tip==='kose'){
-   const vertical=(G.catiYon!=='dikey')!==!!n.koseTers,w=vertical?k/2:k,h=vertical?k:k/2;
-   const incident=G.segs.filter(s=>s.tip!=='veranda'&&(s.n1===b.nid||s.n2===b.nid));
-   const inward=incident.map(s=>{const a=getNode(s.n1===b.nid?s.n2:s.n1);return {x:a.x-n.x,y:a.y-n.y};}).find(d=>vertical?Math.abs(d.x)>Math.abs(d.y):Math.abs(d.y)>Math.abs(d.x));
-   const dx=vertical&&inward?-Math.sign(inward.x)*w/2:0,dy=!vertical&&inward?-Math.sign(inward.y)*h/2:0;
-   rect(n.x+dx-w/2,n.y+dy-h/2,w,h);return out;
+   const p=pfKoseRect(b.nid,k);rect(p.x,p.y,p.w,p.h);return out;
   }
   const r=b.run,ux=r?r.ux:1,uy=r?r.uy:0,P=(a,o)=>({x:n.x+ux*a-uy*o,y:n.y+uy*a+ux*o});
   if(b.tip==='H'){line([P(0,-k/2),P(0,k/2)]);line([P(-2.5,-k/2),P(2.5,-k/2)]);line([P(-2.5,k/2),P(2.5,k/2)]);}
@@ -7690,8 +7794,8 @@ LoadingReference.rows.push({id:"tuna-92",row:92,group:"Metal",name:"Yeşil alç�
  $('loadHLabels').onchange=()=>{const v=$('loadHLabels').checked;commit(c=>{c.showLabels=v;});};
  function open(){try{render();dlg.showModal();}catch(e){Studio.toast(e.message,true);}}
  for(const id of ['loadSearch','loadGroup','loadStatus'])$(id).oninput=render;$('loadRefresh').onclick=render;$('loadAdd').onclick=()=>editor(null);$('loadClose').onclick=()=>dlg.close();
- $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:'5.9.58',date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
- $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:'5.9.58',date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:Studio.state().revision,date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
+ $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:Studio.state().revision,date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
  window.LoadingList={open,calculate,items};
 })();
 

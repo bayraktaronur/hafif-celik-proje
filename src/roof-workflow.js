@@ -43,17 +43,26 @@
  }
  function setDirection(yon){
   if(yon===G.catiYon)return;
-  // Roof production may rotate after walls have been laid out. Keep their
-  // physical joints and panels instead of regenerating them from the new axis.
-  if(isPref()){
-   const runs=pfAnaliz().runs;
-   runs.forEach(r=>{if(r.slots.length)r.owner.pnlCfg={...r.owner.pnlCfg,dizi:r.slots.map(p=>p.w),explicit:true};});
-   G.nodes.forEach(n=>{if(G.segs.some(s=>s.tip!=='veranda'&&(s.n1===n.id||s.n2===n.id)))n.koseTers=!n.koseTers;});
-  }
-  G.catiYon=yon;
+  if(!isPref()){G.catiYon=yon;return;}
+  const move=Prefab.reorientProduction(yon);
+  // Move the mesnet boundary with its building, keeping the eaves separate.
+  // Plan, section, 3D and quantities still consume these same roof objects.
+  G.roofs=G.roofs.map(z=>{
+   const shift=move.forPoint(C.transform(z,{x:z.w/2,y:z.d/2}));
+   if(z.childJoin){z.childJoin.points=z.childJoin.points.map(shift);z.childJoin.support=z.childJoin.support.map(shift);return z;}
+   const source=z.attachment?z.attachment.base:z;
+   const world=C.basePolygon(source).map((p,i)=>{
+    const ref=z.boundaryRefs?.[i],n=ref&&getNode(ref.nodeId);
+    return n?{x:n.x+ref.dx,y:n.y+ref.dy}:shift(C.transform(source,p));
+   }),local=world.map(p=>C.untransform(source,p));
+   const x=Math.min(...local.map(p=>p.x)),y=Math.min(...local.map(p=>p.y)),w=Math.max(...local.map(p=>p.x))-x,d=Math.max(...local.map(p=>p.y))-y;
+   const start=C.transform(source,{x,y});
+   if(z.attachment){z.attachment.base={...source,...start,w,d};return z;}
+   return {...z,...start,w,d,outline:z.outline?local.map(p=>({x:p.x-x,y:p.y-y})):undefined};
+  });
  }
  function direction(yon){
-  try{checkDirection(yon);const ok=R.commit(()=>{setDirection(yon);synchronize();});catiBtnGuncelle();draw();if(ok){const warnings=Prefab.issues().filter(i=>i.code==='truss-support');const message='Makas yönü değiştirildi; duvarlar ve panel birleşimleri korundu.'+(warnings.length?' '+warnings.length+' duvar hattında makas / H mesnet uyumunu Plan kontrolünden inceleyin.':'');R.notice(message,!!warnings.length);Studio.toast(message,!!warnings.length);}return ok;}
+  try{checkDirection(yon);if(yon===G.catiYon)return true;const ok=R.commit(()=>{setDirection(yon);synchronize();},{preserveLayout:true});catiBtnGuncelle();draw();if(ok){const warnings=Prefab.issues().filter(i=>['truss-support','opening-joint','module-width','module-axis','module-junction'].includes(i.code));const message='Köşe payları ölçülere yansıtıldı; köşe direkleri, panel uçları ve H ekleri yeni makas akslarına göre hesaplandı.'+(warnings.length?' '+warnings.length+' kesim / mesnet kontrolü Plan kontrolünde.':'');R.notice(message,!!warnings.length);Studio.toast(message,!!warnings.length);}return ok;}
   catch(e){R.notice(e.message,true);Studio.toast(e.message,true);$('roofProductionDirection').value=G.catiYon;return false;}
  }
  window.catiYonAyarla=function(yon){return direction(yon);};
@@ -116,8 +125,17 @@
   let q={x:Math.round(p.x),y:Math.round(p.y)},best=radius;
   for(const r of refs){const d=Math.hypot(r.x-p.x,r.y-p.y);if(d<best&&(count===1||Math.abs(r[normal]-draft.points[1][normal])<.001)){q={...r};best=d;}}
   if(count===1){if(!q.ref)q[tangent]=draft.points[0][tangent];}
-  else q[normal]=draft.points[1][normal];
-  return {...q,snapLabel:q.ref?'Duvar köşesi yakalandı':'U kenar hizası',invalid:q[tangent]<Math.min(edge.a[tangent],edge.b[tangent])||q[tangent]>Math.max(edge.a[tangent],edge.b[tangent])};
+  else{
+   q[normal]=draft.points[1][normal];
+   // The second outer point is constrained to the U front. Snap its other
+   // coordinate to wall/host-edge alignments even when the corner itself is
+   // far away, so a near click retains the exact perpendicular return.
+   if(!q.ref){let distance=radius;for(const r of refs.concat([edge.a,edge.b])){
+    const d=Math.abs(r[tangent]-p[tangent]);
+    if(d<distance&&r[tangent]>=Math.min(edge.a[tangent],edge.b[tangent])&&r[tangent]<=Math.max(edge.a[tangent],edge.b[tangent])){q[tangent]=r[tangent];distance=d;q.snapLabel='Duvar hizası · ana kenara dik';}
+   }}
+  }
+  return {...q,snapLabel:q.ref?'Duvar köşesi yakalandı':q.snapLabel||'U kenar hizası',invalid:q[tangent]<Math.min(edge.a[tangent],edge.b[tangent])||q[tangent]>Math.max(edge.a[tangent],edge.b[tangent])};
  }
  function snap(p){
   const radius=12/Math.max(.001,Math.abs(R.canvasPoint({x:1,y:0}).x-R.canvasPoint({x:0,y:0}).x)),refs=[];
@@ -145,10 +163,14 @@
  function trusses(z){
   const poly=z.childJoin?z.childJoin.support.map(p=>C.untransform(z,p)):C.basePolygon(z),out=[],lo=Math.min(...poly.map(p=>p.x)),hi=Math.max(...poly.map(p=>p.x));
   const candidates=G.nodes.map(p=>C.untransform(z,p)).filter(p=>p.x>=lo-15&&p.x<=hi+15&&p.y>=-15&&p.y<=z.d+15).map(p=>p.x).sort((a,b)=>a-b);
-  const origin=candidates.length?candidates[0]:lo,positions=[];
-  for(let x=origin;x<hi-.001;x+=125.5)if(x>=lo-.001)positions.push(x);
-  const end=candidates.length?candidates.at(-1):hi;if(end>=lo&&end<=hi&&(!positions.length||Math.abs(positions.at(-1)-end)>.01))positions.push(end);
-  const axis=z.angle%180<45?'x':'y';
+  const axis=z.angle%180<45?'x':'y',zero=C.transform(z,{x:0,y:0})[axis],sign=C.transform(z,{x:1,y:0})[axis]-zero,positions=[];
+  // Start from the low WORLD axis even at 180°/270°. Starting at local min X
+  // shifted every truss by half a module after a second turn of a half-bay roof.
+  const world=candidates.map(x=>zero+sign*x),low=Math.min(zero+sign*lo,zero+sign*hi),high=Math.max(zero+sign*lo,zero+sign*hi);
+  const origin=world.length?Math.min(...world):low,end=world.length?Math.max(...world):high;
+  for(let x=origin;x<high-.001;x+=125.5)if(x>=low-.001)positions.push((x-zero)/sign);
+  if(end>=low&&end<=high&&!positions.some(x=>Math.abs(zero+sign*x-end)<.01))positions.push((end-zero)/sign);
+  positions.sort((a,b)=>sign*(a-b));
   for(const original of positions){let x=original;const world=C.transform(z,{x,y:0}),defaultPos=world[axis],edit=(G.trussOverrides||[]).find(e=>e.axis===axis&&(!e.zoneId||e.zoneId===z.id)&&Math.abs(e.from-world[axis])<.001&&candidates.length);
    if(edit){world[axis]=edit.to;x=C.untransform(z,world).x;}
    const cuts=[];poly.forEach((a,i)=>{const b=poly[(i+1)%poly.length];if(Math.abs(a.x-b.x)>.001&&x>=Math.min(a.x,b.x)-.001&&x<=Math.max(a.x,b.x)+.001)cuts.push(a.y+(x-a.x)*(b.y-a.y)/(b.x-a.x));});cuts.sort((a,b)=>a-b);
@@ -193,7 +215,7 @@
   try{
    if(next.childJoin)next.childJoin.requestedSideEaves=[next.eaves[2],next.eaves[3]];
    if(z.outline){const e=Number(data.get('boundaryEave'));if(!Number.isFinite(e)||e<0||e>500)throw Error('Saçak 0–500 cm olmalı.');next.eaves=[e,e,e,e];next.edgeEaves=z.outline.map((_,i)=>z.joinEdges?.[i]?0:e);}
-   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;setDirection(yon);synchronize();catiBtnGuncelle();});}
+   if(steps===1&&mainOf(z)){const yon=G.catiYon==='yatay'?'dikey':'yatay';checkDirection(yon);return R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;setDirection(yon);synchronize();catiBtnGuncelle();},{preserveLayout:true});}
    if(steps&&next.childJoin)throw Error('Saplanma yönünü değiştirmek için U sınırını yeniden çizin.');
    if(steps===1&&next.production?.role==='child')next.production.relative=next.production.relative===90?0:90;
    else if(steps)next=C.turn(next,steps);
