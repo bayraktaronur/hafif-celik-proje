@@ -757,7 +757,7 @@ function odaIcGeometri(r){
 //   Yok / Tüm odalar / Seçili odalar (oda bazında işaretlenir)
 // Dış cephe kaplaması: Yok / Taşonit / Yalıpan — plaka ölçüsü serbest ("40x250", "31x250", "20x300")
 //   Taşonit: tam yüz örter · Yalıpan: alttan başlar, her sıra bir öncekine 3 cm bindirir → görünen yükseklik = en − 3
-G.opt={h:280,dis:10,ic:6,alciDuvar:'yok',cephe:'yok',plaka:'40x250',bindirme:3,cepheFire:5,cati:'besik',egim:33,sacak:30,trapezEn:100,kaplama:'trapez',osb:false,catiFire:5,suRulo:75,suBindirme:10,parcaBoy:200,parcaBind:10,vidaM2:5,inisAralik:10,aksAcik:false};
+G.opt={h:250,dis:10,ic:6,alciDuvar:'yok',cephe:'yok',plaka:'40x250',bindirme:3,cepheFire:5,cati:'besik',egim:33,sacak:30,trapezEn:100,kaplama:'trapez',osb:false,catiFire:5,suRulo:75,suBindirme:10,parcaBoy:200,parcaBind:10,vidaM2:5,inisAralik:10,aksAcik:false};
 function optUygula(anahtar,deger){
   pushH();
   G.opt[anahtar]=deger;

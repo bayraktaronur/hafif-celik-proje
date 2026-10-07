@@ -27,9 +27,10 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    parts.push({...meta,widthMm:mesh.width*10,heightMm:mesh.height*10});
    for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+mesh.vertices[i+j]-mesh.centerX,y=mesh.vertices[i+j+1]-mesh.wallCenterY;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:mesh.vertices[i+j+2]});}
     const u={x:poly[1].x-poly[0].x,y:poly[1].y-poly[0].y,z:poly[1].z-poly[0].z},v={x:poly[2].x-poly[0].x,y:poly[2].y-poly[0].y,z:poly[2].z-poly[0].z},nx=u.y*v.z-u.z*v.y,ny=u.z*v.x-u.x*v.z,nz=u.x*v.y-u.y*v.x,L=Math.hypot(nx,ny,nz);
-    if(L>1e-8)surfaces.push({...meta,poly,color:'#dfdfd8',shade:.65+.35*Math.abs((nx*.3+ny*.4+nz*.866)/L)});
+    const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?'#e3e0d3':material==='pvc'?'#ffffff':'#85b9cb';
+    if(L>1e-8)surfaces.push({...meta,poly,color,material,alpha:material==='glass'?.38:1,shade:Math.abs(nz)/L>.9?1:.78+.18*Math.abs(ny)/L});
    }
-   warnings.add(label+' pano: gerçek STL, ölçek 1:1. STL malzeme bilgisi içermediği için renkler nötrdür.');
+   warnings.add(label+' pano: gerçek STL, ölçek 1:1. PVC beyaz; cam yarı saydam. Malzeme ayrımı geometriden tahmin edilir.');
   }
   for(const p of r.slots){
    const core=({6:4,10:8,15:13})[p.k],cut=LoadingCore.stockWidth(p.w,Modular.cutMm(p.w))?.cutMm;

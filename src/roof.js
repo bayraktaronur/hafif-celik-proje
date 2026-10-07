@@ -160,12 +160,14 @@
     const width=Math.ceil(w),height=Math.ceil(h),pixels=new Uint8ClampedArray(width*height*4),depth=new Float64Array(width*height),vergeMask=new Uint8Array(width*height);depth.fill(-Infinity);
     for(let i=0;i<pixels.length;i+=4){pixels[i]=13;pixels[i+1]=23;pixels[i+2]=34;pixels[i+3]=255;}
     const rgb=hex=>[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));
+    const glassDepth=new Float64Array(width*height),glassColor=new Float32Array(width*height*4);glassDepth.fill(-Infinity);
     for(const item of items){const poly=item.poly.map(project),color=rgb(item.color),shade=item.shade||1;
       for(let j=1;j<poly.length-1;j++){const a=poly[0],b=poly[j],c=poly[j+1],D=(b.y-c.y)*(a.x-c.x)+(c.x-b.x)*(a.y-c.y);if(Math.abs(D)<1e-6)continue;
         const x0=Math.max(0,Math.floor(Math.min(a.x,b.x,c.x))),x1=Math.min(width-1,Math.ceil(Math.max(a.x,b.x,c.x))),y0=Math.max(0,Math.floor(Math.min(a.y,b.y,c.y))),y1=Math.min(height-1,Math.ceil(Math.max(a.y,b.y,c.y)));
-        for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){const u=((b.y-c.y)*(x+.5-c.x)+(c.x-b.x)*(y+.5-c.y))/D,v=((c.y-a.y)*(x+.5-c.x)+(a.x-c.x)*(y+.5-c.y))/D,t=1-u-v;if(u<-.00001||v<-.00001||t<-.00001)continue;const d=u*a.depth+v*b.depth+t*c.depth,k=y*width+x;if(d>=depth[k]){depth[k]=d;vergeMask[k]=['vergeTrim','vergeLip'].includes(item.kind)?1:0;pixels[k*4]=color[0]*shade;pixels[k*4+1]=color[1]*shade;pixels[k*4+2]=color[2]*shade;}}
+        for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){const u=((b.y-c.y)*(x+.5-c.x)+(c.x-b.x)*(y+.5-c.y))/D,v=((c.y-a.y)*(x+.5-c.x)+(a.x-c.x)*(y+.5-c.y))/D,t=1-u-v;if(u<-.00001||v<-.00001||t<-.00001)continue;const d=u*a.depth+v*b.depth+t*c.depth,k=y*width+x;if(item.alpha<1){if(d>glassDepth[k]){glassDepth[k]=d;glassColor[k*4]=color[0]*shade;glassColor[k*4+1]=color[1]*shade;glassColor[k*4+2]=color[2]*shade;glassColor[k*4+3]=item.alpha;}continue;}if(d>=depth[k]){depth[k]=d;vergeMask[k]=['vergeTrim','vergeLip'].includes(item.kind)?1:0;pixels[k*4]=color[0]*shade;pixels[k*4+1]=color[1]*shade;pixels[k*4+2]=color[2]*shade;}}
       }
     }
+    for(let k=0;k<depth.length;k++)if(glassDepth[k]>depth[k]){const a=glassColor[k*4+3];for(let c=0;c<3;c++)pixels[k*4+c]=pixels[k*4+c]*(1-a)+glassColor[k*4+c]*a;depth[k]=glassDepth[k];}
     for(const e of edges){const a=project(e.p),b=project(e.q),steps=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)*2)),color=rgb(e.color||COLORS[e.type]||(e.type==='panel'?'#d9e8ed':'#879ba9'));for(let i=0;i<=steps;i++){const t=i/steps,x=Math.round(a.x+(b.x-a.x)*t),y=Math.round(a.y+(b.y-a.y)*t),d=a.depth+(b.depth-a.depth)*t;if(x<0||x>=width||y<0||y>=height)continue;const k=y*width+x;if(vergeMask[k]&&['ridge','hip'].includes(e.type)&&d<=depth[k]+2)continue;if(d>=depth[k]-2){pixels[k*4]=color[0];pixels[k*4+1]=color[1];pixels[k*4+2]=color[2];}}}
     const layer=document.createElement('canvas');layer.width=width;layer.height=height;layer.getContext('2d').putImageData(new ImageData(pixels,width,height),0,0);ctx.drawImage(layer,0,0);
   }
