@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.64
+# Prefabrikten Plan Studio · 5.9.65
+
+5.9.65: 3B orbit/zoom/pan, yönler ve perspektif/paralel görünüş; kapı/PVC açıklıkları ve temsilî birleşimler. [Kapsam](analizler/2026-10-07-3b-kamera-acikliklar.md).
 
 5.9.64: Katmanlı dolu panel,10luk düz H ve köşe 3B görünüşü; çatıyı gizleme. [Kapsam ve bekleyen parçalar](analizler/2026-10-07-panel-h-kose-3b.md).
 

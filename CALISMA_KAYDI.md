@@ -528,3 +528,7 @@ Standart panel katmanları96/56/146 mm,1250 en,2500/2800/3000 yükseklik ve H1 m
 ## 7 Ekim 2026 — 5.9.64 / DEV-050 ilk 3B uygulama
 
 Plan slotlarından katmanlı dolu panolar,10luk H ve makasa bağlı köşe geometrisi eklendi. Çatıyı gizle ve detay/kütle karşılaştırması var. Kapılı/pencereli panolar hâlâ şematik; diğer birleşimler açık uyarıyla bekliyor. wall-3d,roof-plan-body,roof-trims,roof-panels-3d geçti; ekran incelendi. Rapor analizler/2026-10-07-panel-h-kose-3b.md. DEV-050 kısmen uygulandı, tüm imalat modeli tamamlandı sayılmadı.
+
+## 7 Ekim 2026 — 5.9.65 / DEV-051
+
+3B kamera orbit/zoom/pan,altı bakış yönü,paralel/perspektif eklendi. Kullanıcı pencere üst kot210cm ve temsilî PVC onayı verdi. Panolarda açıklıklar, katalog bölünüşlü PVC/kapı görünüşleri,H3/U/X ve diğer kalınlıklarda temsilî profil gösterimi eklendi. Plan/metraj değişmez. wall-3d ve çatı testleri geçti; ekran incelendi. Rapor analizler/2026-10-07-3b-kamera-acikliklar.md. Gerçek imalat kesitleri DEV-050 ve güncel JSON DEV-043 açık.
