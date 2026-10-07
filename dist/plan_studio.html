@@ -5185,7 +5185,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.85',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.86',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6158,7 +6158,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.85';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.86';syncUI();draw();
 })();
 
 </script><script>
@@ -6767,12 +6767,79 @@ window.Wall3D={build,panelColor};
  const state={yaw:35,pitch:31,zoom:1,panX:0,panY:0,projection:'parallel'};
  function preset(name){const v={front:[0,0],back:[180,0],left:[90,0],right:[270,0],top:[0,90],iso:[35,31]}[name];if(v){state.yaw=v[0];state.pitch=v[1];}reset();}
  function reset(){state.zoom=1;state.panX=state.panY=0;}
- function project(points,w,h){if(!points.length)points=[{x:0,y:0,z:0}];const min={},max={},c={};for(const k of ['x','y','z']){min[k]=Math.min(...points.map(p=>p[k]));max[k]=Math.max(...points.map(p=>p[k]));c[k]=(min[k]+max[k])/2;}
- const radius=Math.max(50,Math.hypot(max.x-min.x,max.y-min.y,max.z-min.z)/2),a=state.yaw*Math.PI/180,b=state.pitch*Math.PI/180,dist=radius*3.5,scale=Math.max(20,Math.min(w-90,h-100))/(2*radius)*state.zoom;
- return p=>{const x=p.x-c.x,y=p.y-c.y,z=p.z-c.z,X=x*Math.cos(a)-y*Math.sin(a),D=x*Math.sin(a)+y*Math.cos(a),Y=D*Math.sin(b)-z*Math.cos(b),Z=D*Math.cos(b)+z*Math.sin(b),pers=state.projection==='perspective',f=pers?dist/(dist-Z):1;return{x:w/2+state.panX+X*scale*f,y:h/2+state.panY+Y*scale*f,depth:pers?dist*dist/(dist-Z)-dist:Z};};
+ function project(points,w,h){if(!points.length)points=[{x:0,y:0,z:0}];const min={},max={},c={};for(const k of ['x','y','z']){min[k]=Infinity;max[k]=-Infinity;for(const p of points){min[k]=Math.min(min[k],p[k]);max[k]=Math.max(max[k],p[k]);}c[k]=(min[k]+max[k])/2;}
+ const radius=Math.max(50,Math.hypot(max.x-min.x,max.y-min.y,max.z-min.z)/2),a=state.yaw*Math.PI/180,b=state.pitch*Math.PI/180,dist=radius*3.5,perspective=state.projection==='perspective';
+ let left=Infinity,right=-Infinity,up=Infinity,down=-Infinity;
+ for(const p of points){const x=p.x-c.x,y=p.y-c.y,z=p.z-c.z,X=x*Math.cos(a)-y*Math.sin(a),D=x*Math.sin(a)+y*Math.cos(a),Y=D*Math.sin(b)-z*Math.cos(b),Z=D*Math.cos(b)+z*Math.sin(b),f=perspective?dist/(dist-Z):1;left=Math.min(left,X*f);right=Math.max(right,X*f);up=Math.min(up,Y*f);down=Math.max(down,Y*f);}
+ const scale=Math.max(.001,Math.min((w-100)/Math.max(100,right-left),(h-160)/Math.max(100,down-up)))*.9*state.zoom,offsetX=(left+right)/2,offsetY=(up+down)/2;
+ return p=>{const x=p.x-c.x,y=p.y-c.y,z=p.z-c.z,X=x*Math.cos(a)-y*Math.sin(a),D=x*Math.sin(a)+y*Math.cos(a),Y=D*Math.sin(b)-z*Math.cos(b),Z=D*Math.cos(b)+z*Math.sin(b),pers=state.projection==='perspective',f=pers?dist/(dist-Z):1;return{x:w/2+state.panX+(X*f-offsetX)*scale,y:h/2+state.panY+(Y*f-offsetY)*scale,depth:pers?dist*dist/(dist-Z)-dist:Z};};
  }
  window.Camera3D={state,preset,reset,project};
 })();
+</script><script>
+/* GPU presentation adapter. Input manufacturing surfaces are never changed. */
+(function(){
+ 'use strict';
+ const canvas=document.createElement('canvas');let gl,program,buffer,lost=false;
+ const state={theme:'light',outlines:true,grid:true},stats={backend:'uninitialized'};
+ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true;stats.backend='fallback';});
+ canvas.addEventListener('webglcontextrestored',()=>{gl=null;lost=false;window.RoofStudio?.repaint();});
+ function init(){
+  if(lost)return false;if(gl)return true;
+  gl=canvas.getContext('webgl',{antialias:true,alpha:false,preserveDrawingBuffer:true});if(!gl)return false;
+  const shader=(type,source)=>{const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;};
+  program=gl.createProgram();
+  gl.attachShader(program,shader(gl.VERTEX_SHADER,'attribute vec3 p; attribute vec4 c; varying vec4 color; void main(){gl_Position=vec4(p,1.0);color=c;}'));
+  gl.attachShader(program,shader(gl.FRAGMENT_SHADER,'precision mediump float; varying vec4 color; void main(){gl_FragColor=color;}'));
+  gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error('3B program could not link');buffer=gl.createBuffer();return true;
+ }
+ const rgb=hex=>[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255);
+ function normal(poly){const a=poly[0];for(let i=1;i<poly.length-1;i++){const b=poly[i],c=poly[i+1],u=[b.x-a.x,b.y-a.y,b.z-a.z],v=[c.x-a.x,c.y-a.y,c.z-a.z],n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],l=Math.hypot(...n);if(l>1e-8)return n.map(x=>x/l);}return [0,0,1];}
+ function render(ctx,w,h,items,edges,project){
+  try{if(!init())return false;}catch(e){stats.error=e.message;return false;}
+  const start=performance.now(),ratio=Math.min(2,Math.max(1.5,devicePixelRatio||1)),cw=Math.min(4096,Math.ceil(w*ratio)),ch=Math.min(4096,Math.ceil(h*ratio));
+  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
+  gl.viewport(0,0,cw,ch);gl.useProgram(program);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+  for(const [name,size,offset] of [['p',3,0],['c',4,12]]){const a=gl.getAttribLocation(program,name);gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,size,gl.FLOAT,false,28,offset);}
+  const light=state.theme==='light',bg=light?[.965,.972,.98]:[.051,.09,.133];gl.clearColor(...bg,1);gl.clearDepth(1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);
+  let near=-Infinity,far=Infinity,x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  const projected=items.map(item=>{const pts=item.poly.map(p=>{x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y);const q=project(p);near=Math.max(near,q.depth);far=Math.min(far,q.depth);return q;});return {item,pts,n:normal(item.poly)};});
+  if(!items.length){ctx.drawImage(canvas,0,0,w,h);return true;}
+  const span=Math.max(1,near-far),pad=span*2,range=span+2*pad;
+  const vertex=(arr,p,color,bias=0)=>arr.push(p.x/w*2-1,1-p.y/h*2,1-2*(p.depth-far+pad)/range-bias,...color);
+  const batch=(arr,mode)=>{if(!arr.length)return;gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(arr),gl.DYNAMIC_DRAW);gl.drawArrays(mode,0,arr.length/7);};
+  const opaque=[],glass=[],edgeMap=new Map(),lineData=[];
+  for(const {item,pts,n} of projected){
+   const base=rgb(item.color),diff=Math.abs(n[0]*.36+n[1]*-.48+n[2]*.8),shade=.60+.35*diff+.05*Math.abs(n[2]);
+   const metallic=item.kind==='wallJoint'||item.kind==='gableOmega',highlight=metallic?.07*Math.pow(diff,12):0;
+   let color=[...base.map(v=>Math.min(1,v*shade+highlight)),item.alpha??1];
+   if(color[3]<1){const yaw=Camera3D.state.yaw*Math.PI/180,pitch=Camera3D.state.pitch*Math.PI/180,view=[Math.sin(yaw)*Math.cos(pitch),Math.cos(yaw)*Math.cos(pitch),Math.sin(pitch)],facing=Math.abs(n.reduce((sum,v,i)=>sum+v*view[i],0)),reflection=.08+.35*Math.pow(1-facing,5);color=[...base.map(v=>v*(1-reflection)+reflection),Math.min(.7,color[3]+reflection*.4)];}
+   for(let j=1;j<pts.length-1;j++){const tri=[pts[0],pts[j],pts[j+1]];if(color[3]<1)glass.push({tri,color,depth:tri.reduce((s,p)=>s+p.depth,0)/3});else tri.forEach(p=>vertex(opaque,p,color));}
+   // Roof seams are supplied explicitly; panel patch boundaries are not physical joints.
+   if(state.outlines&&!item.roof&&item.material!=='panel'&&item.material!=='glass'&&!['openingMark','wallPanel','ridgeCap','vergeTrim','vergeBottom','soffit','cladding'].includes(item.kind)){
+    item.poly.forEach((a,i)=>{const b=item.poly[(i+1)%item.poly.length],keyPoint=p=>[p.x,p.y,p.z].map(v=>Math.round(v*1000)).join(','),ka=keyPoint(a),kb=keyPoint(b);if(ka===kb)return;const key=ka<kb?ka+'|'+kb:kb+'|'+ka,old=edgeMap.get(key);if(old){old.count++;if(Math.abs(old.n.reduce((s,v,j)=>s+v*n[j],0))<.94||old.color!==item.color)old.feature=true;}else edgeMap.set(key,{a:pts[i],b:pts[(i+1)%pts.length],n,color:item.color,count:1,feature:false});});
+   }
+  }
+  if(state.grid&&Number.isFinite(x0)){
+   const grid=[],margin=300,step=100,gcolor=light?[.83,.86,.89,1]:[.16,.22,.29,1];
+   const xa=Math.floor((x0-margin)/step)*step,xb=Math.ceil((x1+margin)/step)*step,ya=Math.floor((y0-margin)/step)*step,yb=Math.ceil((y1+margin)/step)*step;
+   for(let x=xa;x<=xb;x+=step){vertex(grid,project({x,y:ya,z:-.5}),gcolor);vertex(grid,project({x,y:yb,z:-.5}),gcolor);}
+   for(let y=ya;y<=yb;y+=step){vertex(grid,project({x:xa,y,z:-.5}),gcolor);vertex(grid,project({x:xb,y,z:-.5}),gcolor);}batch(grid,gl.LINES);
+  }
+  gl.enable(gl.POLYGON_OFFSET_FILL);gl.polygonOffset(1,1);batch(opaque,gl.TRIANGLES);gl.disable(gl.POLYGON_OFFSET_FILL);
+  const ink=light?[.19,.23,.27,1]:[.10,.14,.18,1];
+  for(const e of edgeMap.values())if(e.count===1||e.feature){vertex(lineData,e.a,ink,1e-6);vertex(lineData,e.b,ink,1e-6);}
+  // Explicit roof seams use the same depth test as the solid model.
+  for(const e of edges){const color=[...rgb(e.color||'#73838c'),1];vertex(lineData,project(e.p),color,1e-6);vertex(lineData,project(e.q),color,1e-6);}
+  gl.lineWidth(1);batch(lineData,gl.LINES);
+  glass.sort((a,b)=>a.depth-b.depth);const transparent=[];for(const g of glass)g.tri.forEach(p=>vertex(transparent,p,g.color));
+  gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);batch(transparent,gl.TRIANGLES);gl.depthMask(true);gl.disable(gl.BLEND);
+  ctx.drawImage(canvas,0,0,w,h);
+  Object.assign(stats,{backend:'webgl',antialias:gl.getContextAttributes().antialias,width:cw,height:ch,triangles:opaque.length/21+glass.length,lines:lineData.length/14,ms:performance.now()-start});return true;
+ }
+ window.Scene3D={render,state,stats};
+})();
+
 </script><script>
 /* Independent roof workspace. All committed roof/material edits use Studio history. */
 (function(){
@@ -6786,7 +6853,7 @@ window.Wall3D={build,panelColor};
   const dialog=document.createElement('dialog');dialog.id='roofDialog';dialog.innerHTML=`
     <header class="roof-head"><strong>Çatı planı</strong><small>Bölümleri yerleştir · Birleşimleri kontrol et · Kaplama metrajını al</small><button id="roofUndo" title="Geri al">↶</button><button id="roofRedo" title="İleri al">↷</button><button id="roofClose">Kat planına dön ✕</button></header>
     <div class="roof-body"><aside class="roof-left"><h3>ÇATI BÖLÜMLERİ</h3><div id="roofZones"></div><button id="roofFromPlan">Plandan ana çatı</button><label>Veranda / ek çatı<select id="roofVerandaRoom"></select></label><select id="roofVerandaType"><option value="tek">Sundurma · tek eğim</option><option value="besik">Beşik çatı</option><option value="karga">Karga burun · eğim devamı</option></select><label>Ana çatı bağlantısı<select id="roofVerandaParent"></select></label><p>Türü seçip oluştur / güncelle düğmesine basın. Sundurma başlangıcı ana saçaktan 10 cm aşağıda, başlangıç eğimi %5; beşikte %33. Ayarlar sağ panelde değiştirilebilir.</p><button id="roofFromVeranda">Veranda oluştur / güncelle</button><details><summary>Elle ek çatı çizimi</summary><label>Çizilecek bölüm biçimi<select id="roofNewType" aria-label="Yeni çatı türü">${Object.entries(TYPES).map(([v,n])=>`<option value="${v}">${n}</option>`).join('')}</select></label><button id="roofDraw">＋ Bölüm çiz</button><button id="roofJoin">＋ Birleşen bölüm çiz</button><p>Çizmek için iki karşı köşeye tıklayın. Birleşen bölümler aynı grupta kesilir; ayrı sundurmalar kendi grubunda kalır.</p></details><details><summary>Fotoğraf rehberi</summary><p>Beşik / kırma ana çatı; çapraz giriş çatısı; ayrı kotta sundurma; eğimin verandaya devamı; çokgen çıkma ve parapetli gizli çatı bu bölüm sistemiyle kurulur.</p><p>Örnekler: 4, 11, 12 → alt sundurma; 5 → kırma + beşik giriş; 10, 15, 36 → çokgen çıkma; 20, 37 → parapet. Fotoğraf 30 ve 31 aynı görünümdür.</p><p>Çatı kotu, eğimi ve kaplaması fotoğraftan ölçü alınarak belirlenmez; proje ölçüsü girilir.</p></details></aside>
-    <section class="roof-center"><nav class="roof-tabs"><button data-roof-view="plan" class="active">Plan</button><button data-roof-view="3d">3B</button><button data-roof-view="section">Kesit</button><button data-roof-view="report">Metraj / kesim</button><span class="roof-fill"></span><button id="roofStrips" title="Seçili bölümde levha kapatma enleri">Kaplama yerleşimi</button><select id="roofLayoutLayer" aria-label="Gösterilen kaplama katmanı"><option value="top">Üst örtü</option></select><button id="roofWallDetails">Panel / H / köşe</button><button id="roofHide">Çatıyı gizle</button><select id="roofProjection" aria-label="3B izdüşüm"><option value="parallel">Paralel</option><option value="perspective">Perspektif</option></select><select id="roofViewpoint" aria-label="3B bakış yönü"><option value="iso">İzometrik</option><option value="front">Ön</option><option value="back">Arka</option><option value="left">Sol</option><option value="right">Sağ</option><option value="top">Üst</option></select><button id="roofZoomIn" aria-label="3B yakınlaştır">+</button><button id="roofZoomOut" aria-label="3B uzaklaştır">−</button><button id="roofFit">Sığdır</button><button id="roofPNG">PNG</button><button id="roofCSV">CSV</button></nav><div class="roof-stage" id="roofStage"><canvas id="roofCanvas" aria-label="Çatı çizimi"></canvas><div id="roofHint"></div><input id="roofCamera" type="range" min="0" max="359" value="35" aria-label="3B bakış açısı" hidden></div><div id="roofReport" hidden></div><div class="roof-legend">${['ridge','hip','valley','eave','verge','step'].map(k=>`<span><i style="background:${COLORS[k]}"></i>${EDGE[k]}</span>`).join('')}</div><div id="roofStats" class="roof-stats"></div></section>
+    <section class="roof-center"><nav class="roof-tabs"><button data-roof-view="plan" class="active">Plan</button><button data-roof-view="3d">3B</button><button data-roof-view="section">Kesit</button><button data-roof-view="report">Metraj / kesim</button><span class="roof-fill"></span><button id="roofStrips" title="Seçili bölümde levha kapatma enleri">Kaplama yerleşimi</button><select id="roofLayoutLayer" aria-label="Gösterilen kaplama katmanı"><option value="top">Üst örtü</option></select><button id="roofWallDetails">Panel / H / köşe</button><button id="roofHide">Çatıyı gizle</button><select id="roofProjection" aria-label="3B izdüşüm"><option value="parallel">Paralel</option><option value="perspective">Perspektif</option></select><select id="roofViewpoint" aria-label="3B bakış yönü"><option value="iso">İzometrik</option><option value="front">Ön</option><option value="back">Arka</option><option value="left">Sol</option><option value="right">Sağ</option><option value="top">Üst</option></select><button id="roofZoomIn" aria-label="3B yakınlaştır">+</button><button id="roofZoomOut" aria-label="3B uzaklaştır">−</button><button id="roofFit">Sığdır</button><button id="roofTheme" title="3B zemin rengini değiştir">Koyu zemin</button><button id="roofContours" aria-pressed="true">Kenarlar</button><button id="roofPNG">PNG</button><button id="roofCSV">CSV</button></nav><div class="roof-stage" id="roofStage"><canvas id="roofCanvas" aria-label="Çatı çizimi"></canvas><div id="roofHint"></div><input id="roofCamera" type="range" min="0" max="359" value="35" aria-label="3B bakış açısı" hidden></div><div id="roofReport" hidden></div><div class="roof-legend">${['ridge','hip','valley','eave','verge','step'].map(k=>`<span><i style="background:${COLORS[k]}"></i>${EDGE[k]}</span>`).join('')}</div><div id="roofStats" class="roof-stats"></div></section>
     <aside class="roof-right" id="roofProperties"></aside></div><div id="roofNotice" role="status">Tüm ölçüler cm. Çatı geometrisi ve kaplama hesabı; taşıyıcı kesit / bağlantı hesabı içermez.</div>`;
   document.body.append(dialog);
   const tab=document.createElement('button');tab.id='roofWorkspace';tab.className='tb';tab.textContent='Çatı planı';tab.onclick=open;document.querySelector('.workspace-actions').prepend(tab);
@@ -7028,6 +7095,10 @@ window.Wall3D={build,panelColor};
     }return out;
   }
   function projected3D(m,w,h){const points=[...m.faces.flatMap(f=>f.poly.map(p=>({...p,z:C.height(f,p)}))),...planStructure().flatMap(i=>i.poly)];Camera3D.state.yaw=angle;return Camera3D.project(points,w,h);}
+  function renderScene3D(ctx,w,h,items,edges,project){
+    if(window.Scene3D&&Scene3D.render(ctx,w,h,items,edges,project))return;
+    raster3D(ctx,w,h,items,edges,project);
+  }
   // Depth-buffered triangles avoid painter-order errors at crossing roofs and parapets.
   function raster3D(ctx,w,h,items,edges,project){
     const width=Math.ceil(w),height=Math.ceil(h),pixels=new Uint8ClampedArray(width*height*4),depth=new Float64Array(width*height),vergeMask=new Uint8Array(width*height);depth.fill(-Infinity);
@@ -7056,13 +7127,14 @@ window.Wall3D={build,panelColor};
     if(mode==='section'){section(ctx,w,h);return;}if(mode==='report')return;
     const drawEdge=(e,project)=>{const p=project(e.p),q=project(e.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=COLORS[e.type];ctx.lineWidth=['ridge','valley'].includes(e.type)?2:1;ctx.stroke();};
     if(mode==='3d'){
-      const project=projected3D(m,w,h);
+
       const wallModel=showWallDetails&&isPref()?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&['cladding','gableOmega'].includes(s.kind))]:planStructure();if(wallModel)$('roofHint').textContent='Sol sürükle: döndür · Tekerlek: yakınlaş · Shift/orta tuş: kaydır · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId){items.push(...verandaStructure(z).filter(item=>item.kind!=='cladding'));return;}
         if(z.parapet){const poly=C.footprint(z).map(p=>C.transform(z,p)),top=Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))))+z.parapet;poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];items.push({poly:[{...p,z:z.h},{...q,z:z.h},{...q,z:top},{...p,z:top}],color:'#77818b',zone:z.id});});}
       });
       if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:mat.color,zone:z.id,shade:roofShade(f),roof:true});});
       if(!hideRoof)items.push(...fasciaSurfaces(m),...soffitSurfaces(m),...trimSurfaces(m));
-      raster3D(ctx,w,h,items,[...(!hideRoof&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof?[]:edges3D(m))],project);
+      Camera3D.state.yaw=angle;const project=Camera3D.project(items.flatMap(i=>i.poly),w,h);
+      renderScene3D(ctx,w,h,items,[...(!hideRoof&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof?[]:edges3D(m))],project);
     }else{
       const step=100*view.scale;ctx.strokeStyle='#182737';ctx.lineWidth=1;if(step>12){for(let x=view.x%step;x<w;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}for(let y=view.y%step;y<h;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}}
       G.segs.forEach(s=>{const a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)return;ctx.save();ctx.beginPath();const p=at(a),q=at(b);ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='#697f92';ctx.lineWidth=Math.max(1,s.k*view.scale);if(s.tip==='veranda'){const dash=Math.max(6,ctx.lineWidth*1.2);ctx.lineCap='butt';ctx.setLineDash([dash,dash*.75]);}ctx.stroke();ctx.restore();});
@@ -7148,6 +7220,8 @@ window.Wall3D={build,panelColor};
   function billRows(){const m=model(),rows=[],row=(kalem,olcu,birim,miktar)=>rows.push({grup:'Çatı — bölüm modeli',kalem,olcu,birim,miktar});m.totals.forEach(t=>{row(t.name+' · net kaplama','Birleşimler düşülmüş eğimli yüzey','m²',t.area);row(t.name+' · sipariş',t.unit==='sheet'?'Şerit kesim taslağı · ayrıntı Çatı planı / CSV':t.unit==='package'?number(t.coverage)+' m²/paket · fire dahil':'fire dahil',t.unit==='sheet'?'adet':t.unit==='package'?'paket':'m²',t.unit==='sheet'?t.pieces:t.unit==='package'?t.packages:t.purchaseArea);});Object.entries(m.lengths).forEach(([k,v])=>row(EDGE[k],'Gerçek 3B kenar boyu','m',v));const gutter=m.edges.filter(e=>e.type==='eave'&&G.roofs.find(z=>z.id===e.zoneId)?.gutters&&!G.roofs.find(z=>z.id===e.zoneId)?.parapet).reduce((s,e)=>s+e.length,0);row('Yağmur oluğu','Oluk açık ve parapetsiz bölümlerin saçakları','m',gutter);m.layerTotals.forEach(t=>{row(t.name+' · '+t.zoneName+' · net','Seçili alt katman','m²',t.netArea);row(t.name+' · '+t.zoneName+' · sipariş',number(t.width)+' × '+number(t.length)+' cm · fire %'+number(t.fire),t.unit,t.quantity);});return rows;}
   function summary(){const m=model();return {productionFrames:window.RoofWorkflow?G.roofs.flatMap(RoofWorkflow.trusses):[],alan:m.area,planAlan:m.planArea,adet:m.cutList.length,mahya:(m.lengths.ridge||0)*100,kirmaMahya:(m.lengths.hip||0)*100,dere:(m.lengths.valley||0)*100,sacak:(m.lengths.eave||0)*100,alin:(m.lengths.verge||0)*100,gruplar:[],sekil:'bolum',bina:G.roofs.length};}
   const baseDraw=window.draw;window.draw=function(){baseDraw();if(dialog.open)render();};
+  $('roofTheme').onclick=()=>{Scene3D.state.theme=Scene3D.state.theme==='light'?'dark':'light';$('roofTheme').textContent=Scene3D.state.theme==='light'?'Koyu zemin':'Açık zemin';paint();};
+  $('roofContours').onclick=()=>{Scene3D.state.outlines=!Scene3D.state.outlines;$('roofContours').setAttribute('aria-pressed',String(Scene3D.state.outlines));paint();};
   window.RoofStudio={seat,raster3D,vergeEdges,edges3D,trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,soffitSurfaces,model,render,fit,setView,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
 })();
 

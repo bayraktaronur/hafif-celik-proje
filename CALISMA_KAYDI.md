@@ -664,3 +664,7 @@ Yeni proje11 gerçek çatı kaydıyla neden bulundu: yavru saçak taşması ana 
 ## 8 Ekim2026 — İş PC — DEV-069 /5.9.85
 
 Kullanıcı sürekli otomatik duvar kotu istedi: bağımsız ana/yavru yeni çizim/JSON/undo artıktrim,h=wallTop,fascia12. Eski referansları koruma kuralı değişti. Oturtma düğmesi ve kot/kapama referansı ayarları kaldırıldı. Alın V üstkanat+1.5cm,altkanat-12cm;13.5cm görsel yüz. Ayrı veranda attachment kuralı korundu. roof-auto-seat,omega-real-project,roof-child-chain,roof-soffit,roof-eave-types,roof-trims,roof-trim-datum geçti.6görsel/hash kaydedildi. Rapor analizler/2026-10-08-otomatik-sacak.md.
+
+
+## 8 Ekim 2026 — İş PC — 5.9.86 / DEV-070
+Kullanıcının net CAD 3B isteğiyle mevcut imalat yüzeylerine WebGL sunum eklendi. Açık/koyu zemin, ince kenarlar, kenar yumuşatma, cam/metal tonları, görünene göre kamera sığdırma ve yazılımsal yedek. Hesap ve aks verileri korunur. scene-3d, omega-real-project, wall-3d, roof-auto-seat geçti; üç ekran görüntüsü incelendi. Dört kaynak görsel hash envanteriyle korundu. Rapor: analizler/2026-10-08-gpu-3b.md. Tam PBR/gölge motoru değildir. Önceki açık işler korunur; sonraki adım kullanıcının kendi cihazında görünümü değerlendirmesi. Canlı çizim değiştirilmedi.
