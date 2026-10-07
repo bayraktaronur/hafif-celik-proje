@@ -143,6 +143,24 @@
       return [{kind:'fascia',zone:e.zoneId,poly:[e.p,e.q,{...e.q,z:e.q.z-depth},{...e.p,z:e.p.z-depth}],color:'#d8dedc',shade:e.type==='verge'?.87:1}];
     });
   }
+  // Close only exposed eave strips, from the support face to the fascia bottom.
+  function soffitSurfaces(m){
+    const out=[];
+    for(const e of m.edges.filter(e=>['eave','high'].includes(e.type))){
+      const z=G.roofs.find(z=>z.id===e.zoneId);if(!z||z.parapet)continue;
+      const base=z.childJoin?.support||C.basePolygon(z).map(p=>C.transform(z,p));
+      const dx=e.q.x-e.p.x,dy=e.q.y-e.p.y,L=Math.hypot(dx,dy);if(L<.001)continue;
+      const mid={x:(e.p.x+e.q.x)/2,y:(e.p.y+e.q.y)/2};
+      const candidates=base.map((a,i)=>{const b=base[(i+1)%base.length],ex=b.x-a.x,ey=b.y-a.y,l=Math.hypot(ex,ey);if(!l||Math.abs(dx*ey-dy*ex)>L*l*.00001)return null;const t=((mid.x-a.x)*ex+(mid.y-a.y)*ey)/(l*l);if(t<-.01||t>1.01)return null;const q={x:a.x+t*ex,y:a.y+t*ey};return {x:q.x-mid.x,y:q.y-mid.y};}).filter(Boolean).sort((a,b)=>Math.hypot(a.x,a.y)-Math.hypot(b.x,b.y));
+      const n=candidates[0];if(!n||Math.hypot(n.x,n.y)<.001)continue;
+      let strip=[e.p,e.q,{x:e.q.x+n.x,y:e.q.y+n.y},{x:e.p.x+n.x,y:e.p.y+n.y}];if(strip.reduce((v,p,i)=>{const q=strip[(i+1)%4];return v+p.x*q.y-q.x*p.y;},0)<0)strip.reverse();
+      for(const f of m.faces.filter(f=>f.zoneId===e.zoneId))for(const tri of C.triangulate(f.poly)){
+        const poly=C.intersect(tri,strip);if(poly.length<3||C.area(poly)<.001)continue;
+        const depth=z.fasciaDepth??15;
+        out.push({kind:'soffit',zone:z.id,poly:poly.map(p=>{const t=((p.x-e.p.x)*dx+(p.y-e.p.y)*dy)/(L*L);return {...p,z:e.p.z+(e.q.z-e.p.z)*t-depth};}),color:'#d8dedc',shade:.88});
+      }
+    }return out;
+  }
   // Building walls belong to the floor plan, never to a roof's bounding box.
   function planStructure(){
     const items=[],top=Number(G.opt.h)||280,roofFaces=model().faces;
@@ -158,7 +176,12 @@
     }
     // Gable infill follows the roof support boundary, independently of floor walls.
     for(const z of G.roofs){if(z.type!=='besik')continue;const base=z.childJoin?.support?z.childJoin.support.map(p=>C.untransform(z,p)):C.basePolygon(z),faces=C.zoneFaces(z),level=z.wallTop??top;
-     base.forEach((v,i)=>{const w=base[(i+1)%base.length];if(Math.abs(v.x-w.x)>.001)return;const a=C.transform(z,v),b=C.transform(z,w),dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(!L)return;
+     base.forEach((v,i)=>{let w=base[(i+1)%base.length];if(Math.abs(v.x-w.x)>.001)return;
+      // Continue gable infill through the small eave-end triangles to the trim.
+      const footprint=C.footprint(z);
+      if(z.childJoin){v={...v,y:v.y<z.d/2?-z.eaves[2]:z.d+z.eaves[3]};w={...w,y:w.y<z.d/2?-z.eaves[2]:z.d+z.eaves[3]};}
+      else if(footprint.length===base.length){v={...v,y:footprint[i].y};w={...w,y:footprint[(i+1)%base.length].y};}
+      const a=C.transform(z,v),b=C.transform(z,w),dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(!L)return;
       let nx=-dy/L,ny=dx/L;const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};if(C.pointIn(base,C.untransform(z,{x:mid.x+nx*.1,y:mid.y+ny*.1}))){nx=-nx;ny=-ny;}
       const cuts=[0,1];for(const f of [...faces,...roofFaces])f.poly.forEach((p,j)=>{const q=f.poly[(j+1)%f.poly.length],ex=q.x-p.x,ey=q.y-p.y,D=dx*ey-dy*ex;if(Math.abs(D)<1e-8)return;const t=((p.x-a.x)*ey-(p.y-a.y)*ex)/D,u=((p.x-a.x)*dy-(p.y-a.y)*dx)/D;if(t>0&&t<1&&u>=0&&u<=1)cuts.push(t);});cuts.sort((a,b)=>a-b);
       for(let j=1;j<cuts.length;j++){const t=cuts[j-1],u=cuts[j];if(u-t<1e-6)continue;const m={x:a.x+dx*(t+u)/2,y:a.y+dy*(t+u)/2};
@@ -204,7 +227,7 @@
         if(z.parapet){const poly=C.footprint(z).map(p=>C.transform(z,p)),top=Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))))+z.parapet;poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];items.push({poly:[{...p,z:z.h},{...q,z:z.h},{...q,z:top},{...p,z:top}],color:'#77818b',zone:z.id});});}
       });
       if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:mat.color,zone:z.id,shade:roofShade(f),roof:true});});
-      if(!hideRoof)items.push(...fasciaSurfaces(m),...trimSurfaces(m));
+      if(!hideRoof)items.push(...fasciaSurfaces(m),...soffitSurfaces(m),...trimSurfaces(m));
       raster3D(ctx,w,h,items,[...(!hideRoof&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof?[]:edges3D(m))],project);
     }else{
       const step=100*view.scale;ctx.strokeStyle='#182737';ctx.lineWidth=1;if(step>12){for(let x=view.x%step;x<w;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}for(let y=view.y%step;y<h;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}}
@@ -291,5 +314,5 @@
   function billRows(){const m=model(),rows=[],row=(kalem,olcu,birim,miktar)=>rows.push({grup:'Çatı — bölüm modeli',kalem,olcu,birim,miktar});m.totals.forEach(t=>{row(t.name+' · net kaplama','Birleşimler düşülmüş eğimli yüzey','m²',t.area);row(t.name+' · sipariş',t.unit==='sheet'?'Şerit kesim taslağı · ayrıntı Çatı planı / CSV':t.unit==='package'?number(t.coverage)+' m²/paket · fire dahil':'fire dahil',t.unit==='sheet'?'adet':t.unit==='package'?'paket':'m²',t.unit==='sheet'?t.pieces:t.unit==='package'?t.packages:t.purchaseArea);});Object.entries(m.lengths).forEach(([k,v])=>row(EDGE[k],'Gerçek 3B kenar boyu','m',v));const gutter=m.edges.filter(e=>e.type==='eave'&&G.roofs.find(z=>z.id===e.zoneId)?.gutters&&!G.roofs.find(z=>z.id===e.zoneId)?.parapet).reduce((s,e)=>s+e.length,0);row('Yağmur oluğu','Oluk açık ve parapetsiz bölümlerin saçakları','m',gutter);m.layerTotals.forEach(t=>{row(t.name+' · '+t.zoneName+' · net','Seçili alt katman','m²',t.netArea);row(t.name+' · '+t.zoneName+' · sipariş',number(t.width)+' × '+number(t.length)+' cm · fire %'+number(t.fire),t.unit,t.quantity);});return rows;}
   function summary(){const m=model();return {productionFrames:window.RoofWorkflow?G.roofs.flatMap(RoofWorkflow.trusses):[],alan:m.area,planAlan:m.planArea,adet:m.cutList.length,mahya:(m.lengths.ridge||0)*100,kirmaMahya:(m.lengths.hip||0)*100,dere:(m.lengths.valley||0)*100,sacak:(m.lengths.eave||0)*100,alin:(m.lengths.verge||0)*100,gruplar:[],sekil:'bolum',bina:G.roofs.length};}
   const baseDraw=window.draw;window.draw=function(){baseDraw();if(dialog.open)render();};
-  window.RoofStudio={raster3D,vergeEdges,edges3D,trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,model,render,fit,setView,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
+  window.RoofStudio={raster3D,vergeEdges,edges3D,trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,soffitSurfaces,model,render,fit,setView,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
 })();
