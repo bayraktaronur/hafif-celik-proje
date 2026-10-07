@@ -9,7 +9,7 @@ async function section(){return p.evaluate(()=>{
  const surfaces=RoofStudio.trimSurfaces({...m,edges:[e]});
  return {top:Math.max(...surfaces.filter(s=>s.kind==='vergeTrim').flatMap(s=>s.poly.map(distance))),bottom:Math.max(...surfaces.filter(s=>s.kind==='vergeBottom').flatMap(s=>s.poly.map(distance))),web:surfaces.find(s=>s.kind==='vergeLip').poly};
  });}
-let cross=await section();assert.ok(Math.abs(cross.top-8)<1e-6);assert.ok(Math.abs(cross.bottom-22)<1e-6);assert.ok(Math.abs(cross.web[0].z-cross.web[3].z-12)<1e-6);
+let cross=await section();assert.ok(Math.abs(cross.top-8)<1e-6);assert.ok(Math.abs(cross.bottom-22)<1e-6);assert.ok(Math.abs(cross.web[0].z-cross.web[3].z-13.5)<1e-6);
 await p.selectOption('#rz_vergeWidth','400');await p.locator('#roofForm button[type=submit]').click();
 cross=await section();assert.ok(Math.abs(cross.top-8)<1e-6);assert.ok(Math.abs(cross.bottom-40)<1e-6);
 assert.equal(await p.evaluate(()=>G.roofs[0].vergeWidth),400);assert.equal(await p.evaluate(()=>RoofStudio.model().area),before.area);assert.deepEqual(await p.evaluate(()=>G.roofs[0].eaves),before.eaves);

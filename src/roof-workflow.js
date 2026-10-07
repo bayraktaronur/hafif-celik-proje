@@ -8,7 +8,7 @@
  panel.innerHTML=`<h3>SINIRDAN ÇATI ÇİZ</h3>
  <label>Alın / baş makas taşması · mm<input id="roofDrawGable" type="number" min="1" max="5000" value="220" list="roofGableSizes"></label><datalist id="roofGableSizes"><option value="220"><option value="400"></datalist><label>Yan saçak taşması · mm<input id="roofDrawSide" type="number" min="0" max="5000" value="300" list="roofSideSizes"></label><datalist id="roofSideSizes"><option value="300"><option value="400"></datalist><p>Listeden standart ölçüyü seçin veya özel ölçü yazın. Alın taşması Alın V alt kanadıyla birlikte ayarlanır.</p><input id="roofDrawEave" type="hidden" value="30">
  <label>Çatı tipi<select id="roofBoundaryType"><option value="besik">Beşik</option><option value="kirma">Kırma</option><option value="tek">Tek eğim</option></select></label>
- <button id="roofAlignTrim">Saçak alt uçlarını duvar kotuna oturt</button><label>Saçak alt uç kotu · cm<input id="roofDrawHeight" type="number" min="1" max="20000" value="280"></label>
+ <p>Saçak alt ucu duvar üst kotuna otomatik oturur.</p>
  <label>Eğim · %<input id="roofDrawPitch" type="number" min="1" max="200" value="33"></label>
  <label>Bağlanacağı çatı<select id="roofDrawParent"></select></label>
  <label>Yavru makas dizilimi<select id="roofChildDirection"><option value="90">U açıklığından otomatik</option></select></label>
@@ -16,7 +16,7 @@
  <button id="roofBoundaryFinish" hidden>Sınırı kapat · Enter</button><button id="roofBoundaryBack" hidden>Son köşeyi geri al</button>
  <p>Duvar dış yüzü köşelerine / hizalarına yakalanır. Mesnet sınırı kesik, saçak sınırı sarıdır. İlk köşeye tıklayın veya Enter ile kapatın. Yavru çatıda bağlanacağınız ana veya yavru çatının kenarından başlayın. İlk tıklama en yakın çatı kenarını seçer; adı yakalama etiketinde görünür. Üç dış kenarı açık U şeklinde çizin ve aynı bağlantı kenarında bitirin. Enter ile bağlayın; saplanma otomatik hesaplanır.</p>
  <label>Ortak makas dizilim yönü<select id="roofProductionDirection"><option value="yatay">X yönünde →</option><option value="dikey">Y yönünde ↓</option></select></label>`;
- $('roofZones').after(panel);$('roofDrawHeight').value=+G.opt.h||280;
+ $('roofZones').after(panel);
  $('roofDraw').closest('details').hidden=true;
  $('roofFromPlan').textContent='Planı kapsayan dikdörtgen çatı';
  function simplify(points){
@@ -54,6 +54,7 @@
   for(const k of [0,3]){const t=((ps[k].x-a.x)*dx+(ps[k].y-a.y)*dy)/(dx*dx+dy*dy);const q={x:u.x+t*(v.x-u.x),y:u.y+t*(v.y-u.y)};ps[k]=q;const outer=k===0?1:2;if(Math.abs(dx)>Math.abs(dy))ps[outer].x=q.x;else ps[outer].y=q.y;}
  }
  function synchronize(previous=[]){
+  G.roofs.forEach(R.seat);
   G.roofs=G.roofs.map(z=>applyEaveRule(mainOf(z)?align(z,mainAngle()):z));
   const resolved=new Map(),visiting=new Set();
   function resolve(z){
@@ -99,7 +100,7 @@
  function start(child){
   const parent=child?G.roofs.find(z=>z.id===$('roofDrawParent').value):null;
   if(child&&!parent){R.notice('Önce ana çatı çizin veya listeden seçin.',true);return;}
-  const eave=+$('roofDrawSide').value/10,eaveRule={gableMm:+$('roofDrawGable').value,sideMm:+$('roofDrawSide').value},h=+$('roofDrawHeight').value,pitch=+$('roofDrawPitch').value;
+  const eave=+$('roofDrawSide').value/10,eaveRule={gableMm:+$('roofDrawGable').value,sideMm:+$('roofDrawSide').value},h=+G.opt.h||250,pitch=+$('roofDrawPitch').value;
   if(!Number.isFinite(eaveRule.gableMm)||eaveRule.gableMm<=0||eaveRule.gableMm>5000||!Number.isFinite(eave)||eave<0||eave>500||!(h>0&&h<=20000)||!(pitch>=1&&pitch<=200)){R.notice('Saçak, kot ve eğim değerlerini kontrol edin.',true);return;}
   R.setView('plan');draft={points:[],eave,eaveRule,h,pitch,type:$('roofBoundaryType').value,parentId:parent?.id||'',openU:!!child,relative:child?+$('roofChildDirection').value:0};hover=null;R.render();hint('plan');
  }
@@ -107,7 +108,7 @@
   if(options.parentId&&options.openU){
    const parent=G.roofs.find(z=>z.id===options.parentId);
    let z=R.make({name:'Yavru çatı '+(G.roofs.length+1),type:options.type,pitch:options.pitch,h:options.h,eaves:[options.eave,0,options.eave,options.eave],childJoin:{points:points.map(p=>({x:p.x,y:p.y}))},production:{role:'child',parentId:options.parentId,relative:0}});
-   z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;if(options.eaveRule){z.datum=parent?(parent.datum??'wall'):'trim';z.fasciaDepth=parent?(parent.fasciaDepth??(z.datum==='trim'?12:15)):12;}applyEaveRule(z);z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;C.validate([...G.roofs,z],G.roofMaterials);return z;
+   z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;R.seat(z);applyEaveRule(z);z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;C.validate([...G.roofs,z],G.roofMaterials);return z;
   }
   const ps=simplify(points),world=ps;const x=Math.min(...ps.map(p=>p.x)),y=Math.min(...ps.map(p=>p.y)),w=Math.max(...ps.map(p=>p.x))-x,d=Math.max(...ps.map(p=>p.y))-y;
   const parent=G.roofs.find(z=>z.id===options.parentId),local=ps.map(p=>({x:p.x-x,y:p.y-y}));C.checkOutline(local);
@@ -271,7 +272,7 @@
  // The roof dialog's older capture listener predates this module. Handle the
  // drawing shortcuts there via a hook, before it consumes the event.
  function key(e){if(!draft||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return false;if(!['Enter','Escape','Backspace'].includes(e.key))return false;e.preventDefault();if(e.key==='Enter')finish();else if(e.key==='Escape'){draft=null;hover=null;R.render();}else{draft.points.pop();hover=null;hint('plan');R.repaint();}return true;}
- $('roofAlignTrim').onclick=()=>R.commit(()=>{for(const z of G.roofs){if(z.attachment)continue;z.datum='trim';z.h=z.wallTop??(+G.opt.h||250);z.fasciaDepth=12;}});
+
  $('roofBoundaryMain').onclick=()=>start(false);$('roofBoundaryChild').onclick=()=>start(true);$('roofBoundaryFinish').onclick=finish;$('roofBoundaryBack').onclick=()=>{draft?.points.pop();hover=null;hint('plan');R.repaint();};$('roofProductionDirection').onchange=e=>direction(e.target.value);
  // Visible presets keep the standard dimensions discoverable; inputs accept custom millimetres.
  function presets(inputId,values){const input=$(inputId);if(!input||input.nextElementSibling?.dataset.presets)return;const row=document.createElement('div');row.dataset.presets='1';for(const value of values){const button=document.createElement('button');button.type='button';button.textContent=value+' mm';button.onclick=()=>{input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));};row.append(button);}input.after(row);}

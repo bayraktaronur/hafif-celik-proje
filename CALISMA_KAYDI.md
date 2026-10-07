@@ -660,3 +660,7 @@ Kullanıcı omega sacını 1 mm doğruladı. Ölçülü kesit 60/100/150,30,12+2
 ## 8 Ekim 2026 — İş PC — DEV-068 /5.9.84
 
 Yeni proje11 gerçek çatı kaydıyla neden bulundu: yavru saçak taşması ana alın altını259.867cmye kırpıyordu. Kırpma mesnet alanıyla sınırlandı; duvar250cmye kapandı. Kullanıcı15mm yalnız görünür şerit teyidi:8mm montaj betopan yüzeyi üst yanağı örter;30/20mm ve1mm metal kesiti korunur. Gerçek plan testi, gable-omega,roof-gable-cover,roof-gable-boundary,roof-soffit geçti; iki görünüş incelendi. JSON/hash kaydedildi. Kod/geometri verileri ve metraj sonuçları değişmez; canlı sekmeye müdahale yok. Rapor analizler/2026-10-08-omega-aciklik.md.
+
+## 8 Ekim2026 — İş PC — DEV-069 /5.9.85
+
+Kullanıcı sürekli otomatik duvar kotu istedi: bağımsız ana/yavru yeni çizim/JSON/undo artıktrim,h=wallTop,fascia12. Eski referansları koruma kuralı değişti. Oturtma düğmesi ve kot/kapama referansı ayarları kaldırıldı. Alın V üstkanat+1.5cm,altkanat-12cm;13.5cm görsel yüz. Ayrı veranda attachment kuralı korundu. roof-auto-seat,omega-real-project,roof-child-chain,roof-soffit,roof-eave-types,roof-trims,roof-trim-datum geçti.6görsel/hash kaydedildi. Rapor analizler/2026-10-08-otomatik-sacak.md.
