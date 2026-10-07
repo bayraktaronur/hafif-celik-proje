@@ -504,3 +504,7 @@ Kullanıcı ilk yavrudan sonra ikinci yavru köşelerinin seçilmediğini göste
 ## 7 Ekim 2026 — İş PC — 5.9.61 / DEV-047
 
 Kullanıcı kırmızı kenarları Alın V, yeşil hattı mahya diye tanımladı; katalog220/400×2800×0,50 mm, varsayılan220 onaylandı. Saçak taşması ayrı korundu.3B şematik yüzey kapamaları, profil seçimi ve iki ölçülü yükleme eklendi; Aşık kapama U tek toplam satırda. Önceki2500 mm etkin boy kuralı korundu. Mahya net metresi mevcut hesapta; stok/bindirme ve tam büküm ölçüleri bekliyor. roof-trims ve ilgili çatı/yükleme testleri geçti, ekran incelendi. Üç referans orijinalleri korunarak hash ile kopyalandı. Rapor analizler/2026-10-07-alin-v-mahya.md. Canlı plan değiştirilmedi; diğer açık işler korunur.
+
+## 7 Ekim 2026 — İş PC — 5.9.62 / DEV-048
+
+Kot farkının üst kenarları Alın V görünüşüne ve yükleme hesabına eklendi. Mahya kapaması ve 3B çizgisi çatı malzemesinin koyu tonunu kullanır. Kaynak görsel orijinali korunarak hash ile kopyalandı. roof-trims, roof, roof-child-chain, roof-gable-boundary, loading-verge, loading-list geçti; bağımsız ekran incelendi. Rapor: analizler/2026-10-07-alin-v-kot-farki.md. DEV-047 imalat ölçüsü belirsizlikleri ve DEV-043 canlı JSON bekliyor; diğer açık işler korunur.

@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.61
+# Prefabrikten Plan Studio · 5.9.62
+
+5.9.62: Kot farkı üst kenarlarında Alın V kapaması ve metrajı; çatı rengine bağlı koyu mahya. [Rapor](analizler/2026-10-07-alin-v-kot-farki.md).
 
 5.9.61: Alın V ve mahya 3B kapama gösterimi. Saçak taşmasından bağımsız220/400 mm Alın V seçimi, varsayılan220; ölçü bazında yükleme ve toplam aşık kapama U. [Kapsam ve metraj sınırları](analizler/2026-10-07-alin-v-mahya.md).
 

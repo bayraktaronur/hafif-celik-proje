@@ -100,19 +100,24 @@
     }
     return items;
   }
+  function vergeEdges(m){return m.edges.filter(e=>['verge','step'].includes(e.type)&&e.length>0);}
+  function roofShade(f){return Math.min(1.15,Math.max(.65,.9+f.a*.25-f.b*.3));}
+  function roofColor(id){const z=G.roofs.find(z=>z.id===id);return materials().find(m=>m.id===z?.material)?.color||'#8391a5';}
+  function darken(hex){return '#'+[1,3,5].map(i=>Math.round(parseInt(hex.slice(i,i+2),16)*.72).toString(16).padStart(2,'0')).join('');}
+  function edges3D(m){return m.edges.map(e=>['ridge','hip'].includes(e.type)?{...e,color:darken(roofColor(e.zoneId))}:e.type==='step'?{...e,color:'#d8dedc'}:e);}
   function trimSurfaces(m){
     const out=[];
-    for(const e of m.edges.filter(e=>['verge','ridge','hip'].includes(e.type))){
+    for(const e of m.edges.filter(e=>['verge','step','ridge','hip'].includes(e.type))){
       const zone=G.roofs.find(z=>z.id===e.zoneId);if(zone?.parapet)continue;
       const L=Math.hypot(e.q.x-e.p.x,e.q.y-e.p.y);if(L<.001)continue;
-      const width=e.type==='verge'?(zone?.vergeWidth??220)/10:12,n={x:-(e.q.y-e.p.y)/L*width,y:(e.q.x-e.p.x)/L*width};
+      const isVerge=['verge','step'].includes(e.type),width=isVerge?(zone?.vergeWidth??220)/10:12,n={x:-(e.q.y-e.p.y)/L*width,y:(e.q.x-e.p.x)/L*width};
       const strip=[{x:e.p.x+n.x,y:e.p.y+n.y},{x:e.q.x+n.x,y:e.q.y+n.y},{x:e.q.x-n.x,y:e.q.y-n.y},{x:e.p.x-n.x,y:e.p.y-n.y}].reverse();
       for(const face of m.faces.filter(f=>f.group===e.group))for(const tri of C.triangulate(face.poly)){
         const poly=C.intersect(tri,strip);if(poly.length<3||C.area(poly)<.001)continue;
         const mid={x:(e.p.x+e.q.x)/2,y:(e.p.y+e.q.y)/2};if(Math.abs(C.height(face,mid)-(e.p.z+e.q.z)/2)>.1)continue;
-        out.push({kind:e.type==='verge'?'vergeTrim':'ridgeCap',zone:face.zoneId,poly:poly.map(p=>({...p,z:C.height(face,p)+.4})),color:e.type==='verge'?'#f0f1e8':'#e3e7dc',shade:.95});
+        out.push({kind:isVerge?'vergeTrim':'ridgeCap',edgeType:e.type,zone:face.zoneId,poly:poly.map(p=>({...p,z:C.height(face,p)+.4})),color:isVerge?'#f0f1e8':roofColor(face.zoneId),shade:isVerge?.95:roofShade(face)*.82});
       }
-      if(e.type==='verge')out.push({kind:'vergeLip',zone:e.zoneId,poly:[{...e.p,z:e.p.z+.4},{...e.q,z:e.q.z+.4},{...e.q,z:e.q.z-6},{...e.p,z:e.p.z-6}],color:'#d8dedc',shade:.87});
+      if(isVerge)out.push({kind:'vergeLip',edgeType:e.type,zone:e.zoneId,poly:[{...e.p,z:e.p.z+.4},{...e.q,z:e.q.z+.4},{...e.q,z:e.q.z-6},{...e.p,z:e.p.z-6}],color:'#d8dedc',shade:.87});
     }
     return out;
   }
@@ -167,7 +172,7 @@
         for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){const u=((b.y-c.y)*(x+.5-c.x)+(c.x-b.x)*(y+.5-c.y))/D,v=((c.y-a.y)*(x+.5-c.x)+(a.x-c.x)*(y+.5-c.y))/D,t=1-u-v;if(u<-.00001||v<-.00001||t<-.00001)continue;const d=u*a.depth+v*b.depth+t*c.depth,k=y*width+x;if(d>=depth[k]){depth[k]=d;pixels[k*4]=color[0]*shade;pixels[k*4+1]=color[1]*shade;pixels[k*4+2]=color[2]*shade;}}
       }
     }
-    for(const e of edges){const a=project(e.p),b=project(e.q),steps=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)*2)),color=rgb(COLORS[e.type]||(e.type==='panel'?'#d9e8ed':'#879ba9'));for(let i=0;i<=steps;i++){const t=i/steps,x=Math.round(a.x+(b.x-a.x)*t),y=Math.round(a.y+(b.y-a.y)*t),d=a.depth+(b.depth-a.depth)*t;if(x<0||x>=width||y<0||y>=height)continue;const k=y*width+x;if(d>=depth[k]-2){pixels[k*4]=color[0];pixels[k*4+1]=color[1];pixels[k*4+2]=color[2];}}}
+    for(const e of edges){const a=project(e.p),b=project(e.q),steps=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)*2)),color=rgb(e.color||COLORS[e.type]||(e.type==='panel'?'#d9e8ed':'#879ba9'));for(let i=0;i<=steps;i++){const t=i/steps,x=Math.round(a.x+(b.x-a.x)*t),y=Math.round(a.y+(b.y-a.y)*t),d=a.depth+(b.depth-a.depth)*t;if(x<0||x>=width||y<0||y>=height)continue;const k=y*width+x;if(d>=depth[k]-2){pixels[k*4]=color[0];pixels[k*4+1]=color[1];pixels[k*4+2]=color[2];}}}
     const layer=document.createElement('canvas');layer.width=width;layer.height=height;layer.getContext('2d').putImageData(new ImageData(pixels,width,height),0,0);ctx.drawImage(layer,0,0);
   }
   function panelEdges3D(m,zoneId,layer='top'){
@@ -186,9 +191,9 @@
       const items=planStructure();G.roofs.forEach(z=>{if(z.sourceRoomId){items.push(...verandaStructure(z).filter(item=>item.kind!=='cladding'));return;}
         if(z.parapet){const poly=C.footprint(z).map(p=>C.transform(z,p)),top=Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))))+z.parapet;poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];items.push({poly:[{...p,z:z.h},{...q,z:z.h},{...q,z:top},{...p,z:top}],color:'#77818b',zone:z.id});});}
       });
-      m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:mat.color,zone:z.id,shade:Math.min(1.15,Math.max(.65,.9+f.a*.25-f.b*.3)),roof:true});});
+      m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:mat.color,zone:z.id,shade:roofShade(f),roof:true});});
       items.push(...fasciaSurfaces(m),...trimSurfaces(m));
-      raster3D(ctx,w,h,items,[...(showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...m.edges],project);
+      raster3D(ctx,w,h,items,[...(showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...edges3D(m)],project);
     }else{
       const step=100*view.scale;ctx.strokeStyle='#182737';ctx.lineWidth=1;if(step>12){for(let x=view.x%step;x<w;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}for(let y=view.y%step;y<h;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}}
       G.segs.forEach(s=>{const a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)return;ctx.save();ctx.beginPath();const p=at(a),q=at(b);ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='#697f92';ctx.lineWidth=Math.max(1,s.k*view.scale);if(s.tip==='veranda'){const dash=Math.max(6,ctx.lineWidth*1.2);ctx.lineCap='butt';ctx.setLineDash([dash,dash*.75]);}ctx.stroke();ctx.restore();});
@@ -274,5 +279,5 @@
   function billRows(){const m=model(),rows=[],row=(kalem,olcu,birim,miktar)=>rows.push({grup:'Çatı — bölüm modeli',kalem,olcu,birim,miktar});m.totals.forEach(t=>{row(t.name+' · net kaplama','Birleşimler düşülmüş eğimli yüzey','m²',t.area);row(t.name+' · sipariş',t.unit==='sheet'?'Şerit kesim taslağı · ayrıntı Çatı planı / CSV':t.unit==='package'?number(t.coverage)+' m²/paket · fire dahil':'fire dahil',t.unit==='sheet'?'adet':t.unit==='package'?'paket':'m²',t.unit==='sheet'?t.pieces:t.unit==='package'?t.packages:t.purchaseArea);});Object.entries(m.lengths).forEach(([k,v])=>row(EDGE[k],'Gerçek 3B kenar boyu','m',v));const gutter=m.edges.filter(e=>e.type==='eave'&&G.roofs.find(z=>z.id===e.zoneId)?.gutters&&!G.roofs.find(z=>z.id===e.zoneId)?.parapet).reduce((s,e)=>s+e.length,0);row('Yağmur oluğu','Oluk açık ve parapetsiz bölümlerin saçakları','m',gutter);m.layerTotals.forEach(t=>{row(t.name+' · '+t.zoneName+' · net','Seçili alt katman','m²',t.netArea);row(t.name+' · '+t.zoneName+' · sipariş',number(t.width)+' × '+number(t.length)+' cm · fire %'+number(t.fire),t.unit,t.quantity);});return rows;}
   function summary(){const m=model();return {productionFrames:window.RoofWorkflow?G.roofs.flatMap(RoofWorkflow.trusses):[],alan:m.area,planAlan:m.planArea,adet:m.cutList.length,mahya:(m.lengths.ridge||0)*100,kirmaMahya:(m.lengths.hip||0)*100,dere:(m.lengths.valley||0)*100,sacak:(m.lengths.eave||0)*100,alin:(m.lengths.verge||0)*100,gruplar:[],sekil:'bolum',bina:G.roofs.length};}
   const baseDraw=window.draw;window.draw=function(){baseDraw();if(dialog.open)render();};
-  window.RoofStudio={trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,model,render,fit,setView,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
+  window.RoofStudio={vergeEdges,edges3D,trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,model,render,fit,setView,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
 })();

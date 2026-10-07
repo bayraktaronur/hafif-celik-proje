@@ -81,7 +81,7 @@
   }
 
   for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.vergeRule))continue;const a=c.adjustments.find(a=>a.key===r.key),lengthMm=r.sources.reduce((n,s)=>n+s.vergeRule.lengthMm,0),base=Math.ceil(Math.round(lengthMm*1000000)/1000000/2500);
-   r.vergeLengthMm=lengthMm;r.calculated=base;r.spare=0;r.qty=a?(r.stale?null:a.qty):base;r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik alın V';r.reason=a?.reason||('Gerçek eğimli alın kenarları toplamı '+Math.round(lengthMm*100)/100+' mm /2500 mm etkin boy, yukarı yuvarla: '+base+' adet. 2800 mm stok −300 mm bindirme =2500 mm etkin boy; yedek eklenmedi; mahya/dere/saçak dahil değildir.');
+   r.vergeLengthMm=lengthMm;r.calculated=base;r.spare=0;r.qty=a?(r.stale?null:a.qty):base;r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik alın V';r.reason=a?.reason||('Alın kenarları ve kot farkı üst kenarları toplamı '+Math.round(lengthMm*100)/100+' mm /2500 mm etkin boy, yukarı yuvarla: '+base+' adet. 2800 mm stok −300 mm bindirme =2500 mm etkin boy; yedek eklenmedi; mahya/dere/saçak dahil değildir.');
   }
 
   for(const v of (()=>{const vs=rows.filter(r=>r.name==='Alın V');return vs.length?[{...vs[0],basis:vs.map(v=>v.basis).join('|'),qty:vs.some(v=>v.qty===null)?null:vs.reduce((n,v)=>n+v.qty,0),calculated:vs.reduce((n,v)=>n+v.calculated,0),sources:vs.flatMap(v=>v.sources)}]:[];})()){const key=JSON.stringify(['Metal','Aşık kapama U','2500 mm']),basis=fingerprint(v.basis+':purlin-cap-verge-one-to-one-v1:'+v.qty),a=c.adjustments.find(a=>a.key===key),stale=!!a&&a.basis!==basis;groups.set(key,true);
