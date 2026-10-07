@@ -13,3 +13,7 @@ Durum: kaynaklar alındı ve incelendi; canlı uygulamaya henüz bağlanmadı, s
 ## Kullanıcı teyidi
 
 Birim santimetre.160×120 ve160×180 modellerinde171cm en hatalı; doğru pano eni166cm. Bu bir pervaz açıklaması değil kaynak model hatasıdır. İki dosya orijinal haliyle korunur; pencere/profil geometrisini bozmamak için tüm model166/171 ölçeklenmez. Doğru kaynak veya hangi parçanın düzeltileceği gerekir. Diğer beş kaynağın birimi teyit edildi. Eşleme analizler/2026-10-07-pencere-stl-esleme.json.
+
+## İkinci kaynak revizyonu — ölçü uyuşmazlığı
+
+İki dosya ayrı rev2-166cm klasörüne alındı; ilk171cm kopyalar korundu. Klasör adı hedefi belirtir, ölçüm onayı değildir. Binary boy/sonlu koordinatlar ve SHA256 doğrulandı. Her ikisindeX min3 max168, net165cm: hedef166cm sağlanmadı.160×180 Z0..250;160×120 Z−1.045674443..250, toplam251.045674443cm. Bu sınırın hangi parçaya ait olduğu ayrıca düzeltilmeli; otomatik kırpma veya ölçek uygulanmadı. Sayısal rapor rev2-geometri.json, kaynak hashleri rev2-envanter.json. İmalat ölçüsü uyumsuz iki model uygulamaya bağlanmadı.

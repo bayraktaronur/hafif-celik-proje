@@ -19,17 +19,19 @@
     },
     {
       "file": "160-120 pencereli panel-h250cm.stl",
-      "measuredWidth": 171,
+      "measuredWidth": 165,
       "targetWidth": 166,
-      "status": "source_correction_required",
-      "allowUniformScaling": false
+      "status": "revision2_dimension_mismatch",
+      "allowUniformScaling": false,
+      "activeReference": "referanslar/2026-10-07-pencere-stl/rev2-166cm/160-120 pencereli panel-h250cm.stl"
     },
     {
       "file": "160-180 pencereli panel-h250cm.stl",
-      "measuredWidth": 171,
+      "measuredWidth": 165,
       "targetWidth": 166,
-      "status": "source_correction_required",
-      "allowUniformScaling": false
+      "status": "revision2_dimension_mismatch",
+      "allowUniformScaling": false,
+      "activeReference": "referanslar/2026-10-07-pencere-stl/rev2-166cm/160-180 pencereli panel-h250cm.stl"
     },
     {
       "file": "50-180 pencereli panel-h250cm.stl",
