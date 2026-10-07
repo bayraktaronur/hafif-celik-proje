@@ -532,3 +532,7 @@ Plan slotlarından katmanlı dolu panolar,10luk H ve makasa bağlı köşe geome
 ## 7 Ekim 2026 — 5.9.65 / DEV-051
 
 3B kamera orbit/zoom/pan,altı bakış yönü,paralel/perspektif eklendi. Kullanıcı pencere üst kot210cm ve temsilî PVC onayı verdi. Panolarda açıklıklar, katalog bölünüşlü PVC/kapı görünüşleri,H3/U/X ve diğer kalınlıklarda temsilî profil gösterimi eklendi. Plan/metraj değişmez. wall-3d ve çatı testleri geçti; ekran incelendi. Rapor analizler/2026-10-07-3b-kamera-acikliklar.md. Gerçek imalat kesitleri DEV-050 ve güncel JSON DEV-043 açık.
+
+## 7 Ekim 2026 — DEV-052 STL kaynakları
+
+Yedi pencereli panel STL H sürücüsünden orijinalleri korunarak kopyalandı, SHA256 eşitliği doğrulandı. Binary uzunluk/sonlu koordinat kontrolü ve geometri önizlemesi yapıldı. Hepsi250birim yüksek,125 veya171birim geniş. Birim ve171genişlik kapsamı kullanıcıya soruldu; yanıt bekleniyor. Kaynak/envanter/rapor/önizleme Git aktarımına dahil. Uygulama5.9.65 değişmedi; DEV-050 ve diğer açık işler korunur.

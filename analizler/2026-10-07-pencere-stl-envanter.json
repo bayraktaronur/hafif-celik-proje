@@ -1,0 +1,44 @@
+[
+  {
+    "source": "H:\\Diğer bilgisayarlar\\Bilgisayarım\\Aİ TASARIMLAR\\onurcad modeller\\160-180 pencereli panel-h250cm.stl",
+    "target": "referanslar\\2026-10-07-pencere-stl\\160-180 pencereli panel-h250cm.stl",
+    "sha256": "DD81ED435139D691965C0C8B2ECC80EC87DF03FBB1672CCD169FA2CE1AC9BEF0",
+    "verified": true
+  },
+  {
+    "source": "H:\\Diğer bilgisayarlar\\Bilgisayarım\\Aİ TASARIMLAR\\onurcad modeller\\50-180 pencereli panel-h250cm.stl",
+    "target": "referanslar\\2026-10-07-pencere-stl\\50-180 pencereli panel-h250cm.stl",
+    "sha256": "01A3B6E23A2D712CEDD029DE6DCA76B6708FB7F127C465ACFAC9EBB899E5B35C",
+    "verified": true
+  },
+  {
+    "source": "H:\\Diğer bilgisayarlar\\Bilgisayarım\\Aİ TASARIMLAR\\onurcad modeller\\60-40 vasistaslı panel-h250cm.stl",
+    "target": "referanslar\\2026-10-07-pencere-stl\\60-40 vasistaslı panel-h250cm.stl",
+    "sha256": "4FB0EB1EBAD0C101472E2D39B10CE92FEA3CF6C98802D6437FB77FF28DCCC2E5",
+    "verified": true
+  },
+  {
+    "source": "H:\\Diğer bilgisayarlar\\Bilgisayarım\\Aİ TASARIMLAR\\onurcad modeller\\80-125 pencereli panel-h250cm.stl",
+    "target": "referanslar\\2026-10-07-pencere-stl\\80-125 pencereli panel-h250cm.stl",
+    "sha256": "CC4848EFC0D6FED09C85B93902C1DBC9133311ADB11FB6D1A97947FB3F02FACB",
+    "verified": true
+  },
+  {
+    "source": "H:\\Diğer bilgisayarlar\\Bilgisayarım\\Aİ TASARIMLAR\\onurcad modeller\\120-120 pencereli panel-h250cm.stl",
+    "target": "referanslar\\2026-10-07-pencere-stl\\120-120 pencereli panel-h250cm.stl",
+    "sha256": "4480960446C4B7A192AC0E615E9036DB548372AFD2CBCA325A83F9A4FFB1403C",
+    "verified": true
+  },
+  {
+    "source": "H:\\Diğer bilgisayarlar\\Bilgisayarım\\Aİ TASARIMLAR\\onurcad modeller\\120-180 pencereli panel-h250cm.stl",
+    "target": "referanslar\\2026-10-07-pencere-stl\\120-180 pencereli panel-h250cm.stl",
+    "sha256": "93BF5914DD4BA067C7D1E6D7F84A262514E83AE9AF0A2D2BE5025A1567FAD754",
+    "verified": true
+  },
+  {
+    "source": "H:\\Diğer bilgisayarlar\\Bilgisayarım\\Aİ TASARIMLAR\\onurcad modeller\\160-120 pencereli panel-h250cm.stl",
+    "target": "referanslar\\2026-10-07-pencere-stl\\160-120 pencereli panel-h250cm.stl",
+    "sha256": "FDEA510CF56A206F941192BF3C92E535038D06870DCFB10EF88011366408EB77",
+    "verified": true
+  }
+]
