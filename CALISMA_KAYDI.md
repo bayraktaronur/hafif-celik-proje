@@ -550,3 +550,7 @@ DEV-052 ek teyit: STL birimi cm.160×120/180 kaynaklarının171cm eni hatalı, h
 ## 7 Ekim 2026 — İş PC — DEV-052 dördüncü STL revizyonu
 
 160×120 dördüncü revizyon: X sınırları −0,5 / 165,5 cm, dış en 166 cm; Z sınırları 0 / 250 cm, yükseklik 250 cm. Hedef dış ölçüler sağlandı. Toplam derinlik 13,245208 cm (donanım dahil dış sınır; duvar kalınlığı değildir). Önceki revizyona göre dış X sınırları iki yandan 0,5 cm genişledi. SHA-256 kaynak/kopya eşitliği, binary STL uzunluğu ve sonlu koordinatlar doğrulandı (5398 üçgen). Eski revizyonlar korundu; yeni dosya aktif 160×120 referansı yapıldı. Bu dış ölçü kontrolüdür; PVC kesitleri, açıklık ölçüleri ve tüm imalat detayları ayrıca doğrulanmalıdır. Ölçekleme veya uygulamaya entegrasyon yapılmadı. 160×180 son rev2 hâlâ 165×250 cm; onun düzeltilmiş kaynağı bekleniyor. Sürüm 5.9.65 değişmedi. Sıradaki adım gerçek STL modelinin planla eşleştirilip 3B görünüşe entegrasyonu; diğer açık işler korunur.
+
+## 7 Ekim 2026 — İş PC — DEV-052 tekrar gönderim
+
+Tekrar gönderilen 160×120 STL rev5 olarak korundu. SHA-256 farklı, ancak 84. bayttan sonraki tüm üçgen verileri rev4 ile bayt bayt aynı; bütün vertex koordinatları aynı. Fark yalnız STL başlık bölümünde. Dış ölçüler yine 166×250 cm, Z alt sınırı0, derinlik13,245208 cm,5398üçgen. Kaynak/kopya hash eşitliği ve binary boyut/sonlu koordinat kontrolü geçti. Aktif geometri referansı rev4 kalır; yeni imalat geometrisi veya uygulama değişikliği yok. 160×180 için yeni kaynak gelmedi. Entegrasyon DEV-052 kapsamında açık; sürüm5.9.65.
