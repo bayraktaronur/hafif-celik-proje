@@ -184,7 +184,7 @@
       else if(footprint.length===base.length){v={...v,y:footprint[i].y};w={...w,y:footprint[(i+1)%base.length].y};}
       const a=C.transform(z,v),b=C.transform(z,w),dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(!L)return;
       let nx=-dy/L,ny=dx/L;const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};if(C.pointIn(base,C.untransform(z,{x:mid.x+nx*.1,y:mid.y+ny*.1}))){nx=-nx;ny=-ny;}
-      const otherFaces=G.roofs.filter(other=>other.id!==z.id&&other.group===z.group).flatMap(other=>C.zoneFaces(other));
+      const otherFaces=G.roofs.filter(other=>other.id!==z.id&&other.group===z.group).flatMap(other=>{const support=other.childJoin?.support||C.basePolygon(other).map(p=>C.transform(other,p));return C.zoneFaces(other).map(f=>({...f,support}));});
       const cuts=[0,1];for(const f of [...faces,...roofFaces,...otherFaces])f.poly.forEach((p,j)=>{const q=f.poly[(j+1)%f.poly.length],ex=q.x-p.x,ey=q.y-p.y,D=dx*ey-dy*ex;if(Math.abs(D)<1e-8)return;const t=((p.x-a.x)*ey-(p.y-a.y)*ex)/D,u=((p.x-a.x)*dy-(p.y-a.y)*dx)/D;if(t>0&&t<1&&u>=0&&u<=1)cuts.push(t);});cuts.sort((a,b)=>a-b);
       for(let j=1;j<cuts.length;j++){const t=cuts[j-1],u=cuts[j];if(u-t<1e-6)continue;const m={x:a.x+dx*(t+u)/2,y:a.y+dy*(t+u)/2};
 
@@ -192,7 +192,7 @@
        let poly=[{...p,z:level},{...q,z:level},{...q,z:hq},{...p,z:hp}];
        // A neighbouring footprint hides only the portion below its roof,
        // not the whole gable. Keep exposed infill above lower roofs.
-       for(const cover of otherFaces.filter(f=>C.contains(f.poly,{x:m.x+nx*.1,y:m.y+ny*.1}))){
+       for(const cover of otherFaces.filter(f=>C.contains(f.poly,{x:m.x+nx*.1,y:m.y+ny*.1})&&C.pointIn(f.support,{x:m.x+nx*.1,y:m.y+ny*.1}))){
         const clipped=[],delta=v=>v.z-C.height(cover,{x:v.x+nx*.1,y:v.y+ny*.1});
         poly.forEach((v,k)=>{const w=poly[(k+1)%poly.length],a=delta(v),b=delta(w);if(a>=0)clipped.push(v);if((a>=0)!==(b>=0)){const t=a/(a-b);clipped.push({x:v.x+(w.x-v.x)*t,y:v.y+(w.y-v.y)*t,z:v.z+(w.z-v.z)*t});}});poly=clipped;if(poly.length<3)break;
        }
@@ -227,6 +227,20 @@
           const v=[point(lo,n0,z0),point(hi,n0,z0),point(hi,n1,z0),point(lo,n1,z0),point(lo,n0,z1),point(hi,n0,z1),point(hi,n1,z1),point(lo,n1,z1)];
           for(const ids of [[0,1,2,3],[4,7,6,5],[0,4,5,1],[1,5,6,2],[2,6,7,3],[3,7,4,0]])out.push({kind:'gableOmega',zone:zone.id,segmentId:wall.id,part,widthMm:k*10,sheetMm:1,poly:ids.map(i=>v[i]),color:'#89949c',shade:part==='top'?1:.85});
         };
+        // The external betopan overlaps the upper half of the 30 mm web.
+        // Keep the complete steel section; the mounted skin leaves 15 mm visible.
+        let skin=f.poly.map(v=>({...v}));
+        for(const [bound,sign] of [[lo,1],[hi,-1]]){
+          const clipped=[],delta=v=>sign*((v.x-a.x)*ux+(v.y-a.y)*uy-bound);
+          skin.forEach((v,i)=>{const w=skin[(i+1)%skin.length],d=delta(v),e=delta(w);if(d>=-1e-7)clipped.push(v);if((d>=0)!==(e>=0)){const t=d/(d-e);clipped.push({x:v.x+(w.x-v.x)*t,y:v.y+(w.y-v.y)*t,z:v.z+(w.z-v.z)*t});}});skin=clipped;
+        }
+        if(skin.length>=3){
+          const front=skin.map(v=>point((v.x-a.x)*ux+(v.y-a.y)*uy,k/2+1.31,Math.abs(v.z-level)<.001?level-1.5:v.z));
+          const back=front.map(v=>({...v,x:v.x-nx*.8,y:v.y-ny*.8}));
+          const meta={kind:'cladding',omegaCover:true,zone:zone.id,segmentId:wall.id,color:Wall3D.panelColor,shade:f.shade,visibleBandMm:15};
+          out.push({...meta,poly:front},{...meta,poly:back});
+          front.forEach((v,i)=>{const j=(i+1)%front.length;out.push({...meta,poly:[v,front[j],back[j],back[i]]});});
+        }
         strip(-k/2-.1,k/2+.1,level,level+.1,'top');
         strip(k/2,k/2+.1,level-3,level,'outerWeb');
         strip(-k/2-.1,-k/2,level-3,level,'innerWeb');

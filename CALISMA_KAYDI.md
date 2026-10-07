@@ -656,3 +656,7 @@ Kullanıcı omega sacını 1 mm doğruladı. Ölçülü kesit 60/100/150,30,12+2
 ## 8 Ekim 2026 — İş PC — DEV-068 inceleme
 
 5.9.83 sonrası iki kullanıcı görseli: 30 mm dış omega yanağı tamamen açıkta kalıyor; montaj oturuşu eksik. Yeni15mm notunun görünür bant/dudak ayrımı soruldu. Yerel kaplama boşluğunun kesin nedeni henüz doğrulanmadı; güncel çatılı JSON bekleniyor. İki referans/hash korundu. Kod değiştirilmedi, önceki sentetik testler bu özel planı doğrulamaz. Rapor analizler/2026-10-08-omega-aciklik.md.
+
+## 8 Ekim 2026 — İş PC — DEV-068 /5.9.84
+
+Yeni proje11 gerçek çatı kaydıyla neden bulundu: yavru saçak taşması ana alın altını259.867cmye kırpıyordu. Kırpma mesnet alanıyla sınırlandı; duvar250cmye kapandı. Kullanıcı15mm yalnız görünür şerit teyidi:8mm montaj betopan yüzeyi üst yanağı örter;30/20mm ve1mm metal kesiti korunur. Gerçek plan testi, gable-omega,roof-gable-cover,roof-gable-boundary,roof-soffit geçti; iki görünüş incelendi. JSON/hash kaydedildi. Kod/geometri verileri ve metraj sonuçları değişmez; canlı sekmeye müdahale yok. Rapor analizler/2026-10-08-omega-aciklik.md.
