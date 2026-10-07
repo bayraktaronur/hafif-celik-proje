@@ -17,3 +17,9 @@ Birim santimetre.160×120 ve160×180 modellerinde171cm en hatalı; doğru pano e
 ## İkinci kaynak revizyonu — ölçü uyuşmazlığı
 
 İki dosya ayrı rev2-166cm klasörüne alındı; ilk171cm kopyalar korundu. Klasör adı hedefi belirtir, ölçüm onayı değildir. Binary boy/sonlu koordinatlar ve SHA256 doğrulandı. Her ikisindeX min3 max168, net165cm: hedef166cm sağlanmadı.160×180 Z0..250;160×120 Z−1.045674443..250, toplam251.045674443cm. Bu sınırın hangi parçaya ait olduğu ayrıca düzeltilmeli; otomatik kırpma veya ölçek uygulanmadı. Sayısal rapor rev2-geometri.json, kaynak hashleri rev2-envanter.json. İmalat ölçüsü uyumsuz iki model uygulamaya bağlanmadı.
+
+## 7 Ekim 2026 — 160×120 üçüncü revizyon
+
+160×120 üçüncü revizyon ölçümü: dış genişlik 165 cm, yükseklik 250 cm; Z alt sınırı 0. Önceki 251,046 cm yükseklik sorunu giderilmiş, ancak 166 cm hedef en hâlâ 1 cm eksik. 160×180 için yeni dosya gelmedi; son revizyon 165×250 cm. Kaynak ayrı rev3 klasörüne kopyalandı, SHA-256 eşitliği ve binary STL uzunluğu/sonlu koordinatlar doğrulandı (5398 üçgen). Ölçekleme veya uygulamaya entegrasyon yapılmadı. Sürüm 5.9.65 değişmedi. Sıradaki adım: 166 cm dış enli kaynakların doğrulanması, ardından gerçek model entegrasyonu; diğer açık işler korunur.
+
+Ölçüm: [rev3 geometri](2026-10-07-pencere-stl-rev3-geometri.json); kaynak doğrulaması: [rev3 envanter](2026-10-07-pencere-stl-rev3-envanter.json). Tam imalat uygunluğu yalnız dış boyut kontrolüyle doğrulanmış sayılmaz.

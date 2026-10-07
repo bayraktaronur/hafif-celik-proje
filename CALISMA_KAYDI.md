@@ -542,3 +542,7 @@ DEV-052 ek teyit: STL birimi cm.160×120/180 kaynaklarının171cm eni hatalı, h
 ## 7 Ekim 2026 — DEV-052 ikinci STL revizyonu
 
 İki yeni STL ayrı klasörde hash doğrulamasıyla korundu. Ölçüm: her ikisi165cm en (hedef166);160×180250cm yüksek,160×120251,0457cm yüksek/Z−1,0457 alt sınır. Uyuşmazlık nedeniyle modele bağlanmadı/ölçeklenmedi. Kullanıcıya sayısal farklar bildirildi; sürüm5.9.65 değişmedi.
+
+## 7 Ekim 2026 — İş PC — DEV-052 üçüncü STL revizyonu
+
+160×120 üçüncü revizyon ölçümü: dış genişlik 165 cm, yükseklik 250 cm; Z alt sınırı 0. Önceki 251,046 cm yükseklik sorunu giderilmiş, ancak 166 cm hedef en hâlâ 1 cm eksik. 160×180 için yeni dosya gelmedi; son revizyon 165×250 cm. Kaynak ayrı rev3 klasörüne kopyalandı, SHA-256 eşitliği ve binary STL uzunluğu/sonlu koordinatlar doğrulandı (5398 üçgen). Ölçekleme veya uygulamaya entegrasyon yapılmadı. Sürüm 5.9.65 değişmedi. Sıradaki adım: 166 cm dış enli kaynakların doğrulanması, ardından gerçek model entegrasyonu; diğer açık işler korunur.
