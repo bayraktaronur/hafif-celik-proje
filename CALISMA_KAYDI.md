@@ -648,3 +648,7 @@ Panel düzenle hızlı modu: sol tık menüsü ve komşu panele sürükleyerek y
 ## 8 Ekim2026 — İş PC — DEV-066/067 /5.9.82
 
 Baş makas kaplaması başka çatı plan sınırına denk geldiğinde tamamen siliniyordu; komşu yüzey yüksekliğiyle düşey kırpma eklendi, alçak çatı üstündeki kaplama kalır. Wall3D ortak betopan renk/gölgesi baş makas ve kot farkı kaplamasına bağlandı. roof-gable-cover,roof-gable-boundary,roof-soffit,roof-child-datum,wall-3d geçti.3referans/hash kaydedildi. Ekrandaki son çatılı JSON verilmediği için birebir boşluk teyidi yok. Omega ölçüleri soruldu; henüz yanıt yok, DEV-067 açık, model/metraj eklenmedi. Rapor analizler/2026-10-08-bas-makas.md.
+
+## 8 Ekim 2026 — İş PC — DEV-067 / 5.9.83
+
+Kullanıcı omega sacını 1 mm doğruladı. Ölçülü kesit 60/100/150,30,12+20 dış,25 iç mm olarak duvar üstü baş makas hattına eklendi. Mevcut geometri/akslar değişmez. gable-omega 12 varyant, roof-gable-cover, roof-gable-boundary, roof-soffit geçti; görsel incelendi. Referans/hash korundu. Stok/kesim/büküm açınımı açık. Rapor: analizler/2026-10-08-bas-makas-omega.md.

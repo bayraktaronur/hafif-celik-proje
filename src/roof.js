@@ -200,7 +200,41 @@
       }
      });
     }
+    items.push(...gableOmegaSurfaces(items));
     return items;
+  }
+  // Measured head-truss omega, cm: clear width 6/10/15, web 3,
+  // exterior return 1.2 + upstand 2, interior flange 2.5; sheet 0.1.
+  function gableOmegaSurfaces(structure){
+    const out=[],seen=new Set();
+    for(const f of structure.filter(f=>f.roofBoundary)){
+      const zone=G.roofs.find(z=>z.id===f.zone),level=zone?.wallTop??(Number(G.opt.h)||280);
+      const bottom=f.poly.filter(p=>Math.abs(p.z-level)<.001);if(bottom.length<2)continue;
+      const a=bottom[0],b=bottom[1],dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(L<.01)continue;
+      const ux=dx/L,uy=dy/L;let nx=-uy,ny=ux;
+      const base=zone.childJoin?.support||C.basePolygon(zone).map(p=>C.transform(zone,p));
+      if(C.pointIn(base,{x:(a.x+b.x)/2+nx*.1,y:(a.y+b.y)/2+ny*.1})){nx=-nx;ny=-ny;}
+      for(const wall of G.segs){if(wall.tip==='veranda'||![6,10,15].includes(Number(wall.k)))continue;
+        const p=getNode(wall.n1),q=getNode(wall.n2);if(!p||!q)continue;
+        const len=Math.hypot(q.x-p.x,q.y-p.y);if(!len||Math.abs((q.x-p.x)*uy-(q.y-p.y)*ux)/len>.001)continue;
+        const offset=(p.x-a.x)*nx+(p.y-a.y)*ny,k=Number(wall.k);
+        if(Math.abs(offset)>k/2+.5)continue;
+        const pt=(p.x-a.x)*ux+(p.y-a.y)*uy,qt=(q.x-a.x)*ux+(q.y-a.y)*uy;
+        const lo=Math.max(0,Math.min(pt,qt)),hi=Math.min(L,Math.max(pt,qt));if(hi-lo<.01)continue;
+        const key=[wall.id,level,...[a.x+ux*lo,a.y+uy*lo,a.x+ux*hi,a.y+uy*hi].map(v=>v.toFixed(3))].join('|');if(seen.has(key))continue;seen.add(key);
+        const point=(t,n,z)=>({x:a.x+ux*t+nx*(offset+n),y:a.y+uy*t+ny*(offset+n),z});
+        const strip=(n0,n1,z0,z1,part)=>{
+          const v=[point(lo,n0,z0),point(hi,n0,z0),point(hi,n1,z0),point(lo,n1,z0),point(lo,n0,z1),point(hi,n0,z1),point(hi,n1,z1),point(lo,n1,z1)];
+          for(const ids of [[0,1,2,3],[4,7,6,5],[0,4,5,1],[1,5,6,2],[2,6,7,3],[3,7,4,0]])out.push({kind:'gableOmega',zone:zone.id,segmentId:wall.id,part,widthMm:k*10,sheetMm:1,poly:ids.map(i=>v[i]),color:'#89949c',shade:part==='top'?1:.85});
+        };
+        strip(-k/2-.1,k/2+.1,level,level+.1,'top');
+        strip(k/2,k/2+.1,level-3,level,'outerWeb');
+        strip(-k/2-.1,-k/2,level-3,level,'innerWeb');
+        strip(k/2+.1,k/2+1.3,level-3,level-2.9,'outerReturn');
+        strip(k/2+1.2,k/2+1.3,level-3,level-1,'outerLip');
+        strip(-k/2-2.6,-k/2-.1,level-3,level-2.9,'innerFlange');
+      }
+    }return out;
   }
   function projected3D(m,w,h){const points=[...m.faces.flatMap(f=>f.poly.map(p=>({...p,z:C.height(f,p)}))),...planStructure().flatMap(i=>i.poly)];Camera3D.state.yaw=angle;return Camera3D.project(points,w,h);}
   // Depth-buffered triangles avoid painter-order errors at crossing roofs and parapets.
@@ -232,7 +266,7 @@
     const drawEdge=(e,project)=>{const p=project(e.p),q=project(e.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=COLORS[e.type];ctx.lineWidth=['ridge','valley'].includes(e.type)?2:1;ctx.stroke();};
     if(mode==='3d'){
       const project=projected3D(m,w,h);
-      const wallModel=showWallDetails&&isPref()?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&s.kind==='cladding')]:planStructure();if(wallModel)$('roofHint').textContent='Sol sürükle: döndür · Tekerlek: yakınlaş · Shift/orta tuş: kaydır · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId){items.push(...verandaStructure(z).filter(item=>item.kind!=='cladding'));return;}
+      const wallModel=showWallDetails&&isPref()?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&['cladding','gableOmega'].includes(s.kind))]:planStructure();if(wallModel)$('roofHint').textContent='Sol sürükle: döndür · Tekerlek: yakınlaş · Shift/orta tuş: kaydır · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId){items.push(...verandaStructure(z).filter(item=>item.kind!=='cladding'));return;}
         if(z.parapet){const poly=C.footprint(z).map(p=>C.transform(z,p)),top=Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))))+z.parapet;poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];items.push({poly:[{...p,z:z.h},{...q,z:z.h},{...q,z:top},{...p,z:top}],color:'#77818b',zone:z.id});});}
       });
       if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:mat.color,zone:z.id,shade:roofShade(f),roof:true});});
