@@ -18,7 +18,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    if(!mesh){warnings.add(label+': gerçek STL henüz bağlı değil; şematik pencere.');continue;}
    const a=(o.a+o.b)/2-mesh.width/2,b=a+mesh.width;
    const reasons=[];
-   if(Math.abs(height-250)>.01)reasons.push('duvar yüksekliği '+height+' cm; model 250 cm');
+   if(![250,280,300].includes(height))reasons.push('duvar yüksekliği '+height+' cm; gerçek pano modeli 250/280/300 cm için hazır');
    if(r.slots.some(p=>p.b>a&&p.a<b&&Number(p.k)!==10))reasons.push('model 10’luk duvar içindir');
    if(!r.slots.length||a<Math.min(...r.slots.map(p=>p.a))-.5||b>Math.max(...r.slots.map(p=>p.b))+.5)reasons.push(mesh.width+' cm pano duvar sınırına sığmıyor');
    if(holes.some(q=>q!==o&&q.b>a&&q.a<b))reasons.push(mesh.width+' cm pano başka açıklıkla çakışıyor');
@@ -29,14 +29,14 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    const left=inside(1),right=inside(-1),insideSide=left!==right?(left?1:-1):null;
    const flip=insideSide==null?1:insideSide/mesh.handleSide;
    if(insideSide==null)warnings.add('Pencerenin iç tarafı kapalı oda sınırından belirlenemedi; kaynak model yönü korunuyor.');
-   models.push({o,a,b});const meta={kind:'windowSTL',partId:'opening:'+o.e.id,openingId:o.e.id,source:mesh.source,schematic:false,insideSide,handleSide:mesh.handleSide*flip};
-   parts.push({...meta,widthMm:mesh.width*10,heightMm:mesh.height*10});
-   for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+(mesh.vertices[i+j]-mesh.centerX)*flip,y=(mesh.vertices[i+j+1]-mesh.wallCenterY)*flip;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:mesh.vertices[i+j+2]});}
+   models.push({o,a,b});const meta={kind:'windowSTL',partId:'opening:'+o.e.id,openingId:o.e.id,source:mesh.source,schematic:false,sourceHeightMm:mesh.height*10,extensionMm:(height-mesh.height)*10,insideSide,handleSide:mesh.handleSide*flip};
+   parts.push({...meta,widthMm:mesh.width*10,heightMm:height*10});
+   for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+(mesh.vertices[i+j]-mesh.centerX)*flip,y=(mesh.vertices[i+j+1]-mesh.wallCenterY)*flip;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:Math.abs(mesh.vertices[i+j+2]-mesh.height)<.001?height:mesh.vertices[i+j+2]});}
     const u={x:poly[1].x-poly[0].x,y:poly[1].y-poly[0].y,z:poly[1].z-poly[0].z},v={x:poly[2].x-poly[0].x,y:poly[2].y-poly[0].y,z:poly[2].z-poly[0].z},nx=u.y*v.z-u.z*v.y,ny=u.z*v.x-u.x*v.z,nz=u.x*v.y-u.y*v.x,L=Math.hypot(nx,ny,nz);
     const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?'#e3e0d3':material==='pvc'?'#ffffff':'#85b9cb';
     if(L>1e-8)surfaces.push({...meta,poly,color,material,alpha:material==='glass'?.38:1,shade:Math.abs(nz)/L>.9?1:.78+.18*Math.abs(ny)/L});
    }
-   warnings.add(label+' pano: gerçek STL, ölçek 1:1. PVC beyaz; cam yarı saydam. Malzeme ayrımı geometriden tahmin edilir.');
+   warnings.add(label+' pano: STL pencere ölçüleri korunur; pano '+height+' cm. PVC beyaz; cam yarı saydam. Malzeme ayrımı geometriden tahmin edilir.');
   }
   for(const p of r.slots){
    const core=({6:4,10:8,15:13})[p.k],cut=LoadingCore.stockWidth(p.w,Modular.cutMm(p.w))?.cutMm;
