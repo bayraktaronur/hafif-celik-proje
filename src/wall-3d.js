@@ -11,20 +11,33 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
  function rect(r,a,b,c,d,z0,z1,color,meta){const P=(x,y)=>({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y});box([P(a,c),P(b,c),P(b,d),P(a,d)],z0,z1,color,meta);}
 
  function openings(r){return r.items.flatMap(it=>G.elemanlar.filter(e=>e.segId===it.seg.id).map(e=>{const a=it.rev?it.off+it.L-e.t*it.L-e.en:it.off+e.t*it.L,z=e.tip_==='kapi'?0:210-e.yuk;return {e,a,b:a+e.en,z,top:z+e.yuk};}));}
- for(const r of A.runs){const holes=openings(r);
+ for(const r of A.runs){const holes=openings(r),models=[];
+  for(const o of holes){if(o.e.tip_!=='pencere'||Math.abs(o.e.en-160)>.01||Math.abs(o.e.yuk-120)>.01||!window.WindowSTL)continue;
+   const a=(o.a+o.b)/2-83,b=a+166;
+   if(height!==250||r.slots.some(p=>p.b>a&&p.a<b&&p.k!==10)||!r.slots.length||a<r.slots[0].a-.5||b>r.slots[r.slots.length-1].b+.5||holes.some(q=>q!==o&&q.b>a&&q.a<b)){
+    warnings.add('160×120 STL için 250 cm yüksekliğinde 10’luk duvar ve çakışmasız 166 cm pano alanı gerekir; bu açıklık temsilî gösterilir.');continue;
+   }
+   models.push({o,a,b});const mesh=WindowSTL,meta={kind:'windowSTL',partId:'opening:'+o.e.id,openingId:o.e.id,source:mesh.source,schematic:false};
+   parts.push({...meta,widthMm:1660,heightMm:2500});
+   for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+mesh.vertices[i+j]-mesh.centerX,y=mesh.vertices[i+j+1]-mesh.wallCenterY;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:mesh.vertices[i+j+2]});}
+    const u={x:poly[1].x-poly[0].x,y:poly[1].y-poly[0].y,z:poly[1].z-poly[0].z},v={x:poly[2].x-poly[0].x,y:poly[2].y-poly[0].y,z:poly[2].z-poly[0].z},nx=u.y*v.z-u.z*v.y,ny=u.z*v.x-u.x*v.z,nz=u.x*v.y-u.y*v.x,L=Math.hypot(nx,ny,nz);
+    if(L>1e-8)surfaces.push({...meta,poly,color:'#dfdfd8',shade:.65+.35*Math.abs((nx*.3+ny*.4+nz*.866)/L)});
+   }
+   warnings.add('160×120 pano: gerçek STL, ölçek 1:1. STL malzeme bilgisi içermediği için renkler nötrdür.');
+  }
   for(const p of r.slots){
    const core=({6:4,10:8,15:13})[p.k],cut=LoadingCore.stockWidth(p.w,Modular.cutMm(p.w))?.cutMm;
    const id='panel:'+r.owner.id+':'+p.a+':'+p.b,meta={kind:'wallPanel',partId:id,panelLabel:p.no||'',segmentId:r.owner.id};
    const schematic=core==null||!cut;if(schematic)warnings.add('Kesimi tanımsız panonun dış ölçüsü yerleşim aralığından gösterilir.');
    const w=cut?cut/10:p.b-p.a,a=(p.a+p.b-w)/2,b=a+w,t=core==null?p.k:core+1.6;
    parts.push({...meta,widthMm:cut||w*10,thicknessMm:t*10,heightMm:height*10,schematic});
-   const xs=[a,b],zs=[0,height];for(const o of holes){if(o.b<=a||o.a>=b)continue;xs.push(Math.max(a,o.a),Math.min(b,o.b));zs.push(Math.max(0,Math.min(height,o.z)),Math.max(0,Math.min(height,o.top)));}
+   const xs=[a,b],zs=[0,height];for(const m of models){if(m.b>a&&m.a<b)xs.push(Math.max(a,m.a),Math.min(b,m.b));}for(const o of holes){if(o.b<=a||o.a>=b)continue;xs.push(Math.max(a,o.a),Math.min(b,o.b));zs.push(Math.max(0,Math.min(height,o.z)),Math.max(0,Math.min(height,o.top)));}
    xs.sort((a,b)=>a-b);zs.sort((a,b)=>a-b);
-   for(let i=1;i<xs.length;i++)for(let j=1;j<zs.length;j++){const l=xs[i-1],u=xs[i],lo=zs[j-1],hi=zs[j];if(u-l<.001||hi-lo<.001||holes.some(o=>(l+u)/2>o.a&&(l+u)/2<o.b&&(lo+hi)/2>o.z&&(lo+hi)/2<o.top))continue;
+   for(let i=1;i<xs.length;i++)for(let j=1;j<zs.length;j++){const l=xs[i-1],u=xs[i],lo=zs[j-1],hi=zs[j];if(u-l<.001||hi-lo<.001||models.some(m=>(l+u)/2>m.a&&(l+u)/2<m.b)||holes.some(o=>(l+u)/2>o.a&&(l+u)/2<o.b&&(lo+hi)/2>o.z&&(lo+hi)/2<o.top))continue;
     if(core==null)rect(r,l,u,-t/2,t/2,lo,hi,'#e3e0d3',meta);else{rect(r,l,u,-core/2,core/2,lo,hi,'#d8d4bd',{...meta,layer:'eps'});rect(r,l,u,-t/2,-core/2,lo,hi,'#e3e0d3',{...meta,layer:'betopan'});rect(r,l,u,core/2,t/2,lo,hi,'#e3e0d3',{...meta,layer:'betopan'});}
    }
   }
-  for(const o of holes){const e=o.e,door=e.tip_==='kapi',cat=OpeningCatalog.find(c=>c.id===e.catalogId),style=cat?.style||e.kapiTip,cols=cat?.cols||(['surme','cift-kanat'].includes(e.penTip)||['cift','double','double-glass','sliding'].includes(style)?2:1),meta={kind:'opening',partId:'opening:'+e.id,openingId:e.id,schematic:true};
+  for(const o of holes){if(models.some(m=>m.o===o))continue;const e=o.e,door=e.tip_==='kapi',cat=OpeningCatalog.find(c=>c.id===e.catalogId),style=cat?.style||e.kapiTip,cols=cat?.cols||(['surme','cift-kanat'].includes(e.penTip)||['cift','double','double-glass','sliding'].includes(style)?2:1),meta={kind:'opening',partId:'opening:'+e.id,openingId:e.id,schematic:true};
    warnings.add('PVC/kapı kasa ve kanat kesitleri temsilî; pencere üst kotu210 cm.');
    if(o.z<0||o.top>height){warnings.add('Açıklık yüksekliği210 cm üst kotuna veya duvar yüksekliğine sığmıyor.');continue;}
    parts.push({...meta,widthMm:e.en*10,heightMm:e.yuk*10,sillMm:o.z*10,cols,type:cat?.opening||e.penTip||style});
