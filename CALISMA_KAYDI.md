@@ -632,3 +632,7 @@ Kontroller: roof-trim-datum (36 yükseklik/taşma/tür/yön; tam alt kot, ana/ya
 ## 8 Ekim 2026 — İş PC — DEV-061 / 5.9.78
 
 Yeni proje (10) üst duvar kapanışında köşe payı ortak panel fazını5cm kaydırarak67.75cm oluşturuyordu. Kapanış mevcut geçerli panelleri bozacaksa düğüme göre ankraj kaydedilir; H aksları, koordinatlar korunur. Kullanıcı mevcut makas akslarını korumayı seçti; yarım başlangıç dağılımı kalır. panel-close gerçek fare/iki yön/undo/redo/JSON geçti, prefab77/77. production-direction satır89 hatası eski HEAD ile de doğrulandı, DEV-062 açık. Orijinal JSON ve4referans kaynak/hash envanteriyle korundu. Rapor: analizler/2026-10-08-panel-kapanis.md. Canlı çizime müdahale edilmedi.
+
+## 8 Ekim2026 — İş PC — DEV-063 /5.9.79
+
+10s otomatik yedek kontrolü,650ms mevcut kayıt, açılışta otomatik kurtarma,10önceki sürümlü Yedekler penceresi, F5/Ctrl+R onayı ve native ayrılma uyarısı. Eski recovery anahtarı korunur; boş başlangıç eski kaydı ezmez. Yeni/aç öncesi checkpoint; çatı/metin/mobilya kapsamı; kota hatası görünür. Kullanıcının kaybolan son çiziminin kurtarıldığı doğrulanmadı, canlı depoya erişilmedi. autosave, run31/31 ve panel-close geçti. Rapor analizler/2026-10-08-otomatik-yedek.md. Yerel yedekler bilgisayarlar arası aktarım yerine geçmez; Kaydet/JSON gerekir. DEV-062 ayrı çatı yönü hatası açık.

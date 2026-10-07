@@ -4,7 +4,7 @@
 <header class="app-header">
  <a class="identity" href="#" aria-label="Plan Studio"><span class="brand-mark">P<span></span></span><span><strong>PLAN STUDIO</strong><small>PREFABRİKTEN / TASARIM ATÖLYESİ</small></span></a>
  <div class="project-title"><input id="projectName" aria-label="Proje adı" value="Yeni proje" maxlength="100" onchange="Studio.rename(this.value)"><span id="saveState">Yerel çalışma</span></div>
- <div class="header-actions"><button class="tb" onclick="yeniPlan()" title="Yeni proje">＋ Yeni</button><label class="tb file-btn">Aç<input id="fi" type="file" accept=".json" onchange="dosyaYukle(event)"></label><button class="tb" onclick="planKaydet()" title="Ctrl+S">Kaydet <kbd>⌃S</kbd></button><button class="tb primary" onclick="pngIndir()">PNG çıktı ↗</button></div>
+ <div class="header-actions"><button class="tb" onclick="yeniPlan()" title="Yeni proje">＋ Yeni</button><label class="tb file-btn">Aç<input id="fi" type="file" accept=".json" onchange="dosyaYukle(event)"></label><button class="tb" onclick="planKaydet()" title="Ctrl+S">Kaydet <kbd>⌃S</kbd></button><button class="tb" onclick="Studio.showBackups()">Yedekler</button><button class="tb primary" onclick="pngIndir()">PNG çıktı ↗</button></div>
 </header>
 <nav class="workspace-bar" aria-label="Çalışma alanı"><div class="workspace-tab active"><span class="status-dot"></span> Kat planı <span class="version">01</span></div><span class="workspace-description">Prefabrik & hafif çelik tasarım</span><div class="workspace-actions"><button class="tb" onclick="metrajAc()">Metraj listesi</button><button class="tb" id="hcBtn" onclick="hafifCeligeAktar()">Hafif çelik aktarımı ↗</button></div></nav>
 <div class="main studio-main">
