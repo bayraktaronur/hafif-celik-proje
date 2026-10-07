@@ -652,3 +652,7 @@ Baş makas kaplaması başka çatı plan sınırına denk geldiğinde tamamen si
 ## 8 Ekim 2026 — İş PC — DEV-067 / 5.9.83
 
 Kullanıcı omega sacını 1 mm doğruladı. Ölçülü kesit 60/100/150,30,12+20 dış,25 iç mm olarak duvar üstü baş makas hattına eklendi. Mevcut geometri/akslar değişmez. gable-omega 12 varyant, roof-gable-cover, roof-gable-boundary, roof-soffit geçti; görsel incelendi. Referans/hash korundu. Stok/kesim/büküm açınımı açık. Rapor: analizler/2026-10-08-bas-makas-omega.md.
+
+## 8 Ekim 2026 — İş PC — DEV-068 inceleme
+
+5.9.83 sonrası iki kullanıcı görseli: 30 mm dış omega yanağı tamamen açıkta kalıyor; montaj oturuşu eksik. Yeni15mm notunun görünür bant/dudak ayrımı soruldu. Yerel kaplama boşluğunun kesin nedeni henüz doğrulanmadı; güncel çatılı JSON bekleniyor. İki referans/hash korundu. Kod değiştirilmedi, önceki sentetik testler bu özel planı doğrulamaz. Rapor analizler/2026-10-08-omega-aciklik.md.

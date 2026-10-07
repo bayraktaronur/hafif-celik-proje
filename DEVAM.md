@@ -12,6 +12,7 @@ Program **5.9.83**. [Ölçülü baş makas omegası](analizler/2026-10-08-bas-ma
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-068 | Omega oturuşu / devam eden kaplama açıklığı | AÇIK: 5.9.83 sonrası kullanıcı açıklık ve kalın bant bildirdi. 30 mm yanak açıkta; 15 mm görünür bant/dudak ayrımı ve güncel çatılı JSON bekleniyor. [İnceleme](analizler/2026-10-08-omega-aciklik.md). |
 | DEV-066 | Baş makas kaplama boşluğu / duvar rengi | 5.9.82: alçak komşu footprinti tüm kaplamayı silmez; üstte kalan kaplama korunur. Duvarla ortak betopan renk/gölgesi.5test geçti; kullanıcının son çatılı JSONunda birebir teyit yok. [Rapor](analizler/2026-10-08-bas-makas.md). |
 | DEV-067 | Baş makas omegası | 5.9.83: 60/100/150,30,12+20,25 mm kesit ve kullanıcı teyitli 1 mm sac; 3B tamamlandı. Stok/kesim/büküm açınımı açık. 12 durum ve çatı regresyonları geçti. [Rapor](analizler/2026-10-08-bas-makas-omega.md). |
 | DEV-065 | Sol tık panel menüsü / sürükle değiştir | TAMAMLANDI5.9.81: Panel düzenle, akslı bölme/komşuyla birleştirme ve sürükleme; mesnet kaldıran işlem reddedilir. Özel120.5 testi ve prefab77 geçti. [Rapor](analizler/2026-10-08-hizli-panel.md). |
