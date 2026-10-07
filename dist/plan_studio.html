@@ -5152,7 +5152,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.63',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.64',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6068,7 +6068,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.63';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.64';syncUI();draw();
 })();
 
 </script><script>
@@ -6547,6 +6547,40 @@ window.OpeningCatalog=(function(){
 })();
 
 </script><script>
+/* Plan-derived fabrication preview. Coordinates are centimetres. */
+(function(){
+'use strict';
+function build(){
+ const surfaces=[],parts=[],warnings=new Set(),height=Number(G.opt.h)||280,A=pfAnaliz();
+ function box(poly,z0,z1,color,meta){if(z1<=z0)return;surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];surfaces.push({...meta,poly:[{...p,z:z0},{...q,z:z0},{...q,z:z1},{...p,z:z1}],color,shade:.78+.18*Math.abs(q.x-p.x)/Math.max(.001,Math.hypot(q.x-p.x,q.y-p.y))});});}
+ function rect(r,a,b,c,d,z0,z1,color,meta){const P=(x,y)=>({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y});box([P(a,c),P(b,c),P(b,d),P(a,d)],z0,z1,color,meta);}
+ for(const r of A.runs)for(const p of r.slots){
+  const core=({6:4,10:8,15:13})[p.k],cut=LoadingCore.stockWidth(p.w,Modular.cutMm(p.w))?.cutMm;
+  const id='panel:'+r.owner.id+':'+p.a+':'+p.b,meta={kind:'wallPanel',partId:id,panelLabel:p.no||'',segmentId:r.owner.id};
+  if(core==null||p.acik||!cut){warnings.add('Açıklıklı veya kesimi tanımsız panolar şematik; PVC/kapı detayları bekleniyor.');rect(r,p.a,p.b,-p.k/2,p.k/2,0,height,'#758894',{...meta,schematic:true});parts.push({...meta,schematic:true});continue;}
+  const w=cut/10,a=(p.a+p.b-w)/2,b=a+w,t=core+1.6;
+  parts.push({...meta,widthMm:cut,thicknessMm:t*10,heightMm:height*10});
+  rect(r,a,b,-core/2,core/2,0,height,'#d8d4bd',{...meta,layer:'eps'});
+  rect(r,a,b,-t/2,-core/2,0,height,'#e3e0d3',{...meta,layer:'betopan'});
+  rect(r,a,b,core/2,t/2,0,height,'#e3e0d3',{...meta,layer:'betopan'});
+ }
+ for(const j of A.bag){
+  const id='joint:'+(j.nid||j.run.owner.id+':'+j.pos)+':'+j.tip,meta={kind:'wallJoint',partId:id,jointType:j.tip};
+  if(j.tip==='H'&&+j.k===10){const r=j.run,a=j.pos;parts.push({...meta,sheetMm:1});rect(r,a-.05,a+.05,-5,5,0,height,'#657786',meta);for(const side of [-1,1])rect(r,a-2.7,a+2.7,side*5-.05,side*5+.05,0,height,'#657786',meta);}
+  else if(j.tip==='kose'&&+j.k===10){const q=pfKoseRect(j.nid,10),r={ax:q.x,ay:q.y,ux:1,uy:0};parts.push({...meta,sheetMm:1,rect:q});for(const [a,b,c,d] of [[0,q.w,0,.1],[0,q.w,q.h-.1,q.h],[0,.1,0,q.h],[q.w-.1,q.w,0,q.h]])rect(r,a,b,c,d,0,height,'#657786',meta);
+   const n=getNode(j.nid),dirs=G.segs.filter(s=>s.tip!=='veranda'&&(s.n1===j.nid||s.n2===j.nid)).map(s=>{const v=getNode(s.n1===j.nid?s.n2:s.n1),L=Math.hypot(v.x-n.x,v.y-n.y);return {x:(v.x-n.x)/L,y:(v.y-n.y)/L}});
+   for(const v of dirs){const horizontal=Math.abs(v.x)>.9,longitudinal=horizontal?q.w<q.h:q.h<q.w,len=longitudinal?7:3;
+    if(horizontal){const x=v.x>0?q.w:0;for(const y of [0,q.h-.1])rect(r,Math.min(x,x+v.x*len),Math.max(x,x+v.x*len),y,y+.1,0,height,'#657786',meta);}
+    else{const y=v.y>0?q.h:0;for(const x of [0,q.w-.1])rect(r,x,x+.1,Math.min(y,y+v.y*len),Math.max(y,y+v.y*len),0,height,'#657786',meta);}
+   }
+  }else warnings.add('Üçlü H, U ve diğer kalınlıkların profil geometrisi henüz detaylandırılmadı.');
+ }
+ return {surfaces,parts,warnings:[...warnings]};
+}
+window.Wall3D={build};
+})();
+
+</script><script>
 /* Independent roof workspace. All committed roof/material edits use Studio history. */
 (function(){
   'use strict';
@@ -6554,12 +6588,12 @@ window.OpeningCatalog=(function(){
   const TYPES={besik:'Beşik',kirma:'Kırma',tek:'Tek eğim / sundurma',bay:'Çokgen çıkma çatısı'};
   const EDGE={ridge:'Mahya',hip:'Eğik mahya',valley:'Dere',eave:'Saçak',verge:'Alın V',high:'Üst kenar',step:'Kot farkı birleşimi',fold:'Eğim değişimi'};
   const COLORS={ridge:'#ffcd76',hip:'#ffdca1',valley:'#66d7f1',eave:'#d2e0e9',verge:'#a0b2c3',high:'#c39ce4',step:'#e79bdb',fold:'#bb9fe9'};
-  let selected=null,mode='plan',action=null,view={scale:1,x:100,y:100},cache=null,cacheKey='',drag=null,hover=null,angle=35,lastPropertyId=null,showStrips=false;
+  let selected=null,mode='plan',action=null,view={scale:1,x:100,y:100},cache=null,cacheKey='',drag=null,hover=null,angle=35,lastPropertyId=null,showStrips=false,showWallDetails=true,hideRoof=false;
   G.roofs=G.roofs||[];G.roofMaterials=G.roofMaterials||[];
   const dialog=document.createElement('dialog');dialog.id='roofDialog';dialog.innerHTML=`
     <header class="roof-head"><strong>Çatı planı</strong><small>Bölümleri yerleştir · Birleşimleri kontrol et · Kaplama metrajını al</small><button id="roofUndo" title="Geri al">↶</button><button id="roofRedo" title="İleri al">↷</button><button id="roofClose">Kat planına dön ✕</button></header>
     <div class="roof-body"><aside class="roof-left"><h3>ÇATI BÖLÜMLERİ</h3><div id="roofZones"></div><button id="roofFromPlan">Plandan ana çatı</button><label>Veranda / ek çatı<select id="roofVerandaRoom"></select></label><select id="roofVerandaType"><option value="tek">Sundurma · tek eğim</option><option value="besik">Beşik çatı</option><option value="karga">Karga burun · eğim devamı</option></select><label>Ana çatı bağlantısı<select id="roofVerandaParent"></select></label><p>Türü seçip oluştur / güncelle düğmesine basın. Sundurma başlangıcı ana saçaktan 10 cm aşağıda, başlangıç eğimi %5; beşikte %33. Ayarlar sağ panelde değiştirilebilir.</p><button id="roofFromVeranda">Veranda oluştur / güncelle</button><details><summary>Elle ek çatı çizimi</summary><label>Çizilecek bölüm biçimi<select id="roofNewType" aria-label="Yeni çatı türü">${Object.entries(TYPES).map(([v,n])=>`<option value="${v}">${n}</option>`).join('')}</select></label><button id="roofDraw">＋ Bölüm çiz</button><button id="roofJoin">＋ Birleşen bölüm çiz</button><p>Çizmek için iki karşı köşeye tıklayın. Birleşen bölümler aynı grupta kesilir; ayrı sundurmalar kendi grubunda kalır.</p></details><details><summary>Fotoğraf rehberi</summary><p>Beşik / kırma ana çatı; çapraz giriş çatısı; ayrı kotta sundurma; eğimin verandaya devamı; çokgen çıkma ve parapetli gizli çatı bu bölüm sistemiyle kurulur.</p><p>Örnekler: 4, 11, 12 → alt sundurma; 5 → kırma + beşik giriş; 10, 15, 36 → çokgen çıkma; 20, 37 → parapet. Fotoğraf 30 ve 31 aynı görünümdür.</p><p>Çatı kotu, eğimi ve kaplaması fotoğraftan ölçü alınarak belirlenmez; proje ölçüsü girilir.</p></details></aside>
-    <section class="roof-center"><nav class="roof-tabs"><button data-roof-view="plan" class="active">Plan</button><button data-roof-view="3d">3B</button><button data-roof-view="section">Kesit</button><button data-roof-view="report">Metraj / kesim</button><span class="roof-fill"></span><button id="roofStrips" title="Seçili bölümde levha kapatma enleri">Kaplama yerleşimi</button><select id="roofLayoutLayer" aria-label="Gösterilen kaplama katmanı"><option value="top">Üst örtü</option></select><button id="roofFit">Sığdır</button><button id="roofPNG">PNG</button><button id="roofCSV">CSV</button></nav><div class="roof-stage" id="roofStage"><canvas id="roofCanvas" aria-label="Çatı çizimi"></canvas><div id="roofHint"></div><input id="roofCamera" type="range" min="0" max="359" value="35" aria-label="3B bakış açısı" hidden></div><div id="roofReport" hidden></div><div class="roof-legend">${['ridge','hip','valley','eave','verge','step'].map(k=>`<span><i style="background:${COLORS[k]}"></i>${EDGE[k]}</span>`).join('')}</div><div id="roofStats" class="roof-stats"></div></section>
+    <section class="roof-center"><nav class="roof-tabs"><button data-roof-view="plan" class="active">Plan</button><button data-roof-view="3d">3B</button><button data-roof-view="section">Kesit</button><button data-roof-view="report">Metraj / kesim</button><span class="roof-fill"></span><button id="roofStrips" title="Seçili bölümde levha kapatma enleri">Kaplama yerleşimi</button><select id="roofLayoutLayer" aria-label="Gösterilen kaplama katmanı"><option value="top">Üst örtü</option></select><button id="roofWallDetails">Panel / H / köşe</button><button id="roofHide">Çatıyı gizle</button><button id="roofFit">Sığdır</button><button id="roofPNG">PNG</button><button id="roofCSV">CSV</button></nav><div class="roof-stage" id="roofStage"><canvas id="roofCanvas" aria-label="Çatı çizimi"></canvas><div id="roofHint"></div><input id="roofCamera" type="range" min="0" max="359" value="35" aria-label="3B bakış açısı" hidden></div><div id="roofReport" hidden></div><div class="roof-legend">${['ridge','hip','valley','eave','verge','step'].map(k=>`<span><i style="background:${COLORS[k]}"></i>${EDGE[k]}</span>`).join('')}</div><div id="roofStats" class="roof-stats"></div></section>
     <aside class="roof-right" id="roofProperties"></aside></div><div id="roofNotice" role="status">Tüm ölçüler cm. Çatı geometrisi ve kaplama hesabı; taşıyıcı kesit / bağlantı hesabı içermez.</div>`;
   document.body.append(dialog);
   const tab=document.createElement('button');tab.id='roofWorkspace';tab.className='tb';tab.textContent='Çatı planı';tab.onclick=open;document.querySelector('.workspace-actions').prepend(tab);
@@ -6737,12 +6771,12 @@ window.OpeningCatalog=(function(){
     const drawEdge=(e,project)=>{const p=project(e.p),q=project(e.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=COLORS[e.type];ctx.lineWidth=['ridge','valley'].includes(e.type)?2:1;ctx.stroke();};
     if(mode==='3d'){
       const project=projected3D(m,w,h);
-      const items=planStructure();G.roofs.forEach(z=>{if(z.sourceRoomId){items.push(...verandaStructure(z).filter(item=>item.kind!=='cladding'));return;}
+      const wallModel=showWallDetails&&isPref()?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&s.kind==='cladding')]:planStructure();if(wallModel)$('roofHint').textContent='Panel / H / köşe · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId){items.push(...verandaStructure(z).filter(item=>item.kind!=='cladding'));return;}
         if(z.parapet){const poly=C.footprint(z).map(p=>C.transform(z,p)),top=Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))))+z.parapet;poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];items.push({poly:[{...p,z:z.h},{...q,z:z.h},{...q,z:top},{...p,z:top}],color:'#77818b',zone:z.id});});}
       });
-      m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:mat.color,zone:z.id,shade:roofShade(f),roof:true});});
-      items.push(...fasciaSurfaces(m),...trimSurfaces(m));
-      raster3D(ctx,w,h,items,[...(showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...edges3D(m)],project);
+      if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:mat.color,zone:z.id,shade:roofShade(f),roof:true});});
+      if(!hideRoof)items.push(...fasciaSurfaces(m),...trimSurfaces(m));
+      raster3D(ctx,w,h,items,[...(!hideRoof&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof?[]:edges3D(m))],project);
     }else{
       const step=100*view.scale;ctx.strokeStyle='#182737';ctx.lineWidth=1;if(step>12){for(let x=view.x%step;x<w;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}for(let y=view.y%step;y<h;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}}
       G.segs.forEach(s=>{const a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)return;ctx.save();ctx.beginPath();const p=at(a),q=at(b);ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='#697f92';ctx.lineWidth=Math.max(1,s.k*view.scale);if(s.tip==='veranda'){const dash=Math.max(6,ctx.lineWidth*1.2);ctx.lineCap='butt';ctx.setLineDash([dash,dash*.75]);}ctx.stroke();ctx.restore();});
@@ -6819,7 +6853,7 @@ window.OpeningCatalog=(function(){
   });canvas.addEventListener('pointermove',e=>{hover=world(e);if(drag?.pan){view.x=drag.view.x+e.clientX-drag.start.x;view.y=drag.view.y+e.clientY-drag.start.y;}if(action||drag)paint();});
   canvas.addEventListener('pointerup',e=>{if(drag?.zone){const p=world(e),dx=p.x-drag.start.x,dy=p.y-drag.start.y,z=drag.zone;drag=null;if(Math.hypot(dx,dy)>2/view.scale)commit(()=>{const target=G.roofs.find(r=>r.id===z.id);target.x=Math.round(z.x+dx);target.y=Math.round(z.y+dy);});}drag=null;paint();});canvas.addEventListener('pointercancel',()=>{drag=null;paint();});
   canvas.addEventListener('wheel',e=>{if(mode!=='plan')return;e.preventDefault();const p=world(e),old=at(p);view.scale=Math.max(.01,Math.min(8,view.scale*Math.exp(-e.deltaY*.001)));view.x=old.x-p.x*view.scale;view.y=old.y-p.y*view.scale;paint();},{passive:false});
-  dialog.querySelectorAll('[data-roof-view]').forEach(b=>b.onclick=()=>setView(b.dataset.roofView));$('roofClose').onclick=close;$('roofLayoutLayer').onchange=()=>{showStrips=true;if(mode!=='3d')mode='plan';render();};$('roofFromPlan').onclick=fromPlan;$('roofFromVeranda').onclick=fromVeranda;$('roofDraw').onclick=()=>startDraw(false);$('roofJoin').onclick=()=>startDraw(true);$('roofFit').onclick=fit;$('roofStrips').onclick=()=>{showStrips=!showStrips;$('roofStrips').classList.toggle('active',showStrips);if(showStrips&&mode!=='3d')mode='plan';render();};$('roofUndo').onclick=()=>{geriAl();render();};$('roofRedo').onclick=()=>{ileriAl();render();};$('roofCamera').oninput=e=>{angle=+e.target.value;paint();};
+  dialog.querySelectorAll('[data-roof-view]').forEach(b=>b.onclick=()=>setView(b.dataset.roofView));$('roofClose').onclick=close;$('roofLayoutLayer').onchange=()=>{showStrips=true;if(mode!=='3d')mode='plan';render();};$('roofFromPlan').onclick=fromPlan;$('roofFromVeranda').onclick=fromVeranda;$('roofDraw').onclick=()=>startDraw(false);$('roofJoin').onclick=()=>startDraw(true);$('roofWallDetails').onclick=()=>{showWallDetails=!showWallDetails;mode='3d';render();};$('roofHide').onclick=()=>{hideRoof=!hideRoof;$('roofHide').textContent=hideRoof?'Çatıyı göster':'Çatıyı gizle';mode='3d';render();};$('roofFit').onclick=fit;$('roofStrips').onclick=()=>{showStrips=!showStrips;$('roofStrips').classList.toggle('active',showStrips);if(showStrips&&mode!=='3d')mode='plan';render();};$('roofUndo').onclick=()=>{geriAl();render();};$('roofRedo').onclick=()=>{ileriAl();render();};$('roofCamera').oninput=e=>{angle=+e.target.value;paint();};
   window.addEventListener('keydown',e=>{if(!dialog.open)return;e.stopImmediatePropagation();if(window.RoofWorkflow?.key(e))return;if(e.key==='Escape'){e.preventDefault();if(action||drag){action=null;drag=null;render();}else close();}if((e.ctrlKey||e.metaKey)&&!['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)&&['z','y'].includes(e.key.toLowerCase())){e.preventDefault();if(e.key.toLowerCase()==='y'||e.shiftKey)ileriAl();else geriAl();render();}},true);
   dialog.addEventListener('cancel',e=>{e.preventDefault();close();});new ResizeObserver(()=>paint()).observe($('roofStage'));
   function save(data,name,type){const url=URL.createObjectURL(new Blob([data],{type})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);}

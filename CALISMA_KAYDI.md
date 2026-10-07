@@ -524,3 +524,7 @@ Standart panel katmanları96/56/146 mm,1250 en,2500/2800/3000 yükseklik ve H1 m
 ## 7 Ekim 2026 — DEV-050 H ve köşe ölçü teyidi
 
 146 mm panel15lik; köşe100/50 yönü makasa bağlı. H100 mm ara ölçü,54 mm kanat27+27; H/köşe sacı1 mm. Son kaynak görsel kopyalanıp hash doğrulandı; üretim referans JSON ve DEVAM güncellendi. 10luk örnek3B uygulaması sırada, kod değiştirilmedi/sürüm5.9.63. Net kanal datumu/büküm toleransları ve diğer ürün varyantları onaylanmış sayılmadı.
+
+## 7 Ekim 2026 — 5.9.64 / DEV-050 ilk 3B uygulama
+
+Plan slotlarından katmanlı dolu panolar,10luk H ve makasa bağlı köşe geometrisi eklendi. Çatıyı gizle ve detay/kütle karşılaştırması var. Kapılı/pencereli panolar hâlâ şematik; diğer birleşimler açık uyarıyla bekliyor. wall-3d,roof-plan-body,roof-trims,roof-panels-3d geçti; ekran incelendi. Rapor analizler/2026-10-07-panel-h-kose-3b.md. DEV-050 kısmen uygulandı, tüm imalat modeli tamamlandı sayılmadı.

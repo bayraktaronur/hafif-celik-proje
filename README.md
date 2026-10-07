@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.63
+# Prefabrikten Plan Studio · 5.9.64
+
+5.9.64: Katmanlı dolu panel,10luk düz H ve köşe 3B görünüşü; çatıyı gizleme. [Kapsam ve bekleyen parçalar](analizler/2026-10-07-panel-h-kose-3b.md).
 
 5.9.63: Mahya kapaması birleşimlerde Alın V altında; koyu çizgi ve yüzey çakışmaları giderildi.
 
