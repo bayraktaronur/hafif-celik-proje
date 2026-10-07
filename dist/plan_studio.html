@@ -2565,16 +2565,20 @@ function drawNumBuf(){
 // Önizlemede hayali paneller (prefabrik): derz çentikleri + "3 tam + 1 yarım" etiketi
 function pfCizimOnizleme(sn,ep){
   if(!isPref()||G.tool!=='duvar'||!window.Modular||!Modular.strict()||Math.hypot(ep.x-sn.x,ep.y-sn.y)<1)return null;
-  var saved={nodes:G.nodes,segs:G.segs,_compLo:G._compLo,_makasLo:G._makasLo};
+  var saved={nodes:G.nodes,segs:G.segs,elemanlar:G.elemanlar,secili:G.secili,_compLo:G._compLo,_makasLo:G._makasLo},savedId=ID;
   try{
     G.nodes=G.nodes.map(function(n){return Object.assign({},n);});
-    G.segs=G.segs.map(function(s){return Object.assign({},s);});
+    G.segs=JSON.parse(JSON.stringify(G.segs));
+    G.elemanlar=JSON.parse(JSON.stringify(G.elemanlar));
     var a=getNode(sn.id);if(!a){a=Object.assign({},sn);G.nodes.push(a);}else Object.assign(a,sn);
     var b=G.nodes.find(function(n){return n.id!==a.id&&Math.hypot(n.x-ep.x,n.y-ep.y)<.001;});
     var closing=!!b;
     if(!b){b={id:'__preview_end',x:ep.x,y:ep.y};G.nodes.push(b);}
     cizimKoseDuzelt(a,b,closing);
     var seg={id:'__preview_wall',n1:a.id,n2:b.id,k:G.defaultK};G.segs.push(seg);
+    // Resolve T connections in the temporary graph so preview and commit use
+    // the same building grid and real junction face deductions.
+    normalizeGraph();
     var run=pfAnaliz().runs.find(function(r){return r.items.some(function(it){return it.seg.id===seg.id;});});
     if(!run)return null;
     var it=run.items.find(function(it){return it.seg.id===seg.id;});
@@ -2854,6 +2858,7 @@ function splitSeg(s,nodeId){
   if(d<GRAPH_TOL||L-d<GRAPH_TOL)return null;
   var s2=Object.assign({},s,{id:uid(),n1:nodeId,n2:s.n2,elemanlar:[]});
   delete s2.pnlCfg;delete s2.pnlTers;
+  if(s.panelGridAnchor){var anchor=s.panelGridAnchor;s2.panelGridAnchor={axis:anchor.axis,offset:anchor.offset+a[anchor.axis]-m[anchor.axis]};}
   if(s.tip)s2.tip=s.tip;
   if(s.dimGizle)s2.dimGizle=s.dimGizle.slice();
   s.n2=nodeId;
@@ -5180,7 +5185,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.79',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.80',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6146,7 +6151,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.79';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.80';syncUI();draw();
 })();
 
 </script><script>

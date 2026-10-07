@@ -636,3 +636,7 @@ Yeni proje (10) üst duvar kapanışında köşe payı ortak panel fazını5cm k
 ## 8 Ekim2026 — İş PC — DEV-063 /5.9.79
 
 10s otomatik yedek kontrolü,650ms mevcut kayıt, açılışta otomatik kurtarma,10önceki sürümlü Yedekler penceresi, F5/Ctrl+R onayı ve native ayrılma uyarısı. Eski recovery anahtarı korunur; boş başlangıç eski kaydı ezmez. Yeni/aç öncesi checkpoint; çatı/metin/mobilya kapsamı; kota hatası görünür. Kullanıcının kaybolan son çiziminin kurtarıldığı doğrulanmadı, canlı depoya erişilmedi. autosave, run31/31 ve panel-close geçti. Rapor analizler/2026-10-08-otomatik-yedek.md. Yerel yedekler bilgisayarlar arası aktarım yerine geçmez; Kaydet/JSON gerekir. DEV-062 ayrı çatı yönü hatası açık.
+
+## 8 Ekim2026 — İş PC — DEV-064 /5.9.80
+
+İç duvar eklenince5cm panel hatası: splitSeg,5.9.78ankrajını yeni n1e göre dönüştürmeden kopyalıyordu. Yeni offset eski dünya referansını korur. Önizleme T noktalarını geçici grafikte normalize eder; mevcut makas fazı/gerçek birleşim payları görünür. Derin eleman kopyası ve ID geri yükleme ile önizleme modele dokunmaz. Son JSON10dan üstü kapatılmış planla8varyant, gerçek fare2oda, undo/redo/JSON, panel-close ve prefab77/77 geçti.2referans/hash kaydedildi; canlı çizim değiştirilmedi. Rapor analizler/2026-10-08-ic-duvar-kapanis.md. DEV-062 ayrı açık iş.

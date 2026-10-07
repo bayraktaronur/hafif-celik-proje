@@ -1633,16 +1633,20 @@ function drawNumBuf(){
 // Önizlemede hayali paneller (prefabrik): derz çentikleri + "3 tam + 1 yarım" etiketi
 function pfCizimOnizleme(sn,ep){
   if(!isPref()||G.tool!=='duvar'||!window.Modular||!Modular.strict()||Math.hypot(ep.x-sn.x,ep.y-sn.y)<1)return null;
-  var saved={nodes:G.nodes,segs:G.segs,_compLo:G._compLo,_makasLo:G._makasLo};
+  var saved={nodes:G.nodes,segs:G.segs,elemanlar:G.elemanlar,secili:G.secili,_compLo:G._compLo,_makasLo:G._makasLo},savedId=ID;
   try{
     G.nodes=G.nodes.map(function(n){return Object.assign({},n);});
-    G.segs=G.segs.map(function(s){return Object.assign({},s);});
+    G.segs=JSON.parse(JSON.stringify(G.segs));
+    G.elemanlar=JSON.parse(JSON.stringify(G.elemanlar));
     var a=getNode(sn.id);if(!a){a=Object.assign({},sn);G.nodes.push(a);}else Object.assign(a,sn);
     var b=G.nodes.find(function(n){return n.id!==a.id&&Math.hypot(n.x-ep.x,n.y-ep.y)<.001;});
     var closing=!!b;
     if(!b){b={id:'__preview_end',x:ep.x,y:ep.y};G.nodes.push(b);}
     cizimKoseDuzelt(a,b,closing);
     var seg={id:'__preview_wall',n1:a.id,n2:b.id,k:G.defaultK};G.segs.push(seg);
+    // Resolve T connections in the temporary graph so preview and commit use
+    // the same building grid and real junction face deductions.
+    normalizeGraph();
     var run=pfAnaliz().runs.find(function(r){return r.items.some(function(it){return it.seg.id===seg.id;});});
     if(!run)return null;
     var it=run.items.find(function(it){return it.seg.id===seg.id;});
@@ -1922,6 +1926,7 @@ function splitSeg(s,nodeId){
   if(d<GRAPH_TOL||L-d<GRAPH_TOL)return null;
   var s2=Object.assign({},s,{id:uid(),n1:nodeId,n2:s.n2,elemanlar:[]});
   delete s2.pnlCfg;delete s2.pnlTers;
+  if(s.panelGridAnchor){var anchor=s.panelGridAnchor;s2.panelGridAnchor={axis:anchor.axis,offset:anchor.offset+a[anchor.axis]-m[anchor.axis]};}
   if(s.tip)s2.tip=s.tip;
   if(s.dimGizle)s2.dimGizle=s.dimGizle.slice();
   s.n2=nodeId;
