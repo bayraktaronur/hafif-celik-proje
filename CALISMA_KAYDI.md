@@ -520,3 +520,7 @@ Kullanıcı plandaki tüm imalat detaylarını 3B istedi ve eksik teknik modelle
 ## 7 Ekim 2026 — DEV-050 ilk panel/birleşim teknik paketi
 
 Standart panel katmanları96/56/146 mm,1250 en,2500/2800/3000 yükseklik ve H1 mm sac kaydedildi. Nadir146 mm panelin nominal adı çelişkili; H kanat/kanal ve köşe sac/ölçü yorumları kullanıcıya soruldu. Dört kaynak görsel kopyalanıp SHA256 doğrulandı. analizler/2026-10-07-panel-uretim-olculeri.json henüz uygulamaya bağlı olmayan referanstır. Kod ve canlı plan değiştirilmedi, sürüm5.9.63; DEV-050 açık.
+
+## 7 Ekim 2026 — DEV-050 H ve köşe ölçü teyidi
+
+146 mm panel15lik; köşe100/50 yönü makasa bağlı. H100 mm ara ölçü,54 mm kanat27+27; H/köşe sacı1 mm. Son kaynak görsel kopyalanıp hash doğrulandı; üretim referans JSON ve DEVAM güncellendi. 10luk örnek3B uygulaması sırada, kod değiştirilmedi/sürüm5.9.63. Net kanal datumu/büküm toleransları ve diğer ürün varyantları onaylanmış sayılmadı.

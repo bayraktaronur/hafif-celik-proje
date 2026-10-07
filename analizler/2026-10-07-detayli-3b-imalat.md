@@ -19,3 +19,9 @@ Durum: teknik paket bekleniyor. Henüz detaylı 3B imalat özelliği uygulanmad�
 Standart en1250 mm; yükseklikler2500/2800/3000 mm. 10luk panel8+80+8=96 mm, 6lık panel8+40+8=56 mm. Nadir panel8+130+8=146 mm; kullanıcı adını yine6lık yazdı, 15lik eşlemesi soruldu ve henüz teyit edilmedi. H/H3 sacı1 mm. Görseller birleşim biçimlerini ve çatı omega/saçak kesitini gösteriyor; ölçüsüz çizgilerden kesit ölçüsü türetilmedi. Köşedeki100/50/70/30 mm yazıları korunuyor; hangi yüz/uzantıya ait olduğu ve köşe sac kalınlığı teyit bekliyor. H kanat/net kanal ölçüleri soruldu.
 
 Kesin değerler analizler/2026-10-07-panel-uretim-olculeri.json dosyasında ayrı üretim referansı; uygulamaya henüz bağlanmadı. Dört görsel orijinalleri korunarak referanslar/2026-10-07-panel-birlesim klasörüne kopyalandı, hash envanteri doğrulandı. Planın nominal kalınlıkları ve1255 mm aks modülü, gerçek panel1250 mm ile karıştırılmayacak.
+
+## H ölçüsü ve yön teyidi
+
+Kullanıcı146 mm panelin15lik olduğunu teyit etti. Köşe100×50 gövde ve70/30 uzantı biçimini kabul etti;100/50 yönünü mevcut makas sistemi belirler. Son görsel düz H için100 mm ara ölçü,54 mm toplam kanat ve27+27 mm dağılım veriyor. H ve köşe sacı1 mm kesinleşti; kullanıcı bu inceliğin3B görünüşte öncelikli olmadığını belirtti.100 mm ölçü okunun iç/dış yüz datumu ve büküm toleransları verilmedi; imalat toleransı uydurulmaz. Bu ayrıntı mevcut10luk örneğin görsel modelini başlatmaya engel değildir. Diğer ürünlere otomatik ölçeklenmiş kesit onaylanmış imalat diye sunulmaz.
+
+Sıradaki uygulama:10luk dolu panel/H/köşe örneğini doğrulanmış katman ve görünüş ölçüleriyle üretmek, plan yerleşim ve makas yönüyle aynı kaynağa bağlamak. Uygulama henüz değişmedi.

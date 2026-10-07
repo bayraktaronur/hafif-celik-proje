@@ -12,7 +12,7 @@ Program **5.9.63**. [Mahya/Alın V bindirme sırası](analizler/2026-10-07-mahya
 
 | Kimlik | İş | Durum |
 |---|---|---|
-| DEV-050 | Plana bağlı detaylı 3B imalat modeli | AÇIK: panel96/56/146 mm katmanları,1250 en ve2500/2800/3000 boylar; H sacı1 mm alındı. 146 mm nominal adı, H kanat/kanal ve köşe sac/uzantıları teyit bekliyor. Üretim ölçü JSON’u ve dört görsel hash ile kaydedildi. [Kapsam ve teknik paket](analizler/2026-10-07-detayli-3b-imalat.md). |
+| DEV-050 | Plana bağlı detaylı 3B imalat modeli | AÇIK: panel96/56/146 mm katmanları,1250 en ve2500/2800/3000 boylar; H sacı1 mm alındı. 146 mm=15lik teyitli. Düz H100 mm ara ölçü,54=27+27 mm kanat; köşe sacı1 mm ve makasa bağlı100/50 yön kabul edildi. Üretim referansı ve beş görsel hash ile kaydedildi. Sıradaki iş10luk panel/H/köşe 3B örneği; tam profil toleransları ve diğer parçalar açık. [Kapsam ve teknik paket](analizler/2026-10-07-detayli-3b-imalat.md). |
 | DEV-049 | Mahya Alın V altında | TAMAMLANDI: 5.9.63; kapama yüksekliği ve çizgi örtülmesi, roof-trims piksel testi ve 3B ekran kontrolü. |
 | DEV-048 | Kot farkında Alın V ve koyu mahya | TAMAMLANDI: 5.9.62; görünüş/metraj ortak kenarlar, malzemeye bağlı renk; roof-trims ve ilgili çatı/yükleme testleri geçti. |
 | DEV-047 | Alın V ve mahya ayrımı, 3B ve metraj | 5.9.61: şematik kapamalar, 220/400 seçimi (varsayılan220), ayrı stok ve tek U toplamı tamamlandı. Mahya stok/bindirme ve tam profil büküm ölçüleri bekliyor. |

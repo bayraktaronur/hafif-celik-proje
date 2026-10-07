@@ -27,10 +27,8 @@
       "actualThickness": 56
     },
     {
-      "nominalCm": null,
-      "reportedNominalCm": 6,
-      "proposedNominalCm": 15,
-      "nominalStatus": "confirmation_required",
+      "nominalCm": 15,
+      "nominalStatus": "confirmed",
       "layers": [
         8,
         130,
@@ -43,10 +41,32 @@
   "coreMaterial": "Yüksek yoğunluklu polystyrene / strafor",
   "hSheetThickness": 1,
   "missing": [
-    "H/H3 kanat genişlikleri ve net kanal ölçüleri",
-    "Köşe direği sac kalınlığı",
-    "Köşe 100×50 gövde, 70/30 uzantı yorumunun teyidi",
-    "146 mm ürün nominal adı"
+    "6lık/15lik H kanal geometrisinin ürün varyantı teyidi",
+    "Üçlü H büküm/kanal toleransları",
+    "Kapı-pencere panel karkası ve PVC kesitleri",
+    "U ve dörtlü birleşimin tam kesiti"
   ],
-  "note": "Plan yerleşim modülü ve nominal duvar ölçüsü bu üretim kalınlıklarıyla otomatik değiştirilmez; JSON üretim referansıdır, uygulamaya bağlanmış katalog değildir."
+  "note": "Plan yerleşim modülü ve nominal duvar ölçüsü bu üretim kalınlıklarıyla otomatik değiştirilmez; JSON üretim referansıdır, uygulamaya bağlanmış katalog değildir.",
+  "hProfile": {
+    "reference": "referanslar/2026-10-07-panel-birlesim/04-h-olculu.png",
+    "wallNominalCm": 10,
+    "annotatedSpan": 100,
+    "flangeTotal": 54,
+    "flangeEachSide": 27,
+    "sheetThickness": 1,
+    "dimensionDatum": "100 mm ölçüsünün net iç/dış yüz tanımı ve büküm toleransı ayrıca ölçülendirilmemiştir; görünüş referansı olarak kullanılır."
+  },
+  "cornerProfile": {
+    "body": [
+      100,
+      50
+    ],
+    "extensions": [
+      70,
+      30
+    ],
+    "sheetThickness": 1,
+    "orientation": "Mevcut makas yönü/köşe hesabını kullanır; 3B için bağımsız yön belirlenmez.",
+    "status": "Kullanıcı bu biçimi kabul etti; imalat büküm/tolerans çizimi değildir."
+  }
 }
