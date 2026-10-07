@@ -499,3 +499,8 @@ DEV-043 son canlı JSON hâlâ bekliyor; açık tarayıcı çizimi değiştirilm
 ## 7 Ekim 2026 — İş PC — 5.9.60 / DEV-046
 
 Kullanıcı ilk yavrudan sonra ikinci yavru köşelerinin seçilmediğini gösterdi. Hedef listesi/model yalnız ana çatı kabul ediyordu; görselde ilk yavrunun dış kenarına tıklanıyordu. Liste ana+yavru, ilk tıklamada en yakın hedef ve adı, çizim boyunca sabit hedef; bağımlılık sırasıyla senkronizasyon, eksik/döngülü bağ kontrolü eklendi. roof-child-chain üç ardışık yavruyu kardeş/zincir şeklinde, undo/redo/JSON ve ters kayıt sırasıyla doğruladı. Çatı/snap/U/workflow/yön/başmakas/yükleme ilgili testleri geçti. Kaynak görsel hash ile korundu. Rapor analizler/2026-10-07-ikinci-yavru-cati.md. Önceki 5.9.59 numarası tekrar kullanılmadı; 5.9.60 build hazır. Canlı çizim değiştirilmedi; DEV-043/011 ve diğer açık işler korunur.
+
+
+## 7 Ekim 2026 — İş PC — 5.9.61 / DEV-047
+
+Kullanıcı kırmızı kenarları Alın V, yeşil hattı mahya diye tanımladı; katalog220/400×2800×0,50 mm, varsayılan220 onaylandı. Saçak taşması ayrı korundu.3B şematik yüzey kapamaları, profil seçimi ve iki ölçülü yükleme eklendi; Aşık kapama U tek toplam satırda. Önceki2500 mm etkin boy kuralı korundu. Mahya net metresi mevcut hesapta; stok/bindirme ve tam büküm ölçüleri bekliyor. roof-trims ve ilgili çatı/yükleme testleri geçti, ekran incelendi. Üç referans orijinalleri korunarak hash ile kopyalandı. Rapor analizler/2026-10-07-alin-v-mahya.md. Canlı plan değiştirilmedi; diğer açık işler korunur.

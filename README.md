@@ -1,4 +1,6 @@
-# Prefabrikten Plan Studio · 5.9.60
+# Prefabrikten Plan Studio · 5.9.61
+
+5.9.61: Alın V ve mahya 3B kapama gösterimi. Saçak taşmasından bağımsız220/400 mm Alın V seçimi, varsayılan220; ölçü bazında yükleme ve toplam aşık kapama U. [Kapsam ve metraj sınırları](analizler/2026-10-07-alin-v-mahya.md).
 
 5.9.60: İkinci yavru çatı mevcut yavrunun kenarına da bağlanabilir. İlk tıklama en yakın bağlantı kenarını seçer ve bölüm adını gösterir; model bağlı çatıyı önce hesaplar. [Rapor ve kontroller](analizler/2026-10-07-ikinci-yavru-cati.md).
 

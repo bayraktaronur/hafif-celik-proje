@@ -1,0 +1,11 @@
+# Alın V / mahya — 5.9.61, DEV-047
+
+7 Ekim 2026, iş bilgisayarı. Kullanıcı kırmızı eğimli kenarları Alın V, yeşil çizgileri mahya olarak tanımladı. Katalog: a=220/400 mm, stok boyu2800 mm, sac0,50 mm. Varsayılan220 mm kullanıcı tarafından ayrıca onaylandı. Kaynakların orijinal yolları ve SHA-256 değerleri 2026-10-07-alin-v-kaynaklari.json; üç görsel referanslar/2026-10-07-alin-v altında, orijinaller korundu.
+
+Saçak taşma mesafesi, Alın V profil a ölçüsü ve yatay saçak kapamasının görsel yüksekliği ayrı kavramlar olarak arayüzde belirtildi. Eski30 cm saçak taşması220 mm'ye dönüştürülmez. Çatı bölümünde220/400 mm seçilir; eski JSON'da alan yoksa220 kabul edilir. Kaydet/aç ve geri alma korunur. Geçersiz profil ölçüsü reddedilir.
+
+3B: gerçek birleşim modelindeki görünür eğimli alın kenarlarına beyaz şerit/kenar dudağı; mahya ve eğik mahyaya iki yüzeye oturan açık renk kapama. Bantlar yüzeylerde kırpılır; kaplama alanı veya kesim levhalarına ikinci kez eklenmez. Alın V lejantta ayrı adlandırılır. Bu bir imalat kesiti değildir: katalog tam büküm ölçülerini vermiyor. Şematik dudak6 cm, mahya şeridi her yanda12 cm ve yüzeyden0,4 cm görsel kaldırma kullanılır; bunlar stok/profil ölçüsü diye metraja geçirilmez. Profil a ölçüsü bant yayılımını belirler, düşey yükseklik olarak yorumlanmaz.
+
+Metraj: önceki onaylı kural korunur; gerçek eğimli alın toplamı /2500 mm etkin boy yukarı yuvarlanır (2800 stok−300 bindirme), ek yedek yok.220 ve400 ayrı stok satırıdır;0,50 mm sac açıklamada belirtilir. İki satırdan doğan Aşık kapama U aynı anahtarla çoğaltılmaz, Alın V toplam sevk adedine eşit tek2500 mm satırı oluşturulur. Manuel adetler/eski kaynak değişikliği kontrolleri korunur. Mahyanın gerçek net metresi mevcut çatı metrajında hesaplanır; mahya stok boyu, bindirmesi ve kesiti verilmediği için yeni bir sevk adedi uydurulmadı. Bu imalat ayrıntıları açık kalır.
+
+Testler: roof-trims varsayılan/seçim, alan ve saçak değişmezliği, undo/redo, JSON, geçersiz300 reddi, iki ölçülü stok satırları ve tek U toplamı; roof20 kontrol, roof-plan-body, roof-child-chain, roof-gable-boundary, roof-panels-3d, loading-verge, loading-list geçti. artifacts/roof-trims-3d.png görseli incelendi. Yeni test paket testlerine eklendi. Canlı çizim değiştirilmedi; DEV-043 ve özel pano/mesnet işleri devam eder.

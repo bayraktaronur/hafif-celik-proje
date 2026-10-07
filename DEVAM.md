@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 7 Ekim 2026, iş bilgisayarı; 5.9.60 ikinci yavru çatı bağlantısı düzeltmesi.
+Son güncelleme: 7 Ekim 2026, iş bilgisayarı; 5.9.61 Alın V ve mahya görünüşü, 220/400 mm ürün ayrımı.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -8,10 +8,11 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 
 
 ## Önce buradan devam et — 7 Ekim teslimi
-Program **5.9.60**. [İkinci yavru çatı bağlantısı](analizler/2026-10-07-ikinci-yavru-cati.md). [Son değişiklik, kesin kullanıcı kuralı, testler ve sınırlar](analizler/2026-10-07-makas-kose-uyumu.md). Makas aksları referans; panel adetleri/ara ölçüler korunur, köşe uçları yeniden kesilir ve bina ölçüsü köşe paylarıyla değişir. Eski 5.9.18 dondurma kuralı uygulanmaz.  [Güncel kararlar, uygulanmayan öneriler ve açık işler](analizler/2026-10-04-ev-is-devir.md). [Dosya/hash envanteri](analizler/2026-10-04-devir-envanteri.json). Önce bu özeti oku; aşağıdaki tarihsel kararların sonradan düzeltilenlerini yeniden uygulama.
+Program **5.9.61**. [Alın V ve mahya](analizler/2026-10-07-alin-v-mahya.md). [İkinci yavru çatı bağlantısı](analizler/2026-10-07-ikinci-yavru-cati.md). [Son değişiklik, kesin kullanıcı kuralı, testler ve sınırlar](analizler/2026-10-07-makas-kose-uyumu.md). Makas aksları referans; panel adetleri/ara ölçüler korunur, köşe uçları yeniden kesilir ve bina ölçüsü köşe paylarıyla değişir. Eski 5.9.18 dondurma kuralı uygulanmaz.  [Güncel kararlar, uygulanmayan öneriler ve açık işler](analizler/2026-10-04-ev-is-devir.md). [Dosya/hash envanteri](analizler/2026-10-04-devir-envanteri.json). Önce bu özeti oku; aşağıdaki tarihsel kararların sonradan düzeltilenlerini yeniden uygulama.
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-047 | Alın V ve mahya ayrımı, 3B ve metraj | 5.9.61: şematik kapamalar, 220/400 seçimi (varsayılan220), ayrı stok ve tek U toplamı tamamlandı. Mahya stok/bindirme ve tam profil büküm ölçüleri bekliyor. |
 | DEV-046 | İlk yavrudan sonra yeni yavru köşelerinin seçilememesi | TAMAMLANDI: 5.9.60; mevcut yavruya bağlantı ve ilk tıklamada hedef kenar seçimi. roof-child-chain kardeş/zincir bağlantı, geri alma ve JSON testleri geçti. |
 | DEV-044 | Makas yönü, köşe direği, H aksları ve yeni kademeli çizim | TAMAMLANDI: 5.9.59; production-direction testi, 80/49 panel adedi ve ara ölçüler korundu. Gerçek özel pano mesnetleri DEV-011 kapsamında açık. |
 | DEV-045 | Yavru U çiziminde uzak duvar hizasına tam dik yakalama | TAMAMLANDI: 5.9.59; roof-child-snap dört yön/sapmalı tıklama, roof-child-u ve roof-workflow geçti. |
@@ -44,7 +45,7 @@ Tarihsel aktarım (aşağıdaki güncel devir özetinden öncedir): program 5.9.
 
 ## Doğrulanmış durum
 
-- Uygulama sürümü **5.9.60**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
+- Uygulama sürümü **5.9.61**. Önceki 5.9.18 commit'i: `d526e03f003083ee866bd80fa34d54d70a4470d2`. Son teslim commit'i Git geçmişinden kontrol edilir.
 - GitHub: https://github.com/bayraktaronur/hafif-celik-proje — dal `main`.
 - 5.9.16: Tefrişlerde kenar/merkez hizalama, geçici kılavuzlar, Alt + sürükle kopyalama, Shift ile eksen kilidi ve Kopyala düğmesi.
 - 5.9.17: Çatı panel kesim sınırlarını 3B görünümde gösterme.
