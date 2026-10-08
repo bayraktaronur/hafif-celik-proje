@@ -12,6 +12,7 @@ Ana program **5.9.87**; ayrı arayüz denemesi **5.9.90**, codex/arayuz-duzeni d
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-076 | Tuna84 imalat DWG incelemesi | ANALİZ: DWG metin/ölçüleri yeniden okundu; imalat çıktı paketi ve ölçü ayrımları belirlendi. Tam blok/pafta ve satır bazlı BOM eşlemesi açık. [Rapor](analizler/2026-10-08-tuna-imalat-inceleme.md). |
 | DEV-075 | Yatay H pencere / gerçek proje12 | 5.9.90: pencere panosu yalnız seçilen duvarda düzenlenir, karşı duvar açıklıkları ve makaslar korunur. [Rapor](analizler/2026-10-08-yatay-h-pencere.md). |
 | DEV-074 | H merkezli pencere/kapı | 5.9.89 ayrı deneme dalında; H merkezinde pano, sabit dış sınırlar ve makas aksları. [Rapor](analizler/2026-10-08-h-merkez-aciklik.md). |
 | DEV-073 | Korunan eski sürüm ve sade arayüz | 5.9.88 ayrı codex/arayuz-duzeni dalında; ana5.9.87 değişmedi, etiket+HTML/hash korundu. Gruplu paneller ve ayrı kurtarma alanı test edildi. Canlı çizimin son JSON yedeği ayrıca gerekli. [Rapor](analizler/2026-10-08-arayuz-deneme.md). |

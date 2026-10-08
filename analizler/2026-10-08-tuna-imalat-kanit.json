@@ -1,0 +1,9563 @@
+{
+  "source": "referanslar/tuna-84m2/SP - 202600185 - Tuna Pref. 84m².dwg",
+  "sha256": "7f0ac72fce090585d14e87fc77c44787c43f76e5b3eee6896a1f3c33b38465e2",
+  "method": "AutoCAD 2026 Core Console; temporary DWG copy; original model-space TEXT/MTEXT/DIMENSION extracted without editing source. Coordinates from printed Lisp are approximate; not used for fabrication measurements.",
+  "counts": {
+    "LWPOLYLINE": 299,
+    "TEXT": 60,
+    "LINE": 3896,
+    "MTEXT": 96,
+    "INSERT": 143,
+    "CIRCLE": 2010,
+    "ARC": 450,
+    "DIMENSION": 211,
+    "HATCH": 10,
+    "POINT": 2
+  },
+  "texts": [
+    {
+      "type": "TEXT",
+      "handle": "38BAC1",
+      "layer": "0",
+      "space": "Model",
+      "text": "MAKAS",
+      "block": null,
+      "points": [
+        [
+          147066,
+          -211681,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAC6",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;PROJE ADI}",
+      "block": null,
+      "points": [
+        [
+          145890,
+          -207336,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 86.2373,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BACA",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;KONUT}",
+      "block": null,
+      "points": [
+        [
+          145902,
+          -207364,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 60.4686,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BACC",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;84m² \\PPREFABRİK BİNA}",
+      "block": null,
+      "points": [
+        [
+          146082,
+          -207263,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 142.83,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAD1",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;MÜŞTERİ}",
+      "block": null,
+      "points": [
+        [
+          145897,
+          -207260,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 76.034,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAD2",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;................}",
+      "block": null,
+      "points": [
+        [
+          145902,
+          -207289,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 67.47,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAD6",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;ÇİZEN}",
+      "block": null,
+      "points": [
+        [
+          146082,
+          -207329,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 50.5983,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BADA",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\fTimes New Roman|b0|i0|c162|p18;\\W0.8;Metin SARI\\P\\pxqc;}",
+      "block": null,
+      "points": [
+        [
+          146140,
+          -207359,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 408.669,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BADC",
+      "layer": "0",
+      "space": "Model",
+      "text": "Montaj Ve Elektrik Planı",
+      "block": null,
+      "points": [
+        [
+          144946,
+          -205625,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 28.4827,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BADD",
+      "layer": "0",
+      "space": "Model",
+      "text": "Makas Yerleşim Planı",
+      "block": null,
+      "points": [
+        [
+          144385,
+          -207381,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 37.0275,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAE1",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;TARİH}",
+      "block": null,
+      "points": [
+        [
+          146656,
+          -204533,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 50.5158,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAE2",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;PROJE ADI}",
+      "block": null,
+      "points": [
+        [
+          146637,
+          -204458,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 82.9205,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAE4",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;ÖZEL İSTEKLER\\P\\PElektrik tesisatı sıva altı olacak...\\PWc'ler Yeşil Alçıpan Kaplanacak...\\PBina İçi Alçıpan Kaplama Olacak...}",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -205166,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 202.182,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAE5",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;KONUT}",
+      "block": null,
+      "points": [
+        [
+          146649,
+          -204489,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 58.1429,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAE7",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;................}",
+      "block": null,
+      "points": [
+        [
+          146648,
+          -204562,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 64.875,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAE9",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;84m² \\PPREFABRİK BİNA}",
+      "block": null,
+      "points": [
+        [
+          146579,
+          -204706,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 137.336,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAF3",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Bina Yüksekliği  }",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -204828,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 92.2728,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAF4",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;2500}",
+      "block": null,
+      "points": [
+        [
+          146704,
+          -204828,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 27.6388,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAF5",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;:}",
+      "block": null,
+      "points": [
+        [
+          146696,
+          -204828,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 1.34723,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAF6",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Dış Duvarlar}",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -204866,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 73.7196,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAF7",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;100'lük}",
+      "block": null,
+      "points": [
+        [
+          146704,
+          -204866,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 40.4961,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAF8",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;:}",
+      "block": null,
+      "points": [
+        [
+          146696,
+          -204866,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 1.34723,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAF9",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;İç Duvarlar}",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -204903,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 64.898,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAFA",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;60'lık}",
+      "block": null,
+      "points": [
+        [
+          146704,
+          -204903,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 31.2786,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAFB",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;:}",
+      "block": null,
+      "points": [
+        [
+          146696,
+          -204903,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 1.34723,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAFC",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Panel Türü}",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -204941,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 62.5571,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAFD",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Pres}",
+      "block": null,
+      "points": [
+        [
+          146704,
+          -204941,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 23.7628,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAFE",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;:}",
+      "block": null,
+      "points": [
+        [
+          146696,
+          -204941,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 1.34723,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BAFF",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Çatı Şekli}",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -204978,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 55.6457,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB00",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Beşik}",
+      "block": null,
+      "points": [
+        [
+          146704,
+          -204978,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 32.251,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB01",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;:}",
+      "block": null,
+      "points": [
+        [
+          146696,
+          -204978,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 1.34723,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB02",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Çatı Kaplaması}",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -205016,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 87.2368,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB03",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Antrasit Gri}",
+      "block": null,
+      "points": [
+        [
+          146715,
+          -205009,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 67.8918,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB04",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;:}",
+      "block": null,
+      "points": [
+        [
+          146696,
+          -205016,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 1.34723,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB05",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Çatı Kaplama Rengi}",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -205054,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 115.285,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB06",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Ant. Gri}",
+      "block": null,
+      "points": [
+        [
+          146704,
+          -205054,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 46.9561,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB07",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;:}",
+      "block": null,
+      "points": [
+        [
+          146696,
+          -205054,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 1.34723,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB08",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Dış Kapı}",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -205092,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 50.3805,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB09",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Çelik}",
+      "block": null,
+      "points": [
+        [
+          146704,
+          -205092,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 30.3895,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB0A",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;:}",
+      "block": null,
+      "points": [
+        [
+          146696,
+          -205092,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 1.34723,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB0B",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;İç Kapılar}",
+      "block": null,
+      "points": [
+        [
+          146573,
+          -205129,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 57.0002,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB0C",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Amerikan Kapı}",
+      "block": null,
+      "points": [
+        [
+          146704,
+          -205129,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 87.6328,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB0D",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;:}",
+      "block": null,
+      "points": [
+        [
+          146696,
+          -205129,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 1.34723,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB11",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;MÜŞTERİ}",
+      "block": null,
+      "points": [
+        [
+          146644,
+          -204624,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 73.1096,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB12",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;................}",
+      "block": null,
+      "points": [
+        [
+          146648,
+          -204653,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 64.875,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB15",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;TEKNİK ÖZELLİKLER}",
+      "block": null,
+      "points": [
+        [
+          146595,
+          -204788,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 169.133,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB19",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;ÇİZEN}",
+      "block": null,
+      "points": [
+        [
+          146572,
+          -205293,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 45.6265,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB1D",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\fTimes New Roman|b0|i0|c162|p18;\\W0.8;Metin SARI\\P}",
+      "block": null,
+      "points": [
+        [
+          146635,
+          -205319,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.234,
+      "measure": 408.669,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB25",
+      "layer": "0",
+      "space": "Model",
+      "text": "TUNA PREF. 84m²",
+      "block": null,
+      "points": [
+        [
+          144946,
+          -204405,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 28.4827,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB27",
+      "layer": "0",
+      "space": "Model",
+      "text": "TUNA PREF. 84m²",
+      "block": null,
+      "points": [
+        [
+          147066,
+          -204829,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB28",
+      "layer": "0",
+      "space": "Model",
+      "text": "TARİH",
+      "block": null,
+      "points": [
+        [
+          150976,
+          -204829,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB44",
+      "layer": "0",
+      "space": "Model",
+      "text": "K",
+      "block": null,
+      "points": [
+        [
+          146448,
+          -205463,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146455,
+          -205454,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 16.144,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB5C",
+      "layer": "0",
+      "space": "Model",
+      "text": "D",
+      "block": null,
+      "points": [
+        [
+          146535,
+          -205547,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146541,
+          -205539,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 16.144,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB5D",
+      "layer": "0",
+      "space": "Model",
+      "text": "B",
+      "block": null,
+      "points": [
+        [
+          146361,
+          -205547,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146367,
+          -205539,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 16.144,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB5E",
+      "layer": "0",
+      "space": "Model",
+      "text": "G",
+      "block": null,
+      "points": [
+        [
+          146448,
+          -205639,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146455,
+          -205631,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 16.144,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB5F",
+      "layer": "0",
+      "space": "Model",
+      "text": "KD",
+      "block": null,
+      "points": [
+        [
+          146491,
+          -205498,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146497,
+          -205494,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 6.45762,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB60",
+      "layer": "0",
+      "space": "Model",
+      "text": "GD",
+      "block": null,
+      "points": [
+        [
+          146495,
+          -205588,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146501,
+          -205585,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 6.45762,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB61",
+      "layer": "0",
+      "space": "Model",
+      "text": "KB",
+      "block": null,
+      "points": [
+        [
+          146406,
+          -205498,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146412,
+          -205494,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 6.45762,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB62",
+      "layer": "0",
+      "space": "Model",
+      "text": "GB",
+      "block": null,
+      "points": [
+        [
+          146403,
+          -205587,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146409,
+          -205584,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 6.45762,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB71",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;PENCERE SİPARİŞ FORMU }",
+      "block": null,
+      "points": [
+        [
+          144371,
+          -204342,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 180.108,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB73",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;FİRMA ADI & m²: TUNA PREF. 84\\fTimes New Roman|b0|i0|c162|p18;m²}",
+      "block": null,
+      "points": [
+        [
+          144137,
+          -204363,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 236.813,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB74",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;SEVK TARİHİ: 11 09 2026 - Cuma Sevk }",
+      "block": null,
+      "points": [
+        [
+          144137,
+          -204383,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 246.474,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB75",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;SİPARİŞ NO: SP - 202600185}",
+      "block": null,
+      "points": [
+        [
+          144518,
+          -204363,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 181.067,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB76",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;SİPARİŞ TARİHİ:}",
+      "block": null,
+      "points": [
+        [
+          144518,
+          -204383,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 110.663,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "38BB79",
+      "layer": "0",
+      "space": "Model",
+      "text": "Antrasit Gri Trapez\\POsb+Nem Bariyeri",
+      "block": null,
+      "points": [
+        [
+          155520,
+          -204628,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": 1843.74,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB8B",
+      "layer": "0",
+      "space": "Model",
+      "text": "SP - 202600185",
+      "block": null,
+      "points": [
+        [
+          144946,
+          -204453,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 28.4827,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "38BB8D",
+      "layer": "0",
+      "space": "Model",
+      "text": "SP - 202600185",
+      "block": null,
+      "points": [
+        [
+          147066,
+          -205107,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "3913D7",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;PROJE ADI}",
+      "block": null,
+      "points": [
+        [
+          152959,
+          -211439,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 429.86,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "3913D9",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;KONUT}",
+      "block": null,
+      "points": [
+        [
+          153028,
+          -211577,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 301.413,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "3913DB",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;84m² \\PPREFABRİK BİNA}",
+      "block": null,
+      "points": [
+        [
+          153836,
+          -211075,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 711.95,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "3913E0",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;MÜŞTERİ}",
+      "block": null,
+      "points": [
+        [
+          153002,
+          -211062,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 379,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "3913E1",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;................}",
+      "block": null,
+      "points": [
+        [
+          153025,
+          -211204,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 336.312,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "3913E5",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;ÇİZEN}",
+      "block": null,
+      "points": [
+        [
+          153836,
+          -211403,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 252.213,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "3913E9",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\fTimes New Roman|b0|i0|c162|p18;\\W0.8;Metin SARI\\P\\pxqc;}",
+      "block": null,
+      "points": [
+        [
+          154211,
+          -211553,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 2087.53,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A1C1",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "80",
+      "block": null,
+      "points": [
+        [
+          145701,
+          -204726,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0.00120615,
+      "radius": 10,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A1C2",
+      "layer": "1",
+      "space": "Model",
+      "text": "1220",
+      "block": null,
+      "points": [
+        [
+          145712,
+          -204800,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A1C3",
+      "layer": "1",
+      "space": "Model",
+      "text": "1220",
+      "block": null,
+      "points": [
+        [
+          145584,
+          -204925,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A1C4",
+      "layer": "1",
+      "space": "Model",
+      "text": "590",
+      "block": null,
+      "points": [
+        [
+          145875,
+          -204943,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A24F",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "80",
+      "block": null,
+      "points": [
+        [
+          145583,
+          -204902,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 6.28198,
+      "radius": 10,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A2DA",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "80",
+      "block": null,
+      "points": [
+        [
+          145583,
+          -205089,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0.00120615,
+      "radius": 10,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A365",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "80",
+      "block": null,
+      "points": [
+        [
+          145934,
+          -204968,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 6.28198,
+      "radius": 10,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A3F0",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "80",
+      "block": null,
+      "points": [
+        [
+          145934,
+          -204904,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0.00120615,
+      "radius": 10,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A3F3",
+      "layer": "1",
+      "space": "Model",
+      "text": "1200",
+      "block": null,
+      "points": [
+        [
+          145668,
+          -204643,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A3F5",
+      "layer": "1",
+      "space": "Model",
+      "text": "1200",
+      "block": null,
+      "points": [
+        [
+          145880,
+          -204643,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A518",
+      "layer": "1",
+      "space": "Model",
+      "text": "710",
+      "block": null,
+      "points": [
+        [
+          146120,
+          -205266,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A519",
+      "layer": "1",
+      "space": "Model",
+      "text": "1020",
+      "block": null,
+      "points": [
+        [
+          145324,
+          -205454,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A51A",
+      "layer": "1",
+      "space": "Model",
+      "text": "1020",
+      "block": null,
+      "points": [
+        [
+          145593,
+          -205454,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A51C",
+      "layer": "1",
+      "space": "Model",
+      "text": "\\pxsm1;{\\T0.95;160/120}",
+      "block": null,
+      "points": [
+        [
+          145986,
+          -205273,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15,
+      "measure": 67.686,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A51E",
+      "layer": "1",
+      "space": "Model",
+      "text": "\\pxsm1,ql;{\\T0.95;1660}",
+      "block": null,
+      "points": [
+        [
+          145996,
+          -205246,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15,
+      "measure": 40.4926,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A521",
+      "layer": "1",
+      "space": "Model",
+      "text": "\\pxsm1;{\\T0.95;160/120}",
+      "block": null,
+      "points": [
+        [
+          145448,
+          -205461,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15,
+      "measure": 67.686,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A523",
+      "layer": "1",
+      "space": "Model",
+      "text": "\\pxsm1,ql;{\\T0.95;1660}",
+      "block": null,
+      "points": [
+        [
+          145458,
+          -205435,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15,
+      "measure": 40.4926,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A526",
+      "layer": "1",
+      "space": "Model",
+      "text": "\\pxsm1;{\\T0.95;119/120}",
+      "block": null,
+      "points": [
+        [
+          145266,
+          -205154,
+          0
+        ]
+      ],
+      "end": [
+        [
+          6.12323e-17,
+          1,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 15,
+      "measure": 67.686,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A529",
+      "layer": "1",
+      "space": "Model",
+      "text": "\\pxsm1;{\\T0.95;119/120}",
+      "block": null,
+      "points": [
+        [
+          145950,
+          -204529,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15,
+      "measure": 67.686,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A52C",
+      "layer": "1",
+      "space": "Model",
+      "text": "\\pxsm1;{\\T0.95;119/120}",
+      "block": null,
+      "points": [
+        [
+          145448,
+          -204529,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15,
+      "measure": 67.686,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A52E",
+      "layer": "0",
+      "space": "Model",
+      "text": "\\pxsm1,ql;{\\T0.95;60/40}",
+      "block": null,
+      "points": [
+        [
+          145712,
+          -204550,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": 47.5503,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39A531",
+      "layer": "1",
+      "space": "Model",
+      "text": "590",
+      "block": null,
+      "points": [
+        [
+          145810,
+          -204801,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A53C",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;100*100}",
+      "block": null,
+      "points": [
+        [
+          145648,
+          -205519,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 49.8636,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A53D",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;2700}",
+      "block": null,
+      "points": [
+        [
+          145658,
+          -205534,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 30,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A541",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;100*100}",
+      "block": null,
+      "points": [
+        [
+          146155,
+          -205519,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 49.8636,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A542",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;2700}",
+      "block": null,
+      "points": [
+        [
+          146165,
+          -205534,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 30,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A543",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;100*100*2520}",
+      "block": null,
+      "points": [
+        [
+          146188,
+          -205412,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1e-16,
+          1,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 10,
+      "measure": 86.3779,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A544",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;100*100*640}",
+      "block": null,
+      "points": [
+        [
+          145685,
+          -205496,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1e-16,
+          1,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 10,
+      "measure": 78.6085,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39A545",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "{\\C0;100*100*4970}",
+      "block": null,
+      "points": [
+        [
+          145879,
+          -205515,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 86.3779,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B3EE",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "Baş Makas 1 Ad. ( 100'lük ome. )",
+      "block": null,
+      "points": [
+        [
+          147780,
+          -208831,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 126,
+      "measure": 2567.79,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B3EF",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "Orta Makas 6 Ad. ( Omegasız )",
+      "block": null,
+      "points": [
+        [
+          147780,
+          -209063,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 126,
+      "measure": 2420.82,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39B413",
+      "layer": "0",
+      "space": "Model",
+      "text": "MAKAS",
+      "block": null,
+      "points": [
+        [
+          157854,
+          -211681,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39B415",
+      "layer": "0",
+      "space": "Model",
+      "text": "TARİH",
+      "block": null,
+      "points": [
+        [
+          161764,
+          -204829,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B419",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;PROJE ADI}",
+      "block": null,
+      "points": [
+        [
+          163747,
+          -211439,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 429.86,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B41B",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;KONUT}",
+      "block": null,
+      "points": [
+        [
+          163816,
+          -211577,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 301.413,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B41D",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;84m² \\PPREFABRİK BİNA}",
+      "block": null,
+      "points": [
+        [
+          164624,
+          -211075,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 711.95,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B422",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;MÜŞTERİ}",
+      "block": null,
+      "points": [
+        [
+          163790,
+          -211062,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 379,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B423",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;................}",
+      "block": null,
+      "points": [
+        [
+          163813,
+          -211204,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 336.312,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B427",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;ÇİZEN}",
+      "block": null,
+      "points": [
+        [
+          164624,
+          -211403,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 252.213,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B42B",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\fTimes New Roman|b0|i0|c162|p18;\\W0.8;Metin SARI\\P\\pxqc;}",
+      "block": null,
+      "points": [
+        [
+          165000,
+          -211553,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 73.7891,
+      "measure": 2087.53,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39B616",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "Özel Baş Makas 1 Ad. ( 100'lük ome. )",
+      "block": null,
+      "points": [
+        [
+          158568,
+          -207931,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 126,
+      "measure": 2983,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39C1EA",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "Cumba Baş Makas 1 Ad. ( 100'lük ome. )",
+      "block": null,
+      "points": [
+        [
+          162040,
+          -210083,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 126,
+      "measure": 3188.25,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E0AD",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;PROJE ADI}",
+      "block": null,
+      "points": [
+        [
+          145890,
+          -209102,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 86.2373,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E0B1",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;KONUT}",
+      "block": null,
+      "points": [
+        [
+          145902,
+          -209130,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 60.4686,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E0B3",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;84m² \\PPREFABRİK BİNA}",
+      "block": null,
+      "points": [
+        [
+          146086,
+          -209029,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 142.83,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E0B8",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;MÜŞTERİ}",
+      "block": null,
+      "points": [
+        [
+          145897,
+          -209026,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 76.034,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E0B9",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;................}",
+      "block": null,
+      "points": [
+        [
+          145902,
+          -209055,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 67.47,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E0BD",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "\\pxqc;{\\W0.8;ÇİZEN}",
+      "block": null,
+      "points": [
+        [
+          146082,
+          -209095,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 50.5983,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E0C1",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\fTimes New Roman|b0|i0|c162|p18;\\W0.8;Metin SARI\\P\\pxqc;}",
+      "block": null,
+      "points": [
+        [
+          146140,
+          -209125,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 14.8034,
+      "measure": 408.669,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "39E0C3",
+      "layer": "0",
+      "space": "Model",
+      "text": "Duvar Omegası Yerleşim Planı",
+      "block": null,
+      "points": [
+        [
+          144385,
+          -209147,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 37.0275,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E315",
+      "layer": "0",
+      "space": "Model",
+      "text": "2 Adet\\PPervazlı\\PMenteşeli Sineklikli\\PÇift Açılır",
+      "block": null,
+      "points": [
+        [
+          144235,
+          -204666,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 116.03,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E349",
+      "layer": "0",
+      "space": "Model",
+      "text": "3 Adet\\PPervazlı\\PMenteşeli Sineklikli\\PÇift Açılır",
+      "block": null,
+      "points": [
+        [
+          144484,
+          -204667,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 116.03,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "39E37B",
+      "layer": "0",
+      "space": "Model",
+      "text": "1 Adet\\PPervazlı\\PMenteşeli Sineklikli",
+      "block": null,
+      "points": [
+        [
+          144713,
+          -204620,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": 116.03,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A3D8B",
+      "layer": "0",
+      "space": "Model",
+      "text": "TUNA PREF. 84m²",
+      "block": null,
+      "points": [
+        [
+          144386,
+          -205784,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 37.0275,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A3D8C",
+      "layer": "0",
+      "space": "Model",
+      "text": "SP - 202600185",
+      "block": null,
+      "points": [
+        [
+          144386,
+          -205841,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 37.0275,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A3D8D",
+      "layer": "0",
+      "space": "Model",
+      "text": "TUNA PREF. 84m²",
+      "block": null,
+      "points": [
+        [
+          144386,
+          -207550,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 37.0275,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A3D8E",
+      "layer": "0",
+      "space": "Model",
+      "text": "SP - 202600185",
+      "block": null,
+      "points": [
+        [
+          144386,
+          -207607,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 37.0275,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A3D8F",
+      "layer": "0",
+      "space": "Model",
+      "text": "TUNA PREF. 84m²",
+      "block": null,
+      "points": [
+        [
+          157854,
+          -204829,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A3D90",
+      "layer": "0",
+      "space": "Model",
+      "text": "SP - 202600185",
+      "block": null,
+      "points": [
+        [
+          157854,
+          -205107,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A3E22",
+      "layer": "0",
+      "space": "Model",
+      "text": "2 ADET",
+      "block": null,
+      "points": [
+        [
+          143357,
+          -206063,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A3FA2",
+      "layer": "0",
+      "space": "Model",
+      "text": "3 ADET",
+      "block": null,
+      "points": [
+        [
+          143586,
+          -206066,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A4120",
+      "layer": "0",
+      "space": "Model",
+      "text": "1 ADET",
+      "block": null,
+      "points": [
+        [
+          143791,
+          -206059,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A42BE",
+      "layer": "0",
+      "space": "Model",
+      "text": "1 ADET",
+      "block": null,
+      "points": [
+        [
+          144014,
+          -206050,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A42C0",
+      "layer": "0",
+      "space": "Model",
+      "text": "ÇELİK KAPI",
+      "block": null,
+      "points": [
+        [
+          143992,
+          -206085,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A43AE",
+      "layer": "0",
+      "space": "Model",
+      "text": "3 ADET",
+      "block": null,
+      "points": [
+        [
+          143527,
+          -206452,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A43AF",
+      "layer": "0",
+      "space": "Model",
+      "text": "40'LIK KARKAS",
+      "block": null,
+      "points": [
+        [
+          143582,
+          -206512,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A43B1",
+      "layer": "0",
+      "space": "Model",
+      "text": "KAPI KASASI TAKILACAK",
+      "block": null,
+      "points": [
+        [
+          143871,
+          -206468,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A43BC",
+      "layer": "0",
+      "space": "Model",
+      "text": "2 ADET",
+      "block": null,
+      "points": [
+        [
+          143730,
+          -206452,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A44FE",
+      "layer": "0",
+      "space": "Model",
+      "text": "80'LİK KARKAS",
+      "block": null,
+      "points": [
+        [
+          143990,
+          -206148,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.8349,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A46AD",
+      "layer": "0",
+      "space": "Model",
+      "text": "Karkas Detay",
+      "block": null,
+      "points": [
+        [
+          143058,
+          -206565,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.2935,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A46AE",
+      "layer": "0",
+      "space": "Model",
+      "text": "TUNA PREF. 84m²",
+      "block": null,
+      "points": [
+        [
+          143056,
+          -205736,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 19.2935,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A48D4",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "Çelik",
+      "block": null,
+      "points": [
+        [
+          145794,
+          -205136,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A48D5",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "90",
+      "block": null,
+      "points": [
+        [
+          145812,
+          -205105,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 10,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A4981",
+      "layer": "1",
+      "space": "Model",
+      "text": "520",
+      "block": null,
+      "points": [
+        [
+          145686,
+          -205205,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A49B5",
+      "layer": "1",
+      "space": "Model",
+      "text": "710",
+      "block": null,
+      "points": [
+        [
+          145883,
+          -205266,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "3A4AB2",
+      "layer": "-YAZI",
+      "space": "Model",
+      "text": "{\\W0.8;Osb+Tyvek}",
+      "block": null,
+      "points": [
+        [
+          146715,
+          -205025,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 12.0429,
+      "measure": 66.8707,
+      "flags": null
+    },
+    {
+      "type": "MTEXT",
+      "handle": "3A5990",
+      "layer": "0",
+      "space": "Model",
+      "text": "Antrasit Gri Trapez\\POsb+Nem Bariyeri",
+      "block": null,
+      "points": [
+        [
+          166309,
+          -204628,
+          0
+        ]
+      ],
+      "end": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 159.959,
+      "measure": 1843.74,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A61C2",
+      "layer": "1",
+      "space": "Model",
+      "text": "1200",
+      "block": null,
+      "points": [
+        [
+          145668,
+          -205015,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A6238",
+      "layer": "1",
+      "space": "Model",
+      "text": "1200",
+      "block": null,
+      "points": [
+        [
+          145883,
+          -205138,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A6269",
+      "layer": "1",
+      "space": "Model",
+      "text": "625",
+      "block": null,
+      "points": [
+        [
+          145854,
+          -205231,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A626A",
+      "layer": "1",
+      "space": "Model",
+      "text": "625",
+      "block": null,
+      "points": [
+        [
+          146203,
+          -205231,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 15.2174,
+      "measure": null,
+      "flags": null
+    },
+    {
+      "type": "TEXT",
+      "handle": "3A702F",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "80",
+      "block": null,
+      "points": [
+        [
+          145539,
+          -207894,
+          0
+        ]
+      ],
+      "end": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "angle": 0.00120615,
+      "radius": 10,
+      "measure": null,
+      "flags": null
+    }
+  ],
+  "dimensions": [
+    {
+      "type": "DIMENSION",
+      "handle": "39A549",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1688",
+      "points": [
+        [
+          145672,
+          -204500,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145479,
+          -204486,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 386.5,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39A561",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1689",
+      "points": [
+        [
+          145672,
+          -204500,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145766,
+          -204486,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 188.25,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39A579",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1690",
+      "points": [
+        [
+          145861,
+          -204500,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146022,
+          -204486,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 323.75,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39A716",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1691",
+      "points": [
+        [
+          146184,
+          -204466,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145735,
+          -204451,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 898.5,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39A72D",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1692",
+      "points": [
+        [
+          146243,
+          -204931,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146229,
+          -204740,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 381.5,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39A745",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1693",
+      "points": [
+        [
+          146243,
+          -205249,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146229,
+          -205090,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 318.75,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39A75D",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1694",
+      "points": [
+        [
+          146243,
+          -205512,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146229,
+          -205381,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 262.75,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39A7C6",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1695",
+      "points": [
+        [
+          146295,
+          -204549,
+          0
+        ]
+      ],
+      "end": [
+        [
+          146281,
+          -205031,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 963,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF04",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1725",
+      "points": [
+        [
+          147471,
+          -208007,
+          0
+        ]
+      ],
+      "end": [
+        [
+          147459,
+          -208011,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 24.2563,
+      "flags": 161
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF07",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1726",
+      "points": [
+        [
+          147535,
+          -207887,
+          0
+        ]
+      ],
+      "end": [
+        [
+          147478,
+          -207903,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 119.256,
+      "flags": 161
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF0A",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1727",
+      "points": [
+        [
+          147860,
+          -207793,
+          0
+        ]
+      ],
+      "end": [
+        [
+          147683,
+          -207789,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 338.227,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF0D",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1728",
+      "points": [
+        [
+          148629,
+          -207571,
+          0
+        ]
+      ],
+      "end": [
+        [
+          148230,
+          -207631,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 800,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF10",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1729",
+      "points": [
+        [
+          149394,
+          -207351,
+          0
+        ]
+      ],
+      "end": [
+        [
+          148997,
+          -207410,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 796.134,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF13",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1730",
+      "points": [
+        [
+          150159,
+          -207130,
+          0
+        ]
+      ],
+      "end": [
+        [
+          149762,
+          -207190,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 796.134,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF16",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1731",
+      "points": [
+        [
+          150924,
+          -206910,
+          0
+        ]
+      ],
+      "end": [
+        [
+          150527,
+          -206969,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 796.134,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF19",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1732",
+      "points": [
+        [
+          151689,
+          -206689,
+          0
+        ]
+      ],
+      "end": [
+        [
+          151292,
+          -206749,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 796.134,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF1C",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1733",
+      "points": [
+        [
+          152086,
+          -206575,
+          0
+        ]
+      ],
+      "end": [
+        [
+          151873,
+          -206581,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 413.264,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF1F",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1734",
+      "points": [
+        [
+          152201,
+          -206542,
+          0
+        ]
+      ],
+      "end": [
+        [
+          152143,
+          -206559,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 119.256,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF22",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1722",
+      "points": [
+        [
+          152228,
+          -206636,
+          0
+        ]
+      ],
+      "end": [
+        [
+          152216,
+          -206640,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 24.2563,
+      "flags": 161
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF23",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1735",
+      "points": [
+        [
+          147370,
+          -207743,
+          0
+        ]
+      ],
+      "end": [
+        [
+          149745,
+          -207004,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 4974.54,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF26",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1736",
+      "points": [
+        [
+          147496,
+          -208284,
+          0
+        ]
+      ],
+      "end": [
+        [
+          147489,
+          -208284,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 15,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF29",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1737",
+      "points": [
+        [
+          147591,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          147536,
+          -208422,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 110,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF2C",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1738",
+      "points": [
+        [
+          147916,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          147754,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 325,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF2F",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1739",
+      "points": [
+        [
+          148681,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          148299,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF32",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1740",
+      "points": [
+        [
+          149446,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          149064,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF35",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1741",
+      "points": [
+        [
+          150211,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          149829,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF38",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1742",
+      "points": [
+        [
+          150976,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          150594,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF3B",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1743",
+      "points": [
+        [
+          151741,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          151359,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF3E",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1744",
+      "points": [
+        [
+          152781,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          152261,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1040,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF41",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1723",
+      "points": [
+        [
+          147876,
+          -208601,
+          0
+        ]
+      ],
+      "end": [
+        [
+          147679,
+          -208568,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 395,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF66",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1724",
+      "points": [
+        [
+          157041,
+          -208704,
+          0
+        ]
+      ],
+      "end": [
+        [
+          152261,
+          -208651,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 9560,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF7D",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1710",
+      "points": [
+        [
+          147913,
+          -208165,
+          0
+        ]
+      ],
+      "end": [
+        [
+          147881,
+          -208083,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 163.661,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF7E",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1711",
+      "points": [
+        [
+          147919,
+          -207951,
+          0
+        ]
+      ],
+      "end": [
+        [
+          148265,
+          -208015,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 699.985,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF7F",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1712",
+      "points": [
+        [
+          148649,
+          -207753,
+          0
+        ]
+      ],
+      "end": [
+        [
+          148617,
+          -207959,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 411.503,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF80",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1713",
+      "points": [
+        [
+          149334,
+          -207539,
+          0
+        ]
+      ],
+      "end": [
+        [
+          149021,
+          -207819,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 837.696,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF81",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1714",
+      "points": [
+        [
+          149412,
+          -207533,
+          0
+        ]
+      ],
+      "end": [
+        [
+          149380,
+          -207849,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 631.968,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF82",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1715",
+      "points": [
+        [
+          149560,
+          -207486,
+          0
+        ]
+      ],
+      "end": [
+        [
+          149874,
+          -207794,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 876.491,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF83",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1716",
+      "points": [
+        [
+          150181,
+          -207312,
+          0
+        ]
+      ],
+      "end": [
+        [
+          150148,
+          -207738,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 852.432,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF84",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1717",
+      "points": [
+        [
+          150855,
+          -207102,
+          0
+        ]
+      ],
+      "end": [
+        [
+          150537,
+          -207609,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1195.93,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF85",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1718",
+      "points": [
+        [
+          150939,
+          -207092,
+          0
+        ]
+      ],
+      "end": [
+        [
+          150907,
+          -207628,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1072.9,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF86",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1719",
+      "points": [
+        [
+          151674,
+          -208150,
+          0
+        ]
+      ],
+      "end": [
+        [
+          151413,
+          -207585,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1242.24,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AF87",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1720",
+      "points": [
+        [
+          151706,
+          -206871,
+          0
+        ]
+      ],
+      "end": [
+        [
+          151674,
+          -207518,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1293.36,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AFFC",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1745",
+      "points": [
+        [
+          157026,
+          -208284,
+          0
+        ]
+      ],
+      "end": [
+        [
+          157034,
+          -208284,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 15,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39AFFF",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1746",
+      "points": [
+        [
+          156931,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          156986,
+          -208422,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 110,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B002",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1747",
+      "points": [
+        [
+          156606,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          156769,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 325,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B005",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1748",
+      "points": [
+        [
+          155841,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          156224,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B008",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1749",
+      "points": [
+        [
+          155076,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          155459,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B00B",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1750",
+      "points": [
+        [
+          154311,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          154694,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B00E",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1751",
+      "points": [
+        [
+          153546,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          153929,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B011",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1752",
+      "points": [
+        [
+          152781,
+          -208422,
+          0
+        ]
+      ],
+      "end": [
+        [
+          153164,
+          -208369,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B014",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1721",
+      "points": [
+        [
+          156646,
+          -208601,
+          0
+        ]
+      ],
+      "end": [
+        [
+          156844,
+          -208568,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 395,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B04F",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1698",
+      "points": [
+        [
+          156609,
+          -208165,
+          0
+        ]
+      ],
+      "end": [
+        [
+          156576,
+          -208083,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 163.661,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B050",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1699",
+      "points": [
+        [
+          156603,
+          -207951,
+          0
+        ]
+      ],
+      "end": [
+        [
+          156258,
+          -208015,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 699.985,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B051",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1700",
+      "points": [
+        [
+          155874,
+          -207753,
+          0
+        ]
+      ],
+      "end": [
+        [
+          155842,
+          -207959,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 411.503,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B052",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1701",
+      "points": [
+        [
+          155188,
+          -207539,
+          0
+        ]
+      ],
+      "end": [
+        [
+          155501,
+          -207819,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 837.696,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B053",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1702",
+      "points": [
+        [
+          155110,
+          -207533,
+          0
+        ]
+      ],
+      "end": [
+        [
+          155078,
+          -207849,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 631.968,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B054",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1703",
+      "points": [
+        [
+          154962,
+          -207486,
+          0
+        ]
+      ],
+      "end": [
+        [
+          154648,
+          -207794,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 876.491,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B055",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1704",
+      "points": [
+        [
+          154342,
+          -207312,
+          0
+        ]
+      ],
+      "end": [
+        [
+          154309,
+          -207738,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 852.432,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B056",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1705",
+      "points": [
+        [
+          153667,
+          -207102,
+          0
+        ]
+      ],
+      "end": [
+        [
+          153985,
+          -207609,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1195.93,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B057",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1706",
+      "points": [
+        [
+          153583,
+          -207092,
+          0
+        ]
+      ],
+      "end": [
+        [
+          153550,
+          -207628,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1072.9,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B058",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1707",
+      "points": [
+        [
+          152849,
+          -208150,
+          0
+        ]
+      ],
+      "end": [
+        [
+          153109,
+          -207585,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1242.24,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B059",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1708",
+      "points": [
+        [
+          152816,
+          -206871,
+          0
+        ]
+      ],
+      "end": [
+        [
+          152783,
+          -207518,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1293.36,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B05A",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1753",
+      "points": [
+        [
+          152322,
+          -206690,
+          0
+        ]
+      ],
+      "end": [
+        [
+          152269,
+          -207442,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 1504.44,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B060",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1709",
+      "points": [
+        [
+          156746,
+          -207844,
+          0
+        ]
+      ],
+      "end": [
+        [
+          156925,
+          -207841,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 342.483,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B062",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1754",
+      "points": [
+        [
+          157095,
+          -207945,
+          0
+        ]
+      ],
+      "end": [
+        [
+          157184,
+          -207937,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 20,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B072",
+      "layer": "ZEMİN",
+      "space": "Model",
+      "text": "",
+      "block": "*D1696",
+      "points": [
+        [
+          152115,
+          -206752,
+          0
+        ]
+      ],
+      "end": [
+        [
+          151932,
+          -207449,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1439.85,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B075",
+      "layer": "ZEMİN",
+      "space": "Model",
+      "text": "",
+      "block": "*D1697",
+      "points": [
+        [
+          152408,
+          -206752,
+          0
+        ]
+      ],
+      "end": [
+        [
+          152591,
+          -207449,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1439.85,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4A4",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1791",
+      "points": [
+        [
+          158259,
+          -207107,
+          0
+        ]
+      ],
+      "end": [
+        [
+          158248,
+          -207111,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 24.2563,
+      "flags": 161
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4A7",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1792",
+      "points": [
+        [
+          158323,
+          -206987,
+          0
+        ]
+      ],
+      "end": [
+        [
+          158266,
+          -207003,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 119.256,
+      "flags": 161
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4AA",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1793",
+      "points": [
+        [
+          158648,
+          -206893,
+          0
+        ]
+      ],
+      "end": [
+        [
+          158471,
+          -206889,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 338.227,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4AD",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1794",
+      "points": [
+        [
+          159417,
+          -206671,
+          0
+        ]
+      ],
+      "end": [
+        [
+          159018,
+          -206731,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 800,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4B0",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1795",
+      "points": [
+        [
+          160182,
+          -206451,
+          0
+        ]
+      ],
+      "end": [
+        [
+          159785,
+          -206510,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 796.134,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4B3",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1796",
+      "points": [
+        [
+          160947,
+          -206230,
+          0
+        ]
+      ],
+      "end": [
+        [
+          160550,
+          -206290,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 796.134,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4B6",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1797",
+      "points": [
+        [
+          161712,
+          -206010,
+          0
+        ]
+      ],
+      "end": [
+        [
+          161315,
+          -206069,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 796.134,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4B9",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1798",
+      "points": [
+        [
+          162477,
+          -205789,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162080,
+          -205849,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 796.134,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4BC",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1799",
+      "points": [
+        [
+          162874,
+          -205675,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162661,
+          -205681,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 413.264,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4BF",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1800",
+      "points": [
+        [
+          162989,
+          -205642,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162932,
+          -205659,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 119.256,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4C2",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1755",
+      "points": [
+        [
+          163016,
+          -205736,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163004,
+          -205740,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 24.2563,
+      "flags": 161
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4C3",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1801",
+      "points": [
+        [
+          158158,
+          -206843,
+          0
+        ]
+      ],
+      "end": [
+        [
+          160533,
+          -206104,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 4974.54,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4CF",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1802",
+      "points": [
+        [
+          162079,
+          -207522,
+          0
+        ]
+      ],
+      "end": [
+        [
+          160174,
+          -207469,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 3810,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B4E1",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1756",
+      "points": [
+        [
+          158664,
+          -207701,
+          0
+        ]
+      ],
+      "end": [
+        [
+          158467,
+          -207668,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 395,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B506",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1757",
+      "points": [
+        [
+          167829,
+          -207804,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163049,
+          -207751,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 9560,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B51D",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1758",
+      "points": [
+        [
+          158702,
+          -207265,
+          0
+        ]
+      ],
+      "end": [
+        [
+          158669,
+          -207183,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 163.661,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B51E",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1759",
+      "points": [
+        [
+          158707,
+          -207051,
+          0
+        ]
+      ],
+      "end": [
+        [
+          159053,
+          -207115,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 699.985,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B51F",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1760",
+      "points": [
+        [
+          159437,
+          -206853,
+          0
+        ]
+      ],
+      "end": [
+        [
+          159405,
+          -207059,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 411.503,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B520",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1761",
+      "points": [
+        [
+          160122,
+          -206639,
+          0
+        ]
+      ],
+      "end": [
+        [
+          159809,
+          -206919,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 837.696,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B521",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1762",
+      "points": [
+        [
+          160200,
+          -206633,
+          0
+        ]
+      ],
+      "end": [
+        [
+          160168,
+          -206949,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 631.968,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B522",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1763",
+      "points": [
+        [
+          160349,
+          -206586,
+          0
+        ]
+      ],
+      "end": [
+        [
+          160662,
+          -206894,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 876.491,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B523",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1764",
+      "points": [
+        [
+          160969,
+          -206412,
+          0
+        ]
+      ],
+      "end": [
+        [
+          160936,
+          -206838,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 852.432,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B524",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1765",
+      "points": [
+        [
+          161644,
+          -206202,
+          0
+        ]
+      ],
+      "end": [
+        [
+          161326,
+          -206709,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1195.93,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B525",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1766",
+      "points": [
+        [
+          161728,
+          -206192,
+          0
+        ]
+      ],
+      "end": [
+        [
+          161695,
+          -206728,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1072.9,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B526",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1767",
+      "points": [
+        [
+          162462,
+          -207250,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162201,
+          -206685,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1242.24,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B527",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1768",
+      "points": [
+        [
+          162495,
+          -205971,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162462,
+          -206618,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1293.36,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5A5",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1803",
+      "points": [
+        [
+          162079,
+          -207522,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164954,
+          -207469,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 5750,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5B4",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1790",
+      "points": [
+        [
+          167434,
+          -207701,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167632,
+          -207668,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 395,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5EF",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1769",
+      "points": [
+        [
+          167397,
+          -207265,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167365,
+          -207183,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 163.661,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F0",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1770",
+      "points": [
+        [
+          167392,
+          -207051,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167046,
+          -207115,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 699.985,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F1",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1771",
+      "points": [
+        [
+          166662,
+          -206853,
+          0
+        ]
+      ],
+      "end": [
+        [
+          166630,
+          -207059,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 411.503,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F2",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1772",
+      "points": [
+        [
+          165977,
+          -206639,
+          0
+        ]
+      ],
+      "end": [
+        [
+          166290,
+          -206919,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 837.696,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F3",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1773",
+      "points": [
+        [
+          165898,
+          -206633,
+          0
+        ]
+      ],
+      "end": [
+        [
+          165866,
+          -206949,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 631.968,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F4",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1774",
+      "points": [
+        [
+          165750,
+          -206586,
+          0
+        ]
+      ],
+      "end": [
+        [
+          165436,
+          -206894,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 876.491,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F5",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1775",
+      "points": [
+        [
+          165130,
+          -206412,
+          0
+        ]
+      ],
+      "end": [
+        [
+          165097,
+          -206838,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 852.432,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F6",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1776",
+      "points": [
+        [
+          164455,
+          -206202,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164773,
+          -206709,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1195.93,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F7",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1777",
+      "points": [
+        [
+          164371,
+          -206192,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164339,
+          -206728,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1072.9,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F8",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1778",
+      "points": [
+        [
+          163637,
+          -207250,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163897,
+          -206685,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1242.24,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5F9",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1779",
+      "points": [
+        [
+          163604,
+          -205971,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163572,
+          -206618,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1293.36,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5FA",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1804",
+      "points": [
+        [
+          163110,
+          -205790,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163057,
+          -206542,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 1504.44,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B5FE",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1780",
+      "points": [
+        [
+          163103,
+          -205667,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163184,
+          -205657,
+          0
+        ]
+      ],
+      "angle": 6.0026,
+      "radius": 0,
+      "measure": 150,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B600",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1781",
+      "points": [
+        [
+          167535,
+          -206944,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167714,
+          -206941,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 342.483,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B602",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1805",
+      "points": [
+        [
+          167883,
+          -207045,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167972,
+          -207037,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 20,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B605",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1782",
+      "points": [
+        [
+          166766,
+          -206723,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167165,
+          -206783,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 800,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B607",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1783",
+      "points": [
+        [
+          165997,
+          -206501,
+          0
+        ]
+      ],
+      "end": [
+        [
+          166396,
+          -206561,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 800,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B609",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1784",
+      "points": [
+        [
+          165228,
+          -206280,
+          0
+        ]
+      ],
+      "end": [
+        [
+          165627,
+          -206340,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 800,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B60B",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1785",
+      "points": [
+        [
+          164460,
+          -206058,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164859,
+          -206118,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 800,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B60D",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1786",
+      "points": [
+        [
+          163691,
+          -205837,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164090,
+          -205897,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 800,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B60F",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1787",
+      "points": [
+        [
+          163691,
+          -205837,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163484,
+          -205722,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 462.055,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B612",
+      "layer": "ZEMİN",
+      "space": "Model",
+      "text": "",
+      "block": "*D1788",
+      "points": [
+        [
+          162903,
+          -205852,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162720,
+          -206549,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1439.85,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39B615",
+      "layer": "ZEMİN",
+      "space": "Model",
+      "text": "",
+      "block": "*D1789",
+      "points": [
+        [
+          163196,
+          -205852,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163379,
+          -206549,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1439.85,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBCB",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1813",
+      "points": [
+        [
+          161924,
+          -209315,
+          0
+        ]
+      ],
+      "end": [
+        [
+          161912,
+          -209318,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 24.2563,
+      "flags": 161
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBCE",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1814",
+      "points": [
+        [
+          161988,
+          -209194,
+          0
+        ]
+      ],
+      "end": [
+        [
+          161931,
+          -209211,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 119.256,
+      "flags": 161
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBD1",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1815",
+      "points": [
+        [
+          162313,
+          -209101,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162136,
+          -209097,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 338.227,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBD4",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1816",
+      "points": [
+        [
+          163082,
+          -208879,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162683,
+          -208939,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 800,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBD7",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1817",
+      "points": [
+        [
+          163847,
+          -208658,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163450,
+          -208718,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 796.134,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBDA",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1818",
+      "points": [
+        [
+          164634,
+          -208431,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164226,
+          -208494,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 819.135,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBDD",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1819",
+      "points": [
+        [
+          164749,
+          -208399,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164691,
+          -208415,
+          0
+        ]
+      ],
+      "angle": 3.42218,
+      "radius": 0,
+      "measure": 119.256,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBE0",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1811",
+      "points": [
+        [
+          164776,
+          -208493,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164764,
+          -208496,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 24.2563,
+      "flags": 161
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBE1",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1820",
+      "points": [
+        [
+          161823,
+          -209051,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163246,
+          -208586,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 2992.01,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBE4",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1821",
+      "points": [
+        [
+          161949,
+          -209591,
+          0
+        ]
+      ],
+      "end": [
+        [
+          161942,
+          -209591,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 15,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBE7",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1822",
+      "points": [
+        [
+          162044,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          161989,
+          -209730,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 110,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBEA",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1823",
+      "points": [
+        [
+          162369,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162207,
+          -209677,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 325,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBED",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1824",
+      "points": [
+        [
+          163134,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162752,
+          -209677,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBF0",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1825",
+      "points": [
+        [
+          163899,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163517,
+          -209677,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBF3",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1826",
+      "points": [
+        [
+          164664,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164282,
+          -209677,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BBF6",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1812",
+      "points": [
+        [
+          162329,
+          -209909,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162132,
+          -209876,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 395,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BC14",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1806",
+      "points": [
+        [
+          162366,
+          -209472,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162334,
+          -209390,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 163.661,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BC15",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1807",
+      "points": [
+        [
+          162372,
+          -209259,
+          0
+        ]
+      ],
+      "end": [
+        [
+          162718,
+          -209322,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 699.985,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BC16",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1808",
+      "points": [
+        [
+          163102,
+          -209061,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163070,
+          -209266,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 411.503,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BC17",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1809",
+      "points": [
+        [
+          163787,
+          -208846,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163474,
+          -209127,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 837.696,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BC18",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1810",
+      "points": [
+        [
+          163865,
+          -208840,
+          0
+        ]
+      ],
+      "end": [
+        [
+          163833,
+          -209156,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 631.968,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BF7A",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1827",
+      "points": [
+        [
+          163994,
+          -209472,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164268,
+          -209037,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1026.66,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BF92",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1828",
+      "points": [
+        [
+          164664,
+          -209472,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164643,
+          -209042,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 859.086,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39BFBA",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1829",
+      "points": [
+        [
+          164809,
+          -209502,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164777,
+          -209024,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 955.441,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C047",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1838",
+      "points": [
+        [
+          167669,
+          -209591,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167677,
+          -209591,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 15,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C04A",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1839",
+      "points": [
+        [
+          167574,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167629,
+          -209730,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 110,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C04D",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1840",
+      "points": [
+        [
+          167249,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167412,
+          -209677,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 325,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C050",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1841",
+      "points": [
+        [
+          166484,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          166867,
+          -209677,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C053",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1842",
+      "points": [
+        [
+          165719,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          166102,
+          -209677,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C056",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1843",
+      "points": [
+        [
+          164954,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          165337,
+          -209677,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 765,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C059",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1837",
+      "points": [
+        [
+          167289,
+          -209909,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167487,
+          -209876,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 395,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C076",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1832",
+      "points": [
+        [
+          167252,
+          -209472,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167220,
+          -209390,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 163.661,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C077",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1833",
+      "points": [
+        [
+          167246,
+          -209259,
+          0
+        ]
+      ],
+      "end": [
+        [
+          166901,
+          -209322,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 699.985,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C078",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1834",
+      "points": [
+        [
+          166517,
+          -209061,
+          0
+        ]
+      ],
+      "end": [
+        [
+          166485,
+          -209266,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 411.503,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C079",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1835",
+      "points": [
+        [
+          165832,
+          -208846,
+          0
+        ]
+      ],
+      "end": [
+        [
+          166144,
+          -209127,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 837.696,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C07A",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1836",
+      "points": [
+        [
+          165753,
+          -208840,
+          0
+        ]
+      ],
+      "end": [
+        [
+          165721,
+          -209156,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 631.968,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C07F",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1830",
+      "points": [
+        [
+          165624,
+          -209472,
+          0
+        ]
+      ],
+      "end": [
+        [
+          165350,
+          -209037,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 1026.66,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C080",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1831",
+      "points": [
+        [
+          164954,
+          -209472,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164976,
+          -209042,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 859.086,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C1A8",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1844",
+      "points": [
+        [
+          164664,
+          -209730,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164809,
+          -209677,
+          0
+        ]
+      ],
+      "angle": 3.14159,
+      "radius": 0,
+      "measure": 290.003,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C1C9",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1845",
+      "points": [
+        [
+          167684,
+          -209992,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164809,
+          -209939,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 5750,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C1F5",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1846",
+      "points": [
+        [
+          164863,
+          -208424,
+          0
+        ]
+      ],
+      "end": [
+        [
+          164944,
+          -208413,
+          0
+        ]
+      ],
+      "angle": 6.0026,
+      "radius": 0,
+      "measure": 150,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C20C",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1847",
+      "points": [
+        [
+          167389,
+          -209152,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167569,
+          -209148,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 342.483,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C20E",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1851",
+      "points": [
+        [
+          167738,
+          -209252,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167827,
+          -209244,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 20,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C211",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1848",
+      "points": [
+        [
+          166621,
+          -208930,
+          0
+        ]
+      ],
+      "end": [
+        [
+          167020,
+          -208990,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 800,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C213",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1849",
+      "points": [
+        [
+          165852,
+          -208709,
+          0
+        ]
+      ],
+      "end": [
+        [
+          166251,
+          -208769,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 800,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39C215",
+      "layer": "ÖLÇÜLENDİRME",
+      "space": "Model",
+      "text": "",
+      "block": "*D1850",
+      "points": [
+        [
+          165007,
+          -208465,
+          0
+        ]
+      ],
+      "end": [
+        [
+          165444,
+          -208536,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 879.524,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39E313",
+      "layer": "0",
+      "space": "Model",
+      "text": "158.5",
+      "block": "*D1852",
+      "points": [
+        [
+          144392,
+          -204519,
+          0
+        ]
+      ],
+      "end": [
+        [
+          144312,
+          -204511,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 160,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39E314",
+      "layer": "0",
+      "space": "Model",
+      "text": "118.5",
+      "block": "*D1853",
+      "points": [
+        [
+          144221,
+          -204649,
+          0
+        ]
+      ],
+      "end": [
+        [
+          144213,
+          -204589,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 120,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39E342",
+      "layer": "0",
+      "space": "Model",
+      "text": "117.5",
+      "block": "*D1854",
+      "points": [
+        [
+          144603,
+          -204519,
+          0
+        ]
+      ],
+      "end": [
+        [
+          144544,
+          -204511,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 119,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39E343",
+      "layer": "0",
+      "space": "Model",
+      "text": "118.5",
+      "block": "*D1855",
+      "points": [
+        [
+          144474,
+          -204649,
+          0
+        ]
+      ],
+      "end": [
+        [
+          144466,
+          -204589,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 120,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39E379",
+      "layer": "0",
+      "space": "Model",
+      "text": "58.5",
+      "block": "*D1856",
+      "points": [
+        [
+          144715,
+          -204557,
+          0
+        ]
+      ],
+      "end": [
+        [
+          144745,
+          -204549,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 60,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "39E37A",
+      "layer": "0",
+      "space": "Model",
+      "text": "38.5",
+      "block": "*D1857",
+      "points": [
+        [
+          144706,
+          -204605,
+          0
+        ]
+      ],
+      "end": [
+        [
+          144698,
+          -204585,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 40,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3E1A",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1860",
+      "points": [
+        [
+          143368,
+          -205935,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143359,
+          -205874,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 120.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3E1D",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1861",
+      "points": [
+        [
+          143491,
+          -205840,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143411,
+          -205832,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 160,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3E20",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1858",
+      "points": [
+        [
+          143328,
+          -205738,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143411,
+          -205730,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 166,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3E21",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1859",
+      "points": [
+        [
+          143301,
+          -206014,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143293,
+          -205889,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 250,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3E23",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1862",
+      "points": [
+        [
+          143404,
+          -205764,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143396,
+          -205789,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 50,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3E26",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1863",
+      "points": [
+        [
+          143411,
+          -205935,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143401,
+          -205974,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 79.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3F97",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1864",
+      "points": [
+        [
+          143544,
+          -206014,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143536,
+          -205889,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 250,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3F98",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1865",
+      "points": [
+        [
+          143701,
+          -205739,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143638,
+          -205729,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 125.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3F99",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1866",
+      "points": [
+        [
+          143697,
+          -205841,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143638,
+          -205833,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 119,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3F9C",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1867",
+      "points": [
+        [
+          143604,
+          -205935,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143595,
+          -205874,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 120.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A3F9F",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1868",
+      "points": [
+        [
+          143638,
+          -206014,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143628,
+          -205974,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 79.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A411B",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1869",
+      "points": [
+        [
+          143753,
+          -206014,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143744,
+          -205889,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 250,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A411C",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1870",
+      "points": [
+        [
+          143910,
+          -205739,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143847,
+          -205729,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 125.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A411D",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1873",
+      "points": [
+        [
+          143847,
+          -206014,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143838,
+          -205927,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 175,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A4121",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1871",
+      "points": [
+        [
+          143805,
+          -205799,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143805,
+          -205819,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 40.5,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A4122",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1872",
+      "points": [
+        [
+          143817,
+          -205785,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143847,
+          -205776,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 60.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A42BC",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1874",
+      "points": [
+        [
+          144007,
+          -205735,
+          0
+        ]
+      ],
+      "end": [
+        [
+          144070,
+          -205725,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 125.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A42BD",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1875",
+      "points": [
+        [
+          143974,
+          -206014,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143966,
+          -205889,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 250,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A42C1",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1876",
+      "points": [
+        [
+          144044,
+          -206014,
+          0
+        ]
+      ],
+      "end": [
+        [
+          144044,
+          -205912,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 205,
+      "flags": 160
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A42C4",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1877",
+      "points": [
+        [
+          144116,
+          -205858,
+          0
+        ]
+      ],
+      "end": [
+        [
+          144070,
+          -205849,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 91.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A43A6",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1878",
+      "points": [
+        [
+          143516,
+          -206126,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143579,
+          -206116,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 125.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A43A7",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1879",
+      "points": [
+        [
+          143488,
+          -206405,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143480,
+          -206280,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 250,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A43A8",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1882",
+      "points": [
+        [
+          143620,
+          -206222,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143579,
+          -206214,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 82,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A43AB",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1883",
+      "points": [
+        [
+          143560,
+          -206405,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143551,
+          -206305,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 200,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A43B4",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1880",
+      "points": [
+        [
+          143721,
+          -206126,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143782,
+          -206116,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 122.5,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A43B5",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1881",
+      "points": [
+        [
+          143690,
+          -206405,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143682,
+          -206280,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 250,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A43B6",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1884",
+      "points": [
+        [
+          143823,
+          -206222,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143782,
+          -206214,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 82,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A43B9",
+      "layer": "DUVAR",
+      "space": "Model",
+      "text": "",
+      "block": "*D1885",
+      "points": [
+        [
+          143763,
+          -206405,
+          0
+        ]
+      ],
+      "end": [
+        [
+          143755,
+          -206305,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 200,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A733E",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1886",
+      "points": [
+        [
+          145379,
+          -207727,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145365,
+          -207911,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 368.5,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A733F",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1887",
+      "points": [
+        [
+          145379,
+          -208595,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145365,
+          -208348,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 494,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A7340",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1888",
+      "points": [
+        [
+          145881,
+          -207727,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145867,
+          -207911,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 368.5,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A7341",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1889",
+      "points": [
+        [
+          145881,
+          -208407,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145867,
+          -208254,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 305.75,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A7342",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1890",
+      "points": [
+        [
+          145630,
+          -207970,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145616,
+          -207848,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 243,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A7343",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1891",
+      "points": [
+        [
+          145756,
+          -207727,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145742,
+          -207911,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 368.5,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A7344",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1892",
+      "points": [
+        [
+          145756,
+          -208407,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145742,
+          -208254,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 305.75,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A7345",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1893",
+      "points": [
+        [
+          145254,
+          -207727,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145240,
+          -207911,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 368.5,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A7346",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1894",
+      "points": [
+        [
+          145254,
+          -208595,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145240,
+          -208348,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 494,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A7347",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1898",
+      "points": [
+        [
+          145631,
+          -208344,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145617,
+          -208160,
+          0
+        ]
+      ],
+      "angle": 1.5708,
+      "radius": 0,
+      "measure": 368.356,
+      "flags": 32
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A734A",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1895",
+      "points": [
+        [
+          145881,
+          -208670,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145868,
+          -208543,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 252.753,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A734B",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1896",
+      "points": [
+        [
+          145756,
+          -208670,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145742,
+          -208543,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 252.75,
+      "flags": 33
+    },
+    {
+      "type": "DIMENSION",
+      "handle": "3A734C",
+      "layer": "Block1",
+      "space": "Model",
+      "text": "",
+      "block": "*D1897",
+      "points": [
+        [
+          145630,
+          -208670,
+          0
+        ]
+      ],
+      "end": [
+        [
+          145616,
+          -208512,
+          0
+        ]
+      ],
+      "angle": 0,
+      "radius": 0,
+      "measure": 315.5,
+      "flags": 33
+    }
+  ]
+}
