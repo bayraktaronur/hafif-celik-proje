@@ -5176,7 +5176,7 @@ updateStatus();
   'use strict';
   const $=id=>document.getElementById(id);
   const original={draw,updateSidebar,setSistem,setTool,snapPoint,modalOk,elemanKonumla,elemanKaydir,splitSeg,optUygula,resizeSeg,upKapiTip,hafifCeligeAktar,numUygula,updateStatus};
-  const STORAGE='prefabrikten.planstudio.ui-preview.recovery.v1',BACKUPS=STORAGE+'.history',BACKUP_MS=10000;
+  const STORAGE='prefabrikten.planstudio.recovery.v1',BACKUPS=STORAGE+'.history',BACKUP_MS=10000;
   let lastCheckpoint=0,allowReload=false;
   let future=[],restoring=false,autoTimer,toastTimer,analysisTimer,lastStored='',fileSnapshot='',storageReady=true,pendingRecovery=null,gesture=null;
   let projectName='Yeni proje',activeTab='properties',lastAnalysis='';
@@ -5185,7 +5185,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.88',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.87',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6166,7 +6166,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.88';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.87';syncUI();draw();
 })();
 
 </script><script>
@@ -8269,23 +8269,6 @@ LoadingReference.rows.push({id:"tuna-92",row:92,group:"Metal",name:"Yeşil alç�
  $('loadCsv').onclick=()=>{const report=calculate(),data=LoadingCore.csv(report.rows,{project:Studio.state().projectName,version:Studio.state().revision,date:new Date().toLocaleString('tr-TR'),orphan:report.orphan.length}),url=URL.createObjectURL(new Blob([data],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='yukleme-taslak-'+new Date().toISOString().replace(/[:.]/g,'-')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
  $('loadExcel').onclick=()=>{const r=calculate(),url=URL.createObjectURL(new Blob([LoadingXlsx.create(r.rows,{project:Studio.state().projectName,version:Studio.state().revision,date:new Date().toLocaleString('tr-TR')})],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})),a=document.createElement('a');a.href=url;a.download='yukleme-listesi.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);};
  window.LoadingList={open,calculate,items};
-})();
-
-</script><style>
-.workspace-sections{display:flex;position:sticky;top:0;background:#182331;z-index:2;padding:10px;gap:5px;border-bottom:1px solid #34465b}.workspace-sections button{flex:1;border:1px solid transparent;border-radius:6px;background:transparent;color:#9eafc2;padding:10px 5px;font-size:12px;cursor:pointer}.workspace-sections button[aria-pressed=true]{background:#2b4354;border-color:#5a8c9b;color:#fff}.section-hidden{display:none!important}.inspector-details{border-bottom:1px solid #34465b}.inspector-details summary{padding:16px;cursor:pointer;color:#c7d5e3;font-size:12px}.inspector-details .sb{border:0;padding-top:0}.workspace-actions{flex-wrap:wrap}.tool-ribbon{min-height:58px;height:auto;flex-wrap:wrap;overflow:visible;padding-top:8px;padding-bottom:8px}.tool-group{flex-wrap:wrap}.context-ribbon{min-height:42px;height:auto;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}.workspace-bar{min-height:44px;height:auto}.workspace-description{color:#b0c5d3}.header-actions{flex-wrap:wrap}.app-header{min-height:68px;height:auto;padding-top:8px;padding-bottom:8px}.sidebar{width:245px}.inspector{width:285px}@media(max-width:1100px){.sidebar{width:210px}.inspector{width:240px}.identity small{display:none}.workspace-description{display:none}}
-</style><script>
-/* Presentation only: keep existing inputs and their event handlers. */
-(function(){
-const sidebar=document.getElementById('projectSidebar');
-const nav=document.createElement('nav');nav.className='workspace-sections';nav.setAttribute('aria-label','Proje paneli');
-const groups=[['overview','Özet'],['settings','Ayarlar'],['quantities','Metraj'],['help','Rehber']];
-for(const el of [...sidebar.children]){const title=el.querySelector('.sb-t')?.textContent||'';el.dataset.section=el.classList.contains('system-card')||el.id==='optBox'||title==='Proje ayarları'?'settings':el.id==='panelBox'?'quantities':title==='Çizim rehberi'?'help':'overview';}
-function show(key){for(const el of sidebar.children)if(el.dataset.section)el.classList.toggle('section-hidden',el.dataset.section!==key);for(const b of nav.children){b.setAttribute('aria-pressed',String(b.dataset.key===key));}sidebar.scrollTop=0;}
-for(const [key,label] of groups){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.key=key;b.onclick=()=>show(key);nav.append(b);}sidebar.prepend(nav);show('overview');
-for(const section of document.querySelectorAll('#propertiesPane > .sb')){const heading=section.querySelector('.sb-t');if(!heading)continue;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=heading.textContent;heading.remove();section.before(details);details.className='inspector-details';details.append(summary,section);}
-const description=document.querySelector('.workspace-description');if(description)description.textContent='Arayüz denemesi · ayrı yedek alanı';
-const toggle=document.createElement('button');toggle.className='tb';toggle.textContent='Proje panelini gizle';toggle.setAttribute('aria-expanded','true');toggle.onclick=()=>{sidebar.hidden=!sidebar.hidden;toggle.textContent=sidebar.hidden?'Proje panelini göster':'Proje panelini gizle';toggle.setAttribute('aria-expanded',String(!sidebar.hidden));window.dispatchEvent(new Event('resize'));};document.querySelector('.workspace-actions').prepend(toggle);
-window.WorkspaceUI={show};
 })();
 
 </script></body></html>
