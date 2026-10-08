@@ -713,3 +713,6 @@ Kullanıcı offline varsayılan ve isteğe bağlı online yaklaşımını seçti
 
 ## 8 Ekim 2026 — İş PC — DEV-080 / 5.9.95 deneysel
 Dış ölçü ve iç bölge zincirleri birlikte optimize edildi; 8×8 ile 3+2+3/4+4 aynı çözümde. Gerçek panel motoru, makas yönü, hafif çelik/exact, önizlemede modelin korunması ve undo testleri geçti. Kullanıcı onayıyla Ollama ve qwen3-vl:8b ardından 8b-instruct indirildi. Loopback köprüsü ve tarayıcı bağlantısı çalışıyor, bulut geri dönüşü yok. GERÇEK GÖRSEL TESTİ BAŞARISIZ: model iç duvarlar yerine yanlış/tekrarlanan çizgiler, son tarayıcı denemesinde yanlış dış şekil üretti. Otomatik çizim tamamlanmış sayılmıyor; UI geliştirme aşaması olarak işaretli. Test fixture başarısı görsel tanıma başarısı değildir. Ana5.9.87 ve canlı çizim korundu. Ayrıntı: analizler/2026-10-08-ortak-olcu-yerel-okuyucu.md. DEV-080 semantik/bağlantı doğruluğu açık; kapı/pencere, çokgen otomatik dış sınır ve diğer açık işler devam ediyor. Diğer PC yerel model kurulumu doğrulanmadı.
+
+## 8 Ekim 2026 — Kullanıcı isteğiyle eski sürüme dönüş
+DEV-080 ertelendi. Deneme 5.9.95 korunur; kullanım 5.9.87ye döner. Eski HTML SHA256 yedekle eşleşti. Eski sayfanın açılması uygulamaya iletildi; açık deneme çizimi değiştirilmedi. JSON aktarımı doğrulanmadı.
