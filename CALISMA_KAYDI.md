@@ -672,3 +672,7 @@ Kullanıcının net CAD 3B isteğiyle mevcut imalat yüzeylerine WebGL sunum ekl
 
 ## 8 Ekim 2026 — İş PC — 5.9.87 / DEV-071
 Duvar yüksekliği değişiminde eski wallTop kalıyordu. Studio.edit içinde bina yüksekliğiyle ana/yavru wallTop eşitlendi, birleşimler ve bağlı veranda yeniden hesaplandı. Aynı undo işlemi; yatay aks/saçak sabit. roof-height-change ve roof-auto-seat geçti; 280cm görüntü incelendi. Kaynak görsel/hash korundu; canlı çizime dokunulmadı. Rapor analizler/2026-10-08-cati-yukseklik.md. Eski hatalı kayıt sonraki yükseklik değişiminde düzelir. Önceki açık işler korunur.
+
+
+## 8 Ekim 2026 — İş PC — DEV-072 / INTERFab incelemesi
+Kullanıcı girişinden sonra canlı arayüz salt okunur incelendi. Arama sonucu pencere seçimi, bölünmüş görünüm, özellikler, sahneler, ClashCheck kapsamı, metraj ve menüler incelendi. Rakip model değiştirilmedi. Doğrulanan ve yalnız menüde görülen özellikler ayrıldı. Rapor analizler/2026-10-08-interfab-inceleme.md. İlk öneriler3B parça/plan ortak seçimi, yan yana görünüm ve uyarı odağı; uygulanmadı. Kod/sürüm5.9.87korundu; önceki açık işler korunur.

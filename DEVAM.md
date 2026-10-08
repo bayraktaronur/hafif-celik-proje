@@ -12,6 +12,7 @@ Program **5.9.87**. [Çatı yükseklik düzeltmesi](analizler/2026-10-08-cati-yu
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-072 | INTERFab canlı arayüz karşılaştırması | İNCELEME TAMAM: arama/seçim, bölünmüş görünüm, sahneler, ClashCheck ve metraj incelendi. Öncelik 3B ortak seçim, plan+3B ve uyarıya odaklanma; uygulama henüz yapılmadı. [Rapor](analizler/2026-10-08-interfab-inceleme.md). |
 | DEV-071 | Duvar yüksekliği değişince çatı eski kotta | TAMAMLANDI 5.9.87: ortak yükseklik işleminde ana/yavru kotu ve birleşimleri güncellenir. 250/280/300, undo/redo, JSON ve eski kaydı düzeltme testleri geçti. [Rapor](analizler/2026-10-08-cati-yukseklik.md). |
 | DEV-070 | GPU 3B sunum | TAMAMLANDI 5.9.86: WebGL, kenar yumuşatma, açık/koyu zemin, ince kontur, cam, görünene göre kamera sığdırma; hesaplar korunur. Gerçek plan/STL/PNG/yedek çizici testleri geçti. [Rapor](analizler/2026-10-08-gpu-3b.md). |
 | DEV-069 | Sürekli duvar kotunda saçak / Alın V açıklığı | TAMAMLANDI5.9.85: ana/yavru yeni+eski kayıt otomatik trim/wallTop; oturtma düğmesi ve kot referansı ayarları kaldırıldı. Alın V üstü örtü+1.5cm, altı duvar kotunda. Gerçek plan ve çatı regresyonları geçti. [Rapor](analizler/2026-10-08-otomatik-sacak.md). |
