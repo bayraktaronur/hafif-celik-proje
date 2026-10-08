@@ -679,3 +679,6 @@ Kullanıcı girişinden sonra canlı arayüz salt okunur incelendi. Arama sonucu
 
 ## 8 Ekim 2026 — Eski 5.9.87 kullanımına dönüş
 Kullanıcı otomatik görsel okuma çalışmasını sonraya saklamayı ve eski yedeğe dönmeyi istedi. codex/arayuz-duzeni 5.9.95 korunur; DEV-080 ertelendi. Ana uygulama kodu değişmedi, yedek HTML hash eşitliği doğrulandı. Eski sayfa açma isteği uygulamaya iletildi. Canlı çizim JSON aktarımı yapılmadı.
+
+## 9 Ekim 2026 — İş PC — DEV-081 / 5.9.96
+5.9.87 ana sürümüne 160 cm pencere için tıklanan merkez ve bölüm ortası eklendi. H/makas aksı üzerinde yerleşim iki yönde doğrulandı; makaslar, duvarlar ve diğer açıklıklar korunur. Gerçek kullanıcı JSON kopyası/hash raporda: analizler/2026-10-09-pencere-h-merkez.md. 8 yerleşim, undo/JSON; prefab 77/77 ve window-stl geçti. Eski yedek ve ertelenen okuyucu korunur. Canlı çizime müdahale edilmedi; kullanıcının son elle değişiklikleri dosya olarak yeniden kaydedilmelidir. Genel panel düzenleme ve taşıyıcı detay kapsamı değişmedi.

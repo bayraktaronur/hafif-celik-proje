@@ -367,6 +367,16 @@
     const ok=Studio.edit(()=>wideWindowLayout(R.run,(o.a+o.b)/2));
     if(ok)Studio.toast('160 cm pencere için 166 cm pano oluşturuldu; toplam boy ve makaslar korundu.');return ok;
   }
+  const centerOpening=document.createElement('button');centerOpening.type='button';centerOpening.id='centerWindowSection';centerOpening.className='tb';centerOpening.textContent='Bu duvar bölümüne ortala';
+  $('mEn').parentElement.append(centerOpening);
+  const openOpening=window.openModal;
+  window.openModal=function(...args){openOpening(...args);centerOpening.textContent='Bu duvar bölümüne ortala';centerOpening.hidden=!isPref()||_mT!=='pencere'||Math.abs(+$('mEn').value-160)>.01;};
+  centerOpening.onclick=()=>{
+    if(!_mSeg||!isPref()||_mT!=='pencere'||Math.abs(+$('mEn').value-160)>.01)return;
+    const a=getNode(_mSeg.n1),b=getNode(_mSeg.n2),L=_segLen(_mSeg),lo=ucBosluk(_mSeg,_mSeg.n1),hi=L-ucBosluk(_mSeg,_mSeg.n2),t=(lo+hi)/(2*L);
+    _mRaw=_mSp={x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};
+    centerOpening.textContent='Duvar bölümünün ortası seçildi';
+  };
   window.modalOk=function(){
     if(!isPref()||!_mSeg){base.modalOk();return;}
     const R=pfRunOf(_mSeg),en=+$('mEn').value;if(!R){base.modalOk();return;}
@@ -375,10 +385,11 @@
       const panel=r.slots.find(p=>pos>=p.a-EPS&&pos<=p.b+EPS),segId=_mSeg.id;
       if(!panel){Studio.toast('Pencere için bir panel seçin.',true);return;}
       const ok=Studio.edit(()=>{
-        wideWindowLayout(r,(panel.a+panel.b)/2);
+        wideWindowLayout(r,pos);
         const before=G.elemanlar.length,savePush=window.pushH;
         try{window.pushH=()=>{};base.modalOk();}finally{window.pushH=savePush;}
         if(G.elemanlar.length!==before+1)throw Error('160 cm pencere yerleştirilemedi; pano düzeni geri alındı.');
+        place(pfRunOf(getSeg(segId)).run,G.elemanlar.at(-1),pos-en/2);
       });
       if(!ok){_mSeg=getSeg(segId);$('mbg').classList.add('open');}else Studio.toast('166 cm pencere panosu oluşturuldu; yan paneller kısaltıldı. Makas aksları korundu.');
       return;
@@ -599,5 +610,5 @@
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.87';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.96';syncUI();draw();
 })();

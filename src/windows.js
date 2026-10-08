@@ -36,7 +36,7 @@
  }
  const box=document.createElement('div');box.id='windowPicker';box.className='mf';box.innerHTML='<label id="openingPickerLabel" for="windowPreset">Pencere seçimi</label><select id="windowPreset"></select><div id="windowPreview"></div>';$('mAd').closest('.mf').before(box);
  const current=()=>({en:+$('mEn').value,yuk:+$('mYuk').value,penTip:$('mPenTip').value,kapiTip:$('mTip').value,hand:$('mMen').value,tip_:_mT,ad:$('mAd').value,catalogId:selectedId});
- function preview(){$('windowPreview').innerHTML=elevation(current());}
+ function preview(){$('windowPreview').innerHTML=elevation(current());const center=$('centerWindowSection');if(center)center.hidden=!isPref()||_mT!=='pencere'||Math.abs(+$('mEn').value-160)>.01;}
  function apply(p){selectedId=p.catalogId||null;templateId=selectedId;$('mEn').value=p.en;$('mYuk').value=p.yuk;$('mAd').value=p.ad||(_mT==='kapi'?'Kapı':'Pencere');if(_mT==='kapi'){$('mTip').value=p.kapiTip||'ic';$('mMen').value=p.hand||'sol';mTipDegis();}else $('mPenTip').value=p.penTip||'tek-kanat';preview();}
  $('windowPreset').onchange=()=>{if($('windowPreset').value===''){selectedId=null;templateId=null;preview();return;}const p=choices[+$('windowPreset').value];if(p)apply(p);};
  ['mEn','mYuk','mPenTip','mTip','mMen'].forEach(id=>$(id).addEventListener('input',()=>{
