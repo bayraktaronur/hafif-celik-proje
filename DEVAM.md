@@ -12,6 +12,7 @@ Ana program **5.9.87**; ayrı arayüz denemesi **5.9.91**, codex/arayuz-duzeni d
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-078 | Görselden otomatik plan | AÇIK: birim/yükseklik/kalınlık/çatı yönü zorunlu; prefabrik yakın standart veya birebir özel kesim, hafif çelik ayrı. Kullanıcı onayladı; üretim henüz uygulanmadı. [Kurallar](analizler/2026-10-08-gorselden-plan-kurallari.md). |
 | DEV-077 | Aynı ekranda referans görsel | 5.9.91: dosya/Ctrl+V, taşınabilir boyutlandırılabilir referans, zoom ve tarayıcıda son görsel kaydı. JSONa dahil değil. [Rapor](analizler/2026-10-08-referans-gorsel.md). |
 | DEV-076 | Tuna84 imalat DWG incelemesi | ANALİZ: DWG metin/ölçüleri yeniden okundu; imalat çıktı paketi ve ölçü ayrımları belirlendi. Tam blok/pafta ve satır bazlı BOM eşlemesi açık. [Rapor](analizler/2026-10-08-tuna-imalat-inceleme.md). |
 | DEV-075 | Yatay H pencere / gerçek proje12 | 5.9.90: pencere panosu yalnız seçilen duvarda düzenlenir, karşı duvar açıklıkları ve makaslar korunur. [Rapor](analizler/2026-10-08-yatay-h-pencere.md). |

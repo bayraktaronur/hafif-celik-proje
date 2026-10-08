@@ -696,3 +696,7 @@ AutoCAD2026 ile mevcut DWG geçici kopyadan yeniden okundu; kaynak hash önceki 
 
 ## 8 Ekim2026 — İş PC — DEV-077 / 5.9.91
 Referans görsel penceresi: dosya/Ctrl+V/drop, taşıma/boyut/zoom, ayrı IndexedDBde son görsel. JSON/model değişmez; eski5.9.87korundu. reference-image ve plan-clipboard testleri geçti; görüntü incelendi. Rapor analizler/2026-10-08-referans-gorsel.md. Önceki açık işler korunur.
+
+
+## 8 Ekim2026 — İş PC — DEV-078 / karar kaydı
+Kullanıcı görselden plan için birim seçimi ve iki prefabrik üretim yolunu onayladı. Çatı yönü, yükseklik ve kalınlıklar zorunlu; hafif çelik modüle zorlanmaz. Kaynak görsel/hash korundu. Otomatik tanıma/plan üretimi henüz uygulanmadı; açık iş olarak kaydedildi. Kod5.9.91değişmedi, önceki açık işler korunur.
