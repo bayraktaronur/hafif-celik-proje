@@ -1,0 +1,7 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "content": "{\n  \"rectangular\": false,\n  \"bbox\": {\n    \"x\": 0,\n    \"y\": 0,\n    \"w\": 1000,\n    \"h\": 1000\n  },\n  \"unit\": \"cm\",\n  \"xMeasures\": [\n    300,\n    200,\n    300,\n    400,\n    400,\n    800\n  ],\n  \"yMeasures\": [\n    400,\n    400,\n    400,\n    400,\n    400,\n    800\n  ],\n  \"walls\": [\n    {\n      \"x1\": 300,\n      \"y1\": 0,\n      \"x2\": 300,\n      \"y2\": 1000\n    },\n    {\n      \"x1\": 500,\n      \"y1\": 0,\n      \"x2\": 500,\n      \"y2\": 1000\n    },\n    {\n      \"x1\": 800,\n      \"y1\": 0,\n      \"x2\": 800,\n      \"y2\": 1000\n    },\n    {\n      \"x1\": 0,\n      \"y1\": 400,\n      \"x2\": 1000,\n      \"y2\": 400\n    },\n    {\n      \"x1\": 0,\n      \"y1\": 800,\n      \"x2\": 1000,\n      \"y2\": 800\n    }\n  ],\n  \"questions\": []\n}",
+  "done_reason": "stop",
+  "total_duration": 6363556000,
+  "eval_count": 375
+}
