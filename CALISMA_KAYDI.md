@@ -707,3 +707,6 @@ Görselden Plan Oluştur giriş ekranı, zorunlu birimler/üretim yolu/yüksekli
 
 ## 8 Ekim 2026 — İş PC — DEV-078 / 5.9.93 internetsiz taslak
 Kullanıcı offline varsayılan ve isteğe bağlı online yaklaşımını seçti. Yerel çizgi adayları, dış sınır kutusu, iç duvar ekleme/silme/koordinat düzenleme, üç üretim yolu taslağı, gerçek duvar grafiği ve onaylı aktarım eklendi. Yedek indirme ve undo test edildi. image-plan-offline ve image-plan-brief geçti; gerçek görsel adayları incelendi. Mobilya çizgileri kullanıcı düzeltmesi gerektirir. OCR/semboller, çokgen dış sınır, otomatik çatı ve online yol açık. Ana5.9.87 ve canlı çizim korundu. Rapor analizler/2026-10-08-gorselden-plan-offline.md. Önceki açık işler korunur.
+
+## 8 Ekim 2026 — İş PC — DEV-079 / 5.9.94
+Çizgi etiketleri, görsel/satır ortak seçim ve doğrudan uzunluk girişi eklendi; X/Y ayrıntıya taşındı. Ölçü zinciriyle L/U dış sınır oluşturulur; el çizgisinin eğriliği yerine kullanıcı ölçüleri kullanılır. Yazı okuma uygulanmadı. image-plan-offline ve image-plan-brief geçti; gerçek fare seçimi, L/U, kapalı sınır, aktarım ve geri alma doğrulandı. Rapor analizler/2026-10-08-gorselden-plan-olculu-sinir.md. Ana5.9.87/canlı çizim korundu. DEV-078 OCR/semantik çözümleme ve diğer açık işler devam ediyor.
