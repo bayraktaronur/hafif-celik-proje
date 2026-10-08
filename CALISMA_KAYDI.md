@@ -676,3 +676,6 @@ Duvar yüksekliği değişiminde eski wallTop kalıyordu. Studio.edit içinde bi
 
 ## 8 Ekim 2026 — İş PC — DEV-072 / INTERFab incelemesi
 Kullanıcı girişinden sonra canlı arayüz salt okunur incelendi. Arama sonucu pencere seçimi, bölünmüş görünüm, özellikler, sahneler, ClashCheck kapsamı, metraj ve menüler incelendi. Rakip model değiştirilmedi. Doğrulanan ve yalnız menüde görülen özellikler ayrıldı. Rapor analizler/2026-10-08-interfab-inceleme.md. İlk öneriler3B parça/plan ortak seçimi, yan yana görünüm ve uyarı odağı; uygulanmadı. Kod/sürüm5.9.87korundu; önceki açık işler korunur.
+
+## 8 Ekim 2026 — Eski 5.9.87 kullanımına dönüş
+Kullanıcı otomatik görsel okuma çalışmasını sonraya saklamayı ve eski yedeğe dönmeyi istedi. codex/arayuz-duzeni 5.9.95 korunur; DEV-080 ertelendi. Ana uygulama kodu değişmedi, yedek HTML hash eşitliği doğrulandı. Eski sayfa açma isteği uygulamaya iletildi. Canlı çizim JSON aktarımı yapılmadı.
