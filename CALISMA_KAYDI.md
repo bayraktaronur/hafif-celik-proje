@@ -700,3 +700,7 @@ Referans görsel penceresi: dosya/Ctrl+V/drop, taşıma/boyut/zoom, ayrı Indexe
 
 ## 8 Ekim2026 — İş PC — DEV-078 / karar kaydı
 Kullanıcı görselden plan için birim seçimi ve iki prefabrik üretim yolunu onayladı. Çatı yönü, yükseklik ve kalınlıklar zorunlu; hafif çelik modüle zorlanmaz. Kaynak görsel/hash korundu. Otomatik tanıma/plan üretimi henüz uygulanmadı; açık iş olarak kaydedildi. Kod5.9.91değişmedi, önceki açık işler korunur.
+
+
+## 8 Ekim2026 — İş PC — DEV-078 / 5.9.92ilk aşama
+Görselden Plan Oluştur giriş ekranı, zorunlu birimler/üretim yolu/yükseklik/kalınlık/çatı bilgileri, ölçü şeması ve görselli hazırlıkJSON. image-plan-brief testleri geçti. Otomatik görsel tanıma ve plan üretimi uygulanmadı; servis hesabı/bağlantısı için yanıt bekleniyor. Model ve eski5.9.87korundu. Rapor analizler/2026-10-08-gorselden-plan-hazirlik.md.
