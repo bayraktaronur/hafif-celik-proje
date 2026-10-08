@@ -1,0 +1,268 @@
+{
+  "v": "5",
+  "revision": "5.9.89",
+  "projectName": "Yeni proje",
+  "sheetInfo": {},
+  "loading": {
+    "adjustments": [],
+    "manual": []
+  },
+  "sistem": "prefabrik",
+  "catiYon": "yatay",
+  "opt": {
+    "h": 250,
+    "dis": 10,
+    "ic": 6,
+    "alciDuvar": "yok",
+    "cephe": "yok",
+    "plaka": "40x250",
+    "bindirme": 3,
+    "cepheFire": 5,
+    "cati": "besik",
+    "egim": 33,
+    "sacak": 30,
+    "trapezEn": 100,
+    "kaplama": "trapez",
+    "osb": false,
+    "catiFire": 5,
+    "suRulo": 75,
+    "suBindirme": 10,
+    "parcaBoy": 200,
+    "parcaBind": 10,
+    "vidaM2": 5,
+    "inisAralik": 10,
+    "aksAcik": false
+  },
+  "n": [
+    {
+      "id": "e8",
+      "x": 62.75,
+      "y": 0
+    },
+    {
+      "id": "e9",
+      "x": 941.25,
+      "y": 0
+    },
+    {
+      "id": "e11",
+      "x": 941.25,
+      "y": 444.25
+    },
+    {
+      "id": "e13",
+      "x": 1568.75,
+      "y": 444.25
+    },
+    {
+      "id": "e15",
+      "x": 1568.75,
+      "y": 1076.75
+    },
+    {
+      "id": "e17",
+      "x": 62.75,
+      "y": 1076.75
+    }
+  ],
+  "s": [
+    {
+      "id": "e10",
+      "n1": "e8",
+      "n2": "e9",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e12",
+      "n1": "e9",
+      "n2": "e11",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e14",
+      "n1": "e11",
+      "n2": "e13",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e16",
+      "n1": "e13",
+      "n2": "e15",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pnlCfg": {
+        "dizi": [
+          57.75,
+          125.5,
+          125.5,
+          62.75,
+          125.5,
+          62.75,
+          62.75
+        ],
+        "explicit": true
+      }
+    },
+    {
+      "id": "e18",
+      "n1": "e15",
+      "n2": "e17",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true,
+      "pfSnap": true
+    },
+    {
+      "id": "e19",
+      "n1": "e17",
+      "n2": "e8",
+      "k": 10,
+      "elemanlar": [],
+      "kSabit": true,
+      "dis": true
+    }
+  ],
+  "e": [
+    {
+      "id": "e95",
+      "tip_": "pencere",
+      "segId": "e14",
+      "t": 0.2043824701195219,
+      "en": 120,
+      "yuk": 120,
+      "ad": "P2",
+      "kapiYon": "ic",
+      "penTip": "tek-kanat",
+      "catalogId": "p2",
+      "hand": "sol"
+    },
+    {
+      "id": "e96",
+      "tip_": "pencere",
+      "segId": "e10",
+      "t": 0.5745589072282299,
+      "en": 120,
+      "yuk": 120,
+      "ad": "P2",
+      "kapiYon": "ic",
+      "penTip": "tek-kanat",
+      "catalogId": "p2",
+      "hand": "sol"
+    },
+    {
+      "id": "e97",
+      "tip_": "pencere",
+      "segId": "e10",
+      "t": 0.28884462151394424,
+      "en": 120,
+      "yuk": 120,
+      "ad": "P2",
+      "kapiYon": "ic",
+      "penTip": "tek-kanat",
+      "catalogId": "p2",
+      "hand": "sol"
+    },
+    {
+      "id": "e98",
+      "tip_": "pencere",
+      "segId": "e16",
+      "t": 0.3019762845849802,
+      "en": 120,
+      "yuk": 120,
+      "ad": "P2",
+      "kapiYon": "ic",
+      "penTip": "tek-kanat",
+      "catalogId": "p2",
+      "hand": "sol"
+    },
+    {
+      "id": "e99",
+      "tip_": "pencere",
+      "segId": "e16",
+      "t": 0.5996047430830039,
+      "en": 120,
+      "yuk": 120,
+      "ad": "P2",
+      "kapiYon": "ic",
+      "penTip": "tek-kanat",
+      "catalogId": "p2",
+      "hand": "sol"
+    }
+  ],
+  "r": [
+    {
+      "id": "e20",
+      "sig": "e11,e13,e15,e17,e8,e9",
+      "nodeIds": [
+        "e11",
+        "e13",
+        "e15",
+        "e17",
+        "e8",
+        "e9"
+      ],
+      "area": 134.2818625,
+      "cx": 724.5624430477347,
+      "cy": 604.0279650225473,
+      "ad": "Oda 1",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 724.5624430477347,
+      "ly": 604.0279650225473
+    }
+  ],
+  "annotations": [],
+  "fixtures": [],
+  "counters": [],
+  "roofs": [],
+  "roofMaterials": [],
+  "ky": 250,
+  "dy": 320,
+  "fire": 10,
+  "settings": {
+    "panelDrawMode": "mixed",
+    "trussOverrides": [],
+    "snapGrid": true,
+    "snapWall": true,
+    "pnlEtiket": true,
+    "makasGoster": true,
+    "ortho": false,
+    "panelSync": true,
+    "moveAlign": false,
+    "moveModule": false,
+    "moduleAxisSnap": true,
+    "snapTargets": {
+      "h": true,
+      "mid": true,
+      "end": true,
+      "node": false,
+      "nearest": false
+    },
+    "gridCm": 62.75,
+    "defaultK": 10,
+    "elStep": 5,
+    "freeSnapStep": 5,
+    "selectionMode": "wall",
+    "olcuModu": "panel",
+    "duvarYakala": "custom",
+    "inputUnit": "panel"
+  }
+}

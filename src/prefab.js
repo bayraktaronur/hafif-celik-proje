@@ -393,7 +393,7 @@
         cuts.sort((a,b)=>a-b);const unique=cuts.filter((v,i)=>!i||v-cuts[i-1]>EPS);
         const items=unique.slice(0,-1).map((a,i)=>({w:unique[i+1]-a,key:'door-joint-'+i})),segId=_mSeg.id;
         const ok=Studio.edit(()=>{
-          rebuildLayout(r,items,{moveOpenings:false,compact:false});
+          rebuildLayout(r,items,{moveOpenings:false,compact:false,local:_mT==='pencere'});
           const before=G.elemanlar.length,savePush=window.pushH;
           try{window.pushH=()=>{};base.modalOk();}finally{window.pushH=savePush;}
           if(G.elemanlar.length!==before+1)throw Error('H merkezli açıklık yerleştirilemedi; panel düzeni geri alındı.');
@@ -599,5 +599,5 @@
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.89';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.90';syncUI();draw();
 })();

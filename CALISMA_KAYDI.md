@@ -684,3 +684,7 @@ Eski5.9.87etiket/HTML/hash ile korundu. Ayrı arayuz-deneme çalışma ağacı v
 
 ## 8 Ekim 2026 — İş PC — DEV-074 / 5.9.89
 Ayrı arayüz denemesinde H merkezli pencere ve kapı; dış panel sınırları ve makas aksları korunur. Standart125.5 ve geniş166 pano kuralları kullanılır. Uzaktaki yarımlar birleştirilmez. Testler: opening-h-center ve prefab. Üç görsel kaynak/hash ile korundu; ana5.9.87 ve canlı çizim değişmedi. Rapor analizler/2026-10-08-h-merkez-aciklik.md. Önceki açık işler korunur.
+
+
+## 8 Ekim 2026 — İş PC — DEV-075 / 5.9.90
+Gerçek Yeni proje (12).json ile yatay H yerleşim hatası tekrarlandı. Sebep paralel duvar eşlemesinin karşı açıklıkların içine yeni H getirmesi. Pencere pano değişimi yerelleştirildi; akslar/diğer duvarlar korunur, gerçek aynı-duvar çakışması reddedilir. Kaynak JSON ve2görsel hash envanteriyle kopyalandı. Testler opening-h-real-project, opening-h-center, prefab. Ana5.9.87ve canlı çizim değişmedi; önceki açık işler korunur.
