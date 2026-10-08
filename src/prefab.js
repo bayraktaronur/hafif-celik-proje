@@ -371,36 +371,36 @@
     if(!isPref()||!_mSeg){base.modalOk();return;}
     const R=pfRunOf(_mSeg),en=+$('mEn').value;if(!R){base.modalOk();return;}
     const r=R.run,raw=_mRaw||_mSp,pos=(raw.x-r.ax)*r.ux+(raw.y-r.ay)*r.uy;
+    const joint=r.slots.slice(1).find(p=>Math.abs(p.a-pos)<=Math.min(5,8/sc()));
     if(_mT==='pencere'&&Math.abs(en-160)<.01){
       const panel=r.slots.find(p=>pos>=p.a-EPS&&pos<=p.b+EPS),segId=_mSeg.id;
       if(!panel){Studio.toast('Pencere için bir panel seçin.',true);return;}
       const ok=Studio.edit(()=>{
-        wideWindowLayout(r,(panel.a+panel.b)/2);
+        wideWindowLayout(r,joint?joint.a:(panel.a+panel.b)/2);
         const before=G.elemanlar.length,savePush=window.pushH;
         try{window.pushH=()=>{};base.modalOk();}finally{window.pushH=savePush;}
         if(G.elemanlar.length!==before+1)throw Error('160 cm pencere yerleştirilemedi; pano düzeni geri alındı.');
+        if(joint)place(pfRunOf(getSeg(segId)).run,G.elemanlar.at(-1),joint.a-en/2);
       });
       if(!ok){_mSeg=getSeg(segId);$('mbg').classList.add('open');}else Studio.toast('166 cm pencere panosu oluşturuldu; yan paneller kısaltıldı. Makas aksları korundu.');
       return;
     }
-    // A door clicked on an H needs a whole panel centred on that H, not a
-    // door shifted into one of the existing panels. Preserve total length by
-    // splitting the neighbouring panels at the new boundaries.
-    const joint=r.slots.slice(1).find(p=>Math.abs(p.a-pos)<=Math.min(5,8/sc()));
-    if(_mT==='kapi'&&joint&&en>0&&en<=PF.PANEL){
+    // Centre openings on the selected H while preserving surrounding boundaries.
+    if(['kapi','pencere'].includes(_mT)&&joint&&en>0&&en<=PF.PANEL){
       const lo=joint.a-PF.YARIM,hi=joint.a+PF.YARIM;
       if(lo>=r.s0-EPS&&hi<=r.L-r.s1+EPS&&r.items.some(it=>lo>=it.off-EPS&&hi<=it.off+it.L+EPS)){
         const cuts=[r.s0,r.L-r.s1,lo,hi];r.slots.forEach(p=>{if(p.a<lo-EPS||p.a>hi+EPS)cuts.push(p.a);});
         cuts.sort((a,b)=>a-b);const unique=cuts.filter((v,i)=>!i||v-cuts[i-1]>EPS);
         const items=unique.slice(0,-1).map((a,i)=>({w:unique[i+1]-a,key:'door-joint-'+i})),segId=_mSeg.id;
         const ok=Studio.edit(()=>{
-          rebuildLayout(r,items,{moveOpenings:false,compact:true});
+          rebuildLayout(r,items,{moveOpenings:false,compact:false});
           const before=G.elemanlar.length,savePush=window.pushH;
           try{window.pushH=()=>{};base.modalOk();}finally{window.pushH=savePush;}
-          if(G.elemanlar.length!==before+1)throw Error('H üzerindeki kapı yerleştirilemedi; panel düzeni geri alındı.');
+          if(G.elemanlar.length!==before+1)throw Error('H merkezli açıklık yerleştirilemedi; panel düzeni geri alındı.');
+          place(pfRunOf(getSeg(segId)).run,G.elemanlar.at(-1),joint.a-en/2);
         });
         if(!ok){_mSeg=getSeg(segId);$('mbg').classList.add('open');}
-        else Studio.toast('Kapılı tam panel oluşturuldu; uygun kalan yarımlar birleştirildi. Birleşimler ve makas aksları korundu.');
+        else Studio.toast('Açıklık H merkezine yerleştirildi; yan paneller bölündü, dış panel sınırları ve makas aksları korundu.');
         return;
       }
     }
@@ -599,5 +599,5 @@
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.88';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.89';syncUI();draw();
 })();

@@ -680,3 +680,7 @@ Kullanıcı girişinden sonra canlı arayüz salt okunur incelendi. Arama sonucu
 
 ## 8 Ekim2026 — DEV-073
 Eski5.9.87etiket/HTML/hash ile korundu. Ayrı arayuz-deneme çalışma ağacı ve codex/arayuz-duzeni dalında5.9.88sade paneller; ayrı otomatik yedek anahtarı. Ana dist değişmedi. workspace-ui ve roof-height-change geçti, görsel incelendi. Canlı müşteri JSON dışa aktarımı doğrulanmadı. Rapor analizler/2026-10-08-arayuz-deneme.md.
+
+
+## 8 Ekim 2026 — İş PC — DEV-074 / 5.9.89
+Ayrı arayüz denemesinde H merkezli pencere ve kapı; dış panel sınırları ve makas aksları korunur. Standart125.5 ve geniş166 pano kuralları kullanılır. Uzaktaki yarımlar birleştirilmez. Testler: opening-h-center ve prefab. Üç görsel kaynak/hash ile korundu; ana5.9.87 ve canlı çizim değişmedi. Rapor analizler/2026-10-08-h-merkez-aciklik.md. Önceki açık işler korunur.

@@ -8,7 +8,7 @@ async function test(name,fn){try{await fn();console.log('PASS '+name);results.pu
  const browser=await pw.chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
  try{
  const page=await browser.newPage({viewport:{width:1536,height:960}}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());await page.goto(pathToFileURL(path.resolve('plan_cizim.html')).href);
- const load=async d=>page.evaluate(d=>Studio.loadProject(d),d||fixture());
+ const load=async d=>page.evaluate(d=>{Studio.loadProject(d);window.WorkspaceUI?.show('settings');document.querySelectorAll('.inspector-details').forEach(el=>el.open=true);},d||fixture());
  const widths=async id=>page.evaluate(id=>pfRunOf(getSeg(id)).run.slots.map(p=>p.w),id);
  const clickPanel=async(owner,index,key)=>{
   const point=await page.evaluate(({owner,index})=>{const r=pfRunOf(getSeg(owner)).run,p=r.slots[index],v=toCv(r.ax+r.ux*(p.a+p.b)/2,r.ay+r.uy*(p.a+p.b)/2),box=cv.getBoundingClientRect();return{x:v.x+box.left,y:v.y+box.top};},{owner,index});
@@ -290,12 +290,12 @@ async function test(name,fn){try{await fn();console.log('PASS '+name);results.pu
   assert.match(await page.locator('#sbSelIc').innerText(),/pencere görünüşü/iu);
   await page.evaluate(()=>openModal('pencere',getSeg('e103'),{x:300,y:512}));await page.locator('#windowPreset').selectOption({label:'Projede · 80 × 125 cm · Tek kanatlı'});assert.equal(await page.locator('#mEn').inputValue(),'80');await page.evaluate(()=>document.getElementById('mbg').classList.remove('open'));
  });
- await test('Door repaneling compacts leftover halves into full or shortened panels and undoes atomically',async()=>{
+ await test('H-centred door preserves untouched tail boundaries and undoes atomically',async()=>{
   for(const tail of [[62.75,57.75],[62.75,62.75,57.75]]){
    const d=fixture(),seq=[62.75,125.5,...tail.slice(1)],len=seq.reduce((a,b)=>a+b,0);d.n[1].x=d.n[2].x=len;d.s[0].pnlCfg={dizi:seq,explicit:true};await load(d);
    const before=await page.evaluate(()=>Studio.snapshot());
    const r=await page.evaluate(()=>{const axes=makasAnaliz().makaslar.map(m=>m.pos);openModal('kapi',getSeg('e101'),{x:62.75,y:0},{x:62.75,y:0});document.getElementById('mEn').value='80';modalOk();return{count:G.elemanlar.length,widths:pfRunOf(getSeg('e101')).run.slots.map(p=>p.w),axes,after:makasAnaliz().makaslar.map(m=>m.pos)};});
-   assert.equal(r.count,1);assert.deepEqual(r.widths,tail.length===2?[125.5,120.5]:[125.5,125.5,57.75]);assert.deepEqual(r.axes,r.after);
+   assert.equal(r.count,1);assert.deepEqual(r.widths,[125.5,62.75,...tail.slice(1)]);assert.deepEqual(r.axes,r.after);
    await page.evaluate(()=>geriAl());assert.equal(await page.evaluate(()=>Studio.snapshot()),before);
   }
  });
