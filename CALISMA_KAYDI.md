@@ -682,3 +682,4 @@ Kullanıcı otomatik görsel okuma çalışmasını sonraya saklamayı ve eski y
 
 ## 9 Ekim 2026 — İş PC — DEV-081 / 5.9.96
 5.9.87 ana sürümüne 160 cm pencere için tıklanan merkez ve bölüm ortası eklendi. H/makas aksı üzerinde yerleşim iki yönde doğrulandı; makaslar, duvarlar ve diğer açıklıklar korunur. Gerçek kullanıcı JSON kopyası/hash raporda: analizler/2026-10-09-pencere-h-merkez.md. 8 yerleşim, undo/JSON; prefab 77/77 ve window-stl geçti. Eski yedek ve ertelenen okuyucu korunur. Canlı çizime müdahale edilmedi; kullanıcının son elle değişiklikleri dosya olarak yeniden kaydedilmelidir. Genel panel düzenleme ve taşıyıcı detay kapsamı değişmedi.
+9 Ekim 2026 — DEV-082 / 5.9.97: Pencere yanındaki eski H bölünmeleri tek panel yeterliyken kaldırıldı. Panel alanına göre ortalama eşitlendi. Gerçek projede 8 durum, eşit iki yan panel, undo/JSON ve prefab 77/77 doğrulandı. Eski çizimler otomatik değiştirilmez. Rapor: analizler/2026-10-09-pencere-yan-paneller.md.

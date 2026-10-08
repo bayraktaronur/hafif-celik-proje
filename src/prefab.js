@@ -355,7 +355,17 @@
   function wideWindowLayout(run,center){
     const lo=center-83,hi=center+83;
     if(lo<run.s0-EPS||hi>run.L-run.s1+EPS||!run.items.some(it=>lo>=it.off-EPS&&hi<=it.off+it.L+EPS))throw Error('166 cm pencere panosu köşe veya duvar birleşimini aşıyor. Komşu tam paneli seçin.');
-    const cuts=[run.s0,run.L-run.s1,lo,hi];run.slots.forEach(p=>{if(p.a<lo-EPS||p.a>hi+EPS)cuts.push(p.a);});
+    const section=run.items.find(it=>lo>=it.off-EPS&&hi<=it.off+it.L+EPS),start=Math.max(run.s0,section.off),end=Math.min(run.L-run.s1,section.off+section.L);
+    const cuts=[run.s0,run.L-run.s1,start,end,lo,hi];
+    // A side that fits one panel must not retain obsolete H cuts. Keep
+    // longer sides and other opening panels intact.
+    const occupied=openings(run).filter(o=>o.b<=lo+EPS||o.a>=hi-EPS);
+    run.slots.forEach(p=>{if(p.a>=lo-EPS&&p.a<=hi+EPS)return;
+      const left=p.a>start+EPS&&p.a<lo-EPS,right=p.a>hi+EPS&&p.a<end-EPS;
+      const protectedSide=occupied.some(o=>left?o.a<lo&&o.b>start:right&&o.a<end&&o.b>hi);
+      if((left&&lo-start<=PF.PANEL+EPS||right&&end-hi<=PF.PANEL+EPS)&&!protectedSide)return;
+      cuts.push(p.a);
+    });
     cuts.sort((a,b)=>a-b);const unique=cuts.filter((v,i)=>!i||v-cuts[i-1]>EPS);
     const items=unique.slice(0,-1).map((a,i)=>({w:unique[i+1]-a}));
     if(items.some(p=>p.w<10-EPS))throw Error('166 cm pano yerleşimi 10 cm’den küçük artık oluşturuyor. Komşu paneli seçin.');
@@ -373,8 +383,8 @@
   window.openModal=function(...args){openOpening(...args);centerOpening.textContent='Bu duvar bölümüne ortala';centerOpening.hidden=!isPref()||_mT!=='pencere'||Math.abs(+$('mEn').value-160)>.01;};
   centerOpening.onclick=()=>{
     if(!_mSeg||!isPref()||_mT!=='pencere'||Math.abs(+$('mEn').value-160)>.01)return;
-    const a=getNode(_mSeg.n1),b=getNode(_mSeg.n2),L=_segLen(_mSeg),lo=ucBosluk(_mSeg,_mSeg.n1),hi=L-ucBosluk(_mSeg,_mSeg.n2),t=(lo+hi)/(2*L);
-    _mRaw=_mSp={x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};
+    const r=pfRunOf(_mSeg).run,it=r.items.find(it=>it.seg.id===_mSeg.id),center=(Math.max(r.s0,it.off)+Math.min(r.L-r.s1,it.off+it.L))/2;
+    _mRaw=_mSp={x:r.ax+r.ux*center,y:r.ay+r.uy*center};
     centerOpening.textContent='Duvar bölümünün ortası seçildi';
   };
   window.modalOk=function(){
@@ -610,5 +620,5 @@
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.96';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.97';syncUI();draw();
 })();
