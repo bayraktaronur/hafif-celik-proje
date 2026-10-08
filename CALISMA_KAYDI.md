@@ -692,3 +692,7 @@ Gerçek Yeni proje (12).json ile yatay H yerleşim hatası tekrarlandı. Sebep p
 
 ## 8 Ekim 2026 — İş PC — DEV-076 / Tuna84 imalat incelemesi
 AutoCAD2026 ile mevcut DWG geçici kopyadan yeniden okundu; kaynak hash önceki kayıtla aynı. Montaj/elektrik, makas ve omega yerleşimi, karkas ve PVC formu yazıları doğrulandı. Nesne kimlikli kanıt ve imalat çıktı paketi raporu kaydedildi. Tam blok içi/pafta kontrolü ve BOM eşlemesi açık; kod5.9.90ve canlı çizimler değişmedi. Rapor analizler/2026-10-08-tuna-imalat-inceleme.md.
+
+
+## 8 Ekim2026 — İş PC — DEV-077 / 5.9.91
+Referans görsel penceresi: dosya/Ctrl+V/drop, taşıma/boyut/zoom, ayrı IndexedDBde son görsel. JSON/model değişmez; eski5.9.87korundu. reference-image ve plan-clipboard testleri geçti; görüntü incelendi. Rapor analizler/2026-10-08-referans-gorsel.md. Önceki açık işler korunur.
