@@ -704,3 +704,6 @@ Kullanıcı görselden plan için birim seçimi ve iki prefabrik üretim yolunu 
 
 ## 8 Ekim2026 — İş PC — DEV-078 / 5.9.92ilk aşama
 Görselden Plan Oluştur giriş ekranı, zorunlu birimler/üretim yolu/yükseklik/kalınlık/çatı bilgileri, ölçü şeması ve görselli hazırlıkJSON. image-plan-brief testleri geçti. Otomatik görsel tanıma ve plan üretimi uygulanmadı; servis hesabı/bağlantısı için yanıt bekleniyor. Model ve eski5.9.87korundu. Rapor analizler/2026-10-08-gorselden-plan-hazirlik.md.
+
+## 8 Ekim 2026 — İş PC — DEV-078 / 5.9.93 internetsiz taslak
+Kullanıcı offline varsayılan ve isteğe bağlı online yaklaşımını seçti. Yerel çizgi adayları, dış sınır kutusu, iç duvar ekleme/silme/koordinat düzenleme, üç üretim yolu taslağı, gerçek duvar grafiği ve onaylı aktarım eklendi. Yedek indirme ve undo test edildi. image-plan-offline ve image-plan-brief geçti; gerçek görsel adayları incelendi. Mobilya çizgileri kullanıcı düzeltmesi gerektirir. OCR/semboller, çokgen dış sınır, otomatik çatı ve online yol açık. Ana5.9.87 ve canlı çizim korundu. Rapor analizler/2026-10-08-gorselden-plan-offline.md. Önceki açık işler korunur.
