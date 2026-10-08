@@ -5185,7 +5185,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.86',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.87',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5305,7 +5305,15 @@ updateStatus();
   function edit(mutate,{geometry=false,preserveLayout=false}={}){
     const before=state(),h=G.hist.slice(),f=future.slice(),selected=G.secili?.id,selectedType=G.seciliTip;
     try{
-      pushH();mutate();if(geometry)normalizeGraph();detectRooms();
+      pushH();mutate();
+      if(Number(before.opt.h)!==Number(G.opt.h)&&window.RoofWorkflow){
+        // The building height owns the wall seating datum, including roofs made earlier.
+        for(const z of G.roofs)if(!z.attachment)z.wallTop=Number(G.opt.h);
+        RoofWorkflow.synchronize();
+        G.roofs=G.roofs.map(z=>z.attachment?RoofCore.attachVeranda(z,G.roofs.find(p=>p.id===z.attachment.parentId)):z);
+        RoofCore.validate(G.roofs,G.roofMaterials);RoofCore.calculate(G.roofs,G.roofMaterials);
+      }
+      if(geometry)normalizeGraph();detectRooms();
       const errors=newErrors(before,state(),!preserveLayout);if(errors.length)throw Error(errors[0].message);
       if(selected){G.secili=({node:G.nodes,seg:G.segs,eleman:G.elemanlar,room:G.rooms,annotation:G.annotations,fixture:G.fixtures,counter:G.counters,dim:G.segs}[selectedType]||[]).find(o=>o.id===selected)||null;G.seciliTip=G.secili?selectedType:null;}
       updateSidebar();draw();return true;
@@ -6158,7 +6166,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.86';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.87';syncUI();draw();
 })();
 
 </script><script>

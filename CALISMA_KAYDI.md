@@ -668,3 +668,7 @@ Kullanıcı sürekli otomatik duvar kotu istedi: bağımsız ana/yavru yeni çiz
 
 ## 8 Ekim 2026 — İş PC — 5.9.86 / DEV-070
 Kullanıcının net CAD 3B isteğiyle mevcut imalat yüzeylerine WebGL sunum eklendi. Açık/koyu zemin, ince kenarlar, kenar yumuşatma, cam/metal tonları, görünene göre kamera sığdırma ve yazılımsal yedek. Hesap ve aks verileri korunur. scene-3d, omega-real-project, wall-3d, roof-auto-seat geçti; üç ekran görüntüsü incelendi. Dört kaynak görsel hash envanteriyle korundu. Rapor: analizler/2026-10-08-gpu-3b.md. Tam PBR/gölge motoru değildir. Önceki açık işler korunur; sonraki adım kullanıcının kendi cihazında görünümü değerlendirmesi. Canlı çizim değiştirilmedi.
+
+
+## 8 Ekim 2026 — İş PC — 5.9.87 / DEV-071
+Duvar yüksekliği değişiminde eski wallTop kalıyordu. Studio.edit içinde bina yüksekliğiyle ana/yavru wallTop eşitlendi, birleşimler ve bağlı veranda yeniden hesaplandı. Aynı undo işlemi; yatay aks/saçak sabit. roof-height-change ve roof-auto-seat geçti; 280cm görüntü incelendi. Kaynak görsel/hash korundu; canlı çizime dokunulmadı. Rapor analizler/2026-10-08-cati-yukseklik.md. Eski hatalı kayıt sonraki yükseklik değişiminde düzelir. Önceki açık işler korunur.
