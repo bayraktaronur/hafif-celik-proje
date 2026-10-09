@@ -268,8 +268,17 @@
       if(along<=EPS||Math.abs(across)>.0001)throw Error('Eğim devamı için veranda, ana çatının eğim yönündeki saçakta olmalı.');
       z.pitch=along*100;z.h=height(f,transform(b,{x:0,y:0}));z.group=parent.group;
     }else if(link.mode==='tek'){
-      if(Math.abs(across)>.0001)throw Error('Sundurma başlangıcı yatay bir ana saçak kenarı gerektirir.');
-      z.d=edge;z.pitch=link.pitch;z.h=height(f,transform(b,{x:b.w/2,y:edge}))-link.gap-z.pitch/100*edge;
+      let back=edge,seat=height(f,transform(b,{x:b.w/2,y:edge}));
+      if(Math.abs(across)>.0001){
+        if(Math.abs(along)>.0001)throw Error('Sundurma bağlantısı ana çatının saçak veya baş makas yüzüne paralel olmalı.');
+        // A canopy can sit below a gable face: use the lowest roof height
+        // across its width, and reach the support face behind the overhang.
+        const boundary=basePolygon(parent).map(p=>untransform(b,transform(parent,p))),hits=[];
+        boundary.forEach((p,i)=>{const q=boundary[(i+1)%boundary.length];if((p.x-b.w/2)*(q.x-b.w/2)<=EPS&&Math.abs(q.x-p.x)>EPS)hits.push(p.y+(b.w/2-p.x)*(q.y-p.y)/(q.x-p.x));});
+        if(!hits.length)throw Error('Sundurma baş makas destek sınırına ulaşmıyor.');
+        back=Math.min(...hits);seat=Math.min(...[0,b.w].map(x=>Math.min(...host.map(f=>height(f,transform(b,{x,y:back}))))));z.attachmentJoin='gable-canopy';
+      }
+      z.d=back;z.pitch=link.pitch;z.h=seat-link.gap-z.pitch/100*back;
     }else{
       Object.assign(z,turn(z),{type:link.mode,datum:'eave',h:height(f,transform(b,{x:b.w/2,y:edge})),pitch:link.pitch,group:parent.group});
       // Extend the cross roof to its intersection with the host (no truncated ridge).

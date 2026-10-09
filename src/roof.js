@@ -45,7 +45,8 @@
     const center=C.transform(parent,{x:parent.w/2,y:parent.d/2});let best=z,score=Infinity;for(let i=0;i<4;i++){const candidate=C.turn(z,i),p=C.transform(candidate,{x:candidate.w/2,y:candidate.d});const dist=Math.hypot(p.x-center.x,p.y-center.y);if(dist<score){best=candidate;score=dist;}}z=best;
     const base=Object.fromEntries(['x','y','w','d','angle','eaves'].map(k=>[k,z[k]]));base.eaves=existing?.attachment?[...existing.attachment.base.eaves]:[30,30,30,0];
     z.supports=clone(existing?.supports||{post:{width:100,depth:100,thickness:2},beam:{enabled:false,width:100,depth:100,thickness:2}});
-    z.supports.beam.enabled=$('roofVerandaBeam').value==='yes';
+    z.supports.beam.enabled=$('roofVerandaBeam').value!=='no';
+    if($('roofVerandaBeam').value==='all'){z.supports.beam.left=true;z.supports.beam.right=true;}
     z.attachment={parentId:parent.id,mode:choice,base,pitch:choice==='tek'?5:33,gap:10,minClearance:210};
     if(existing?.attachment?.mode===choice)Object.assign(z.attachment,{pitch:existing.attachment.pitch,gap:existing.attachment.gap,minClearance:existing.attachment.minClearance});
     if(commit(()=>{const i=G.roofs.findIndex(r=>r.id===z.id);if(i<0)G.roofs.push(z);else G.roofs[i]=z;})){selected=z.id;render();fit();}
@@ -129,6 +130,10 @@
     const b=z.attachment?.base||z,fs=C.zoneFaces(z),items=[],floor=z.floorLevel||0,top=p=>Math.min(...fs.map(f=>C.height(f,p)));
     const corners=z.attachment?[{x:0,y:0},{x:b.w,y:0}]:C.basePolygon(b);
     for(const m of verandaMembers(z)){const u=m.axis||{x:0,y:1},poly=[[-m.w/2,-m.d/2],[m.w/2,-m.d/2],[m.w/2,m.d/2],[-m.w/2,m.d/2]].map(([x,y])=>C.transform(b,{x:m.x+x*u.y+y*u.x,y:m.y-x*u.x+y*u.y}));poly.forEach((p,i)=>{const q=poly[(i+1)%4];items.push({kind:m.kind,poly:[{...p,z:m.bottom},{...q,z:m.bottom},{...q,z:m.top},{...p,z:m.top}],color:'#aebdcc',shade:.9});});}
+    if(z.type==='tek'){
+      const base=Math.max(...verandaMembers(z).map(m=>m.top));
+      for(const x of [0,z.w]){const p=C.transform(z,{x,y:0}),q=C.transform(z,{x,y:z.d});items.push({kind:'canopyCladding',poly:[{...p,z:base},{...q,z:base},{...q,z:top(q)},{...p,z:top(p)}],color:'#bbc2b5',shade:.9});}
+    }
     if(z.type==='besik'){
       const x=0,ys=[-z.eaves[2],z.d*z.ridge/100,z.d+z.eaves[3]],ps=ys.map(y=>C.transform(z,{x,y})),hs=ps.map(top),base=Math.max(...verandaMembers(z).map(m=>m.top));
       items.push({kind:'cladding',poly:[{...ps[0],z:base},...ps.map((p,i)=>({...p,z:hs[i]})),{...ps[2],z:base}],color:'#bbc2b5',shade:1});
