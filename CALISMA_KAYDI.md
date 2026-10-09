@@ -704,3 +704,6 @@ Kullanıcı veranda çizimini ölçü kaynağı olarak şart koştu ve eksik yan
 
 ## 9 Ekim 2026 — iş bilgisayarı, 5.9.106 / DEV-091
 Fotoğraf referansındaki tek eğimli sundurma için baş makas yüzüne bağlantı eklendi. Eski yatay saçak kısıtı bu durumda kaldırıldı; genişlikte en düşük ana çatı kotu, bağlantı payı ve öne eğim kullanılır. Arka sınır betopan destek yüzüne uzanır. Yan kapamalar eklendi. Ön+sol+sağ seçeneğinin tüm bayrakları aktarması düzeltildi. gable-canopy dört yön, ön açıklık reddi, ana/sağ çıkma örneği ve JSON geçti; veranda-joins ve veranda-gable-contact geçti. Canlı çizim korunur; son müşteri JSON'u alınmadığı için örnek geometriyle test edildi.
+
+## 9 Ekim 2026 — iş bilgisayarı, 5.9.107 / DEV-092
+Kullanıcı sundurma başlangıcını gerçek fotoğraftaki köşe direği üst hizası olarak netleştirdi. Baş makas bağlantısı ana çatı eğimli yüzeyinden değil wallTop kotundan başlar; bu durumda eski 10 cm düşüm uygulanmaz. Öne eğim korunur, yan saçak bağlantısı değişmez. gable-canopy dört yön/280 cm/JSON ve veranda-joins geçti; ayrı tarayıcı görüntüsü incelendi. Rapor: analizler/2026-10-09-sundurma-kose-kotu.md. İki kullanıcı görseli kaynak/hash kaydıyla saklandı. Canlı çizime dokunulmadı, güncel canlı JSON doğrulanmadı. Diğer açık işler DEVAM tablosunda korunur.

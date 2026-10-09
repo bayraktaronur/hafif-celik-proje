@@ -276,9 +276,9 @@
         const boundary=basePolygon(parent).map(p=>untransform(b,transform(parent,p))),hits=[];
         boundary.forEach((p,i)=>{const q=boundary[(i+1)%boundary.length];if((p.x-b.w/2)*(q.x-b.w/2)<=EPS&&Math.abs(q.x-p.x)>EPS)hits.push(p.y+(b.w/2-p.x)*(q.y-p.y)/(q.x-p.x));});
         if(!hits.length)throw Error('Sundurma baş makas destek sınırına ulaşmıyor.');
-        back=Math.min(...hits);seat=Math.min(...[0,b.w].map(x=>Math.min(...host.map(f=>height(f,transform(b,{x,y:back}))))));z.attachmentJoin='gable-canopy';
+        back=Math.min(...hits);seat=Number(parent.wallTop??parent.h);z.attachmentJoin='gable-canopy';
       }
-      z.d=back;z.pitch=link.pitch;z.h=seat-link.gap-z.pitch/100*back;
+      z.d=back;z.pitch=link.pitch;z.h=seat-(z.attachmentJoin==='gable-canopy'?0:link.gap)-z.pitch/100*back;
     }else{
       Object.assign(z,turn(z),{type:link.mode,datum:'eave',h:height(f,transform(b,{x:b.w/2,y:edge})),pitch:link.pitch,group:parent.group});
       // Extend the cross roof to its intersection with the host (no truncated ridge).

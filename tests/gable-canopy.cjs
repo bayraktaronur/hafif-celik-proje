@@ -1,7 +1,10 @@
 const assert=require('node:assert/strict'),fs=require('fs'),path=require('path'),C=require('../src/roof-core'),pw=require(path.resolve(path.dirname(process.execPath),'../node_modules/playwright'));
 const source=JSON.parse(fs.readFileSync('cizimler/gulsum-84m2/veranda-kirisli-ornek-5.9.98.json'));
 for(const rotation of [0,90,180,270]){const d=structuredClone(source),frame={x:0,y:0,angle:rotation};for(const z of d.roofs){Object.assign(z,C.transform(frame,z),{angle:(z.angle+rotation)%360});if(z.attachment){const b=z.attachment.base;Object.assign(b,C.transform(frame,b),{angle:(b.angle+rotation)%360});z.attachment.mode='tek';z.attachment.pitch=5;}}
- const z=C.attachVeranda(d.roofs[1],d.roofs[0]);assert.equal(z.attachmentJoin,'gable-canopy');assert.equal(z.type,'tek');assert.ok(z.frontClearance>=210);assert.ok(z.d>100);assert.ok(C.zoneFaces(z).every(f=>Math.abs(Math.hypot(f.a,f.b)-.05)<1e-6));assert.throws(()=>C.attachVeranda({...z,attachment:{...z.attachment,pitch:70}},d.roofs[0]),/ön açıklığı/);
+ const z=C.attachVeranda(d.roofs[1],d.roofs[0]);assert.equal(z.attachmentJoin,'gable-canopy');assert.equal(z.type,'tek');assert.ok(z.frontClearance>=210);assert.ok(z.d>100);assert.ok(C.zoneFaces(z).every(f=>Math.abs(Math.hypot(f.a,f.b)-.05)<1e-6));
+ for(const x of [0,z.w/2,z.w])assert.ok(Math.abs(C.height(C.zoneFaces(z)[0],C.transform(z,{x,y:z.d}))-d.roofs[0].wallTop)<1e-6);
+ const raised=C.attachVeranda(z,{...d.roofs[0],wallTop:280});assert.ok(Math.abs(C.height(C.zoneFaces(raised)[0],C.transform(raised,{x:0,y:raised.d}))-280)<1e-6);
+ assert.throws(()=>C.attachVeranda({...z,attachment:{...z.attachment,pitch:70}},d.roofs[0]),/ön açıklığı/);
 }
 (async()=>{const b=await pw.chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{const p=await b.newPage({viewport:{width:1700,height:1100}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
  await p.goto(require('url').pathToFileURL(path.resolve('plan_cizim.html')).href);
