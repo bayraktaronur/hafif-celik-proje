@@ -166,6 +166,7 @@
       if(z.vergeWidth!==undefined&&!num(z.vergeWidth,1,5000))fail('Alın V profil ölçüsü 1–5000 mm olmalı.');
       if(z.eaveRule&&(!num(z.eaveRule.gableMm,1,5000)||!num(z.eaveRule.sideMm,0,5000)))fail('Alın / yan saçak ölçüleri geçersiz.');
       if(z.fasciaDepth!==undefined&&!num(z.fasciaDepth,0,50))fail('görsel alın / saçak kapaması 0–50 cm olmalı.');
+      if(z.supports){for(const k of ['post','beam']){const p=z.supports[k];if(!p||!num(p.width,10,1000)||!num(p.depth,10,1000)||!num(p.thickness,.1,100)||2*p.thickness>=Math.min(p.width,p.depth))fail('veranda profil kesiti geçersiz.');}if(typeof z.supports.beam.enabled!=='boolean')fail('veranda kiriş seçimi geçersiz.');}
       if(z.attachment){const l=z.attachment,b=l.base;if(!l||!['tek','besik','karga'].includes(l.mode)||typeof l.parentId!=='string'||!b||!num(b.x,-1e6,1e6)||!num(b.y,-1e6,1e6)||!num(b.w,10,20000)||!num(b.d,10,20000)||!num(b.angle,0,360)||!Array.isArray(b.eaves)||b.eaves.length!==4||b.eaves.some(e=>!num(e,0,500))||!num(l.pitch,1,200)||!num(l.gap,0,100)||!num(l.minClearance,100,500))fail('veranda bağlantı ayarları geçersiz.');}
       if(z.wallTop!==undefined&&!num(z.wallTop,0,20000))fail('duvar üst kotu geçersiz.');
       if(z.floorLevel!==undefined&&(!num(z.floorLevel,0,20000)||z.floorLevel>=(z.wallTop??z.h)))fail('döşeme kotu duvar üstünden aşağıda olmalı.');
@@ -265,8 +266,12 @@
       const ridgeY=z.d*z.ridge/100,front=transform(z,{x:0,y:ridgeY}),dir=transform(z,{x:1,y:ridgeY}),dx=dir.x-front.x,dy=dir.y-front.y;
       const roofZ=Math.min(...zoneFaces(z).map(f=>height(f,front))),roots=[];
       host.forEach(f=>{const slope=f.a*dx+f.b*dy;if(slope<=EPS)return;const x=(roofZ-height(f,front))/slope,p={x:front.x+dx*x,y:front.y+dy*x};if(x>=edge-EPS&&contains(f.poly,p))roots.push(x);});
-      if(!roots.length)throw Error('Ek çatı mahyası ana çatıya ulaşmıyor. Ana çatı kotunu veya ek çatı eğimini düzenleyin.');
-      z.w=Math.max(z.w,Math.min(...roots));z.eaves[1]=0;
+      if(!roots.length){
+        // Parallel front gables meet along their side slopes, not at the
+        // child ridge. Use the host eave level and the full veranda depth.
+        if(Math.abs(along)>EPS||Math.abs(across)<EPS)throw Error('Ek çatı mahyası ana çatıya ulaşmıyor. Ana çatı kotunu veya ek çatı eğimini düzenleyin.');
+        z.h=Math.min(...host.flatMap(face=>face.poly.map(p=>height(face,p))));
+      }else z.w=Math.max(z.w,Math.min(...roots));z.eaves[1]=0;
     }
     z.frontClearance=Math.min(...[-b.eaves[0],b.w+b.eaves[1]].map(x=>{const p=transform(b,{x,y:-b.eaves[2]});return Math.min(...zoneFaces(z).map(f=>height(f,p)));}))-(z.floorLevel||0);
     if(z.h<0)throw Error('Veranda çatısı döşemenin altına iniyor; ana çatı kotunu veya eğimi düzeltin.');
