@@ -698,3 +698,6 @@ Kullanıcının üç işaretli ekranındaki veranda birleşimleri düzeltildi. B
 
 ## 9 Ekim 2026 — iş bilgisayarı, 5.9.104 / DEV-089
 Kullanıcı imalat detayını netleştirdi: direk baş makasa kadar kesintisiz, yatay kiriş direk iç yüzleri arasında. Önceki kısa direk hesabı değişti, profil boy/metrajı güncellendi. Alın saçak ucuna uzatıldı, dış köşe kapaması eklendi. veranda-custom, veranda-gable-contact, ceiling-panels ve veranda-joins kontrolleri geçti. Kaynaklar/hash: referanslar/gulsum-veranda/direk-kaynaklari.json. Canlı çizim ve eski yedekler korunur; diğer açık işler DEVAM içinde.
+
+## 9 Ekim 2026 — iş bilgisayarı, 5.9.105 / DEV-090
+Kullanıcı veranda çizimini ölçü kaynağı olarak şart koştu ve eksik yan kirişleri işaretledi. Yan kirişler kendi çizgi uçları ve doğrultusundan, direk/duvar yüzü paylarıyla hesaplanır; kısa sağ kiriş ev içine uzamaz. Çatı tabanı yüklemede/düzenlemede mevcut ön veranda sınırından güncellenir. Ön+sol+sağ kiriş seçeneği eklendi, isteğe bağlı bayraklar korundu. ceiling-panels testi farklı kenar boylarını ve ön sınırın 20 cm taşınmasından sonra otomatik güncellemeyi doğrular. veranda-custom, veranda-joins, veranda-gable-contact geçti. Görsel kontrol analizler/2026-10-09-veranda-sinir-kiris.png. Canlı çizim korunur. Eğik veranda sınırında Net ölçü düzenleyicisinin mevcut kısıtı devam ediyor; diğer açık işler DEVAM'da.
