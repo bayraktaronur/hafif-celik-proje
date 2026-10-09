@@ -281,6 +281,11 @@
         // child ridge. Use the host eave level and the full veranda depth.
         if(Math.abs(along)>EPS||Math.abs(across)<EPS)throw Error('Ek çatı mahyası ana çatıya ulaşmıyor. Ana çatı kotunu veya ek çatı eğimini düzenleyin.');
         z.attachmentJoin='gable';
+        // A wall face and veranda post axis differ by half a post width.
+        // Align their side overhangs when these support lines coincide.
+        const supportYs=basePolygon(parent).map(p=>untransform(z,transform(parent,p)).y),outerYs=footprint(parent).map(p=>untransform(z,transform(parent,p)).y),tolerance=(z.supports?.post?.width||100)/20;
+        if(Math.abs(Math.min(...supportYs))<=tolerance+EPS)z.eaves[2]=Math.max(0,-Math.min(...outerYs));
+        if(Math.abs(Math.max(...supportYs)-z.d)<=tolerance+EPS)z.eaves[3]=Math.max(0,Math.max(...outerYs)-z.d);
         const ends=[-z.eaves[2],z.d+z.eaves[3]].map(y=>transform(z,{x:edge,y}));
         z.h=Math.min(...ends.map(p=>Math.min(...host.map(f=>height(f,p)))));
       }else z.w=Math.max(z.w,Math.min(...roots));z.eaves[1]=0;

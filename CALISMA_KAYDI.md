@@ -692,3 +692,6 @@ Beşik veranda kaplaması ana çatının saçak ucunda kesilmek yerine baş maka
 
 ## 9 Ekim 2026 — iş bilgisayarı, 5.9.102 / DEV-087
 Sekmeler sürüklenerek sıralanır; aktif çizim değişmez, sıra kaydedilir. Her sekmede görünür X vardır. Kaydedilmiş olsa bile çizim içeren sekme onayla kapatılır; iptal korunur. project-tab-order ve project-tabs geçti. Veranda çizme ve özel ölçü adımları analizler/2026-10-09-sekme-siralama.md içinde kayıtlı. Eski yedekler ve DEVAM açık işleri korunur; canlı çizim değiştirilmedi.
+
+## 9 Ekim 2026 — iş bilgisayarı, 5.9.103 / DEV-088
+Kullanıcının üç işaretli ekranındaki veranda birleşimleri düzeltildi. Beşik veranda alın yüzeyi tek kaynaktan üretilir ve kiriş üstünde biter; tavan/kiriş altı duvar kotuyla sınırlandırılır; ortak yan saçak destek yüzü/aks farkını telafi eder. veranda-custom, ceiling-panels, veranda-gable-contact ve veranda-joins geçti. Alttan 3B kontrol edildi. Rapor: analizler/2026-10-09-veranda-kapanis.md. Canlı çizime dokunulmadı; eski yedekler ve diğer açık işler korunur.

@@ -572,6 +572,11 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
         // child ridge. Use the host eave level and the full veranda depth.
         if(Math.abs(along)>EPS||Math.abs(across)<EPS)throw Error('Ek çatı mahyası ana çatıya ulaşmıyor. Ana çatı kotunu veya ek çatı eğimini düzenleyin.');
         z.attachmentJoin='gable';
+        // A wall face and veranda post axis differ by half a post width.
+        // Align their side overhangs when these support lines coincide.
+        const supportYs=basePolygon(parent).map(p=>untransform(z,transform(parent,p)).y),outerYs=footprint(parent).map(p=>untransform(z,transform(parent,p)).y),tolerance=(z.supports?.post?.width||100)/20;
+        if(Math.abs(Math.min(...supportYs))<=tolerance+EPS)z.eaves[2]=Math.max(0,-Math.min(...outerYs));
+        if(Math.abs(Math.max(...supportYs)-z.d)<=tolerance+EPS)z.eaves[3]=Math.max(0,Math.max(...outerYs)-z.d);
         const ends=[-z.eaves[2],z.d+z.eaves[3]].map(y=>transform(z,{x:edge,y}));
         z.h=Math.min(...ends.map(p=>Math.min(...host.map(f=>height(f,p)))));
       }else z.w=Math.max(z.w,Math.min(...roots));z.eaves[1]=0;
@@ -5207,7 +5212,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.102',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.103',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6260,7 +6265,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.102';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.103';syncUI();draw();
 })();
 
 </script><script>
@@ -7072,8 +7077,9 @@ window.Wall3D={build,panelColor};
   function path(ctx,poly,project){ctx.beginPath();poly.forEach((p,i)=>{const q=project(p);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();}
   function verandaMembers(z){
     const b=z.attachment?.base||z,s=supportSettings(z),fs=C.zoneFaces(z),floor=z.floorLevel||0,top=p=>Math.min(...fs.map(f=>C.height(f,p)));
-    const corners=z.attachment?[{x:0,y:0},{x:b.w,y:0}]:C.basePolygon(b),level=Math.min(...corners.map(c=>top(C.transform(b,c)))),beam=s.beam.enabled||s.beam.left||s.beam.right;
-    const parts=corners.map(c=>({kind:'post',profile:s.post,x:c.x,y:c.y,w:s.post.width/10,d:s.post.depth/10,bottom:floor,top:beam?level-s.beam.depth/10:top(C.transform(b,c))}));
+    const corners=z.attachment?[{x:0,y:0},{x:b.w,y:0}]:C.basePolygon(b),beam=s.beam.enabled||s.beam.left||s.beam.right;
+    const level=Math.min(...corners.map(c=>top(C.transform(b,c))),z.type==='besik'?Number(z.wallTop??G.opt.h)+(beam?s.beam.depth/10:0):Infinity);
+    const parts=corners.map(c=>({kind:'post',profile:s.post,x:c.x,y:c.y,w:s.post.width/10,d:s.post.depth/10,bottom:floor,top:beam?level-s.beam.depth/10:level}));
     if(s.beam.enabled)parts.push({label:'Ön kiriş',kind:'beam',profile:s.beam,x:b.w/2,y:0,w:b.w-s.post.width/10,d:s.beam.width/10,bottom:level-s.beam.depth/10,top:level});
     for(const [side,x] of [['left',0],['right',b.w]])if(s.beam[side])parts.push({label:side==='left'?'Sol yan kiriş':'Sağ yan kiriş',kind:'beam',profile:s.beam,x,y:(b.d+s.post.depth/10)/2,w:s.beam.width/10,d:b.d-s.post.depth/10,bottom:level-s.beam.depth/10,top:level,side:true});
     parts.forEach(p=>{p.length=p.kind==='post'?p.top-p.bottom:p.side?p.d:p.w;if(p.length<=0)throw Error('Veranda profili için pozitif net boy kalmıyor.');});return parts;
@@ -7083,7 +7089,7 @@ window.Wall3D={build,panelColor};
     const corners=z.attachment?[{x:0,y:0},{x:b.w,y:0}]:C.basePolygon(b);
     for(const m of verandaMembers(z)){const poly=[[-m.w/2,-m.d/2],[m.w/2,-m.d/2],[m.w/2,m.d/2],[-m.w/2,m.d/2]].map(([x,y])=>C.transform(b,{x:m.x+x,y:m.y+y}));poly.forEach((p,i)=>{const q=poly[(i+1)%4];items.push({kind:m.kind,poly:[{...p,z:m.bottom},{...q,z:m.bottom},{...q,z:m.top},{...p,z:m.top}],color:'#aebdcc',shade:.9});});}
     if(z.type==='besik'){
-      const x=0,ys=[0,z.d*z.ridge/100,z.d],ps=ys.map(y=>C.transform(z,{x,y})),hs=ps.map(top),base=Math.min(hs[0],hs[2]);
+      const x=0,ys=[0,z.d*z.ridge/100,z.d],ps=ys.map(y=>C.transform(z,{x,y})),hs=ps.map(top),base=Math.max(...verandaMembers(z).map(m=>m.top));
       items.push({kind:'cladding',poly:[{...ps[0],z:base},...ps.map((p,i)=>({...p,z:hs[i]})),{...ps[2],z:base}],color:'#bbc2b5',shade:1});
     }
     return items;
@@ -7167,7 +7173,7 @@ window.Wall3D={build,panelColor};
       items.push({poly:poly.map(p=>({...p,z:top})),color:'#718292',segmentId:s.id});
     }
     // Gable infill follows the roof support boundary, independently of floor walls.
-    for(const z of G.roofs){if(z.type!=='besik')continue;const base=z.childJoin?.support?z.childJoin.support.map(p=>C.untransform(z,p)):C.basePolygon(z),faces=C.zoneFaces(z),level=z.wallTop??top;
+    for(const z of G.roofs){if(z.type!=='besik'||z.sourceRoomId)continue;const base=z.childJoin?.support?z.childJoin.support.map(p=>C.untransform(z,p)):C.basePolygon(z),faces=C.zoneFaces(z),level=z.wallTop??top;
      base.forEach((v,i)=>{let w=base[(i+1)%base.length];if(Math.abs(v.x-w.x)>.001)return;
       // Continue gable infill through the small eave-end triangles to the trim.
       const footprint=C.footprint(z);

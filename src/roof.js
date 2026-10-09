@@ -100,8 +100,9 @@
   function path(ctx,poly,project){ctx.beginPath();poly.forEach((p,i)=>{const q=project(p);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();}
   function verandaMembers(z){
     const b=z.attachment?.base||z,s=supportSettings(z),fs=C.zoneFaces(z),floor=z.floorLevel||0,top=p=>Math.min(...fs.map(f=>C.height(f,p)));
-    const corners=z.attachment?[{x:0,y:0},{x:b.w,y:0}]:C.basePolygon(b),level=Math.min(...corners.map(c=>top(C.transform(b,c)))),beam=s.beam.enabled||s.beam.left||s.beam.right;
-    const parts=corners.map(c=>({kind:'post',profile:s.post,x:c.x,y:c.y,w:s.post.width/10,d:s.post.depth/10,bottom:floor,top:beam?level-s.beam.depth/10:top(C.transform(b,c))}));
+    const corners=z.attachment?[{x:0,y:0},{x:b.w,y:0}]:C.basePolygon(b),beam=s.beam.enabled||s.beam.left||s.beam.right;
+    const level=Math.min(...corners.map(c=>top(C.transform(b,c))),z.type==='besik'?Number(z.wallTop??G.opt.h)+(beam?s.beam.depth/10:0):Infinity);
+    const parts=corners.map(c=>({kind:'post',profile:s.post,x:c.x,y:c.y,w:s.post.width/10,d:s.post.depth/10,bottom:floor,top:beam?level-s.beam.depth/10:level}));
     if(s.beam.enabled)parts.push({label:'Ön kiriş',kind:'beam',profile:s.beam,x:b.w/2,y:0,w:b.w-s.post.width/10,d:s.beam.width/10,bottom:level-s.beam.depth/10,top:level});
     for(const [side,x] of [['left',0],['right',b.w]])if(s.beam[side])parts.push({label:side==='left'?'Sol yan kiriş':'Sağ yan kiriş',kind:'beam',profile:s.beam,x,y:(b.d+s.post.depth/10)/2,w:s.beam.width/10,d:b.d-s.post.depth/10,bottom:level-s.beam.depth/10,top:level,side:true});
     parts.forEach(p=>{p.length=p.kind==='post'?p.top-p.bottom:p.side?p.d:p.w;if(p.length<=0)throw Error('Veranda profili için pozitif net boy kalmıyor.');});return parts;
@@ -111,7 +112,7 @@
     const corners=z.attachment?[{x:0,y:0},{x:b.w,y:0}]:C.basePolygon(b);
     for(const m of verandaMembers(z)){const poly=[[-m.w/2,-m.d/2],[m.w/2,-m.d/2],[m.w/2,m.d/2],[-m.w/2,m.d/2]].map(([x,y])=>C.transform(b,{x:m.x+x,y:m.y+y}));poly.forEach((p,i)=>{const q=poly[(i+1)%4];items.push({kind:m.kind,poly:[{...p,z:m.bottom},{...q,z:m.bottom},{...q,z:m.top},{...p,z:m.top}],color:'#aebdcc',shade:.9});});}
     if(z.type==='besik'){
-      const x=0,ys=[0,z.d*z.ridge/100,z.d],ps=ys.map(y=>C.transform(z,{x,y})),hs=ps.map(top),base=Math.min(hs[0],hs[2]);
+      const x=0,ys=[0,z.d*z.ridge/100,z.d],ps=ys.map(y=>C.transform(z,{x,y})),hs=ps.map(top),base=Math.max(...verandaMembers(z).map(m=>m.top));
       items.push({kind:'cladding',poly:[{...ps[0],z:base},...ps.map((p,i)=>({...p,z:hs[i]})),{...ps[2],z:base}],color:'#bbc2b5',shade:1});
     }
     return items;
@@ -195,7 +196,7 @@
       items.push({poly:poly.map(p=>({...p,z:top})),color:'#718292',segmentId:s.id});
     }
     // Gable infill follows the roof support boundary, independently of floor walls.
-    for(const z of G.roofs){if(z.type!=='besik')continue;const base=z.childJoin?.support?z.childJoin.support.map(p=>C.untransform(z,p)):C.basePolygon(z),faces=C.zoneFaces(z),level=z.wallTop??top;
+    for(const z of G.roofs){if(z.type!=='besik'||z.sourceRoomId)continue;const base=z.childJoin?.support?z.childJoin.support.map(p=>C.untransform(z,p)):C.basePolygon(z),faces=C.zoneFaces(z),level=z.wallTop??top;
      base.forEach((v,i)=>{let w=base[(i+1)%base.length];if(Math.abs(v.x-w.x)>.001)return;
       // Continue gable infill through the small eave-end triangles to the trim.
       const footprint=C.footprint(z);
