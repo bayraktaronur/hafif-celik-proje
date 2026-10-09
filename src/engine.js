@@ -1084,10 +1084,10 @@ function metrajKalemleri(){
     function m2(v){return Math.round(v*100)/100;}
     var gB='Alçıpan — Beyaz (kuru mahaller)',gY='Alçıpan — Yeşil (ıslak mahaller + veranda tavanı)';
     if(AL.beyazDuvar>0)ekle(gB,'Beyaz alçıpan — Duvar',m2(AL.beyazDuvar).toString().replace('.',',')+' m² net'+fr,'levha',levhaAdet(AL.beyazDuvar));
-    ekle(gB,'Beyaz alçıpan — Tavan',m2(AL.beyazTavan).toString().replace('.',',')+' m² net'+fr,'levha',levhaAdet(AL.beyazTavan));
+    ekle(gB,'Beyaz alçıpan — Tavan',m2(AL.beyazTavan).toString().replace('.',',')+' m² net · 60×125 cm pano'+fr,'levha',Math.ceil(AL.beyazTavan*(1+ALCI.FIRE/100)/0.75-1e-9));
     if(AL.yesilDuvar>0)ekle(gY,'Yeşil alçıpan — Duvar (banyo/WC)',m2(AL.yesilDuvar).toString().replace('.',',')+' m² net'+fr,'levha',levhaAdet(AL.yesilDuvar));
-    ekle(gY,'Yeşil alçıpan — Tavan (banyo/WC)',m2(AL.yesilTavan).toString().replace('.',',')+' m² net'+fr,'levha',levhaAdet(AL.yesilTavan));
-    ekle(gY,'Yeşil alçıpan — Veranda tavanı',m2(AL.verTavan).toString().replace('.',',')+' m² net'+fr,'levha',levhaAdet(AL.verTavan));
+    ekle(gY,'Yeşil alçıpan — Tavan (banyo/WC)',m2(AL.yesilTavan).toString().replace('.',',')+' m² net · 60×125 cm pano'+fr,'levha',Math.ceil(AL.yesilTavan*(1+ALCI.FIRE/100)/0.75-1e-9));
+    ekle(gY,'Yeşil alçıpan — Veranda tavanı',m2(AL.verTavan).toString().replace('.',',')+' m² net · 60×125 cm pano'+fr,'levha',Math.ceil(AL.verTavan*(1+ALCI.FIRE/100)/0.75-1e-9));
     // Dış cephe kaplaması
     var CP=cepheHesap();
     if(CP&&G.opt.cephe!=='yok'){
@@ -3976,11 +3976,11 @@ function updatePanelBox(){
       return '<div style="color:#d29922;margin-top:5px">⚠ '+o.length+' bölme duvarı H\'a çok yakın ('+o.map(function(x){return fmtCm(Math.abs(x.d));}).join(', ')+' cm) — çektirme U sayılıyor</div>'+
         '<button class="sib" style="margin-top:3px;border-color:#d29922;color:#d29922" onclick="pfUHaOturt()">↦ H\'a oturt (3\'lü H yap)</button>';})()+
     (function(){if(!G.rooms.length)return '';var AL=alcipanHesap();
-      var b=levhaAdet(AL.beyazDuvar)+levhaAdet(AL.beyazTavan),y=levhaAdet(AL.yesilDuvar)+levhaAdet(AL.yesilTavan)+levhaAdet(AL.verTavan);
+      var b=levhaAdet(AL.beyazDuvar)+Math.ceil(AL.beyazTavan*(1+ALCI.FIRE/100)/0.75-1e-9),y=levhaAdet(AL.yesilDuvar)+Math.ceil(AL.yesilTavan*(1+ALCI.FIRE/100)/0.75-1e-9)+Math.ceil(AL.verTavan*(1+ALCI.FIRE/100)/0.75-1e-9);
       return '<div style="margin:6px 0 2px;color:#8b949e;font-weight:600">Alçıpan (120×250, fire %'+ALCI.FIRE+')</div>'+
-        r('Beyaz — duvar / tavan',levhaAdet(AL.beyazDuvar)+' / '+levhaAdet(AL.beyazTavan))+
-        r('Yeşil — duvar / tavan',levhaAdet(AL.yesilDuvar)+' / '+levhaAdet(AL.yesilTavan))+
-        r('Yeşil — veranda tavanı',levhaAdet(AL.verTavan))+
+        r('Beyaz — duvar / tavan',levhaAdet(AL.beyazDuvar)+' / '+Math.ceil(AL.beyazTavan*(1+ALCI.FIRE/100)/0.75-1e-9))+
+        r('Yeşil — duvar / tavan',levhaAdet(AL.yesilDuvar)+' / '+Math.ceil(AL.yesilTavan*(1+ALCI.FIRE/100)/0.75-1e-9))+
+        r('Yeşil — veranda tavanı',Math.ceil(AL.verTavan*(1+ALCI.FIRE/100)/0.75-1e-9))+
         r('Kapı / pencere boşluğu',(Math.round(AL.kapiM2*100)/100)+' / '+(Math.round(AL.pencereM2*100)/100)+' m²')+
         (function(){if(G.opt.cephe==='yok')return '';var C=cepheHesap();if(!C)return '';
           return '<div style="margin:6px 0 2px;color:#8b949e;font-weight:600">Dış cephe — '+(G.opt.cephe==='tasonit'?'Taşonit':'Yalıpan')+'</div>'+
