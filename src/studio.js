@@ -8,13 +8,13 @@
   let future=[],restoring=false,autoTimer,toastTimer,analysisTimer,lastStored='',fileSnapshot='',storageReady=true,pendingRecovery=null,gesture=null;
   let projectName='Yeni proje',activeTab='properties',lastAnalysis='';
   const WORKSPACE='prefabrikten.planstudio.documents.v1';
-  let documents=[],documentIndex=-1,documentsReady=false,lastWorkspace='';
+  let documents=[],documentIndex=-1,documentsReady=false,lastWorkspace='',draggedDocument=null;
   G.ortho=false;G.inputUnit='panel';
   const clone=o=>JSON.parse(JSON.stringify(o));
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.101',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.102',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -23,9 +23,15 @@
   function captureDocument(){return {project:state(),history:G.hist.slice(),future:future.slice(),fileSnapshot,zoom:G.zoom,pan:clone(G.pan)};}
   function captureActive(){if(documentIndex>=0)documents[documentIndex]=captureDocument();}
   function renderDocuments(){
-    const bar=$('projectTabs');if(!bar)return;
+    const bar=$('projectTabs');if(!bar||draggedDocument!==null)return;
     bar.replaceChildren();documents.forEach((d,i)=>{const item=document.createElement('div');item.className='project-tab'+(i===documentIndex?' active':'');
       const button=document.createElement('button');button.type='button';button.setAttribute('role','tab');button.setAttribute('aria-selected',String(i===documentIndex));button.textContent=(d.project.projectName||'Yeni proje')+(JSON.stringify(d.project)!==d.fileSnapshot?' *':'');button.title=d.project.projectName;button.onclick=()=>switchDocument(i);
+      button.draggable=true;button.title+=' · Sıralamak için sürükleyin';
+      button.ondragstart=e=>{draggedDocument=i;e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',String(i));item.classList.add('dragging');};
+      button.ondragend=()=>{draggedDocument=null;renderDocuments();};
+      item.ondragover=e=>{if(draggedDocument===null)return;e.preventDefault();e.dataTransfer.dropEffect='move';item.classList.add('drop-target');};
+      item.ondragleave=()=>item.classList.remove('drop-target');
+      item.ondrop=e=>{if(draggedDocument===null)return;e.preventDefault();const from=draggedDocument;draggedDocument=null;moveDocument(from,i);};
       const close=document.createElement('button');close.type='button';close.className='project-tab-close';close.textContent='×';close.setAttribute('aria-label',(d.project.projectName||'Yeni proje')+' sekmesini kapat');close.onclick=()=>closeDocument(i);item.append(button,close);bar.append(item);
     });const plus=document.createElement('button');plus.type='button';plus.className='tb';plus.textContent='＋ Yeni proje';plus.onclick=()=>yeniPlan();bar.append(plus);
   }
@@ -48,11 +54,15 @@
   }
   function closeDocument(i){
     captureActive();const d=documents[i];if(!d)return;
-    if(JSON.stringify(d.project)!==d.fileSnapshot&&!confirm('“'+(d.project.projectName||'Yeni proje')+'” dosyaya kaydedilmemiş değişiklikler içeriyor. Sekme kapatılsın mı? İptal edip Kaydet ile JSON indirebilirsiniz.'))return;
+    if((hasWork(d.project)||JSON.stringify(d.project)!==d.fileSnapshot)&&!confirm('“'+(d.project.projectName||'Yeni proje')+'” '+(JSON.stringify(d.project)!==d.fileSnapshot?'dosyaya kaydedilmemiş değişiklikler içeriyor.':'çizim içeriyor.')+' Sekme kapatılsın mı? İptal edip Kaydet ile JSON indirebilirsiniz.'))return;
     try{if(hasWork(d.project))checkpoint({savedAt:new Date().toISOString(),project:d.project});}catch{toast('Kapatmadan önce Kaydet ile dosyaya indirin; yedek alınamadı.',true);return;}
     if(documents.length===1){yeniPlan();documents.splice(i,1);documentIndex=0;}
     else{const active=i===documentIndex;documents.splice(i,1);if(active){documentIndex=Math.min(i,documents.length-1);restoreDocument(documents[documentIndex]);}else if(i<documentIndex)documentIndex--;}
     persist();renderDocuments();
+  }
+  function moveDocument(from,to){
+    if(!documents[from]||!documents[to]||from===to){renderDocuments();return;}
+    captureActive();const active=documents[documentIndex],moved=documents.splice(from,1)[0];documents.splice(to,0,moved);documentIndex=documents.indexOf(active);persist();renderDocuments();
   }
   function resetInteraction(){
     G.selPanels=[];G.panelAnchor=null;

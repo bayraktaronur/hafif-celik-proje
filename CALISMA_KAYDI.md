@@ -689,3 +689,6 @@ Kullanıcı otomatik görsel okuma çalışmasını sonraya saklamayı ve eski y
 
 ## 9 Ekim 2026 — iş bilgisayarı, 5.9.101 / DEV-086
 Beşik veranda kaplaması ana çatının saçak ucunda kesilmek yerine baş makas betopanına ulaşır. Ortak eğimde kot eşitlenir; iç alın kenarı kaldırılır. Eski kayıtlar yeniden çözülür, kat planı ve destek kesitleri korunur. Gable-contact (dört yön, eski JSON), veranda-joins, veranda-custom ve ceiling-panels testleri geçti. Rapor: analizler/2026-10-09-veranda-betopana-birlesim.md. Kullanıcı ekranları referanslara kopyalandı; canlı çizim değiştirilmedi. DEV-080 ertelenmiş durumda, diğer açık işler DEVAM tablosunda korunur. Sıradaki adım kullanıcının mevcut projesinde yeni sürümü açıp birleşimi kontrol etmesi.
+
+## 9 Ekim 2026 — iş bilgisayarı, 5.9.102 / DEV-087
+Sekmeler sürüklenerek sıralanır; aktif çizim değişmez, sıra kaydedilir. Her sekmede görünür X vardır. Kaydedilmiş olsa bile çizim içeren sekme onayla kapatılır; iptal korunur. project-tab-order ve project-tabs geçti. Veranda çizme ve özel ölçü adımları analizler/2026-10-09-sekme-siralama.md içinde kayıtlı. Eski yedekler ve DEVAM açık işleri korunur; canlı çizim değiştirilmedi.
