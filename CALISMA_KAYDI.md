@@ -695,3 +695,6 @@ Sekmeler sürüklenerek sıralanır; aktif çizim değişmez, sıra kaydedilir. 
 
 ## 9 Ekim 2026 — iş bilgisayarı, 5.9.103 / DEV-088
 Kullanıcının üç işaretli ekranındaki veranda birleşimleri düzeltildi. Beşik veranda alın yüzeyi tek kaynaktan üretilir ve kiriş üstünde biter; tavan/kiriş altı duvar kotuyla sınırlandırılır; ortak yan saçak destek yüzü/aks farkını telafi eder. veranda-custom, ceiling-panels, veranda-gable-contact ve veranda-joins geçti. Alttan 3B kontrol edildi. Rapor: analizler/2026-10-09-veranda-kapanis.md. Canlı çizime dokunulmadı; eski yedekler ve diğer açık işler korunur.
+
+## 9 Ekim 2026 — iş bilgisayarı, 5.9.104 / DEV-089
+Kullanıcı imalat detayını netleştirdi: direk baş makasa kadar kesintisiz, yatay kiriş direk iç yüzleri arasında. Önceki kısa direk hesabı değişti, profil boy/metrajı güncellendi. Alın saçak ucuna uzatıldı, dış köşe kapaması eklendi. veranda-custom, veranda-gable-contact, ceiling-panels ve veranda-joins kontrolleri geçti. Kaynaklar/hash: referanslar/gulsum-veranda/direk-kaynaklari.json. Canlı çizim ve eski yedekler korunur; diğer açık işler DEVAM içinde.

@@ -102,7 +102,7 @@
     const b=z.attachment?.base||z,s=supportSettings(z),fs=C.zoneFaces(z),floor=z.floorLevel||0,top=p=>Math.min(...fs.map(f=>C.height(f,p)));
     const corners=z.attachment?[{x:0,y:0},{x:b.w,y:0}]:C.basePolygon(b),beam=s.beam.enabled||s.beam.left||s.beam.right;
     const level=Math.min(...corners.map(c=>top(C.transform(b,c))),z.type==='besik'?Number(z.wallTop??G.opt.h)+(beam?s.beam.depth/10:0):Infinity);
-    const parts=corners.map(c=>({kind:'post',profile:s.post,x:c.x,y:c.y,w:s.post.width/10,d:s.post.depth/10,bottom:floor,top:beam?level-s.beam.depth/10:level}));
+    const parts=corners.map(c=>({kind:'post',profile:s.post,x:c.x,y:c.y,w:s.post.width/10,d:s.post.depth/10,bottom:floor,top:level}));
     if(s.beam.enabled)parts.push({label:'Ön kiriş',kind:'beam',profile:s.beam,x:b.w/2,y:0,w:b.w-s.post.width/10,d:s.beam.width/10,bottom:level-s.beam.depth/10,top:level});
     for(const [side,x] of [['left',0],['right',b.w]])if(s.beam[side])parts.push({label:side==='left'?'Sol yan kiriş':'Sağ yan kiriş',kind:'beam',profile:s.beam,x,y:(b.d+s.post.depth/10)/2,w:s.beam.width/10,d:b.d-s.post.depth/10,bottom:level-s.beam.depth/10,top:level,side:true});
     parts.forEach(p=>{p.length=p.kind==='post'?p.top-p.bottom:p.side?p.d:p.w;if(p.length<=0)throw Error('Veranda profili için pozitif net boy kalmıyor.');});return parts;
@@ -112,8 +112,13 @@
     const corners=z.attachment?[{x:0,y:0},{x:b.w,y:0}]:C.basePolygon(b);
     for(const m of verandaMembers(z)){const poly=[[-m.w/2,-m.d/2],[m.w/2,-m.d/2],[m.w/2,m.d/2],[-m.w/2,m.d/2]].map(([x,y])=>C.transform(b,{x:m.x+x,y:m.y+y}));poly.forEach((p,i)=>{const q=poly[(i+1)%4];items.push({kind:m.kind,poly:[{...p,z:m.bottom},{...q,z:m.bottom},{...q,z:m.top},{...p,z:m.top}],color:'#aebdcc',shade:.9});});}
     if(z.type==='besik'){
-      const x=0,ys=[0,z.d*z.ridge/100,z.d],ps=ys.map(y=>C.transform(z,{x,y})),hs=ps.map(top),base=Math.max(...verandaMembers(z).map(m=>m.top));
+      const x=0,ys=[-z.eaves[2],z.d*z.ridge/100,z.d+z.eaves[3]],ps=ys.map(y=>C.transform(z,{x,y})),hs=ps.map(top),base=Math.max(...verandaMembers(z).map(m=>m.top));
       items.push({kind:'cladding',poly:[{...ps[0],z:base},...ps.map((p,i)=>({...p,z:hs[i]})),{...ps[2],z:base}],color:'#bbc2b5',shade:1});
+      const half=supportSettings(z).post.width/20;
+      for(const [lo,hi] of [[-z.eaves[2],-half],[z.d+half,z.d+z.eaves[3]]]){
+        if(hi<=lo)continue;const p=C.transform(z,{x,y:lo}),q=C.transform(z,{x,y:hi}),bottom=Math.min(...hs)-(z.fasciaDepth??15);
+        if(bottom<base)items.push({kind:'gableCornerClosure',poly:[{...p,z:bottom},{...q,z:bottom},{...q,z:base},{...p,z:base}],color:'#bbc2b5',shade:1});
+      }
     }
     return items;
   }
