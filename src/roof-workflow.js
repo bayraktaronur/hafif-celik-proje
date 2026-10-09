@@ -64,6 +64,7 @@
     const source=G.roofs.find(r=>r.id===z.production.parentId);if(!source)throw Error('Yavru çatının bağlandığı çatı bulunamadı.');const parent=resolve(source);
     if(z.childJoin){reanchor(z,previous.find(p=>p.id===parent.id),parent);z=C.connectChild(z,parent);z.production.relative=((z.angle-parent.angle)%180+180)%180;}else z=align(z,((parent.angle%180)+z.production.relative)%180);z.group=parent.group;
    }
+   if(z.attachment){const parent=G.roofs.find(p=>p.id===z.attachment.parentId);z=C.attachVeranda(z,parent?resolve(parent):null);}
    visiting.delete(z.id);resolved.set(z.id,z);return z;
   }
   G.roofs=G.roofs.map(resolve);

@@ -181,7 +181,16 @@
         const g=raw[j];if(g.zoneId===f.zoneId||g.group!==f.group)continue;
         const a=g.a-f.a,b=g.b-f.b,c=g.c-f.c;
         if(Math.abs(a)+Math.abs(b)+Math.abs(c)<EPS&&j<i)continue; // one owner of coincident planes
-        const cutter=clip(g.poly,a,b,c);if(cutter.length)parts=parts.flatMap(p=>subtract(p,cutter));
+        let cutters=[clip(g.poly,a,b,c)];
+        const child=zones.find(z=>z.id===f.zoneId);
+        // A lower gable veranda continues beneath the host overhang up to
+        // its betopan support plane. Coplanar sheets still have one owner.
+        if(child?.attachmentJoin==='gable'&&child.attachment.parentId===g.zoneId&&Math.abs(a)+Math.abs(b)+Math.abs(c)>EPS){
+          const parent=zones.find(z=>z.id===g.zoneId);
+          const support=basePolygon(parent).map(p=>transform(parent,p));
+          cutters=triangulate(support).map(p=>intersect(cutters[0],p));
+        }
+        for(const cutter of cutters)if(cutter.length)parts=parts.flatMap(p=>subtract(p,cutter));
         if(parts.length>1200)throw Error('Çatı birleşimi fazla karmaşık; bölümleri ayrı gruplara ayırın.');
       }
       out.push(...parts.map(poly=>({...f,poly})));if(out.length>500)throw Error('Çatı yüzey sınırı aşıldı. Bölümleri sadeleştirin.');
@@ -246,6 +255,7 @@
   // the extended roof footprint so columns stay on the veranda axes.
   function attachVeranda(input,parent){
     const z=clone(input),link=z.attachment,b=link.base;
+    delete z.attachmentJoin;
     if(!parent||parent.id===z.id||parent.sourceRoomId)throw Error('Veranda için bir ana çatı seçin.');
     const host=zoneFaces(parent),outline=footprint(parent).map(p=>untransform(b,transform(parent,p))),crossings=[];
     outline.forEach((p,i)=>{const q=outline[(i+1)%outline.length];if((p.x-b.w/2)*(q.x-b.w/2)<=EPS&&Math.abs(q.x-p.x)>EPS)crossings.push(p.y+(b.w/2-p.x)*(q.y-p.y)/(q.x-p.x));});
@@ -270,7 +280,9 @@
         // Parallel front gables meet along their side slopes, not at the
         // child ridge. Use the host eave level and the full veranda depth.
         if(Math.abs(along)>EPS||Math.abs(across)<EPS)throw Error('Ek çatı mahyası ana çatıya ulaşmıyor. Ana çatı kotunu veya ek çatı eğimini düzenleyin.');
-        z.h=Math.min(...host.flatMap(face=>face.poly.map(p=>height(face,p))));
+        z.attachmentJoin='gable';
+        const ends=[-z.eaves[2],z.d+z.eaves[3]].map(y=>transform(z,{x:edge,y}));
+        z.h=Math.min(...ends.map(p=>Math.min(...host.map(f=>height(f,p)))));
       }else z.w=Math.max(z.w,Math.min(...roots));z.eaves[1]=0;
     }
     z.frontClearance=Math.min(...[-b.eaves[0],b.w+b.eaves[1]].map(x=>{const p=transform(b,{x,y:-b.eaves[2]});return Math.min(...zoneFaces(z).map(f=>height(f,p)));}))-(z.floorLevel||0);
