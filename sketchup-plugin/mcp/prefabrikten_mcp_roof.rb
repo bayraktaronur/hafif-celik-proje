@@ -80,6 +80,11 @@ module PrefabriktenMCPRoof
           sheets+=1;raise 'Too many sheets.' if sheets>200
           sheet=root.entities.add_group;sheet.name=format('T%03d / yüzey %d',sheets,index+1)
           a=lo+i*1000;b=[a+1000,hi].min
+          # Anchor in covered geometry rather than a bounding-box void at a valley.
+          label_poly=f['polygons'].map { |poly| clip(clip(poly,axis,a,1),axis,b,-1) }.select { |q| q.length>=3 }.max_by do |q|
+            q.each_index.sum { |k| q[k][0]*q[(k+1)%q.length][1]-q[(k+1)%q.length][0]*q[k][1] }.abs
+          end
+          raise 'Empty sheet strip.' unless label_poly
           cuts=([a,b]+(0..5).flat_map { |j| [21,63,137,179].map { |v| a+j*200+v } }).select { |x| x>=a && x<=b }.sort.uniq
           cuts.each_cons(2) do |left,right|
             f['polygons'].each do |poly|
@@ -99,6 +104,12 @@ module PrefabriktenMCPRoof
           end
           sheet.material=Sketchup::Color.new(*(i.even? ? [211,211,211] : [192,192,192]))
           sheet.set_attribute('PrefabriktenRoof','net_width_mm',b-a)
+          code=format('T%03d',sheets)
+          x=label_poly.sum { |v| v[0] }/label_poly.length.to_f
+          y=label_poly.sum { |v| v[1] }/label_poly.length.to_f
+          z=(d-n[0]*x-n[1]*y)/n[2]
+          sheet.entities.add_text(code,Geom::Point3d.new((x+n[0]*45).mm,(y+n[1]*45).mm,(z+n[2]*45).mm))
+          sheet.set_attribute('PrefabriktenRoof','code',code)
           sheet.set_attribute('PrefabriktenRoof','profile','27/200 nominal; illustrative crest42 valley74; thickness unspecified')
         end
       end

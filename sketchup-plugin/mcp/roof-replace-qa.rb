@@ -23,6 +23,7 @@ module Sketchup
   def self.active_model=(m); @model=m; end
 end
 class Entities < Array
+  def add_text(code,point); self << code; end
   def add_group; g=Sketchup::Group.new(100+length); self << g; g; end
   def add_face(*)
     raise 'geometry failed' if Sketchup.active_model.fail
@@ -61,6 +62,7 @@ raise unless m.aborts==1 && m.entities.length==2 && !old.erased
 m.fail=false
 PrefabriktenMCPRoof.create(req)
 raise unless old.erased && !source.erased && m.commits==1
+raise unless m.entities.last.entities.first.entities.grep(String)==['T001']
 PrefabriktenMCPRoof.create(req)
 raise unless m.commits==1 && m.entities.length==3
 puts 'PASS: source protection, failed geometry preserves old roof, atomic replacement and idempotent retry.'

@@ -1,4 +1,6 @@
-# SketchUp MCP köprüsü 0.3.1
+# SketchUp MCP köprüsü 0.3.2
+
+0.3.2: Her sac grubuna siparis listesiyle ayni T001 ve sonraki kodlari gorunur SketchUp metni olarak ekler. Kod, seridin en buyuk disbukey ortu parcasinin icinde ve yuzeyin45mm ustunde konumlanir. Kaynak model korunur; tek geri alma ve tekrar korumalari surer. Acik eski oturum yeni kodu yuklemek icin yeniden acilmalidir.
 
 0.3.1: `create_roof` isteğine isteğe bağlı `replace_roof: {pid, request_id}` eklenebilir. Yalnız kökteki eşleşen PrefabriktenRoof UUID işaretli grubun yerine yeni kaplama oluşturulur; kaynak karkas veya işaretsiz grup reddedilir. Eski grup ancak yeni geometri tamamen oluşunca aynı geri alınabilir işlemde kaldırılır. Hata eski kaplamayı korur; aynı yeni UUID tekrarında çoğaltma yapılmaz. Eski0.3.0 oturumuna değiştirme isteği gönderilmez; SketchUp yeniden açılmalıdır. Testler: `roof-qa.rb`, `roof-replace-qa.rb`, `verify.cjs`. Sac kalınlığı ve RAL seçimi sipariş bilgisidir; bu sürümün yüzey geometrisi kalınlıksız ve gri kalır. Saçak sınırı, kesim payı ve sipariş listesi projeye özel yerel veridir; otomatik imalat onayı değildir.
 
