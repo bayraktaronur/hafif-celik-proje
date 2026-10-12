@@ -22,3 +22,12 @@ Kontrol: node sketchup-plugin/verify.cjs (depo üst klasöründen node github-ca
 
 ## 12 Ekim 2026 — DEV-093 / 0.1.1 boş model kontrolü düzeltmesi
 Kullanıcı canlı denemede Sketchup::Entities empty? NoMethodError bildirdi. Desteklenen length == 0 kontrolüne geçildi. String path.empty? geçerlidir ve korundu. 35 kesit/175 geçme hesabı tekrar geçti. 0.1.1 RBZ üretildi; açık modeller kapatılmadan kurulu kaynak güncellendi. Profil oluşturma canlı yeniden denemesi bekleniyor. Önceki imalat/MCP/ezme-kesme açık işleri korunur; Plan Studio sürümü değişmedi.
+
+## 0.2.0 — duvar paneli taslağı
+Menüye boş modelde duvar paneli ve JSON/CSV taslak liste eklendi. Panelin dış eni/yüksekliği, azami dikme aksı, C gövde genişliği (panel derinliği) ve ortak sac kalınlığı açıkça girilir. Boş ve kaydedilmemiş model koruması sürer. Varsayılan3000×2800mm/600mm/90mm/1,2mm yalnız başlangıç değeridir. Son dikme ters çevrilerek dış sınır korunur; merkez aralıkları eşit ve istenen azami aralıktan küçüktür/eşittir. Alt ve üst kayıt aynı C kesittir.
+
+Araştırma gereği kesit bilgisi, parça yerleşimi ve işlem listeleri ayrıldı. Dikmelerde baş/son swage ve lip_cut kayıtları vardır; uygulanmamış durumundadır. 50mm/45° dudak uç detayı yalnız90mm kesitte taşınır, diğerlerinde bilinmiyor bırakılır. Boy boyunca dudak açısı ertelendi. Profil geometrisi düz/keskin köşelidir; birleşimlerde kesişme olabilir. Dikme taslak boyu yükseklik−2×sac hesabıdır; geçme toleransının boy yönünde kesinleşmesi beklenir. Bu imalat reçetesi değildir.
+
+Her parça oluşturulduğunda kapalı katı ve yerel dış ölçü kontrolü yapılır; başarısızlıkta işlem geri alınır. Taslak parça numaraları modelde etiketlenir. JSON işlem ayrıntılarını taşır; CSV için kayıt adını.csv ile bitirin. Elle yapılan geometri değişikliklerinin kayıtlı boylara otomatik yansımadığı her satırda belirtilir. CNC çıkışı yoktur.
+
+Kontroller:35kesit/175geçme hesabı tekrar geçti. panel-core-qa.rb gerçek Ruby içinde35panel,5geçersiz giriş ve minimum panel için kontrol içerir; bu tur RubyStartup girişimi rapor üretmedi, bu kontroller çalışmış sayılmadı. SketchUp modelde panel/menü ve dışa aktarma canlı doğrulaması bekliyor. Açık Teoman bey çizimine dokunulmadı.

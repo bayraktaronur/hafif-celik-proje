@@ -1,4 +1,5 @@
 require 'json'
+require_relative 'panel'
 module Prefabrikten
   module Karkas
     RULES = JSON.parse(File.read(File.join(__dir__, 'profile-rules.json'))) unless const_defined?(:RULES)
@@ -76,11 +77,12 @@ module Prefabrikten
       UI.messagebox("Rapor oluşturulamadı: #{e.message}")
     end
     unless file_loaded?(__FILE__)
-      menu = UI.menu('Extensions').add_submenu('Prefabrikten Karkas 0.1.1')
+      menu = UI.menu('Extensions').add_submenu('Prefabrikten Karkas 0.2.0')
+      menu.add_item('Boş modelde duvar paneli taslağı') { create_panel }
+      menu.add_item('Panel taslak listesini kaydet (JSON/CSV)') { export_panel }
       menu.add_item('Boş modelde C profil denemesi') { create_profile }
       menu.add_item('Model inceleme raporu (salt okunur)') { inspect_model }
       file_loaded(__FILE__)
     end
   end
 end
-
