@@ -707,3 +707,9 @@ Fotoğraf referansındaki tek eğimli sundurma için baş makas yüzüne bağlan
 
 ## 9 Ekim 2026 — iş bilgisayarı, 5.9.107 / DEV-092
 Kullanıcı sundurma başlangıcını gerçek fotoğraftaki köşe direği üst hizası olarak netleştirdi. Baş makas bağlantısı ana çatı eğimli yüzeyinden değil wallTop kotundan başlar; bu durumda eski 10 cm düşüm uygulanmaz. Öne eğim korunur, yan saçak bağlantısı değişmez. gable-canopy dört yön/280 cm/JSON ve veranda-joins geçti; ayrı tarayıcı görüntüsü incelendi. Rapor: analizler/2026-10-09-sundurma-kose-kotu.md. İki kullanıcı görseli kaynak/hash kaydıyla saklandı. Canlı çizime dokunulmadı, güncel canlı JSON doğrulanmadı. Diğer açık işler DEVAM tablosunda korunur.
+
+## 12 Ekim 2026 — DEV-093 / SketchUp özel karkas eklentisi
+| Kimlik | İş | Durum / kanıt |
+|---|---|---|
+| DEV-093 | SketchUp özel hafif çelik karkas eklentisi ve MCP | AÇIK. Profil/deneme geçme kuralları sketchup-plugin/profile-rules.json ve README.md içinde kaydedildi. Toplam boşluk 0,5 mm; her yanda dış profil sacı +0,25 mm net daralma. Kalıp derinliği değildir. 90 C dudak kesme başlangıcı50mm, geçici45°. Numune, ezme geometrisi, model okuyucu, panel üretimi ve MCP henüz yok. |
+Önceki açık işler korunur. Kurulu FrameBuilder6.9.0 ayrı ürün; kayıt/lisans ve bölgesel ayar adımı kullanıcıda. İki örnek SketchUp modeli yalnız görsel incelendi, kaynak dosyaları ortak depoya aktarılmadı. Takipsiz eski pano görseli korundu. Plan Studio5.9.107 değişmedi.

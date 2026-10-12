@@ -649,3 +649,9 @@ Kontroller: roof-gable-boundary alttaki tüm duvarları kaldırınca kapama geom
 İş klonunun 5.9.36 kaydı eskiydi; izinli fetch ile GitHub'daki 49 yeni commit bulundu ve pull --ff-only ile e0b1800 / 5.9.58 alındı. Son ev görüşmelerinin kararları DEVAM/CALISMA ve ev-is-devir raporundan okundu; evin ayrı sohbeti bu PC'nin erişilebilir sohbet listesinde bulunmadı. İş Downloads içindeki en yeni JSON Yeni proje (6).json (3 Ekim 09:51, 5.9.36), orijinali korunup cizimler/2026-10-03-is-kayit-6-5.9.36.json olarak hash doğrulamasıyla kopyalandı. 9 son çatı görseli envanterle eşleşti. [Bulunan kayıtlar ve açık kalan yedek](analizler/2026-10-05-son-kayit-kurtarma.md).
 
 DEV-043 açık: 4 Ekim son canlı ana/yavru çatı JSON'u ortak depoda yok. Yeni bulunan iş yedeği son canlı plan ilan edilmedi. Takipsiz eski pano görseli ve tarayıcı çizimi korundu. Kod/sürüm değişmedi; yalnız yedek/devir kayıtları gönderilir. Sıradaki adım son canlı planın Kaydet dosyasını belirlemek; diğer açık işler son ev devir raporundaki haliyle korunur.
+
+## 12 Ekim 2026 — DEV-093 / SketchUp özel karkas eklentisi
+| Kimlik | İş | Durum / kanıt |
+|---|---|---|
+| DEV-093 | SketchUp özel hafif çelik karkas eklentisi ve MCP | AÇIK. Profil/deneme geçme kuralları sketchup-plugin/profile-rules.json ve README.md içinde kaydedildi. Toplam boşluk 0,5 mm; her yanda dış profil sacı +0,25 mm net daralma. Kalıp derinliği değildir. 90 C dudak kesme başlangıcı50mm, geçici45°. Numune, ezme geometrisi, model okuyucu, panel üretimi ve MCP henüz yok. |
+Önceki açık işler korunur. Kurulu FrameBuilder6.9.0 ayrı ürün; kayıt/lisans ve bölgesel ayar adımı kullanıcıda. İki örnek SketchUp modeli yalnız görsel incelendi, kaynak dosyaları ortak depoya aktarılmadı. Takipsiz eski pano görseli korundu. Plan Studio5.9.107 değişmedi.
