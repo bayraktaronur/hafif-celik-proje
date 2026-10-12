@@ -1,6 +1,16 @@
 require_relative 'prefabrikten_mcp_roof'
 p={'request_id'=>'12345678-1234-1234-1234-123456789abc','patches'=>[{'plane'=>[0,0,1,3000],'cross_axis'=>0,'polygons'=>[[[0,0],[1500,0],[1500,3000],[0,3000]]]}]}
 raise unless PrefabriktenMCPRoof.validate(p)==p
+r={'pid'=>123,'request_id'=>'12345678-1234-1234-1234-123456789def'}
+raise unless PrefabriktenMCPRoof.validate(p.merge('replace_roof'=>r))
+[r.merge('pid'=>-1),r.merge('request_id'=>p['request_id']),r.merge('code'=>'erase_all')].each do |bad|
+  begin
+    PrefabriktenMCPRoof.validate(p.merge('replace_roof'=>bad))
+  rescue StandardError
+    next
+  end
+  raise 'Invalid replacement accepted'
+end
 [-400,-200,0,200,1000].each { |x| raise unless PrefabriktenMCPRoof.height(x)==27 }
 raise unless PrefabriktenMCPRoof.height(100)==0
 q=PrefabriktenMCPRoof.clip(p['patches'][0]['polygons'][0],0,1000,-1)

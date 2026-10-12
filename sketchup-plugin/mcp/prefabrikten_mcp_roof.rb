@@ -21,7 +21,11 @@ module PrefabriktenMCPRoof
     0.0
   end
   def self.validate(p)
-    raise 'Invalid roof parameters.' unless p.is_a?(Hash) && (p.keys-%w[request_id patches]).empty?
+    raise 'Invalid roof parameters.' unless p.is_a?(Hash) && (p.keys-%w[request_id patches replace_roof]).empty?
+    if p['replace_roof']
+      r=p['replace_roof']
+      raise 'Invalid replacement identity.' unless r.is_a?(Hash) && r.keys.sort==%w[pid request_id] && r['pid'].is_a?(Integer) && r['pid']>0 && r['request_id'].is_a?(String) && r['request_id'].match?(/\A[0-9a-f-]{36}\z/) && r['request_id']!=p['request_id']
+    end
     raise 'Invalid request ID.' unless p['request_id'].is_a?(String) && p['request_id'].match?(/\A[0-9a-f-]{36}\z/)
     patches=p['patches']
     raise '1..20 roof patches required.' unless patches.is_a?(Array) && (1..20).include?(patches.length)
@@ -57,6 +61,12 @@ module PrefabriktenMCPRoof
     if prior
       raise 'Request ID reused with different roof.' unless prior.get_attribute('PrefabriktenRoof','digest')==digest
       return JSON.parse(prior.get_attribute('PrefabriktenRoof','result'))
+    end
+    replacement=nil
+    if p['replace_roof']
+      r=p['replace_roof']
+      replacement=model.entities.grep(Sketchup::Group).find { |g| g.persistent_id==r['pid'] && g.get_attribute('PrefabriktenRoof','request_id')==r['request_id'] }
+      raise 'Generated replacement roof not found; source geometry cannot be replaced.' unless replacement
     end
     model.start_operation('MCP: 27-200 trapez yerleşimi',true)
     begin
@@ -94,6 +104,7 @@ module PrefabriktenMCPRoof
       end
       result={status:'created',roof_pid:root.persistent_id,sheets:sheets,facets:facets,notice:'Preliminary interpreted roof boundary; illustrative 27/200 surface; no thickness, lap or flashings.'}
       root.set_attribute('PrefabriktenRoof','request_id',p['request_id']);root.set_attribute('PrefabriktenRoof','digest',digest);root.set_attribute('PrefabriktenRoof','result',JSON.generate(result))
+      replacement.erase! if replacement
       model.commit_operation
       result
     rescue StandardError
