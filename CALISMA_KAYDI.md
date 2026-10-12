@@ -719,3 +719,6 @@ Kaynak ve RBZ sketchup-plugin/ içinde. Boş model koruması, parametreli keskin
 
 ## 12 Ekim 2026 — DEV-093 / 0.1.1 boş model kontrolü düzeltmesi
 Kullanıcı canlı denemede Sketchup::Entities empty? NoMethodError bildirdi. Desteklenen length == 0 kontrolüne geçildi. String path.empty? geçerlidir ve korundu. 35 kesit/175 geçme hesabı tekrar geçti. 0.1.1 RBZ üretildi; açık modeller kapatılmadan kurulu kaynak güncellendi. Profil oluşturma canlı yeniden denemesi bekleniyor. Önceki imalat/MCP/ezme-kesme açık işleri korunur; Plan Studio sürümü değişmedi.
+
+## 12 Ekim 2026 — DEV-094 / rollform üreticileri ve kesit araştırması
+DEV-094 araştırma tamamlandı: analizler/2026-10-12-rollform-duvar-profilleri.md. UNBAK,Arkitech,Howick,FRAMECAD,Scottsdale/Knudson,Pinnacle resmî kaynakları karşılaştırıldı. Aynı nominal C geçmesi swage/lip cut işlemleriyle destekleniyor; kesitler/dudaklar markaya özgü.90×45×12,5tam kesit ve dudak açısı doğrulanmadı;0,5mm boşluk prototip kabulü olarak kalır. PDF görsel erişimi başarısız; raporda sınırlı kapsam belirtildi. DEV-093 açık: kod/çizim bu tur değişmedi; dudak açısı kullanıcı tarafından ertelendi. Kullanıcı ekranlarında0.1.1profilin oluştuğu görüldü; geometrik ölçü/katılık ayrıca doğrulanacak. Sonraki adım profil/işlem parametreleri ayrı veriyle tek panel prototipi. Önceki açık işler korunur.
