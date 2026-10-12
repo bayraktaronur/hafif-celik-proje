@@ -670,3 +670,7 @@ Araştırmaya göre kesit/yerleşim/işlemler ayrıldı. sketchup-plugin/prefabr
 
 ## 12 Ekim 2026 — DEV-095 / levha kenar-orta vida destekleri
 Kullanıcı OSB122/244,alçıpan120/250,BoardeX120/240cm bildirdi. Yatay/dikey karkas, levha başları ve orta vida hatlarına göre belirlenmeli. sketchup-plugin/cladding-rules.json ve analizler/2026-10-12-kaplama-karkas-destekleri.md. DEV-095 AÇIK: gereksinim kaydedildi,0.2.0kaplama yerleşimi henüz uygulanmadı; eşit dikme dağılımı değişmeli. Vida adımı,kenar mesafesi,derz boşluğu,şaşırtma ve başlangıç açık. DEV-093diğer kapsam ve önceki açık işler korunur. Plan Studio/kullanıcı çizimi değişmedi.
+
+## 12 Ekim 2026 — DEV-095 / 0.3.0 ara kayıt ve çapraz
+Kullanıcının oluşsun talimatıyla kaplama/yön/özel levha,kenar-orta destek hatları,ara yatay C kayıtlar ve seçilebilir kenar/tüm göz çaprazları eklendi. Kaynak sketchup-plugin/prefabrikten_karkas/panel_core.rb,panel.rb; açıklama sketchup-plugin/RELEASE-0.3.0.md.35kesit/175geçme geçti; yeni yerleşimin Ruby ve canlı SketchUp doğrulaması bekliyor. DEV-095 uygulandı/prototip canlı doğrulama açık. Çapraz uç geometrisi,ezme/kesme,çift yüz kaplama,derz/şaşırtma,kapı/pencere ve MCP DEV-093kapsamında açık.0.2.0kullanıcı ekranında oluştu. Açık çizimler ve Plan Studio5.9.107korunur.0.3.0kurulumu ve GitHub aktarımı ayrıca doğrulanır.
+0.3.0kuruldu;dört kaynak hash eşleşti;önceki kurulum kurulum-paketleri/yedek-0.2.0altında yerelde korundu. Yeni Ruby yerleşim testleri çalıştırılamadı; canlı deneme bekleniyor.

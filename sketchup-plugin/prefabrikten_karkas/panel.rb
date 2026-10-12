@@ -9,10 +9,18 @@ module Prefabrikten
         return
       end
       s = RULES['section']
-      input = UI.inputbox(['Panel dış eni (mm)','Panel dış yüksekliği (mm)','En fazla dikme aks aralığı (mm)','C gövde / panel derinliği (mm)','Sac kalınlığı (mm)'],
-        ['3000','2800','600','90','1.2'],['','','',s['webWidths'].join('|'),s['thicknessOptions'].join('|')], 'Duvar paneli taslağı')
+      input = UI.inputbox(['Panel dış eni (mm)','Panel dış yüksekliği (mm)','Azami dikme aksı (mm)','C gövde / panel derinliği (mm)','Sac (mm)','Kaplama','Döşeme yönü','Çapraz','Özel levha eni (mm)','Özel levha boyu (mm)'],
+        ['3000','2800','600','90','1.2','Alçıpan','Dikey','Kenar gözleri','1200','2500'],
+        ['','','',s['webWidths'].join('|'),s['thicknessOptions'].join('|'),'Alçıpan|OSB|BoardeX|Özel','Dikey|Yatay','Yok|Kenar gözleri|Tüm gözler','',''], 'Kaplamaya göre duvar paneli')
       return unless input
-      data = PanelCore.layout(*input.map { |v| number(v) }, RULES)
+      coating={'Alçıpan'=>'gypsum','OSB'=>'osb','BoardeX'=>'boardex','Özel'=>'custom'}.fetch(input[5])
+      direction={'Dikey'=>'vertical','Yatay'=>'horizontal'}.fetch(input[6])
+      brace={'Yok'=>'none','Kenar gözleri'=>'edges','Tüm gözler'=>'all'}.fetch(input[7])
+      options={cladding:coating,orientation:direction,bracing:brace}
+      if coating=='custom'
+        options[:board_width]=number(input[8]); options[:board_length]=number(input[9])
+      end
+      data = PanelCore.layout(*input.first(5).map { |v| number(v) }, RULES, options)
       model.start_operation('Duvar paneli taslağı',true)
       begin
         panel = model.entities.add_group
@@ -34,7 +42,7 @@ module Prefabrikten
           axes = part[:axes].map { |a| Geom::Vector3d.new(a) }
           group.transform!(Geom::Transformation.axes(Geom::Point3d.new(part[:origin_mm].map(&:mm)),*axes))
           group.set_attribute('PrefabriktenKarkas','part_json',JSON.generate(part))
-          group.material = part[:role]=='dikme' ? 'LightSteelBlue' : 'Goldenrod'
+          group.material = {'dikme'=>'LightSteelBlue','ara_kayit'=>'MediumSeaGreen','capraz'=>'Tomato'}.fetch(part[:role],'Goldenrod')
           panel.entities.add_text(part[:id],Geom::Point3d.new(part[:origin_mm].map(&:mm)))
         end
         model.commit_operation

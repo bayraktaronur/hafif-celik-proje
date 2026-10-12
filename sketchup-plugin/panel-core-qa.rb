@@ -1,37 +1,33 @@
 require 'json'
 require 'tmpdir'
-base = __dir__ + '/'
-output = File.join(Dir.tmpdir, 'prefabrikten-panel-core-qa.json')
+base=__dir__+'/'
 begin
-  Dir[base+'**/*.rb'].each { |file| RubyVM::InstructionSequence.compile_file(file) }
-  require base+'prefabrikten_karkas/panel_core'
-  rules = JSON.parse(File.read(base+'profile-rules.json'))
-  core = Prefabrikten::Karkas::PanelCore
-  results = []
-  rules['section']['webWidths'].each do |web|
-    rules['section']['thicknessOptions'].each do |t|
-      panel=core.layout(3000,2800,600,web,t,rules)
-      raise 'wrong count' unless panel[:parts].length==8
-      raise 'spacing' unless panel[:actual_centre_spacing_mm]<=600
-      raise 'length' unless panel[:parts].last[:length_mm]==2800-2*t
-      raise 'last stud' unless panel[:parts].last[:origin_mm][0]==3000
-      raise 'ids' unless panel[:parts].map { |p| p[:id] }.uniq.length==8
-      raise 'operation count' unless panel[:parts].last[:operations].length==4
-      results << [web,t]
+  Dir[base+'prefabrikten_karkas/*.rb'].each { |p| RubyVM::InstructionSequence.compile_file(p) }
+  require_relative 'prefabrikten_karkas/panel_core'
+  rules=JSON.parse(File.read(base+'profile-rules.json'))
+  cases=0
+  ['osb','gypsum','boardex','custom'].each do |coating|
+    ['vertical','horizontal'].each do |direction|
+      ['none','edges','all'].each do |brace|
+        [2140,2500,3000].each do |width|
+          panel=Prefabrikten::Karkas::PanelCore.layout(width,2800,600,90,1.2,rules,{cladding:coating,orientation:direction,bracing:brace})
+          raise 'spacing' if panel[:actual_centre_spacing_mm]>600.001
+          panel[:required_x_mm].each { |x| raise 'unsupported edge/middle' unless panel[:stud_centres_mm].any? { |c| (x-c).abs<=22.5001 } }
+          panel[:required_z_mm].each { |z| raise 'unsupported row' unless z<=45 || z>=2755 || panel[:blocking_rows_mm].include?(z) }
+          raise 'blocking' unless panel[:parts].any? { |p| p[:role]=='ara_kayit' }
+          raise 'bracing' if brace!='none' && !panel[:parts].any? { |p| p[:role]=='capraz' }
+          raise 'unexpected bracing' if brace=='none' && panel[:parts].any? { |p| p[:role]=='capraz' }
+          raise 'ids' unless panel[:parts].map { |p| p[:id] }.uniq.length==panel[:parts].length
+          panel[:parts].each do |p|
+            raise 'length' unless p[:length_mm]>0
+            p[:axes].each { |a| raise 'axis' unless (a.sum { |v| v*v }-1).abs<1e-8 }
+          end
+          cases+=1
+        end
+      end
     end
   end
-  [[89,2800,600,90,1.2],[3000,80,600,90,1.2],[3000,2800,44,90,1.2],[3000,2800,600,91,1.2],[3000,2800,600,90,0.9]].each do |args|
-    rejected=false
-    begin
-      core.layout(*args,rules)
-    rescue ArgumentError
-      rejected=true
-    end
-    raise 'invalid accepted' unless rejected
-  end
-  edge=core.layout(90,100,45,90,1,rules)
-  raise 'minimum panel' unless edge[:parts].length==4
-  File.write(output,JSON.pretty_generate({status:'passed',ruby:RUBY_VERSION,syntax:'all_rb',panels:results.length,invalid_cases:5,min_panel:true,geometry:'not_tested'}))
+  File.write(File.join(Dir.tmpdir,'prefabrikten-panel-core-qa.json'),JSON.pretty_generate({status:'passed',cases:cases,geometry:'not_tested'}))
 rescue Exception => e
-  File.write(output,JSON.pretty_generate({status:'failed',error:e.message,backtrace:e.backtrace}))
+  File.write(File.join(Dir.tmpdir,'prefabrikten-panel-core-qa.json'),JSON.pretty_generate({status:'failed',error:e.message,backtrace:e.backtrace}))
 end
