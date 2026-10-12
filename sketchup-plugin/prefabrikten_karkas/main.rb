@@ -25,7 +25,7 @@ module Prefabrikten
     end
     def self.create_profile
       model = Sketchup.active_model
-      unless model.entities.empty? && model.path.empty? && !model.active_path
+      unless model.entities.length == 0 && model.path.empty? && !model.active_path
         UI.messagebox('Profil denemesi için ayrı, boş ve kaydedilmemiş bir model açın. Mevcut projeye ekleme yapılmadı.')
         return
       end
@@ -76,10 +76,11 @@ module Prefabrikten
       UI.messagebox("Rapor oluşturulamadı: #{e.message}")
     end
     unless file_loaded?(__FILE__)
-      menu = UI.menu('Extensions').add_submenu('Prefabrikten Karkas 0.1.0')
+      menu = UI.menu('Extensions').add_submenu('Prefabrikten Karkas 0.1.1')
       menu.add_item('Boş modelde C profil denemesi') { create_profile }
       menu.add_item('Model inceleme raporu (salt okunur)') { inspect_model }
       file_loaded(__FILE__)
     end
   end
 end
+

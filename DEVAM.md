@@ -658,3 +658,6 @@ DEV-043 açık: 4 Ekim son canlı ana/yavru çatı JSON'u ortak depoda yok. Yeni
 
 ## 12 Ekim 2026 — DEV-093 / özel eklenti 0.1.0 prototipi
 Kaynak ve RBZ sketchup-plugin/ içinde. Boş model koruması, parametreli keskin köşeli düz C profil, geçme hedefi öznitelikleri, salt okunur üst seviye JSON raporu. 35 kesit alan/dış ölçü ve175 geçme hesabı geçti; kurulu/kaynak main.rb hash eşleşti. Canlı SketchUp/Ruby doğrulaması bekliyor; açık modeller yeniden başlatılmadı. Ezme/kesme geometrisi, panel, imalat paftası ve MCP henüz yok. DEV-093 açık; önceki işler ve Plan Studio5.9.107 korunur. Sonraki adım çizimler kaydedildikten sonra SketchUp yeniden açılıp menü ve tek profil denemesinin doğrulanması.
+
+## 12 Ekim 2026 — DEV-093 / 0.1.1 boş model kontrolü düzeltmesi
+Kullanıcı canlı denemede Sketchup::Entities empty? NoMethodError bildirdi. Desteklenen length == 0 kontrolüne geçildi. String path.empty? geçerlidir ve korundu. 35 kesit/175 geçme hesabı tekrar geçti. 0.1.1 RBZ üretildi; açık modeller kapatılmadan kurulu kaynak güncellendi. Profil oluşturma canlı yeniden denemesi bekleniyor. Önceki imalat/MCP/ezme-kesme açık işleri korunur; Plan Studio sürümü değişmedi.

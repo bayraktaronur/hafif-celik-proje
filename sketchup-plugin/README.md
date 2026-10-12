@@ -19,3 +19,6 @@ Extensions > Prefabrikten Karkas 0.1.0 menüsü: boş/kaydedilmemiş modelde C p
 
 Kontrol: node sketchup-plugin/verify.cjs (depo üst klasöründen node github-calisma/sketchup-plugin/verify.cjs) 35 kesitte alan/dış ölçü ve 175 geçme hesabını doğruladı. Test betiği her çalışma dizininden çalışır. Ruby çalışma zamanı, menü yüklenmesi, modelde katı geometri ve rapor kaydı henüz canlı SketchUp'ta doğrulanmadı. Bu paket imalata hazır sürüm değildir. MCP henüz yok.
 
+
+## 12 Ekim 2026 — DEV-093 / 0.1.1 boş model kontrolü düzeltmesi
+Kullanıcı canlı denemede Sketchup::Entities empty? NoMethodError bildirdi. Desteklenen length == 0 kontrolüne geçildi. String path.empty? geçerlidir ve korundu. 35 kesit/175 geçme hesabı tekrar geçti. 0.1.1 RBZ üretildi; açık modeller kapatılmadan kurulu kaynak güncellendi. Profil oluşturma canlı yeniden denemesi bekleniyor. Önceki imalat/MCP/ezme-kesme açık işleri korunur; Plan Studio sürümü değişmedi.
