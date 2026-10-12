@@ -755,3 +755,7 @@ DEV-101 AÇIK (canlı kabul): kullanıcı bilgisayar kontrolü yerine MCP ile a�
 
 ## 12 Ekim 2026 — DEV-101 canlı MCP oluşturma doğrulandı
 MCP0.2.0 create_panel ilk canlı SketchUp denemesi başarılı: yeni1500×2500mm,C90,t1.2,alçıpan dikey,600mm azami aks,üstten140mm ilave kayıt ve sol göz çaprazı.17parça oluşturuldu;read_entities ile17alt grup,5dikme,8ara kayıt,2çapraz ve alt/üst kayıt doğrulandı. Yatay kayıt orta kotları1250/2360mm. Mevcut geometri korunarak ayrı grup eklendi;model diske otomatik kaydedilmedi. Bu not yalnız kendi oluşturduğumuz test parametrelerini içerir;özel model/ölçüm dosyaları paylaşılmaz. DEV-101ilk canlı oluşturma tamamlandı;DEV-100geniş dönüşüm/pafta kabulü ve önceki ileri kapsam açık. Codex görünür araç listesi eski kaldığından çağrı güncel MCP stdio sunucusu üzerinden yapıldı;bağlantı araç listesi yenilemesi ayrıca gerekebilir.
+
+
+## 12 Ekim 2026 — DEV-101 / ikinci canlı örnek
+Kullanıcı yeni boş modelde150×300cm,C80,1mm sac istedi. MCP create_panel başarılı;read_entities ile dış sınır1500×80×3000mm,26parça (5dikme,16ara kayıt,3çapraz,alt/üst kayıt) doğrulandı. Dikey alçıpan,600mm azami aks veüstten140mm ek kayıt önceki örnekten korundu. Şablon insan bileşeni korunur;çizim diske otomatik kaydedilmez. Statik/imalat onayı yok;önceki açık işler korunur. Yalnız kendi ürettiğimiz test özeti paylaşılır,model dosyası paylaşılmaz.
