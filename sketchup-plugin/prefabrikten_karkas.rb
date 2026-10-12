@@ -3,7 +3,7 @@ require 'extensions.rb'
 unless file_loaded?(__FILE__)
   ext = SketchupExtension.new('Prefabrikten Karkas', 'prefabrikten_karkas/main')
   ext.description = 'C profil prototipi ve salt okunur model inceleme'
-  ext.version = '0.4.1'
+  ext.version = '0.4.2'
   ext.creator = 'Prefabrikten'
   Sketchup.register_extension(ext, true)
   file_loaded(__FILE__)

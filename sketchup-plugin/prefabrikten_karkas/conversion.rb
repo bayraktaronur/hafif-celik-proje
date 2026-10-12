@@ -1,4 +1,5 @@
 require_relative 'frame_core'
+require_relative 'opening_core'
 require 'digest'
 require 'cgi'
 module Prefabrikten
@@ -12,7 +13,9 @@ module Prefabrikten
           if e.is_a?(Sketchup::Face)
             points=e.outer_loop.vertices.map { |v| v.position.transform(t) }
             next if points.length<4
-            v1=points[1]-points[0]; v2=points[2]-points[0]; n=v1.cross(v2)
+            v1=points[1]-points[0]
+            n=points.drop(2).map { |p| v1.cross(p-points[0]) }.find { |v| v.length>=0.00001 }
+            next unless n
             next if n.length<0.00001
             n.normalize!
             next if kind=='wall' && n.dot(Z_AXIS).abs>0.0001
@@ -38,9 +41,20 @@ module Prefabrikten
         raise 'Yalnız dikdörtgen panel/açıklık destekleniyor; eğik veya L sınırı ayrı panellere ayırın.' unless xy.all? { |a,b| ([a-lo[0],a-hi[0]].map(&:abs).min<0.05)&&([b-lo[1],b-hi[1]].map(&:abs).min<0.05) } && xy.length==4
         [lo,hi]
       end
-      lo,hi=rect.call(points)
+      detection=nil
+      if kind=='wall'
+        coplanar=faces.select { |f| f[3].dot(n).abs>0.999999 && f[2].all? { |p| ((p-anchor).dot(n)).to_mm.abs<0.05 } }
+        geometry=coplanar.map do |f|
+          e,ft=f
+          [e.outer_loop,*e.loops.reject(&:outer?)].map { |loop| loop.vertices.map { |v| project.call(v.position.transform(ft)) } }
+        end
+        detection=OpeningCore.detect(geometry)
+        lo,hi=detection.values_at(:lo,:hi)
+      else
+        lo,hi=rect.call(points)
+      end
       origin=anchor.offset(x,lo[0].mm).offset(z,lo[1].mm)
-      openings=face.loops.reject(&:outer?).map do |loop|
+      openings=detection ? detection[:openings] : face.loops.reject(&:outer?).map do |loop|
         a,b=rect.call(loop.vertices.map { |v| v.position.transform(t) })
         {x:a[0]-lo[0],z:a[1]-lo[1],width:b[0]-a[0],height:b[1]-a[1]}
       end
@@ -161,6 +175,13 @@ module Prefabrikten
       raise 'Bir işlemde en fazla20panel.' if sources.length>20
       descriptors=sources.map { |s| source_panel(s,kind) }
       first=descriptors.first
+      if kind=='wall'
+        summary=descriptors.each_with_index.map do |d,i|
+          lines=d[:openings].map { |o| "#{o[:z]<0.05 ? 'Kapı' : 'Pencere'}: x=#{o[:x].round(1)}, kot=#{o[:z].round(1)}, #{o[:width].round(1)} × #{o[:height].round(1)} mm" }
+          "Duvar #{i+1}: #{lines.empty? ? 'açıklık yok' : lines.join('; ')}"
+        end
+        UI.messagebox("Geometriden algılanan açıklıklar:\n"+summary.join("\n")+"\nİlk duvarın ölçülerini sonraki pencerede düzenleyebilirsiniz.")
+      end
       input=frame_input(first[:width],first[:height],kind,first[:openings]);return unless input
       raise 'Dönüşümde kaynak ölçülerini değiştirmeyin; yeni panel komutunu kullanın.' unless (input[:dimensions][0]-first[:width]).abs<0.01 && (input[:dimensions][1]-first[:height]).abs<0.01
       plans=descriptors.map.with_index do |d,i|
