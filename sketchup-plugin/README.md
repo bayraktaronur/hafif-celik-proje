@@ -31,3 +31,6 @@ Araştırma gereği kesit bilgisi, parça yerleşimi ve işlem listeleri ayrıld
 Her parça oluşturulduğunda kapalı katı ve yerel dış ölçü kontrolü yapılır; başarısızlıkta işlem geri alınır. Taslak parça numaraları modelde etiketlenir. JSON işlem ayrıntılarını taşır; CSV için kayıt adını.csv ile bitirin. Elle yapılan geometri değişikliklerinin kayıtlı boylara otomatik yansımadığı her satırda belirtilir. CNC çıkışı yoktur.
 
 Kontroller:35kesit/175geçme hesabı tekrar geçti. panel-core-qa.rb gerçek Ruby içinde35panel,5geçersiz giriş ve minimum panel için kontrol içerir; bu tur RubyStartup girişimi rapor üretmedi, bu kontroller çalışmış sayılmadı. SketchUp modelde panel/menü ve dışa aktarma canlı doğrulaması bekliyor. Açık Teoman bey çizimine dokunulmadı.
+# Güncel prototip: 0.4.0
+
+Seçili dikdörtgen duvar/çatı/döşeme panel dönüşümü, kaplama destek hatları, açıklıklar, çapraz düzenleri ve taslak pafta/metraj için [0.4.0 sürüm notunu](RELEASE-0.4.0.md) okuyun. Statik çözüm ve makine imalat çıktısı henüz yoktur. Aşağıdaki eski sürüm açıklamaları tarihsel kapsamı gösterir.

@@ -26,7 +26,7 @@ module Prefabrikten
         else
           CLADDING.fetch('boards').fetch(coating) { raise ArgumentError,'Kaplama seçimi geçersiz.' }
         end
-        raise ArgumentError, 'Levha ölçüleri en az 90 mm olmalı.' unless board.values.all? { |v| v.is_a?(Numeric) && v.finite? && v>=90 }
+        raise ArgumentError, 'Levha ölçüleri en az 90 mm olmalı.' unless board.values_at('width','length').all? { |v| v.is_a?(Numeric) && v.finite? && v>=90 }
         bx,bz=board.values_at('width','length'); bx,bz=bz,bx if orientation=='horizontal'
         required_x=supports(width,bx); required_z=supports(height,bz)
         centres=required_x.map { |x| [[x,f/2.0].max,width-f/2.0].min }.uniq.sort

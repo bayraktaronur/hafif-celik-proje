@@ -60,10 +60,19 @@ module Prefabrikten
       raise 'Bu modelde eklentinin oluşturduğu panel yok.' if roots.empty?
       # Geometry may have been edited manually; do not silently export stale dimensions.
       parts = roots.flat_map do |panel|
+        expected_count=panel.get_attribute('PrefabriktenKarkas','expected_part_count')
+        if expected_count
+          axes=[panel.transformation.xaxis,panel.transformation.yaxis,panel.transformation.zaxis]
+          raise 'Panel ölçeklenmiş/eğilmiş; yeniden oluşturun.' unless axes.all? { |a| (a.length-1).abs<0.000001 } && axes.combination(2).all? { |a,b| a.dot(b).abs<0.000001 }
+          actual_count=panel.entities.grep(Sketchup::Group).count { |g| g.get_attribute('PrefabriktenKarkas','part_json') }
+          raise 'Parça sayısı değişmiş; yeniden oluşturun.' unless actual_count==expected_count
+        end
         panel.entities.grep(Sketchup::Group).filter_map do |group|
           raw = group.get_attribute('PrefabriktenKarkas','part_json')
           next unless raw
           part = JSON.parse(raw)
+          sig=group.get_attribute('PrefabriktenKarkas','geometry_signature')
+          raise 'Karkas elle değiştirilmiş; eski ölçüler dışa aktarılmadı.' if sig && sig!=frame_signature(group)
           part['export_notice']='Kayıtlı taslak ölçüler; elle yapılan geometri değişiklikleri ölçülmedi.'
           part
         end
@@ -75,6 +84,7 @@ module Prefabrikten
       parts = panel_parts
       path = UI.savepanel('Panel taslak parça listesi — imalat için değildir','','P01-taslak.json')
       return unless path
+      raise 'Dosya mevcut; yeni bir ad seçin.' if File.exist?(path)
       if File.extname(path).downcase=='.csv'
         csv = CSV.generate(col_sep:';') do |out|
           out << ['Durum','Parça','Tür','Taslak boy (mm)','Gövde (mm)','Kanat (mm)','Dudak (mm)','Sac (mm)','İşlemler','Uyarı']
