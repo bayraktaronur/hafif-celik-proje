@@ -763,3 +763,7 @@ Kullanıcı yeni boş modelde150×300cm,C80,1mm sac istedi. MCP create_panel ba�
 
 ## 12 Ekim 2026 — DEV-102 / MCP trapez yerleşimi0.3.0
 DEV-102 AÇIK canlı kabul: kullanıcı27/200trapez yerleşimi istedi. create_roof komutu sınırlı düzlem/dışbükey poligon girdisiyle ayrı grupta nominal27mm/200mm/net1000mm yüzeyler oluşturur;tek geri alma,UUID veGUID kontrolü. Sac kalınlığı/üretici kesin kesiti/bindirme/mahya-dere kapakları yok;tepe/taban temsili. Kaynak ve sınırlar sketchup-plugin/mcp/README.md. Ruby profil/kesim/parametre testleri ve önceki panel/MCP regresyonları geçti. Köprü0.3.0 yedekli kuruldu;hash eşleşti. Canlı yeni komut için SketchUp yeniden açılışı gerekli. Yerel özel çatı yerleşim girdisi hazır,doğrulandı;GitHub aktarılmadı. Önceki açık işler korunur;yalnız genel kod/devir notları paylaşılır. Sonraki adım açık çizimi kaydedip yeniden açtıktan sonra MCPcreate_roof ve geometri kontrolü.
+
+
+## 12 Ekim 2026 — DEV-102 canlı renk hatası düzeltildi
+İlk canlı create_roof denemesi SketchUp LightGray adını kabul etmediği için atomik geri alındı;MCPread_entities kök nesne sayısının değişmediğini doğruladı. Malzeme ataması doğrudan Sketchup::Color RGB değerlerine çevrildi;Ruby çatı testleri geçti;kurulu kaynak hash eşleşti. Düzeltilmiş kod açık Ruby oturumuna geçmedi;ayrı SketchUp başlatıldı ancak MCP oturumu henüz gelmedi. Kullanıcıdan ilgili pencereyi yeniden açması istendi. Trapez oluşturuldu diye raporlanmadı;DEV-102canlı kabul AÇIK. Özel çatı verisi yalnız yerelde;genel kod/not paylaşılır. Önceki açık işler korunur.

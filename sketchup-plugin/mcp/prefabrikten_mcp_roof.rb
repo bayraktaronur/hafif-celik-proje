@@ -87,7 +87,7 @@ module PrefabriktenMCPRoof
               facets+=1;raise 'Geometry limit reached.' if facets>20000
             end
           end
-          sheet.material=i.even? ? 'LightGray' : 'Silver'
+          sheet.material=Sketchup::Color.new(*(i.even? ? [211,211,211] : [192,192,192]))
           sheet.set_attribute('PrefabriktenRoof','net_width_mm',b-a)
           sheet.set_attribute('PrefabriktenRoof','profile','27/200 nominal; illustrative crest42 valley74; thickness unspecified')
         end
