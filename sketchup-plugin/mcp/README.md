@@ -1,4 +1,8 @@
-# SketchUp MCP köprüsü 0.2.0
+# SketchUp MCP köprüsü 0.3.0
+
+0.3.0: `create_roof` yeni bir grupta nominal27/200,1000mm net en trapez yüzeyler oluşturur. `prefabrikten_mcp_roof.rb` de Plugins köküne kurulmalıdır. Sabit komut, normalize yukarı bakan eğim düzlemi ve dünya XY koordinatlarında dışbükey poligonlar kabul eder;20bölge/500poligon/200sac/20000yüz sınırı vardır. Tek geri alma,GUID veUUID tekrar kontrolü;orijinal nesnelere dokunma/kaydetme yok. Uygulama yalnız kalınlıksız görsel yerleşimdir. Marka kesin kesiti yok:42mm tepe/74mm taban arası eğimler temsili,27mm yükseklik/200mm hadve nominaldir. Yan bindirme,kalınlık,kapiller kanal,vida,mahya/dere kapakları ve büküm yarıçapı yoktur.2mm normal yönünde görsel ayırma vardır. Sınırlar kullanıcıyla teyit edilmiş örtü poligonlarından gelmelidir;yorumlanmış ön metraj sipariş onayı sayılmaz.
+
+Kaynak:[ESKA27/200–1000](https://eskametal.com/trapez-saclar/trapez-sac/27-200-1000/) nominal27mm/200mm/net1000mm ve6hadveyi doğrular;tepe/taban ölçüleri üretici doğrulaması bekleyen görsel kabuldür. Test:`roof-qa.rb` parametre/dışbükeylik/sonlu ölçü/kesim/27mm yükseklik/200mm periyot kontrollerini sınar. Node/Ruby önceki panel testleri korunur. Canlı SketchUp create_roof geometri denemesi yeniden yükleme sonrasında gereklidir. Eski oturum yeni komutu çalıştırmaz;çizimi kaydedip SketchUp yeniden açılmalıdır. MCP araç listesi yenilenmezse güncel stdio sunucusundan çağrı yapılabilir.
 
 0.2.0: `create_panel` yalnız yeni, ayrı bir duvar karkası oluşturur. Okuma komutları korunur. `prefabrikten_inspect.rb` ve `prefabrikten_mcp_panel.rb` Plugins köküne birlikte kurulur; Prefabrikten Karkas 0.4.0 kaynakları da bulunmalıdır. Ruby köprüsü için SketchUp, MCP araç listesinin yenilenmesi için Codex bağlantısı yeniden başlatılmalıdır. Açık çizimler otomatik kapatılmaz/kaydedilmez.
 

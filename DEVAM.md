@@ -701,3 +701,7 @@ MCP0.2.0 create_panel ilk canlı SketchUp denemesi başarılı: yeni1500×2500mm
 
 ## 12 Ekim 2026 — DEV-101 / ikinci canlı örnek
 Kullanıcı yeni boş modelde150×300cm,C80,1mm sac istedi. MCP create_panel başarılı;read_entities ile dış sınır1500×80×3000mm,26parça (5dikme,16ara kayıt,3çapraz,alt/üst kayıt) doğrulandı. Dikey alçıpan,600mm azami aks veüstten140mm ek kayıt önceki örnekten korundu. Şablon insan bileşeni korunur;çizim diske otomatik kaydedilmez. Statik/imalat onayı yok;önceki açık işler korunur. Yalnız kendi ürettiğimiz test özeti paylaşılır,model dosyası paylaşılmaz.
+
+
+## 12 Ekim 2026 — DEV-102 / MCP trapez yerleşimi0.3.0
+DEV-102 AÇIK canlı kabul: kullanıcı27/200trapez yerleşimi istedi. create_roof komutu sınırlı düzlem/dışbükey poligon girdisiyle ayrı grupta nominal27mm/200mm/net1000mm yüzeyler oluşturur;tek geri alma,UUID veGUID kontrolü. Sac kalınlığı/üretici kesin kesiti/bindirme/mahya-dere kapakları yok;tepe/taban temsili. Kaynak ve sınırlar sketchup-plugin/mcp/README.md. Ruby profil/kesim/parametre testleri ve önceki panel/MCP regresyonları geçti. Köprü0.3.0 yedekli kuruldu;hash eşleşti. Canlı yeni komut için SketchUp yeniden açılışı gerekli. Yerel özel çatı yerleşim girdisi hazır,doğrulandı;GitHub aktarılmadı. Önceki açık işler korunur;yalnız genel kod/devir notları paylaşılır. Sonraki adım açık çizimi kaydedip yeniden açtıktan sonra MCPcreate_roof ve geometri kontrolü.

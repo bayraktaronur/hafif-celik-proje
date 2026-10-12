@@ -62,7 +62,7 @@ module PrefabriktenInspect
     write('session.json', {pid:Process.pid, title:model.title, file:model.path, model_guid:model.guid,
       modified:model.modified?, entity_count:model.entities.length, selection_ids:model.selection.map(&:persistent_id),
       active_path:(model.active_path || []).map(&:persistent_id), updated_at:Time.now.utc.iso8601,
-      bridge_version:'0.2.0', read_only:false, capabilities:['read_entities','create_panel']})
+      bridge_version:'0.3.0', read_only:false, capabilities:['read_entities','create_panel','create_roof']})
     # Do not glob a Windows ENV path: backslashes are glob escape characters.
     Dir.children(DIR).grep(/\Arequest-[0-9a-f-]{36}\.json\z/).first(1).each do |name|
       file=File.join(DIR, name)
@@ -72,6 +72,7 @@ module PrefabriktenInspect
         result=case req['command']
         when 'read_entities' then read_model(req)
         when 'create_panel' then PrefabriktenMCPPanel.create(req)
+        when 'create_roof' then PrefabriktenMCPRoof.create(req)
         else raise 'Unsupported command.'
         end
         write("response-#{id}.json", {result:result})
@@ -90,3 +91,4 @@ module PrefabriktenInspect
 end
 
 require_relative 'prefabrikten_mcp_panel'
+require_relative 'prefabrikten_mcp_roof'
