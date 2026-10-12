@@ -11,3 +11,11 @@ Bu değer kalıp derinliği değildir. Büküm köşeleri, tolerans ve yaylanma 
 90×45×12,5 mm kesitte dudak kesme başlangıcı uçtan 50 mm; açı geçici 45°. Kesme boyu/geometrisi henüz kesin değil. Diğer kesitlere bu uç detayı otomatik genellenmez.
 
 Sonraki iş: mevcut SketchUp modellerinin bileşen yapısını salt okunur inceleyen araç, ardından tek panel prototipi; gerçek uç işlemleri ve imalat çıktıları ayrıca doğrulanacak. Açık modeller ve Plan Studio kodu değiştirilmedi.
+
+## 0.1.0 prototipi — 12 Ekim 2026
+Kurulabilir paket: prefabrikten-karkas-0.1.0.rbz. Kaynak: prefabrikten_karkas.rb ve prefabrikten_karkas/. Kullanıcı eklenti klasörüne kopyalandı; main.rb SHA256 eşleşti. Açık projeler nedeniyle SketchUp yeniden başlatılmadı.
+
+Extensions > Prefabrikten Karkas 0.1.0 menüsü: boş/kaydedilmemiş modelde C profil oluşturma; mevcut model için salt okunur üst seviye JSON raporu. Ölçüler mm, nokta/virgül girişi desteklenir. Profil tek geri alınabilir gruptur, boy ve kesit bilgisi özniteliklerde tutulur. Geçme hedefi dışta kalan profil kalınlığından hesaplanır; henüz geometrik ezme/kesme uygulanmaz. Keskin köşe yaklaşımıdır; büküm yarıçapı yok.
+
+Kontrol: node sketchup-plugin/verify.cjs (depo üst klasöründen node github-calisma/sketchup-plugin/verify.cjs) 35 kesitte alan/dış ölçü ve 175 geçme hesabını doğruladı. Test betiği her çalışma dizininden çalışır. Ruby çalışma zamanı, menü yüklenmesi, modelde katı geometri ve rapor kaydı henüz canlı SketchUp'ta doğrulanmadı. Bu paket imalata hazır sürüm değildir. MCP henüz yok.
+

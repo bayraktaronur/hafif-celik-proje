@@ -1,0 +1,28 @@
+{
+  "units": "mm",
+  "status": "prototype_requires_sample_validation",
+  "section": {
+    "type": "lipped_C",
+    "dimensionBasis": "outside",
+    "webWidths": [60, 80, 90, 100, 120, 140, 150],
+    "flange": 45,
+    "lip": 12.5,
+    "thicknessOptions": [0.8, 1, 1.2, 1.5, 1.8]
+  },
+  "nesting": {
+    "sameNominalSection": true,
+    "totalClearance": 0.5,
+    "reductionPerSideFormula": "receivingThickness + totalClearance / 2",
+    "targetOutsideWidthFormula": "nominalOutsideWidth - 2 * receivingThickness - totalClearance",
+    "valueMeaning": "net_width_reduction_not_die_depth",
+    "formingDepth": null,
+    "formingLength": null
+  },
+  "lipCut": {
+    "confirmedSection": [90, 45, 12.5],
+    "startFromEnd": 50,
+    "angleDegrees": 45,
+    "angleStatus": "provisional",
+    "cutLength": null
+  }
+}

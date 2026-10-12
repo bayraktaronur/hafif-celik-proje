@@ -713,3 +713,6 @@ Kullanıcı sundurma başlangıcını gerçek fotoğraftaki köşe direği üst 
 |---|---|---|
 | DEV-093 | SketchUp özel hafif çelik karkas eklentisi ve MCP | AÇIK. Profil/deneme geçme kuralları sketchup-plugin/profile-rules.json ve README.md içinde kaydedildi. Toplam boşluk 0,5 mm; her yanda dış profil sacı +0,25 mm net daralma. Kalıp derinliği değildir. 90 C dudak kesme başlangıcı50mm, geçici45°. Numune, ezme geometrisi, model okuyucu, panel üretimi ve MCP henüz yok. |
 Önceki açık işler korunur. Kurulu FrameBuilder6.9.0 ayrı ürün; kayıt/lisans ve bölgesel ayar adımı kullanıcıda. İki örnek SketchUp modeli yalnız görsel incelendi, kaynak dosyaları ortak depoya aktarılmadı. Takipsiz eski pano görseli korundu. Plan Studio5.9.107 değişmedi.
+
+## 12 Ekim 2026 — DEV-093 / özel eklenti 0.1.0 prototipi
+Kaynak ve RBZ sketchup-plugin/ içinde. Boş model koruması, parametreli keskin köşeli düz C profil, geçme hedefi öznitelikleri, salt okunur üst seviye JSON raporu. 35 kesit alan/dış ölçü ve175 geçme hesabı geçti; kurulu/kaynak main.rb hash eşleşti. Canlı SketchUp/Ruby doğrulaması bekliyor; açık modeller yeniden başlatılmadı. Ezme/kesme geometrisi, panel, imalat paftası ve MCP henüz yok. DEV-093 açık; önceki işler ve Plan Studio5.9.107 korunur. Sonraki adım çizimler kaydedildikten sonra SketchUp yeniden açılıp menü ve tek profil denemesinin doğrulanması.
