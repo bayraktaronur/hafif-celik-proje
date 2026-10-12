@@ -4,8 +4,10 @@ const os = require('node:os');
 const { randomUUID } = require('node:crypto');
 const readline = require('node:readline');
 const ROOT = process.env.PREFABRIKTEN_MCP_DIR || path.join(process.env.LOCALAPPDATA || os.tmpdir(), 'Prefabrikten', 'SketchUpMCP');
+const panelSchema={type:'object',properties:{request_id:{type:'string',pattern:'^[0-9a-f-]{36}$'},width_mm:{type:'number',exclusiveMinimum:0,maximum:20000},height_mm:{type:'number',exclusiveMinimum:0,maximum:20000},spacing_mm:{type:'number',exclusiveMinimum:0,maximum:20000},web_mm:{type:'number',enum:[60,80,90,100,120,140,150]},thickness_mm:{type:'number',enum:[0.8,1,1.2,1.5,1.8]},cladding:{type:'string',enum:['gypsum','osb','boardex','betopan']},orientation:{type:'string',enum:['vertical','horizontal']},bracing:{type:'string',enum:['none','left','edges','all']},top_record_offset_mm:{type:'number',minimum:0,exclusiveMaximum:20000},origin_mm:{type:'array',items:{type:'number',minimum:-1000000,maximum:1000000},minItems:3,maxItems:3}},required:['request_id','width_mm','height_mm','spacing_mm','web_mm','thickness_mm','cladding','orientation','bracing','origin_mm'],additionalProperties:false};
 const tools = [
-  {name:'sessions', description:'List live SketchUp read-only bridge sessions. No model change.', inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true}},
+  {name:'create_panel',description:'Create a separate draft wall frame in the specified live SketchUp model. Requires bridge 0.2.0. Existing geometry is preserved; one undo operation. Never saves the model. Specify world origin in mm. Use one stable UUID request_id for retries; a timeout has UNKNOWN outcome, refresh sessions/read entities before retrying the SAME request_id. No structural or manufacturing approval.',inputSchema:{type:'object',properties:{pid:{type:'integer'},model_guid:{type:'string'},panel:panelSchema},required:['pid','model_guid','panel'],additionalProperties:false},annotations:{readOnlyHint:false,destructiveHint:false,idempotentHint:true,openWorldHint:false}},
+  {name:'sessions', description:'List live SketchUp bridge sessions, model identities, versions and capabilities. No model change.', inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true}},
   {name:'read_entities',description:'Read a bounded page of root or nested instance entities, with actual edge endpoints and face loops in world millimetres. Copy pid/model_guid from sessions and instance path from a previous result. Repeat for nested groups; bounds alone do not establish section or fabrication length.',inputSchema:{type:'object',properties:{pid:{type:'integer'},model_guid:{type:'string'},path:{type:'array',items:{type:'integer'},maxItems:30},offset:{type:'integer',minimum:0},limit:{type:'integer',minimum:1,maximum:300}},required:['pid','model_guid'],additionalProperties:false},annotations:{readOnlyHint:true}}
 ];
 async function sessions() {
@@ -18,31 +20,44 @@ async function sessions() {
 }
 async function call(name,a={}) {
   if(name==='sessions') return {sessions:await sessions()};
-  if(name!=='read_entities') throw Error('Unknown tool');
+  if(!['read_entities','create_panel'].includes(name)) throw Error('Unknown tool');
   if(!Number.isInteger(a.pid)||!(await sessions()).some(s=>s.pid===a.pid&&s.model_guid===a.model_guid)) throw Error('Live session/model not found; refresh sessions.');
+  if(name==='create_panel') {
+    const session=(await sessions()).find(s=>s.pid===a.pid&&s.model_guid===a.model_guid);
+    if(!session?.capabilities?.includes('create_panel'))throw Error('Bridge upgrade requires SketchUp restart; create_panel unavailable.');
+    validatePanel(a.panel);
+  }
   if(!Array.isArray(a.path||[])||(a.path||[]).length>30||!(a.path||[]).every(Number.isSafeInteger))throw Error('Invalid path');
   const offset=a.offset??0,limit=a.limit??100;
   if(!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>300)throw Error('Invalid page');
   const id=randomUUID(),dir=path.join(ROOT,String(a.pid));
   const req=path.join(dir,`request-${id}.json`),res=path.join(dir,`response-${id}.json`);
-  await fs.writeFile(req+'.tmp',JSON.stringify({command:name,model_guid:a.model_guid,path:a.path||[],offset,limit}));
+  await fs.writeFile(req+'.tmp',JSON.stringify({command:name,model_guid:a.model_guid,...(name==='create_panel'?{panel:a.panel}:{path:a.path||[],offset,limit})}));
   await fs.rename(req+'.tmp',req);
   try {
     const until=Date.now()+15000;
     while(Date.now()<until) {
-      try { const r=JSON.parse(await fs.readFile(res,'utf8')); if(r.error)throw Error(r.error);return r.result; }
+      try { const r=JSON.parse(await fs.readFile(res,'utf8')); await fs.rm(res,{force:true}); if(r.error)throw Error(r.error);return r.result; }
       catch(e){if(e.code!=='ENOENT')throw e;}
       await new Promise(r=>setTimeout(r,100));
     }
-    throw Error('SketchUp did not answer within 15 seconds. Close any modal dialog and retry this read.');
-  } finally {await fs.rm(req,{force:true});await fs.rm(res,{force:true});}
+    throw Error(name==='create_panel'?'UNKNOWN create outcome: refresh sessions/read entities; retry only with the SAME request_id.':'SketchUp did not answer within 15 seconds. Close any modal dialog and retry this read.');
+  } finally {if(name==='read_entities'){await fs.rm(req,{force:true});await fs.rm(res,{force:true});}}
+}
+function validatePanel(p) {
+  if(!p||typeof p!=='object'||Array.isArray(p)||Object.keys(p).some(k=>!panelSchema.properties[k])||panelSchema.required.some(k=>!(k in p)))throw Error('Invalid panel parameters');
+  if(!/^[0-9a-f-]{36}$/.test(p.request_id))throw Error('Invalid request_id');
+  for(const k of ['width_mm','height_mm','spacing_mm','web_mm','thickness_mm'])if(typeof p[k]!=='number'||!Number.isFinite(p[k])||p[k]<=0||p[k]>20000)throw Error('Invalid '+k);
+  for(const k of ['web_mm','thickness_mm','cladding','orientation','bracing'])if(!panelSchema.properties[k].enum.includes(p[k]))throw Error('Invalid '+k);
+  if(p.top_record_offset_mm!==undefined&&(!Number.isFinite(p.top_record_offset_mm)||p.top_record_offset_mm<0||p.top_record_offset_mm>=20000))throw Error('Invalid top record');
+  if(!Array.isArray(p.origin_mm)||p.origin_mm.length!==3||p.origin_mm.some(v=>typeof v!=='number'||!Number.isFinite(v)||Math.abs(v)>1000000))throw Error('Invalid origin');
 }
 async function handle(m) {
   if(m.id===undefined)return;
   const respond=r=>process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,...r})+'\n');
   try {
     let result;
-    if(m.method==='initialize')result={protocolVersion:m.params?.protocolVersion||'2024-11-05',capabilities:{tools:{}},serverInfo:{name:'prefabrikten-sketchup-inspect',version:'0.1.0'}};
+    if(m.method==='initialize')result={protocolVersion:m.params?.protocolVersion||'2024-11-05',capabilities:{tools:{}},serverInfo:{name:'prefabrikten-sketchup-inspect',version:'0.2.0'}};
     else if(m.method==='ping')result={};
     else if(m.method==='tools/list')result={tools};
     else if(m.method==='tools/call') {

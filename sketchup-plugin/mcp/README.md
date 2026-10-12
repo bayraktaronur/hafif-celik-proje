@@ -1,4 +1,10 @@
-# Salt okunur SketchUp MCP köprüsü 0.1.0
+# SketchUp MCP köprüsü 0.2.0
+
+0.2.0: `create_panel` yalnız yeni, ayrı bir duvar karkası oluşturur. Okuma komutları korunur. `prefabrikten_inspect.rb` ve `prefabrikten_mcp_panel.rb` Plugins köküne birlikte kurulur; Prefabrikten Karkas 0.4.0 kaynakları da bulunmalıdır. Ruby köprüsü için SketchUp, MCP araç listesinin yenilenmesi için Codex bağlantısı yeniden başlatılmalıdır. Açık çizimler otomatik kapatılmaz/kaydedilmez.
+
+İlk örnek: sessions'tan güncel pid/model_guid alın; create_panel parametreleri width_mm=1500,height_mm=2500,spacing_mm=600,web_mm=90,thickness_mm=1.2,cladding=gypsum,orientation=vertical,bracing=left,top_record_offset_mm=140 ve mevcut geometriye göre boş bir origin_mm seçin. Her kullanıcı işlemi için yeni UUID request_id gerekir. Aynı isteği tekrar göndermek aynı grubu döndürür; aynı UUID farklı parametreyle reddedilir. Grup geri alınır/silinirse aynı UUID yeniden oluşturabilir. Model değişimi ve grup düzenleme bağlamı reddedilir. Başarısız oluşturma tek işlemi geri alır. Kaydetme, silme, keyfî Ruby çalıştırma veya dosya komutu yoktur. Zaman aşımı sonucu belirsizdir; yeni UUID ile kör tekrar yapılmaz. Önce sessions ve read_entities kontrol edilir, gerekirse aynı UUID kullanılır. Zaman aşımında istek/cevap dosyası korunur; eski tamamlanmış cevapların yerel temizliği henüz otomatik değildir.
+
+Kontroller: Node sahte köprü okuma/yazma iletişimi, eski sürüm engeli, parametre sınırları; gerçek Ruby ile parametre doğrulama, sahte modelde tekrar isteğin çoğaltmaması ve işlem geri alma geçti. Gerçek SketchUp create_panel çağrısı yeniden yüklemeden sonra bekliyor. Statik/imalat çözümü değildir. Aşağıdaki 0.1.0 kurulum bilgileri tarihsel kayıttır.
 
 `prefabrikten_inspect.rb` SketchUp 2026 Plugins klasörüne kopyalanır; 0.3.0 karkas eklentisinden bağımsızdır. `server.cjs` Node stdio MCP sunucusudur. Codex ayarı `[mcp_servers.sketchup-inspect]` altında Node komutu ve bu dosyanın mutlak yoluyla tanımlanır. Bilgisayara özgü ayar ve yedeği depoya konmaz.
 

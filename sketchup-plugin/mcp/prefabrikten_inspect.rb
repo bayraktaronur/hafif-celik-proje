@@ -3,7 +3,7 @@ require 'json'
 require 'fileutils'
 require 'time'
 
-# Independent, read-only extension. No eval, model writes, or arbitrary file commands.
+# Bounded commands only. No eval, deletion, save or arbitrary file commands.
 module PrefabriktenInspect
   ROOT = File.join(ENV.fetch('LOCALAPPDATA'), 'Prefabrikten', 'SketchUpMCP')
   DIR = File.join(ROOT, Process.pid.to_s)
@@ -61,15 +61,20 @@ module PrefabriktenInspect
     model=Sketchup.active_model
     write('session.json', {pid:Process.pid, title:model.title, file:model.path, model_guid:model.guid,
       modified:model.modified?, entity_count:model.entities.length, selection_ids:model.selection.map(&:persistent_id),
-      active_path:(model.active_path || []).map(&:persistent_id), updated_at:Time.now.utc.iso8601, read_only:true})
+      active_path:(model.active_path || []).map(&:persistent_id), updated_at:Time.now.utc.iso8601,
+      bridge_version:'0.2.0', read_only:false, capabilities:['read_entities','create_panel']})
     # Do not glob a Windows ENV path: backslashes are glob escape characters.
     Dir.children(DIR).grep(/\Arequest-[0-9a-f-]{36}\.json\z/).first(1).each do |name|
       file=File.join(DIR, name)
       id=name[8...-5]
       begin
         req=JSON.parse(File.read(file))
-        raise 'Unsupported command.' unless req['command']=='read_entities'
-        write("response-#{id}.json", {result:read_model(req)})
+        result=case req['command']
+        when 'read_entities' then read_model(req)
+        when 'create_panel' then PrefabriktenMCPPanel.create(req)
+        else raise 'Unsupported command.'
+        end
+        write("response-#{id}.json", {result:result})
       rescue StandardError => e
         write("response-#{id}.json", {error:e.message})
       ensure
@@ -83,3 +88,5 @@ module PrefabriktenInspect
     @timer=UI.start_timer(1.0, true) { tick }
   end
 end
+
+require_relative 'prefabrikten_mcp_panel'
