@@ -11,7 +11,15 @@ module Prefabrikten
           raise ArgumentError, 'Levha sayısı çok fazla.' if edges.length>200
         end
         edges << total.to_f
-        (edges+edges.each_cons(2).map { |a,b| (a+b)/2.0 }).sort.uniq
+        # Retain full-sheet middle lines. Continue that spacing into a cut sheet,
+        # rather than inventing a new midpoint for each short remainder.
+        intermediate=[]; pos=sheet.to_f/2
+        while pos<total-0.001
+          intermediate << pos
+          pos+=sheet.to_f/2
+          raise ArgumentError, 'Levha destek sayısı çok fazla.' if intermediate.length>400
+        end
+        (edges+intermediate).sort.uniq
       end
       def self.layout(width, height, spacing, web, thickness, rules, options={})
         raise ArgumentError, 'Ölçüler pozitif ve sonlu olmalı.' unless [width,height,spacing,web,thickness].all? { |v| v.is_a?(Numeric) && v.finite? && v>0 }
@@ -93,6 +101,7 @@ module Prefabrikten
         {schema:2,panel_id:'P01',width_mm:width,height_mm:height,web_mm:web,thickness_mm:thickness,cladding:coating,orientation:orientation,
           board_mm:[bx,bz],required_x_mm:required_x,required_z_mm:required_z,stud_centres_mm:centres,blocking_rows_mm:rows,bracing:bracing,
           requested_max_spacing_mm:spacing,actual_centre_spacing_mm:centres.each_cons(2).map { |a,b| b-a }.max,parts:parts,
+          support_policy:'sheet_edges_and_half_sheet_grid_no_remainder_midpoint',
           status:'draft_not_for_manufacture',warnings:warnings}
       end
     end
