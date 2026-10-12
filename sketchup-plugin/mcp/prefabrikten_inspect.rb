@@ -62,9 +62,10 @@ module PrefabriktenInspect
     write('session.json', {pid:Process.pid, title:model.title, file:model.path, model_guid:model.guid,
       modified:model.modified?, entity_count:model.entities.length, selection_ids:model.selection.map(&:persistent_id),
       active_path:(model.active_path || []).map(&:persistent_id), updated_at:Time.now.utc.iso8601, read_only:true})
-    Dir.glob(File.join(DIR, 'request-*.json')).first(1).each do |file|
-      id=File.basename(file)[8...-5]
-      next unless id.match?(/\A[0-9a-f-]{36}\z/)
+    # Do not glob a Windows ENV path: backslashes are glob escape characters.
+    Dir.children(DIR).grep(/\Arequest-[0-9a-f-]{36}\.json\z/).first(1).each do |name|
+      file=File.join(DIR, name)
+      id=name[8...-5]
       begin
         req=JSON.parse(File.read(file))
         raise 'Unsupported command.' unless req['command']=='read_entities'
