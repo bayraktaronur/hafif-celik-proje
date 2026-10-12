@@ -767,3 +767,7 @@ DEV-102 AÇIK canlı kabul: kullanıcı27/200trapez yerleşimi istedi. create_ro
 
 ## 12 Ekim 2026 — DEV-102 canlı renk hatası düzeltildi
 İlk canlı create_roof denemesi SketchUp LightGray adını kabul etmediği için atomik geri alındı;MCPread_entities kök nesne sayısının değişmediğini doğruladı. Malzeme ataması doğrudan Sketchup::Color RGB değerlerine çevrildi;Ruby çatı testleri geçti;kurulu kaynak hash eşleşti. Düzeltilmiş kod açık Ruby oturumuna geçmedi;ayrı SketchUp başlatıldı ancak MCP oturumu henüz gelmedi. Kullanıcıdan ilgili pencereyi yeniden açması istendi. Trapez oluşturuldu diye raporlanmadı;DEV-102canlı kabul AÇIK. Özel çatı verisi yalnız yerelde;genel kod/not paylaşılır. Önceki açık işler korunur.
+
+
+## 12 Ekim 2026 — DEV-102 canlı trapez yerleşimi oluşturuldu
+Düzeltilmiş köprü canlı yüklendi. İlk denemede Duplicate points in array hatasıyla atomik geri alma çalıştı;yerel yerleşim poligonları1mmye yuvarlanıp dışbükey sınırla temizlendi,küçük sayısal parçalar ayıklandı. MCPcreate_roof42ayrı sac grubu ve2574yüz oluşturdu. MCPileT001–T042grupları ve örnek sacın normal doğrultusunda27mm hadve yüksekliği doğrulandı. Kaynak model korunur;otomatik dosya kaydı yapılmadı. DEV-102ilk canlı nominal yüzey yerleşimi tamamlandı;kesin örtü sınırı,ürün kesiti,sac kalınlığı,bindirme/mahya-dere kapakları ve imalat doğrulaması açık. Özel model/yerleşim verisi paylaşılmadı;yalnız genel doğrulama notu aktarılır. Kullanıcı görünüşü henüz teyit etmedi. Önceki açık işler korunur.
