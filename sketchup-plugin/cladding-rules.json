@@ -1,0 +1,19 @@
+{
+  "units": "mm",
+  "status": "confirmed_requirements_not_yet_integrated",
+  "boards": {
+    "osb": {"width": 1220, "length": 2440},
+    "gypsum": {"width": 1200, "length": 2500},
+    "boardex": {"width": 1200, "length": 2400}
+  },
+  "orientationOptions": ["vertical", "horizontal"],
+  "orientationDefault": null,
+  "supportRequirement": "board_edges_and_middle_screw_lines",
+  "placementRule": "align_studs_and_horizontal_blocking_to_board_support_lines",
+  "equalRedistributionAllowed": false,
+  "customBoardDimensionsAllowed": true,
+  "screwPitch": null,
+  "edgeScrewOffset": null,
+  "jointGap": null,
+  "staggering": null
+}
