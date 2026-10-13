@@ -40,7 +40,11 @@ genel akışla çakışması da giderilmeli. Diğer botlar/formlar ve Meta'daki 
 Sıradaki somut adım: Kommo'nun mevcut entegrasyonunun reklam kimliğini bot
 koşuluna veya özel alana aktarabilip aktaramadığını destekten netleştirmek.
 Gönderilmeye hazır destek metni: analizler/2026-10-14-kommo-destek-taslagi.txt.
-Hesap adına dış mesaj gönderimi kullanıcı onayına bağlı; henüz gönderilmedi.
+Kullanıcı açıkça onayladı; metin 14 Ekim 02:09'da Kommo'nun kendi Destek ile
+Sohbet Edin kanalına gönderildi ve sohbet içinde görüldü. Yanıt henüz alınmadı.
+Kanıt: referanslar/kommo/2026-10-14-destek-talebi-gonderildi.png.
+Kommo kendi müşteri/kullanıcıID ve hesap e-postasını otomatik ekledi; müşteri
+mesajları/telefonlar/kodlar gönderilmedi.
 Yerleşik aktarım yoksa canlı Meta webhook + Kommo aktarım servisi gerekecek;
 çalışan uç nokta, üretim izinleri ve Instagram desteği henüz kurulmuş değil.
 
