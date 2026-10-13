@@ -1,0 +1,59 @@
+14 Ekim 2026 — CRM-006: 67 m² reklamından otomatik ve ayrı başlangıç
+
+İstek: Moe-67 reklamından gelen Instagram ve WhatsApp görüşmeleri doğrudan
+67 PDF ve kısa akışla başlamalı; 84 m²/bahçe ofisi/organik mesajlar karışmamalı.
+Reklam 52581114367325, bot 20311. Bot/PDF kaynakları ve SHA-256:
+analizler/2026-10-14-kommo-67m2.txt. Kaynaklar yeniden değiştirilmedi.
+
+Salt okunur hesap incelemesi:
+- Kommo başlangıç koşulları içinde doğrudan reklam/referral ID alanı görülmedi.
+  Kaynak, UTM ve mevcut özel form alanları var. İncelenen bir Instagram
+  reklam görüşmesinde Tracking data 0/10 doluydu; bu örnekten tüm mesajlara
+  genelleme yapılamaz. Müşteri kimliği/mesajı rapora alınmadı.
+- Meta Moe-67 seçiliyken toplu düzenle > Takip > URL Parametreleri devre dışı.
+  Kanıt: referanslar/kommo/2026-10-14-url-parametreleri-devre-disi.png.
+  Devre dışı kontrol aşılmadı; reklam değiştirilmedi/yayımlanmadı.
+- Facebook ek doğrulaması istendi. Kullanıcı kod kabul edilmiyor dedi;
+  sonraki kontrolde sekme işletme ayarlarına geçmişti. Kod okunmadı/kaydedilmedi.
+  Yeni doğrulama denemesi yapılmadan mevcut oturumla inceleme sürdü.
+- Bağlı Kommo uygulaması 1022173854571346: Instagram prefabrikten,
+  reklam hesabı 199150513628575 ve WhatsApp hesaplarına erişim mevcut.
+  Reklam istatistikleri ve mesajlaşma erişimi de listeleniyor.
+  İzinler değiştirilmedi; yeniden bağlama yapılmadı.
+- İşletmenin Prefabrikten Müşteri Takibi uygulaması 2317199089035923:
+  yayımlanmamış. WhatsApp Production setup > Configure Webhooks'ta
+  Callback URL ve Verify token boş, Remove subscription devre dışı.
+  Ekran uyarısı yayımlanmamış uygulamaya üretim verisi teslim edilmeyeceğini
+  söylüyor. Bu uygulamada hazır canlı webhook saptanmadı; uygulama yayımlanmadı.
+- Instagram Konuşma Yönlendirme, kampanya/bağlantıyı uygulamaya gönderebilir.
+  Başlangıç kurulumu varsayılan uygulama istiyor ve mevcut mesajlaşma kurulumuyla
+  uyumsuzluk uyarısı veriyor. İptal edildi; ayarlar değişmedi. Burada Kommo bot
+  ID'si seçilebildiği doğrulanmadı. Uygulamaya yönlendirme tek başına bot seçimi
+  olarak kabul edilmedi.
+
+Sonuç: otomatik reklam eşleştirmesi TAMAMLANMADI. 20311'e genel tetikleyici
+eklenmedi. Önceki 20247 genel menü tetikleyicisi halen mevcut; bu nedenle
+reklamlar tamamen ayrıldı denemez. Yeni çözüm kurulurken 67 mesajlarının bu
+genel akışla çakışması da giderilmeli. Diğer botlar/formlar ve Meta'daki 16
+önceden bekleyen değişiklik korunmuştur. Gerçek müşteri/test mesajı gönderilmedi.
+
+Sıradaki somut adım: Kommo'nun mevcut entegrasyonunun reklam kimliğini bot
+koşuluna veya özel alana aktarabilip aktaramadığını destekten netleştirmek.
+Gönderilmeye hazır destek metni: analizler/2026-10-14-kommo-destek-taslagi.txt.
+Hesap adına dış mesaj gönderimi kullanıcı onayına bağlı; henüz gönderilmedi.
+Yerleşik aktarım yoksa canlı Meta webhook + Kommo aktarım servisi gerekecek;
+çalışan uç nokta, üretim izinleri ve Instagram desteği henüz kurulmuş değil.
+
+Kabul: her iki kanalda 52581114367325 -> bot20311 doğru PDF bir kez;
+84 ve bahçe ofisi -> bot20311 başlamaz; kaynak bilinmiyorsa 67 varsayılmaz;
+84 genel tetikleyicisiyle çift başlangıç olmaz; tekrar mesajı botu çoğaltmaz.
+Bu kontroller canlı reklam görüşmesinde henüz yapılmadı.
+
+Resmi Kommo belgeleri (incelendi; mevcut hesapta uygulanabilir yol doğrulanmadı):
+https://support.kommo.com/docs/salesbot-triggers-overview
+https://support.kommo.com/docs/track-whatsapp-ad-campaigns-with-utms-1
+Meta uygulama ekranındaki webhook belgesi:
+https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview/
+
+Kod/sürüm değişmedi. Kullanıcının takipsiz Yeni proje (11).json dosyası
+korundu ve bu teslimin dışında. Önceki tüm proje/CRM açık işleri korunur.

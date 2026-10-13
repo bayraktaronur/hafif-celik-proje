@@ -1,0 +1,23 @@
+KOMMO DESTEĞİNE TASLAK — HENÜZ GÖNDERİLMEDİ
+
+Merhaba, prefabrikten.kommo.com hesabımızda Meta Moe-67 reklamı
+(ad ID 52581114367325) Instagram ve WhatsApp mesajlarına yönlendiriyor.
+Yalnız bu reklamdan başlayan görüşmelerde Salesbot 20311'in otomatik
+başlamasını istiyoruz. 84 m² ve bahçe ofisi reklamlarıyla karışmamalı;
+müşterinin yazdığı kelimeye veya ürün seçimi menüsüne bağlı olmamalı.
+
+Mevcut Kommo Meta bağlantısının Instagram/WhatsApp ve reklam hesabına erişimi var.
+Salesbot tetikleyicilerinde reklam ID/referral alanı göremiyoruz. Moe-67 için
+Meta URL Parametreleri kontrolü devre dışı; incelemiş olduğumuz bir Instagram
+reklam görüşmesinde UTM alanları boştu.
+
+1. Instagram reklam referral ad_id ve WhatsApp referral source_id bilgileri
+   Kommo'da saklanıyor mu? Hangi alan/olay/API yanıtında erişilebilir?
+2. Bu bilgiye göre bot 20311'i başlatmak ve genel bot 20247'nin aynı görüşmede
+   başlamasını engellemek için desteklenen yerleşik kurulum nedir?
+3. Yerleşik kurulum yoksa bu reklam kimliğini özel alana/etikete aktaran
+   desteklenen entegrasyon veya webhook yolu var mı? İki kanal için ayrı
+   sınırlamaları ve metadata gelmeyen mesajların davranışını belirtir misiniz?
+
+Mevcut botları, reklamları, formları veya bağlantıları değiştirmeden önce
+uygulanabilir yöntemi öğrenmek istiyoruz. Teşekkürler.
