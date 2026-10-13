@@ -9,13 +9,14 @@ Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etme
 
 ## 14 Ekim 2026 — Kommo botu devir kaydı
 
-Kaynak: kullanıcının bu sohbette verdiği devir özeti. Kommo/Meta canlı hesapları bu oturumda açılıp doğrulanmadı; aşağıdaki kurulum ve önceki testler kullanıcı beyanıdır.
+Kaynak: ilk devirde kullanıcının verdiği özet. Aşağıdaki tarihsel kurulum/önceki testler kullanıcı beyanıydı; 14 Ekim ayrı bot çalışmasının güncel doğrulamaları dosya sonundadır.
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 |---|---|---|
 | CRM-001 | Bot 20247 mevcut kararlarını ortak kayda alma | Bu bölümde kaydedildi; önceki proje açık işleri korunur. |
-| CRM-002 | 67 m² ve bahçe ofisi PDF dalları | AÇIK: kullanıcı PDF'leri verecek; ilgili dallara kısa tanıtım, kategori bağlantıları ve Beni arayın akışı eklenecek. |
+| CRM-002 | 67 m² ve bahçe ofisi katalogları | 67 PDF alındı ve ayrı bot 20311 hazır; otomatik reklam yönlendirmesi CRM-005 AÇIK. Bahçe ofisi PDF ve ayrı bot AÇIK. |
 | CRM-003 | Yeni Instagram/WhatsApp canlı başlangıç ve teslimat | AÇIK: gerçek yeni görüşmede tetiklenme, menü, doğru PDF ve Instagram gerçek PDF teslimatı doğrulanmalı. |
+| CRM-005 | AYRI 67 m² reklam botu | AYRI bot 20311 hazır/kaydedildi: doğrudan 67 PDF → kategori → aranma. Moe-67 reklamı 52581114367325 Meta'dan bulundu. Reklam bazında otomatik tetikleme AÇIK; tetikleyici eklenmedi. Aynı 84 botuna birleştirme kullanıcı düzeltmesiyle geri alındı. [Durum/kanıt/sınırlar](analizler/2026-10-14-kommo-67m2.txt). |
 | CRM-004 | Reklam ID'sinden bağımsız içeriksiz yönlendirme | ÇÖZÜLMEDİ: mevcut çözüm tüm yeni seçili kaynak görüşmelerine ürün menüsü açar; reklama özel yönlendirme yok. |
 
 Hesap: https://prefabrikten.kommo.com. Bot: “84 m² Reklam | YMOE-3 Katalog ve Proje”, ID 20247. Kaydedilmiş otomatik başlangıç: gelen mesajla başlayan yeni görüşmeler; yalnız Instagram (prefabrikten) ve WhatsApp Onur Bayraktar (+90 542 645 55 60). Botun yanıtladığı mesajlar okunmadı bırakılıyor.
@@ -36,7 +37,7 @@ Reklam: Meta “Moe-3”, reklam ID 6870411642321, hesap 199150513628575. Bot re
 
 Korunacak kararlar: mevcut reklamlar, Meta formları ve diğer botlar bozulmayacak. Meta'da önceden kalan yayımlanmamış değişiklikler topluca yayımlanmayacak/silinmeyecek. Uzun arsa/zamanlama soru akışı geri eklenmeyecek; PDF, kısa metin, model bağlantıları ve Beni arayın yeterli.
 
-Sıradaki adım: CRM-002 için iki PDF'nin alınması; CRM-003 için uygun yeni görüşmede canlı doğrulama. Plan Studio/SketchUp sürümleri ve kullanıcı çizimleri bu devirde değiştirilmedi.
+Güncel sıradaki adım: ayrı 20311 botunun Moe-67 reklamına göre otomatik tetiklenmesini kurmak (CRM-005/004), ardından gerçek teslimatı doğrulamak (CRM-003). Bahçe ofisi PDF'si CRM-002 açık. Plan Studio/SketchUp sürümleri ve kullanıcı çizimleri bu devirde değiştirilmedi.
 
 ## Güncel kullanıcı kararı — 8 Ekim 2026
 Aktif kullanım 5.9.87 tabanına pencere düzeltmesi eklenen 5.9.107 sürümüdür. 5.9.87 yedeği korunur. Kullanıcı deneme arayüzü/yerel görsel okuyucu çalışmasını sonraya bıraktı ve eski sürüme dönüş istedi. 5.9.95 çalışma ve test kayıtları codex/arayuz-duzeni dalında korunuyor; silme veya yeniden başlatma. DEV-080 ERTELENDİ. Eski dist HTML SHA256: CC65F089DB6CC15C9917D1AF5C4C988A214B71164DDD66B92817525FC9AF034E, releases/5.9.87 yedeğiyle aynı. Canlı deneme çizimi değiştirilmedi; JSON aktarımı doğrulanmadı.
@@ -792,3 +793,16 @@ Kullanici yeni actigi Imza Prefabrik modelinin celik yerlesimi/profillerini ince
 
 ## 13 Ekim 2026 — DEV-108 Karkas0.5.0 surekli kayit/kafes baslik
 Kullanici yeni referansa gore guncelleme istedi. Duvar varsayilani surekli yatay kayit;gozlerde bolunmus secenegi korunur. Bosluklarda kayit kesilir,dikme gecis yerleri metadatada;gecis kesimleri modellenmez. TekC/kafes baslik tipi,yukseklik/goz araligi girisi eklendi;baslik caprazlari genel duvar caprazindan ayri,ust ray varsaust kusak tekrar uretilmez. Tasarak baska acikliga giren baslik reddedilir. Profil eklenme nedeni/uc temasi/levha destek kurallari korunur. CSV/SVG/JSON parca(kesim boyu)adedi,profil metre,nominaluc yuzu vegecis yerlerini ayri gosterir;makine kesimi hesaplanmadi. Kendi testinde45parca53.461m yerine surekli33parca54.361m:parca azalmasi malzeme tasarrufu degildir. continuous-header-qa32kombinasyon,FrameCore120,OpeningCore,Connection,SupportGrid,35kesit175gecme veRubysozdizimi gecti.0.5.0RBZ SHA256:c0a767833b20152ca172268d018c3a6d4597b315ddbed6f2a84e4657b911d390. Kurulu dosyalar yedeklendi,hashlereslesti. Ayrinti sketchup-plugin/RELEASE-0.5.0.md. DEV-108kod/paket tamam;0.5.0canli SketchUp/UI kabul ACIK,acik eski Rubyoturum yeniden acilmali. Mevcut Imza/model cizimleri degismedi. Gercek makas/ust cevre yukaktarimi,C-Uurun katalogu,statik/ucisleme veuretici vida sartlari acik;referans akslari evrensel alinmadi. DEV-106canli karsilastirma da onceki acikis olarak korunur. Ozelreferansgeometri/raporlar aktarilmaz;yalniz kod/paket/genel devir.
+
+## 14 Ekim 2026 — CRM-005 / 67 m² katalog akışı uygulaması
+Kullanıcı, 67 m² Instagram ve WhatsApp taleplerinin verilen PDF ve 84 m² botunun aynı kısa konuşma düzeniyle devam etmesini istedi. Kaynak C:/Users/obayr/Downloads/Prefabrikten_Modern_Modul_Ev_67m2_Urun_Karti.pdf; SHA-256 c3c4a714fbfa2ba5d13ab1e14538f5064644323487491e6eda53a2abf6d8fbfe. Aynı hashli kopya referanslar/kommo/Prefabrikten_Modern_Modul_Ev_67m2_Urun_Karti.pdf altında; özgün dosya korundu. İLK DENEME GEÇERSİZ: 67 dalını aynı 84 botuna ekleme kullanıcı tarafından reddedildi ve geri alındı; ayrı bot 20311 hazır, otomatik reklam yönlendirmesi AÇIK. Ayrıntı ve sınırlar: [kontrol kaydı](analizler/2026-10-14-kommo-67m2.txt). 84 botunun eski başlangıç menüsü korunur; yeni AYRI 67 botu menüsüz PDF ile başlar, reklamdan otomatik tanıma çözülmedi. CRM-002 bahçe ofisi PDF'si hâlâ açık. CRM-003/004 ve önceki uygulama açık işleri korunur.
+
+KULLANICI DÜZELTMESİ — 14 Ekim 2026, aynı çalışma:
+Kullanıcı 84 m² reklamının, 67 m² Meta reklamının ve bahçe ofisi kampanyasının ayrı olduğunu açıkladı; tek botta ürün menüsü birleştirmesi istenen çözüm değil. Yukarıdaki CRM-005 "tamamlandı" durumu bu düzeltmeyle geçersizdir. Ayrı bot hazırlama ve reklam kaynağına göre eşleştirme AÇIK. 67 m² için 84 botunun kopyası 20311 adı "67 m² Reklam | Modern Modül Ev Katalog ve Proje" oluşturuldu; henüz otomatik tetikleyici yok. Kaynak doğrulanmadan genel yeni görüşme tetikleyicisi eklenmeyecek. Bu turdaki yanlış 84 botu birleştirmesi geri alındı. Kullanıcı reklamı asistanın Meta'dan bulmasını istedi; Moe-67 ID52581114367325 bulundu. Önceki genel menü onayı yeni reklam ayrımı isteğinin yerine kullanılamaz.
+
+## 14 Ekim 2026 — Güncel Kommo sonucu: AYRI 67 botu hazır, reklam eşleştirmesi açık
+Kullanıcı 84/67/bahçe reklamlarının ayrı olduğunu düzeltti. Tek botta birleştirme reddedildi ve bu tur 84 botuna eklenen 67 PDF/koşul geri alındı. 84 botunun önceki genel menüsü/tetikleyicisi korunur; reklam özel değildir.
+AYRI 67 botu **20311**, adı **67 m² Reklam | Modern Modül Ev Katalog ve Proje**. Doğrudan 67 PDF -> kısa metin -> kategori -> aranma; eski 84/ürün menüsü düğümleri yeni bottan temizlendi. WhatsApp doğrudan PDF/kategori; son Instagram PDF/hafif çelik bağlantısı/aranma/iç bildirim önizlemesi geçti. Gerçek UI export dosyalarının başlangıç/bağlantı/PDF/geri alma kontrolleri başarılı.
+Meta'da **Moe-67**, reklam **52581114367325**, kampanya **6870461087921**, set **6870461087721** bulundu. Set Instagram ve WhatsApp'a yönlendiriyor. [Kaynak, PDF/hash, export dosyaları, kanıtlar ve sınırlar](analizler/2026-10-14-kommo-67m2.txt).
+**CRM-005 TAMAMLANMADI:** ayrı bot hazırlama tamam, reklamdan içerikten bağımsız otomatik başlangıç açık. 20311 otomatik tetikleyici YOK; canlı kullanımda otomatik dağıtım iddiası yok. CRM-004 reklam/UTM aktarımı ve 84 genel tetikleyicisini ayırma, CRM-003 gerçek teslimat, CRM-002 bahçe ofisi PDF/ayrı bot açık. Önceki proje/SketchUp açık işleri korunur.
+Meta'daki 16 bekleyen düzenleme yayımlanmadı/silinmedi; reklam, bütçe ve formlar değiştirilmedi. Sıradaki iş: reklam kimliği/UTM verisini Kommo'ya aktaracak desteklenen yolu kurup iki botun çakışmadan başlatıldığını gerçek yeni görüşmede doğrulamak.

@@ -1,0 +1,84 @@
+Kommo — ayrı 67 m² reklam botu / 14 Ekim 2026
+
+GÜNCEL SONUÇ:
+67 m² için AYRI bot hazır ve kaydedildi: 20311 — 67 m² Reklam | Modern Modül Ev Katalog ve Proje.
+Otomatik reklam eşleştirmesi TAMAMLANMADI; bu botun otomatik tetikleyicisi yok. Gerçek reklam görüşmelerine otomatik PDF teslimatı yapıldığı iddia edilmez.
+84 m² botuna bu tur yanlış eklenen 67 m² PDF dalı/koşulu geri alındı ve kaydedildi. Önceden var olan genel menü/tetikleyici düzeni ayrıca reklam ayrımı çözülene kadar eski haliyle korunur.
+
+Kaynak ve kullanıcı kararı:
+Kullanıcı 67 m² PDF'sini verdi, 84 m² botundaki kısa konuşma düzeninin kopyasını istedi.
+İlk uygulamada 67 PDF dalı aynı 84 botuna eklenmişti. Kullanıcı açıkça düzeltti: 84 m² reklam farklı; 67 Meta reklamı farklı; bahçe ofisi de ayrı kampanya. Bu nedenle tek ürün menüsünde birleştirme geçerli çözüm değildir.
+Kullanıcı reklam adı/ID'sini Meta'dan asistanın bulmasını istedi. Bulundu.
+
+Meta'da salt okunur doğrulanan reklam:
+Reklam hesabı 199150513628575; business_id 315822685906986.
+Ad: Moe-67. Reklam ID: 52581114367325. Durum: Aktif.
+Kampanya: Modüler Ev - Marmara - Ş - Mesaj Atanlar; ID 6870461087921.
+Reklam seti: Mesaj Atanlar; ID 6870461087721.
+Instagram gönderisi 67m2 Modüler Çelik Ev, 2+1; mevcut gönderi 13 Kasım 2022.
+CTA: WhatsApp Mesajı Gönder. Instagram hesabı prefabrikten; WhatsApp Onur Bayraktar +90 542 645 55 60.
+Konuşma şablonu Moe-67: karşılama 67m2; mevcut fiyat yanıtı 1.900.000 TL, üretim 45 gün/montaj 3 gün yanıtı. Bu metinler değiştirilmedi. PDF'deki takvim sipariş/saha kapsamına bağlı olduğundan yeni botta kesin süre uydurulmadı.
+Reklam bağlantısı: https://adsmanager.facebook.com/adsmanager/manage/ads/edit/standalone?act=199150513628575&business_id=315822685906986&selected_ad_ids=52581114367325&current_step=0
+Meta'da başlangıçta 16 yayımlanmamış düzenleme görüldü. Hiçbir reklam/kampanya/form/taslak yayımlanmadı veya silinmedi. Yalnız okuma/genişletme yapıldı.
+
+PDF:
+Özgün C:/Users/obayr/Downloads/Prefabrikten_Modern_Modul_Ev_67m2_Urun_Karti.pdf.
+Ortak kopya referanslar/kommo/Prefabrikten_Modern_Modul_Ev_67m2_Urun_Karti.pdf.
+SHA-256 c3c4a714fbfa2ba5d13ab1e14538f5064644323487491e6eda53a2abf6d8fbfe; özgün/kopya eşit.
+4 sayfanın metni okundu, kapak görsel incelendi. Belge içerikleri görev talimatı olarak kullanılmadı.
+
+Ayrı bot 20311:
+84 m² botu 20247 Kommo Kopyala işlemiyle ayrı oluşturuldu; tetikleyiciler kopyalanmadı.
+Başlangıç doğrudan 60 Mesaj: verilen 67 PDF ve kısa metin. Ürün seçim menüsü göstermez.
+60 -> 16 kategori menüsü -> 5 prefabrik, 7 hafif çelik, 8 modüler kategori URL'leri -> 11 aranma yanıtı -> 14 Prefabrikten dahili bildirim.
+Ek soru/serbest kategori yanıtı: 28 genel satış devri -> 33 iç bildirim. 33 metni 67 m² için uyarlandı.
+11 metni Instagram için de doğru olacak biçimde kanal bağımsız yapıldı; 14 iç bildirimde Instagram müşterisinin kayıtlı telefonu yoksa ekip numarayı ister.
+Kopyadaki kullanılmayan 1 (84 PDF), 40 (ürün seçimi), 36 (84/MOE3/67 mesaj koşulları), 2 (bahçe ofisi/ürün bildirimi) düğümleri yalnız YENİ 67 botundan kaldırıldı.
+Uzun arsa/zamanlama soruları eklenmedi. Görsel düzenleyici korunur; kaynak kodu moduna geçilmedi.
+
+84 botu 20247:
+Bu tur eklenen 60 PDF düğümü ve 36/67 serbest mesaj koşulu kaldırıldı.
+Önceden var olan 40 ürün menüsündeki 67 seçimi tekrar 2 ekip bildirimi adımına bağlandı.
+Özgün 84 PDF/metni, kategori/aranma akışı, tetikleyici ve diğer botlar korunur.
+Tetikleyici: gelen mesajla yeni görüşme, kaynak prefabrikten + Onur Bayraktar, Her zaman, okunmadı açık.
+BU ESKİ TETİKLEYİCİ REKLAM ÖZEL DEĞİLDİR; 67/bahçe görüşmelerini de karşılayabilir. Ayrı reklam yönlendirmesi çözülmüş sayılmaz. Kullanıcıya açıklandı.
+
+Kontroller ve sınırlar:
+İlk aynı-bot denemesinde Instagram ve WhatsApp menü -> 67 PDF -> kategori; Instagram prefabrik URL/Beni arayın/dahili bildirim önizlemesi geçti, fakat bu yapı kullanıcı tarafından reddedildi ve geri alındı.
+Ayrı 20311 botunun ilk WhatsApp önizlemesinde hiçbir ürün seçimi olmadan doğrudan 67 PDF/metin ve kategori menüsü görüldü.
+Ayrı botta kullanılmayan düğümler temizlenip iç mesajlar uyarlandı ve tekrar kaydedildi; son Instagram önizleme sonucu teslim kaydında ayrıca belirtilir.
+Gerçek yeni Instagram/WhatsApp görüşmesinde reklam kimliğiyle başlama/PDF teslimatı gözlemlenmedi; CRM-003 açık.
+Kullanıcı/gerçek müşteriye test mesajı gönderilmedi.
+WhatsApp entegrasyon ayarları salt okunur incelendi: bağlı Onur Bayraktar WABA 2363603077472498; business_id reklam hesabıyla aynı. Hesap ekranında reklam metadata erişimi/UTM reklam hesabı seçme banner'ı görünmedi. Bağlantı veya izin değiştirilmedi.
+Mevcut Moe-67 düzenleyicisinde Takip bölümü ve kreatif ek seçenekleri incelendi; UTM/URL parametre girişi görülmedi. Bu gözlem tüm Meta reklam türlerinde UTM yok demek değildir.
+
+Resmî araştırma kaynakları:
+https://support.kommo.com/docs/track-whatsapp-ad-campaigns-with-utms-1
+https://support.kommo.com/docs/salesbot-triggers-overview
+Kommo UTM tabanlı tetikleme ve WhatsApp reklamlarının UTM verilerini alma kurulumunu belgeliyor. Mevcut reklamda gerekli alan/bağlantı doğrulanamadığından otomasyon tamamlandı sayılmadı. Aynı kanal hesabını seçmek reklamları ayırmaz.
+
+Açık işler:
+CRM-005: ayrı bot hazırlama tamam; Moe-67 reklamından içerikten bağımsız otomatik başlatma AÇIK. Genel yeni görüşme tetikleyicisi eklenmez; iki bot aynı müşteriye birlikte yanıt vermemeli.
+CRM-004: reklam kimliği/UTM verisini Kommo müşteri kaydına aktaracak yöntem ve koşul bulunmalı; 84 botunun genel tetikleyicisi de reklam bazında ayrılmalı.
+CRM-003: her iki gerçek kanalda yeni görüşme ve gerçek PDF teslimatı doğrulanmalı.
+CRM-002: bahçe ofisi kataloğu ve ayrı reklam botu bekler. Bahçe form/reklamları değiştirilmedi.
+Plan Studio/SketchUp kodu/sürümü ve eski açık işler değişmedi.
+
+SON DOĞRULAMA — AYRI BOT:
+Son 20311 Instagram önizlemesi: doğrudan 67 PDF/metin -> kategori -> Hafif çelik URL -> Beni arayın -> kanal bağımsız müşteri yanıtı -> 67 m² Prefabrikten dahili bildirim başarılı.
+Meta reklam setinde manuel hedefler Instagram @prefabrikten ve WhatsApp +90 542 645 55 60 seçili; Messenger seçili değil. Reklam verileri paylaşımı Açık görülüyor. Bu, Kommo'ya reklam kimliğiyle yönlendirme kurulduğunu kanıtlamaz.
+Kommo UI dışa aktarma ile kaydedilen gerçek bot dosyaları alındı:
+- referanslar/kommo/2026-10-14-bot-20311-67m2.json SHA-256 3f56b388f66eff6472e298f46ff76e6f6aac53d967741323de9f373e39066d4b
+- referanslar/kommo/2026-10-14-bot-20247-geri-alinan.json SHA-256 4a1831b6169aacf5f4f70b26748bfff6d689a7fac44fa9817405c04a41df0c15
+JSON bağımsız doğrulaması: 67 başlangıç->60->16; 1/2/36/40 eski düğümler yok; doğru PDF adı, üç URL, tüm blok bağlantı hedefleri mevcut, 84/80 m² metni yok. 84 exportunda yeni 67 PDF yok; 67 menü bağlantısı->2 geri kurulmuş ve özgün başlangıç->40 korunmuş. Tetikleyiciler bu export dosyalarıyla taşındı iddiası yok; canlı UI listesi 20311 için tetikleyici bulunmadığını gösteriyor.
+Kanıt görselleri:
+referanslar/kommo/2026-10-14-67m2-ayri-bot-whatsapp.png
+referanslar/kommo/2026-10-14-67m2-ayri-bot-instagram.png
+referanslar/kommo/2026-10-14-67m2-ayri-bot-aranma.png
+referanslar/kommo/2026-10-14-ayri-botlar-listesi.png
+referanslar/kommo/2026-10-14-meta-moe67.png
+referanslar/kommo/2026-10-14-kaynak-filtresi.png (84 botunun mevcut genel kaynak ayarı).
+İlk yanlış birleştirme önizlemesi artifacts/kommo-67-ilk-deneme-whatsapp.png geçici, teslim kanıtı olarak paylaşılmaz.
+
+KALAN SOMUT ENGEL:
+Mevcut Meta/Kommo ekranlarında 52581114367325 reklamını, mesaj içeriğinden bağımsız biçimde ayrı bot 20311'e bağlayan tetikleyici veya aktarılmış UTM alanı doğrulanamadı. Hazırlanan bot tek başına otomatik reklam dağıtımı sağlamaz. Kullanıcıya reklam özel otomatik başlangıcın henüz kurulmadığı açıkça bildirildi. Yeni 67 botuna tüm Instagram/WhatsApp görüşmelerini kapsayan tetikleyici eklenmedi. Eski 84 botunun genel başlangıcı da reklam ayrımı çözülünce ayrıca düzeltilmeli; diğer mevcut otomasyonlar kendiliğinden kapatılmadı.
