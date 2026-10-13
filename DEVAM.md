@@ -1,11 +1,42 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 9 Ekim 2026, iş bilgisayarı; 5.9.107 sundurma başlangıcı köşe direği kotunda.
+Son güncelleme: 14 Ekim 2026, ev bilgisayarı; Kommo bot 20247 devir kaydı. Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
 **Çalışma düzeni: gündüz iş bilgisayarı, gece ev bilgisayarı.** Aynı program dönüşümlü geliştirilir. Teslim geçmişi: [CALISMA_KAYDI.md](CALISMA_KAYDI.md).
 
+
+## 14 Ekim 2026 — Kommo botu devir kaydı
+
+Kaynak: kullanıcının bu sohbette verdiği devir özeti. Kommo/Meta canlı hesapları bu oturumda açılıp doğrulanmadı; aşağıdaki kurulum ve önceki testler kullanıcı beyanıdır.
+
+| Kimlik | İş | Durum / tamamlanma koşulu |
+|---|---|---|
+| CRM-001 | Bot 20247 mevcut kararlarını ortak kayda alma | Bu bölümde kaydedildi; önceki proje açık işleri korunur. |
+| CRM-002 | 67 m² ve bahçe ofisi PDF dalları | AÇIK: kullanıcı PDF'leri verecek; ilgili dallara kısa tanıtım, kategori bağlantıları ve Beni arayın akışı eklenecek. |
+| CRM-003 | Yeni Instagram/WhatsApp canlı başlangıç ve teslimat | AÇIK: gerçek yeni görüşmede tetiklenme, menü, doğru PDF ve Instagram gerçek PDF teslimatı doğrulanmalı. |
+| CRM-004 | Reklam ID'sinden bağımsız içeriksiz yönlendirme | ÇÖZÜLMEDİ: mevcut çözüm tüm yeni seçili kaynak görüşmelerine ürün menüsü açar; reklama özel yönlendirme yok. |
+
+Hesap: https://prefabrikten.kommo.com. Bot: “84 m² Reklam | YMOE-3 Katalog ve Proje”, ID 20247. Kaydedilmiş otomatik başlangıç: gelen mesajla başlayan yeni görüşmeler; yalnız Instagram (prefabrikten) ve WhatsApp Onur Bayraktar (+90 542 645 55 60). Botun yanıtladığı mesajlar okunmadı bırakılıyor.
+
+Akış:
+1. “Merhaba, Prefabrikten’e hoş geldiniz. İlgilendiğiniz ürün hangisi? Size ilgili ürünün bilgilerini iletelim.”
+2. “84 m² modüler ev”, “67 m² modüler ev”, “Bahçe ofisi”.
+3. 84 m² seçimi: onaylı MOE-3 PDF ve kısa tanıtım; ardından “Daha çok hangi yapı tipi ile ilgileniyorsunuz?”
+4. Prefabrik evler → https://prefabrikten.com/prefabrik-evler/ ; Hafif çelik evler → https://prefabrikten.com/celik-evler/ ; Modüler evler → https://prefabrikten.com/moduler-evler/ .
+5. Her kategori mesajında “Beni arayın”: müşteriye talebin alındığı söylenir, Prefabrikten Kommo kullanıcısına dahili bildirim gider.
+6. İlk menüde 67 m² veya bahçe ofisi: katalog henüz yok; Prefabrikten kullanıcısına inceleme bildirimi.
+
+PDF: özgün yol C:/Users/obayr/Desktop/Prefabrikten_YMOE_3_80m2.pdf; bota yüklenen adı “MOE-3 Ürün Kataloğu ve Teknik Özellikler.pdf”. Yerelde dosya varlığı ve SHA-256 doğrulandı: 4da0a9de72a1b933d7a9a61b6253303010de6065a98ce490278407fdaeda0dfe. Bu oturumda PDF içeriği veya bota yüklenen dosyayla byte eşitliği incelenmedi; PDF ortak depoya kopyalanmadı. Reklamdaki 84 m² ile katalogdaki 80 m² brütün aynı ürünün güncel kataloğu olduğu kullanıcı tarafından açıkça onaylıdır; tekrar sorulmaz. Üretim ortalama 45 gün; hazır sahada montaj yaklaşık 2 gün. Zemin betonu, nakliye ve vinç ayrıca planlanır.
+
+Reklam: Meta “Moe-3”, reklam ID 6870411642321, hesap 199150513628575. Bot reklamı otomatik tanımaz. Kullanıcı onayıyla tüm yeni seçili Instagram/WhatsApp görüşmelerinde ürün menüsü açılır, doğru PDF müşteri seçimiyle gönderilir. Kommo tetikleyicisinde doğrudan reklam ID seçilemedi; mevcut Meta ekranında UTM alanı bulunamadı.
+
+Önceki test beyanı: manuel WhatsApp'ta PDF teslim edildi; Instagram önizlemesinde menü → 84 m² → katalog; Kommo önizlemesinde kategori linkleri ve Beni arayın doğrulandı. Gerçek yeni müşteride uçtan uca otomatik teslimat gözlemlenmedi; Instagram gerçek PDF teslimatı ayrıca açık. Yetkili test kişisi Fatmanur Bayraktar, numara sonu 8350, Kommo müşteri kaydı 4439549. Bu devir işlemi test mesajı gönderme işlemi içermedi.
+
+Korunacak kararlar: mevcut reklamlar, Meta formları ve diğer botlar bozulmayacak. Meta'da önceden kalan yayımlanmamış değişiklikler topluca yayımlanmayacak/silinmeyecek. Uzun arsa/zamanlama soru akışı geri eklenmeyecek; PDF, kısa metin, model bağlantıları ve Beni arayın yeterli.
+
+Sıradaki adım: CRM-002 için iki PDF'nin alınması; CRM-003 için uygun yeni görüşmede canlı doğrulama. Plan Studio/SketchUp sürümleri ve kullanıcı çizimleri bu devirde değiştirilmedi.
 
 ## Güncel kullanıcı kararı — 8 Ekim 2026
 Aktif kullanım 5.9.87 tabanına pencere düzeltmesi eklenen 5.9.107 sürümüdür. 5.9.87 yedeği korunur. Kullanıcı deneme arayüzü/yerel görsel okuyucu çalışmasını sonraya bıraktı ve eski sürüme dönüş istedi. 5.9.95 çalışma ve test kayıtları codex/arayuz-duzeni dalında korunuyor; silme veya yeniden başlatma. DEV-080 ERTELENDİ. Eski dist HTML SHA256: CC65F089DB6CC15C9917D1AF5C4C988A214B71164DDD66B92817525FC9AF034E, releases/5.9.87 yedeğiyle aynı. Canlı deneme çizimi değiştirilmedi; JSON aktarımı doğrulanmadı.
