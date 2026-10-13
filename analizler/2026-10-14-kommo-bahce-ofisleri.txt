@@ -1,0 +1,35 @@
+14 Ekim 2026 — CRM-007 Bahçe formu karşılama ve Garden Life PDF
+Kaynak: C:/Users/obayr/Downloads/Prefabrikten_Garden_Life_Bahce_Ofisleri.pdf
+Kopya: referanslar/kommo/Prefabrikten_Garden_Life_Bahce_Ofisleri.pdf
+SHA256:1748dfe003a3d5a2dd4beb15caa922a456a0cfc566658331dbcd82a800cc153b
+Boyut7311690bayt,6sayfa. pypdf metin/link ve ilk/son sayfa görsel inceleme yapıldı.
+Konsept ofis/hobi/spor/dinlenme alanları; kesin fiyat/teknik ürün kartı değil.
+Son sayfa: konsept görseller, uygulama/malzeme/teslim kapsamı projeye göre;
+mobilya/ekipman/peyzaj sunum amaçlı. Linkler wa.me/905426455560 ve
+https://prefabrikten.com/bahce-ofisleri/ . Orijinal değiştirilmedi.
+
+Meta salt okunur doğrulama:
+Kampanya52603975051725 Villa Bahçe Ofisi ve Ek Yaşam Alanı | İstanbul | TASLAK
+Set52603975051925 Villa Bahçe Ofisi | Acarkent-Alkent-Göktürk-Zekeriyaköy
+Reklamlar:52603996367325 Bahçede Özel Ofis;52603996367525 Hobi ve Üretim Alanı;
+52603975051525 Özel Bahçe Yaşam Alanı. Her biri25m²/3Görsel/Form.
+Üçü de 25 m² Özel Bahçe Yaşam Alanı | Proje ve Teklif hızlı formunu kullanır.
+Reklam/form içeriği veya16bekleyen taslak yayımlanmadı/değiştirilmedi.
+
+Başlangıçta Bahçe Ofisleri Genel20321 düzenleyicide vardı,54şablon/mesaj
+kopyasıydı; kullanıcıya ait draft korunarak bahçe akışına uyarlama başladı.
+İlk kez gerçekten kaydedildiği liste güncellemesiyle doğrulandı; düzenleme sürüyor.
+
+Kullanıcı yeni şablonu önce taslakta bırak dedi; ilk gönderim otomatik onay
+incelemesince reddedildi ve gönderilmedi. Sonra PDF'nin karşılama ile aynı
+ilkmesajda gitmesini açıkça istedi ve PDF'li şablonu Meta onayına gönder
+onayını verdi. bahce_ofisi_karsilama_pdf Türkçe/Marketing/WABA2363603077472498,
+GardenLifePDF başlık, kısa karşılama+bahce-ofisleri linki+ücretsiz keşif için
+aranma sorusu+Evet, beni arayın / Şimdilik hayır düğmeleriyle gönderildi.
+Kommo şablonlar ekranında önceİncelemede,sonraOnaylandı görüldü.
+Mevcut bahce_ofisi_karsilama düzmetin ve54onaylı şablon değiştirilmedi.
+
+İş devam ediyor:20321ilk mesajına yeni onaylı şablonu bağlama; yalnız bahçe
+formu/YeniMetaLeadbaşlangıcı;evetseekipbildirimi,hayırsa arama talebi olmaması.
+Henüz canlı başlangıç/gerçek müşteri teslimatı TAMAM denemez.
+67/84reklam otomatik ayrımı CRM006ayrı açık iştir; yeni bahçe formuyla karıştırma.
