@@ -6,6 +6,7 @@ const readline = require('node:readline');
 const ROOT = process.env.PREFABRIKTEN_MCP_DIR || path.join(process.env.LOCALAPPDATA || os.tmpdir(), 'Prefabrikten', 'SketchUpMCP');
 const panelSchema={type:'object',properties:{request_id:{type:'string',pattern:'^[0-9a-f-]{36}$'},width_mm:{type:'number',exclusiveMinimum:0,maximum:20000},height_mm:{type:'number',exclusiveMinimum:0,maximum:20000},spacing_mm:{type:'number',exclusiveMinimum:0,maximum:20000},web_mm:{type:'number',enum:[60,80,90,100,120,140,150]},thickness_mm:{type:'number',enum:[0.8,1,1.2,1.5,1.8]},cladding:{type:'string',enum:['gypsum','osb','boardex','betopan']},orientation:{type:'string',enum:['vertical','horizontal']},bracing:{type:'string',enum:['none','left','edges','all']},top_record_offset_mm:{type:'number',minimum:0,exclusiveMaximum:20000},origin_mm:{type:'array',items:{type:'number',minimum:-1000000,maximum:1000000},minItems:3,maxItems:3}},required:['request_id','width_mm','height_mm','spacing_mm','web_mm','thickness_mm','cladding','orientation','bracing','origin_mm'],additionalProperties:false};
 const tools = [
+ {name:'opening_demo',description:'Create a fixed 3600x2800 wall with one real door and window hole, detect geometry and generate framing. Only a new unsaved empty/template-person model. Preserves source; one undo; no save; requires bridge0.3.3.',inputSchema:{type:'object',properties:{pid:{type:'integer'},model_guid:{type:'string'},request_id:{type:'string',pattern:'^[0-9a-f-]{36}$'}},required:['pid','model_guid','request_id'],additionalProperties:false},annotations:{readOnlyHint:false,destructiveHint:false,idempotentHint:true,openWorldHint:false}},
   {name:'create_roof',description:'Create separate illustrative 27/200 trapezoidal roof sheets with 1000 mm effective cover width on supplied convex roof polygons in world XY mm. Each patch supplies normalized upward plane [nx,ny,nz,d] (n dot point=d) and horizontal cross_axis 0=X or 1=Y. Preserves source model, one undo, no save. Optional replace_roof replaces only a matching generated roof group; requires bridge0.3.2. New roofs require bridge0.3.0. Retry only same UUID. Profile crest/valley illustrative; no thickness, overlap or flashings.',inputSchema:{type:'object',properties:{pid:{type:'integer'},model_guid:{type:'string'},roof:{type:'object',properties:{replace_roof:{type:'object',properties:{pid:{type:'integer',minimum:1},request_id:{type:'string',pattern:'^[0-9a-f-]{36}$'}},required:['pid','request_id'],additionalProperties:false},request_id:{type:'string',pattern:'^[0-9a-f-]{36}$'},patches:{type:'array',minItems:1,maxItems:20,items:{type:'object',properties:{plane:{type:'array',items:{type:'number'},minItems:4,maxItems:4},cross_axis:{type:'integer',enum:[0,1]},polygons:{type:'array',minItems:1,maxItems:500,items:{type:'array',minItems:3,maxItems:20,items:{type:'array',items:{type:'number'},minItems:2,maxItems:2}}}},required:['plane','cross_axis','polygons'],additionalProperties:false}}},required:['request_id','patches'],additionalProperties:false}},required:['pid','model_guid','roof'],additionalProperties:false},annotations:{readOnlyHint:false,destructiveHint:true,idempotentHint:true,openWorldHint:false}},
   {name:'create_panel',description:'Create a separate draft wall frame in the specified live SketchUp model. Requires bridge 0.2.0. Existing geometry is preserved; one undo operation. Never saves the model. Specify world origin in mm. Use one stable UUID request_id for retries; a timeout has UNKNOWN outcome, refresh sessions/read entities before retrying the SAME request_id. No structural or manufacturing approval.',inputSchema:{type:'object',properties:{pid:{type:'integer'},model_guid:{type:'string'},panel:panelSchema},required:['pid','model_guid','panel'],additionalProperties:false},annotations:{readOnlyHint:false,destructiveHint:false,idempotentHint:true,openWorldHint:false}},
   {name:'sessions', description:'List live SketchUp bridge sessions, model identities, versions and capabilities. No model change.', inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true}},
@@ -21,9 +22,13 @@ async function sessions() {
 }
 async function call(name,a={}) {
   if(name==='sessions') return {sessions:await sessions()};
-  if(!['read_entities','create_panel','create_roof'].includes(name)) throw Error('Unknown tool');
+  if(!['read_entities','create_panel','create_roof','opening_demo'].includes(name)) throw Error('Unknown tool');
   if(!Number.isInteger(a.pid)||!(await sessions()).some(s=>s.pid===a.pid&&s.model_guid===a.model_guid)) throw Error('Live session/model not found; refresh sessions.');
-  if(name==='create_panel') {
+  if(name==='opening_demo') {
+ const session=(await sessions()).find(s=>s.pid===a.pid&&s.model_guid===a.model_guid);
+ if(!session?.capabilities?.includes('opening_demo') || !/^[0-9a-f-]{36}$/.test(a.request_id))throw Error('Opening demo unavailable or invalid request_id');
+ }
+ if(name==='create_panel') {
     const session=(await sessions()).find(s=>s.pid===a.pid&&s.model_guid===a.model_guid);
     if(!session?.capabilities?.includes('create_panel'))throw Error('Bridge upgrade requires SketchUp restart; create_panel unavailable.');
     validatePanel(a.panel);
@@ -31,7 +36,7 @@ async function call(name,a={}) {
   if(name==='create_roof') {
     const session=(await sessions()).find(s=>s.pid===a.pid&&s.model_guid===a.model_guid);
     if(!session?.capabilities?.includes('create_roof'))throw Error('Bridge upgrade requires SketchUp restart; create_roof unavailable.');
-    if(a.roof?.replace_roof && session.bridge_version!=='0.3.2')throw Error('Replacement requires SketchUp restart with bridge0.3.2.');
+    if(a.roof?.replace_roof && !['0.3.2','0.3.3'].includes(session.bridge_version))throw Error('Replacement requires SketchUp restart with bridge0.3.2.');
     if(!a.roof||!Array.isArray(a.roof.patches)||a.roof.patches.length<1||a.roof.patches.length>20||!/^[0-9a-f-]{36}$/.test(a.roof.request_id)||JSON.stringify(a.roof).length>1000000)throw Error('Invalid roof payload');
   }
   if(!Array.isArray(a.path||[])||(a.path||[]).length>30||!(a.path||[]).every(Number.isSafeInteger))throw Error('Invalid path');
@@ -39,7 +44,7 @@ async function call(name,a={}) {
   if(!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>300)throw Error('Invalid page');
   const id=randomUUID(),dir=path.join(ROOT,String(a.pid));
   const req=path.join(dir,`request-${id}.json`),res=path.join(dir,`response-${id}.json`);
-  await fs.writeFile(req+'.tmp',JSON.stringify({command:name,model_guid:a.model_guid,...(name==='create_panel'?{panel:a.panel}:name==='create_roof'?{roof:a.roof}:{path:a.path||[],offset,limit})}));
+  await fs.writeFile(req+'.tmp',JSON.stringify({command:name,model_guid:a.model_guid,...(name==='opening_demo'?{request_id:a.request_id}:name==='create_panel'?{panel:a.panel}:name==='create_roof'?{roof:a.roof}:{path:a.path||[],offset,limit})}));
   await fs.rename(req+'.tmp',req);
   try {
     const until=Date.now()+15000;
@@ -64,7 +69,7 @@ async function handle(m) {
   const respond=r=>process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,...r})+'\n');
   try {
     let result;
-    if(m.method==='initialize')result={protocolVersion:m.params?.protocolVersion||'2024-11-05',capabilities:{tools:{}},serverInfo:{name:'prefabrikten-sketchup-inspect',version:'0.3.2'}};
+    if(m.method==='initialize')result={protocolVersion:m.params?.protocolVersion||'2024-11-05',capabilities:{tools:{}},serverInfo:{name:'prefabrikten-sketchup-inspect',version:'0.3.3'}};
     else if(m.method==='ping')result={};
     else if(m.method==='tools/list')result={tools};
     else if(m.method==='tools/call') {

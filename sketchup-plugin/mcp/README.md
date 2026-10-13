@@ -1,4 +1,6 @@
-# SketchUp MCP köprüsü 0.3.2
+# SketchUp MCP köprüsü 0.3.3
+
+0.3.3: `opening_demo(pid,model_guid,request_id)` yalnız yeni boş/şablon insanlı modelde veya kurulu Simple şablonunda sabit3600×2800mm,100mm kalınlıklı kapı/pencereli kaynak duvar oluşturur.900×2100mm kapı ve600×1000mm pencere gerçek yüz boşluklarıdır. `source_panel` ile geometriden algılanır, ardından C80,t1 karkas ayrı grupta300mm ötelenerek oluşturulur. Kaynak korunur; tek geri alma ve UUID tekrar koruması, modelGUID/bağlam/boş model kontrolü vardır. Kaydetme veya keyfi kod komutu yoktur. Bu yalnız sınırlı canlı kabul aracı; mevcut seçili müşteri duvarını dönüştüren genel MCP komutu değildir.0.4.2 gerçek SketchUp kabulü için eklenmiştir.
 
 0.3.2: Her sac grubuna siparis listesiyle ayni T001 ve sonraki kodlari gorunur SketchUp metni olarak ekler. Kod, seridin en buyuk disbukey ortu parcasinin icinde ve yuzeyin45mm ustunde konumlanir. Kaynak model korunur; tek geri alma ve tekrar korumalari surer. Acik eski oturum yeni kodu yuklemek icin yeniden acilmalidir.
 
