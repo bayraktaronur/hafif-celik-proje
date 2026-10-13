@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 14 Ekim 2026, ev bilgisayarı; 54/67/84 otomasyon ve Meta hazır yanıt denetimi yapıldı. Önceki uygulama ve SketchUp işleri aşağıda korunur.
+Son güncelleme: 14 Ekim 2026, ev bilgisayarı; Meta67/84 cevapları kaldırılıp yayına gönderildi,84 genel Kommo başlatıcısı kaldırıldı. Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -13,6 +13,7 @@ Kaynak: ilk devirde kullanıcının verdiği özet. Aşağıdaki tarihsel kurulu
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 |---|---|---|
+| CRM-009 | Meta67/84 otomatik cevaplarını kaldır; kesin reklam ayrımıyla kendi PDF/karşılama gönder | KISMİ: Meta cevapları boşaltılıp iki reklam ayrı ayrı yayına gönderildi; 84 İşlem sürüyor. Kommo84 genel tetikleyicisi kaldırıldı,67 tetikleyicisiz. PDF/akışlar korunur; reklamID bazlı otomatik teslim TAMAMLANMADI, destek/entegrasyon gerekli. Önce başlamış84 aktif oturumu ayrıca kontrol edilmeli. [Rapor/kanıtlar](analizler/2026-10-14-kommo-meta-yanit-kaldirma.txt). |
 | CRM-008 | 54/67/84 otomasyon ve Meta hazır cevap çakışma denetimi | DENETİM TAMAM: 67 tetikleyicisiz; 84 genel menü, reklam bazlı değil; 54 kaynak koşullu başlangıç4, teslim doğrulanmadı. Meta67/84 hazır fiyat yanıtları mevcut, çift yanıt riski var. 54v2 kaynak uyumu ve eski bahçe Salesbot#2 ayrıca incelenmeli. CRM003/004/005/006 açık. [Rapor](analizler/2026-10-14-kommo-otomasyon-denetimi.txt). |
 | CRM-001 | Bot 20247 mevcut kararlarını ortak kayda alma | Bu bölümde kaydedildi; önceki proje açık işleri korunur. |
 | CRM-007 | Üç 25 m² bahçe form reklamına karşılama + Garden Life PDF + ücretsiz keşif arama seçimi | KURULUM TAMAM: bot20335, onaylı PDF şablonu12405 ilk mesajda; Evet→Prefabrikten arama bildirimi, Hayır→nazik kapanış. Yalnız Meta Leads/Yeni Meta Lead + ortak bahçe form_name; eski kayıtları başlatma kapalı. WhatsApp önizleme ve JSON dal kontrolü geçti. 84 genel tetikleyicisinde bu form dışlandı; 84 konuşma exportu byte aynı. Gerçek yeni form teslimatı CRM-003 AÇIK. [Rapor/kanıtlar](analizler/2026-10-14-kommo-bahce-ofisleri.txt). |
