@@ -33,3 +33,58 @@ Mevcut bahce_ofisi_karsilama düzmetin ve54onaylı şablon değiştirilmedi.
 formu/YeniMetaLeadbaşlangıcı;evetseekipbildirimi,hayırsa arama talebi olmaması.
 Henüz canlı başlangıç/gerçek müşteri teslimatı TAMAM denemez.
 67/84reklam otomatik ayrımı CRM006ayrı açık iştir; yeni bahçe formuyla karıştırma.
+
+Güncel kayıt: önceki20321 taslağı gerçek sunucu listesinde bulunmadı;
+kaydetme işlemleri Kommo arayüz hataları verdi. Aynı düzensiz taslağı canlı
+ilan etmek yerine güncel bot ekranında temiz akış oluşturuldu ve başarılı
+kayıt sonrası ID20335 olarak listede doğrulandı.
+Ad: Bahçe Ofisleri | Garden Life PDF ve Ücretsiz Keşif.
+1Mesaj: WhatsAppOnurBayraktar, onaylı bahce_ofisi_karsilama_pdf,
+GardenLifePDF veiki düğme aynımesajda.
+Evet, beni arayın ->4Dahilibildirim alıcıPrefabrikten.
+Şimdilik hayır ->5kısa nazik kapanış;aranmabildirimi yok.
+Otomatik başlangıç kaydedildi: yeni satışkaydı,MetaLeadsSatışPipeline /
+YeniMetaLead, form_name eşleşiyor 25 m² Özel Bahçe Yaşam Alanı | Proje ve Teklif.
+Zaten bu aşamadaki müşterilere uygula işaretli değil;geriye dönük gönderim yok.
+Liste20335+1Satıştakiphattıaşamasındaoluşturuldu olarak doğrulandı.
+Önizleme ve export doğrulaması tamamlandı; gerçek müşteri teslimi gözlemlenmedi.
+
+Son kabul/kanıt:
+- WhatsApp Business önizlemesinde PDF/karşılama/link/ücretsiz keşif sorusu ve
+  iki seçenek aynı ilk mesajda göründü. Evet -> yalnız Prefabrikten arama
+  bildirimi; Hayır -> nazik kapanış, arama bildirimi yok. Gerçek mesaj gönderilmedi.
+- Kaydedilmiş UI export: referanslar/kommo/2026-10-14-bot-20335-bahce.json
+  SHA256:1c5b2f9687190b2dd2a4cbda429e2911862be5a4b0d03cadbbb63b5a0b5e54c9
+  0.question send_message/template_id12405/chat_source19221;
+  0.answer.Evet ->1.question.send_internal/user15946591;
+  0.answer.Hayır ->2.question.send_message. Üç adım, yanlış modele yön yok.
+- Bir mevcut bahçe formu kaydı salt okunur incelendi: Yeni Meta Lead aşaması
+  ve form_name alanında tam aynı form adı var. Kayıt değiştirilmedi, müşteriye
+  mesaj gönderilmedi, müşteri bilgisi/ham kart/screenshot depoya alınmadı.
+- 84bot20247 genel gelen-mesaj tetikleyicisine yalnız form_name EŞLEŞMİYOR
+  25 m² Özel Bahçe Yaşam Alanı | Proje ve Teklif koşulu eklendi. Böylece bahçe
+  formu müşterisinin cevabı 84 genel menüsünü başlatmamalı. Mevcut Instagram+
+  WhatsApp kaynakları, Her zaman ve okunmadı tercihi korundu. Kaydedildi ve
+  yeniden açılan tetikleyicide eşleşmiyor koşulu kalıcı olarak doğrulandı.
+- 84 konuşma akışı değişmedi: yeni UI export
+  referanslar/kommo/2026-10-14-bot-20247-bahce-haric.json
+  SHA256:4a1831b6169aacf5f4f70b26748bfff6d689a7fac44fa9817405c04a41df0c15
+  önceki geri-alinan exportuyla byte aynı; ayrıştırılmış model.text eşit.
+  Export tetikleyici ayarını içermediği için koşul kanıtı UI ekranıdır.
+- Kanıt ekranları referanslar/kommo altında:
+  2026-10-14-bahce-ilk-mesaj-pdf.png
+  2026-10-14-bahce-evet-bildirimi.png
+  2026-10-14-bahce-hayir-bildirimsiz.png
+  2026-10-14-bahce-form-filtresi.png
+  2026-10-14-84-bahce-haric.png
+
+CRM007 kurulum tamam. Sıradaki adım: gerçek yeni bahçe formu oluşturulduğunda
+tek karşılama/PDF teslimi ve cevaba göre doğru bildirim/84dışlaması canlı
+gözlemlenmeli (CRM003). Form adı veya kayıt aşaması değişirse filtre güncellenmeli.
+67/84 mesaj reklamları için adID bazında otomatik yönlendirme CRM006 halen açık.
+Meta'nın16bekleyen düzenlemesi yayımlanmadı; reklam/form/bütçe değiştirilmedi.
+Kullanıcı JSON'u ve geçici artifacts/plot.log bu teslimin dışında; kod/sürüm yok.
+
+İncelenen resmi Kommo belgeleri:
+https://support.kommo.com/docs/manage-salesbot-interruptions
+https://support.kommo.com/docs/configure-your-salesbot-triggers

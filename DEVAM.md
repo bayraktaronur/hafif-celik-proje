@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Son güncelleme: 14 Ekim 2026, ev bilgisayarı; Kommo bot 20247 devir kaydı. Önceki uygulama ve SketchUp işleri aşağıda korunur.
+Son güncelleme: 14 Ekim 2026, ev bilgisayarı; Kommo bahçe formu botu 20335 kaydedildi. Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
 
@@ -14,8 +14,8 @@ Kaynak: ilk devirde kullanıcının verdiği özet. Aşağıdaki tarihsel kurulu
 | Kimlik | İş | Durum / tamamlanma koşulu |
 |---|---|---|
 | CRM-001 | Bot 20247 mevcut kararlarını ortak kayda alma | Bu bölümde kaydedildi; önceki proje açık işleri korunur. |
-| CRM-007 | Üç 25 m² bahçe form reklamına karşılama + Garden Life PDF + ücretsiz keşif arama seçimi | DEVAM: PDF alındı, aynı ilk mesajda PDF için kullanıcı açık onayıyla bahce_ofisi_karsilama_pdf Meta'ya gönderildi ve Onaylandı görüldü. Bahçe botu 20321 bağlantı/filtre ve testleri tamamlanmalı. [Rapor](analizler/2026-10-14-kommo-bahce-ofisleri.txt). |
-| CRM-002 | 67 m² ve bahçe ofisi katalogları | 67 PDF alındı ve ayrı bot 20311 hazır; otomatik reklam yönlendirmesi CRM-005 AÇIK. Bahçe ofisi PDF ve ayrı bot AÇIK. |
+| CRM-007 | Üç 25 m² bahçe form reklamına karşılama + Garden Life PDF + ücretsiz keşif arama seçimi | KURULUM TAMAM: bot20335, onaylı PDF şablonu12405 ilk mesajda; Evet→Prefabrikten arama bildirimi, Hayır→nazik kapanış. Yalnız Meta Leads/Yeni Meta Lead + ortak bahçe form_name; eski kayıtları başlatma kapalı. WhatsApp önizleme ve JSON dal kontrolü geçti. 84 genel tetikleyicisinde bu form dışlandı; 84 konuşma exportu byte aynı. Gerçek yeni form teslimatı CRM-003 AÇIK. [Rapor/kanıtlar](analizler/2026-10-14-kommo-bahce-ofisleri.txt). |
+| CRM-002 | 67 m² ve bahçe ofisi katalogları | İki PDF alındı: 67 ayrıbot20311, bahçe formu ayrıbot20335. 67 otomatik reklam yönlendirmesi CRM-005/006 AÇIK. Bahçe formu kurulumu CRM-007 tamam, gerçek teslimat CRM-003 AÇIK. |
 | CRM-003 | Yeni Instagram/WhatsApp canlı başlangıç ve teslimat | AÇIK: gerçek yeni görüşmede tetiklenme, menü, doğru PDF ve Instagram gerçek PDF teslimatı doğrulanmalı. |
 | CRM-005 | AYRI 67 m² reklam botu | AYRI bot 20311 hazır/kaydedildi: doğrudan 67 PDF → kategori → aranma. Moe-67 reklamı 52581114367325 Meta'dan bulundu. Reklam bazında otomatik tetikleme AÇIK; tetikleyici eklenmedi. Aynı 84 botuna birleştirme kullanıcı düzeltmesiyle geri alındı. [Durum/kanıt/sınırlar](analizler/2026-10-14-kommo-67m2.txt). |
 | CRM-004 | Reklam ID'sinden bağımsız içeriksiz yönlendirme | ÇÖZÜLMEDİ: mevcut çözüm tüm yeni seçili kaynak görüşmelerine ürün menüsü açar; reklama özel yönlendirme yok. |
