@@ -62,9 +62,9 @@ module Prefabrikten
     end
     def self.frame_input(width=1500,height=2500,kind='wall',openings=[])
       s=RULES['section']
-      labels=['En (mm)','Yükseklik / panel boyu (mm)','Azami dikme/kiriş aksı (mm)','C gövde (mm)','Sac (mm)','Kaplama','Levha yönü','Çapraz düzeni','Özel levha eni (mm)','Özel levha boyu (mm)','Üst ilave kayıt: tepeden orta kot (mm), 0=yok','Statik projedeki azami aks (boş=bilinmiyor)','Statik proje/hesap referansı','Açıklıklar: x/kot/en/boy; ... (mm)','Yerleştirme: panel düzleminden mesafe (mm)','Parça etiketleri']
-      defaults=[width.round(3).to_s,height.round(3).to_s,'600','90','1.2','Alçıpan','Dikey','Kenar gözleri','','','0','','',openings.map { |o| o.values_at(:x,:z,:width,:height).map { |v| v.round(3) }.join('/') }.join(';'),'200','Hayır']
-      lists=['','','',s['webWidths'].join('|'),s['thicknessOptions'].join('|'),'Alçıpan|OSB|BoardeX|Betopan|Özel','Dikey|Yatay','Yok|Sol göz|Kenar gözleri|Tüm gözler','','','','','','','','Evet|Hayır']
+      labels=['En (mm)','Yükseklik / panel boyu (mm)','Azami dikme/kiriş aksı (mm)','C gövde (mm)','Sac (mm)','Kaplama','Levha yönü','Çapraz düzeni','Özel levha eni (mm)','Özel levha boyu (mm)','Üst ilave kayıt: tepeden orta kot (mm), 0=yok','Statik projedeki azami aks (boş=bilinmiyor)','Statik proje/hesap referansı','Açıklıklar: x/kot/en/boy; ... (mm)','Yerleştirme: panel düzleminden mesafe (mm)','Parça etiketleri','Yatay kayıt düzeni','Açıklık başlığı','Kafes başlık yüksekliği (mm)','Başlık göz aralığı (mm)']
+      defaults=[width.round(3).to_s,height.round(3).to_s,'600','90','1.2','Alçıpan','Dikey','Kenar gözleri','','','0','','',openings.map { |o| o.values_at(:x,:z,:width,:height).map { |v| v.round(3) }.join('/') }.join(';'),'200','Hayır',kind=='wall' ? 'Sürekli' : 'Gözlerde bölünmüş','Tek C','500','600']
+      lists=['','','',s['webWidths'].join('|'),s['thicknessOptions'].join('|'),'Alçıpan|OSB|BoardeX|Betopan|Özel','Dikey|Yatay','Yok|Sol göz|Kenar gözleri|Tüm gözler','','','','','','','','Evet|Hayır','Sürekli|Gözlerde bölünmüş','Tek C|Kafes (taslak)','','']
       a=UI.inputbox(labels,defaults,lists,"#{kind=='wall' ? 'Duvar' : kind=='roof' ? 'Çatı' : 'Döşeme'} karkası — statik çözüm yapılmaz")
       return unless a
       coating={'Alçıpan'=>'gypsum','OSB'=>'osb','BoardeX'=>'boardex','Betopan'=>'betopan','Özel'=>'custom'}.fetch(a[5])
@@ -75,7 +75,10 @@ module Prefabrikten
       end
       opts={kind:kind,cladding:coating,orientation:a[6]=='Dikey' ? 'vertical' : 'horizontal',
         bracing:{'Yok'=>'none','Sol göz'=>'left','Kenar gözleri'=>'edges','Tüm gözler'=>'all'}.fetch(a[7]),
-        top_record_offset:FrameCore.numeric(a[10],'Üst kayıt',true),structural_reference:a[12].to_s,openings:os,labels:a[15]=='Evet'}
+        top_record_offset:FrameCore.numeric(a[10],'Üst kayıt',true),structural_reference:a[12].to_s,openings:os,labels:a[15]=='Evet',blocking_mode:a[16]=='Sürekli' ? 'continuous' : 'segmented',header_type:a[17]=='Tek C' ? 'single' : 'lattice'}
+      if opts[:header_type]=='lattice'
+        opts[:header_depth]=number(a[18]);opts[:header_web_spacing]=number(a[19])
+      end
       if coating=='custom'
         opts[:board_width]=number(a[8]);opts[:board_length]=number(a[9])
       end
@@ -104,7 +107,7 @@ module Prefabrikten
         raise 'Profil dış ölçü kontrolü başarısız.' unless actual.zip(expected).all? { |a,b| (a-b).abs<0.01 }
         axes=p[:axes].map { |a| Geom::Vector3d.new(a) }
         group.transform!(Geom::Transformation.axes(Geom::Point3d.new(p[:origin_mm].map(&:mm)),*axes))
-        group.material={'dikme'=>'LightSteelBlue','yardimci_dikme'=>'LightSteelBlue','ara_kayit'=>'MediumSeaGreen','capraz'=>'Tomato'}.fetch(p[:role],'Goldenrod')
+        group.material={'dikme'=>'LightSteelBlue','yardimci_dikme'=>'LightSteelBlue','ara_kayit'=>'MediumSeaGreen','capraz'=>'Tomato','baslik_caprazi'=>'Tomato'}.fetch(p[:role],'Goldenrod')
         group.set_attribute('PrefabriktenKarkas','part_json',JSON.generate(p))
         group.set_attribute('PrefabriktenKarkas','geometry_signature',frame_signature(group))
         panel.entities.add_text(p[:id],Geom::Point3d.new(p[:origin_mm].map(&:mm))) if data[:labels]
@@ -137,14 +140,14 @@ module Prefabrikten
       path=UI.savepanel('Panel paftası (SVG) veya metraj (JSON/CSV)','','karkas-pafta.svg');return unless path
       raise 'Dosya mevcut; yeni bir ad seçin.' if File.exist?(path)
       summary=parts.group_by { |p| [p['role'],p['section']['web_mm'],p['section']['thickness_mm']] }.map do |key,ps|
-        {role:key[0],web_mm:key[1],thickness_mm:key[2],quantity:ps.length,total_length_m:ps.sum { |p| p['length_mm'] }/1000.0}
+        {role:key[0],web_mm:key[1],thickness_mm:key[2],quantity:ps.length,total_length_m:ps.sum { |p| p['length_mm'] }/1000.0,nominal_end_faces:ps.length*2,stud_pass_locations:ps.sum { |p| Array(p['pass_through_studs_mm']).length }}
       end
       case File.extname(path).downcase
       when '.json'
         File.write(path,JSON.pretty_generate({status:'draft_not_for_manufacture',panel:d,summary:summary,parts:parts}))
       when '.csv'
         csv=CSV.generate(col_sep:';') do |out|
-          out << ['Tür','Gövde mm','Sac mm','Adet','Toplam boy m','Durum']
+          out << ['Tür','Gövde mm','Sac mm','Parça / kesim boyu adedi','Toplam boy m','Uç yüzü adedi (makine kesimi değil)','Dikme geçiş yeri adedi','Durum']
           summary.each { |s| out << s.values+['Statik/imalat doğrulanmadı'] }
         end
         File.write(path,"\uFEFF"+csv)
@@ -158,7 +161,7 @@ module Prefabrikten
         end
         svg << %(<rect x="0" y="0" width="#{w}" height="#{h}" fill="none" stroke="black" stroke-width="2"/>)
         svg << %(<text x="0" y="#{-font}" font-size="#{font}">#{CGI.escapeHTML(root.name)} — #{w.round(2)} × #{h.round(2)} mm</text>)
-        svg << %(<text x="0" y="#{h+font*2}" font-size="#{font}">TASLAK — STATİK / İMALAT DOĞRULANMADI — #{parts.length} parça</text></svg>)
+        svg << %(<text x="0" y="#{h+font*2}" font-size="#{font}">TASLAK — STATİK / İMALAT DOĞRULANMADI — #{parts.length} parça / #{(parts.sum { |p| p['length_mm'] }/1000.0).round(2)} m / #{parts.length*2} uç yüzü (makine kesim adedi değil)</text></svg>)
         File.write(path,svg.join("\n"))
       else
         raise 'Dosya uzantısı svg, json veya csv olmalı.'
@@ -214,7 +217,7 @@ module Prefabrikten
       rescue StandardError
         model.abort_operation;raise
       end
-      UI.messagebox(data[:warnings].join("\n"))
+      UI.messagebox("#{data[:parts].length} parça / #{data[:fabrication_summary][:total_length_m].round(2)} m profil.\n"+data[:warnings].join("\n"))
     rescue StandardError=>e
       UI.messagebox("Panel oluşturulamadı: #{e.message}")
     end

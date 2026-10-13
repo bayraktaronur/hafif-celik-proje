@@ -20,11 +20,11 @@ raise unless p.supports(2200,1200)==[0.0,600.0,1200.0,1800.0,2200.0]
     end
   end
 end
-d=f.layout(1500,3000,600,80,1,r,{cladding:'gypsum',bracing:'left'})
+d=f.layout(1500,3000,600,80,1,r,{cladding:'gypsum',bracing:'left',blocking_mode:'segmented'})
 raise unless d[:stud_centres_mm]==[22.5,600.0,1200.0,1477.5]
 raise unless d[:blocking_rows_mm]==[1250.0,2500.0]
 raise unless d[:parts].length==15
-d=f.layout(1500,3000,600,80,1,r,{cladding:'gypsum',bracing:'left',top_record_offset:140})
+d=f.layout(1500,3000,600,80,1,r,{cladding:'gypsum',bracing:'left',blocking_mode:'segmented',top_record_offset:140})
 raise unless d[:blocking_rows_mm]==[1250.0,2500.0,2860.0]
 raise unless d[:parts].length==18
 puts 'PASS: cut remainder, longer remainder, all claddings/orientations, joints, maximum gaps and explicit top record.'
