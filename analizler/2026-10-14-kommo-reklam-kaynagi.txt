@@ -61,3 +61,7 @@ https://developers.facebook.com/documentation/business-messaging/whatsapp/webhoo
 
 Kod/sürüm değişmedi. Kullanıcının takipsiz Yeni proje (11).json dosyası
 korundu ve bu teslimin dışında. Önceki tüm proje/CRM açık işleri korunur.
+
+Destek ilk yanıtı: ilgili uzmana iletildi, Türkçe destek09:00–18:00.
+02:10'da İngilizce devam seçildi ve aynı talep İngilizce iletildi.
+Teknik çözüm yanıtı henüz alınmadı.
