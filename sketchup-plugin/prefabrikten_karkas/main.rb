@@ -78,7 +78,7 @@ module Prefabrikten
       UI.messagebox("Rapor oluşturulamadı: #{e.message}")
     end
     unless file_loaded?(__FILE__)
-      menu = UI.menu('Extensions').add_submenu('Prefabrikten Karkas 0.4.2')
+      menu = UI.menu('Extensions').add_submenu('Prefabrikten Karkas 0.4.3')
       menu.add_item('Seçili duvarları çeliğe dönüştür') { convert_selection('wall') }
       menu.add_item('Seçili çatı panellerini çeliğe dönüştür') { convert_selection('roof') }
       menu.add_item('Seçili döşeme panellerini çeliğe dönüştür') { convert_selection('floor') }

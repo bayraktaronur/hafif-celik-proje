@@ -10,7 +10,7 @@ const assert=require('node:assert/strict');
   const session={pid:1234,model_guid:'model-a',updated_at:new Date().toISOString()};
   await fs.writeFile(path.join(dir,'session.json'),JSON.stringify(session));
   assert.equal((await call('sessions')).sessions.length,1);
-  assert(tools.filter(t=>!['create_panel','create_roof','opening_demo'].includes(t.name)).every(t=>t.annotations.readOnlyHint));
+  assert(tools.filter(t=>!['create_panel','create_roof','opening_demo','opening_comparison'].includes(t.name)).every(t=>t.annotations.readOnlyHint));
   assert.equal(tools.find(t=>t.name==='create_panel').annotations.readOnlyHint,false);
   const panel={request_id:'12345678-1234-1234-1234-123456789abc',width_mm:1500,height_mm:2500,spacing_mm:600,web_mm:90,thickness_mm:1.2,cladding:'gypsum',orientation:'vertical',bracing:'left',origin_mm:[3000,0,0]};
   await assert.rejects(call('create_panel',{pid:1234,model_guid:'model-a',panel}),/restart/);

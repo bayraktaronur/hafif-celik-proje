@@ -74,25 +74,50 @@ module Prefabrikten
           finish=jack ? jack[:z]+jack[:height] : height-thickness
           subtract(thickness,finish,cuts).each { |lo,hi| add.call(jack ? 'yardimci_dikme' : 'dikme',[x,lo],[x,hi]) }
         end
-        rows.each do |z|
-          centres.each_cons(2) do |a,b|
-            cuts=openings.select { |o| z+f/2>o[:z] && z-f/2<o[:z]+o[:height] }.map { |o| [o[:x],o[:x]+o[:width]] }
-            subtract(a+f/2,b-f/2,cuts).each { |lo,hi| add.call('ara_kayit',[hi,z],[lo,z]) } if b-a>f
-          end
-        end
         openings.each do |o|
           add.call('aciklik_basligi',[o[:x]+o[:width]+f,o[:z]+o[:height]+f/2],[o[:x]-f,o[:z]+o[:height]+f/2])
           add.call('denizlik',[o[:x]+o[:width],o[:z]-f/2],[o[:x],o[:z]-f/2]) if o[:z]>f
         end
+        # A jack supports a board edge only below its header. Restore only the
+        # uncovered solid-wall intervals, not a redundant full-height stud.
+        data[:required_x_mm].each do |target|
+          x=[[target,f/2].max,width-f/2].min
+          covered=parts.filter_map do |p|
+            a,b=p[:centreline_mm]
+            if (a[0]-b[0]).abs<0.01 && (a[0]-target).abs<=f/2+0.001
+              [a[1],b[1]].minmax
+            elsif (a[1]-b[1]).abs<0.01 && target>=[a[0],b[0]].min-0.001 && target<=[a[0],b[0]].max+0.001
+              [a[1]-f/2,a[1]+f/2]
+            end
+          end
+          voids=openings.select { |o| target>o[:x]+0.001 && target<o[:x]+o[:width]-0.001 }.map { |o| [o[:z],o[:z]+o[:height]] }
+          subtract(thickness,height-thickness,covered+voids).each do |lo,hi|
+            next if hi-lo<0.05
+            add.call('dikme',[x,lo],[x,hi])
+            parts.last[:placement_reason]='cladding_support_uncovered_interval_at_opening'
+          end
+        end
+        verticals=parts.select { |p| %w[dikme yardimci_dikme].include?(p[:role]) }
+        active_centres=lambda do |lo,hi|
+          verticals.select { |p| a,b=p[:centreline_mm]; a[1]<=lo+0.01 && b[1]>=hi-0.01 }.map { |p| p[:centreline_mm][0][0] }.sort.uniq
+        end
+        rows.each do |z|
+          active_centres.call(z-f/2,z+f/2).each_cons(2) do |a,b|
+            cuts=openings.select { |o| z+f/2>o[:z] && z-f/2<o[:z]+o[:height] }.map { |o| [o[:x],o[:x]+o[:width]] }
+            subtract(a+f/2,b-f/2,cuts).each { |lo,hi| add.call('ara_kayit',[hi,z],[lo,z]) } if b-a>f
+          end
+        end
         brace=options.fetch(:bracing,'edges')
         raise ArgumentError,'Çapraz düzeni geçersiz.' unless %w[none left edges all].include?(brace)
-        levels=([f]+rows+[height-f]).sort.uniq
-        centres.each_cons(2).with_index do |(a,b),i|
-          next if brace=='none' || (brace=='left' && i!=0) || (brace=='edges' && i!=0 && i!=centres.length-2) || b-a<3*f
-          levels.each_cons(2).with_index do |(lo,hi),j|
+        levels=([f/2]+rows+[height-f/2]).sort.uniq
+        levels.each_cons(2).with_index do |(lo,hi),j|
+          band_centres=active_centres.call(lo+f/2,hi-f/2)
+          band_centres.each_cons(2).with_index do |(a,b),i|
+            next if brace=='none' || (brace=='left' && i!=0) || (brace=='edges' && i!=0 && i!=band_centres.length-2) || b-a<3*f
             next if hi-lo<3*f
             next if openings.any? { |o| a<b && a<o[:x]+o[:width]+f && b>o[:x]-f && lo<o[:z]+o[:height]+f && hi>o[:z]-f }
-            l=a+f/2;r=b-f/2;low=lo+f/2;high=hi-f/2
+            # Small overlap with real stud/rail envelopes; end tooling is separate.
+            l=a+f/4;r=b-f/4;low=lo+f/4;high=hi-f/4
             a1,b1=(i+j).even? ? [[l,low],[r,high]] : [[l,high],[r,low]]
             add.call('capraz',a1,b1)
           end
@@ -101,8 +126,25 @@ module Prefabrikten
         parts.each_with_index do |p,i|
           p.merge!(id:format('P01-%04d',i+1),status:'draft_not_for_manufacture',operations:[],
             section:{web_mm:web,flange_mm:f,lip_mm:rules['section']['lip'],thickness_mm:thickness,dimension_basis:'outside'})
+          p[:placement_reason] ||= {'dikme'=>'stud_or_cladding_support','yardimci_dikme'=>'header_bearing_jack_not_structurally_sized','alt_kayit'=>'panel_boundary_excluding_door','ust_kayit'=>'panel_boundary','aciklik_basligi'=>'opening_header_not_structurally_sized','denizlik'=>'window_sill'}.fetch(p[:role],'explicit_layout')
         end
         missing_x=data[:required_x_mm].reject { |x| centres.any? { |c| (c-x).abs<=f/2+0.001 } }
+        endpoints=[]
+        parts.each_with_index do |p,i|
+          next unless %w[ara_kayit capraz].include?(p[:role])
+          p[:centreline_mm].each_with_index do |point,which|
+            supported=parts.each_with_index.any? do |q,j|
+              next false if i==j || q[:role]=='capraz'
+              a,b=q[:centreline_mm];dx=b[0]-a[0];dz=b[1]-a[1];len=q[:length_mm]
+              along=((point[0]-a[0])*dx+(point[1]-a[1])*dz)/len
+              across=((point[0]-a[0])*dz-(point[1]-a[1])*dx).abs/len
+              along>=-0.01 && along<=len+0.01 && across<=f/2+0.01
+            end
+            endpoints << {part_index:i,endpoint:which,point_mm:point} unless supported
+          end
+          p[:placement_reason]=p[:role]=='ara_kayit' ? 'cladding_support_between_present_studs' : "selected_#{brace}_bracing_between_present_members"
+        end
+        raise ArgumentError,"Bağlantısız kayıt/çapraz ucu: #{endpoints.length}" unless endpoints.empty?
         warnings=['Statik çözüm yapılmadı; profil ve taşıyıcı yeterlilik doğrulanmadı.','Kesme/ezme ertelendi. Boylar yerleşim taslağıdır.','Derz/vida aralıkları ürün belgesinden ayrıca doğrulanmalı.']
         warnings << 'Açıklık başlığı tek C taslağıdır; mühendislik boyutlandırması gerekli.' unless openings.empty?
         warnings << 'Çatı/döşeme: panel düzleminde kiriş ızgarası; otomatik makas çözümü değildir.' if kind!='wall'
@@ -112,7 +154,8 @@ module Prefabrikten
           stud_centres_mm:centres,blocking_rows_mm:rows,bracing:brace,warnings:warnings,
           actual_centre_spacing_mm:centres.each_cons(2).map { |a,b| b-a }.max,
           structural:{status:limit ? 'input_limit_applied_not_calculated' : 'not_calculated',max_spacing_mm:limit,reference:options[:structural_reference]},
-          support_audit:{missing_x_mm:missing_x},top_record_offset_mm:top,
+          support_audit:{missing_x_mm:missing_x,unsupported_endpoints:endpoints,endpoint_check:'2d_member_envelope_contact_not_fastener_design'},top_record_offset_mm:top,
+          quantity_audit:{roles:parts.group_by { |p| p[:role] }.transform_values(&:length),bracing_selection:brace,structural_minimum:'not_calculated'},
           cladding_thickness_mm:options[:cladding]=='betopan' ? 10 : nil)
       end
     end

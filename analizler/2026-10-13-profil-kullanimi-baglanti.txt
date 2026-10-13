@@ -1,0 +1,15 @@
+DEV-106 — 13 Ekim 2026 / bağlantı ve profil kullanımı araştırması
+Kapsam kendi üretilmiş3600×2800mm,C80,t1 kapı/pencere denemesi ve eklenti kaynakları. Özel müşteri modeli paylaşılmaz.
+
+Kod hatası: yatay kayıtlar jack dikmenin bittiği yüksekliğin üstünde onun aksında hâlâ bölünüyordu; olmayan dikmenin45mm yeri boş kalıyordu. Çaprazlar hayali aynı aksları kullanıyor, üst/alt sınırda yeniden uç payı bırakıyordu.0.4.3 gerçek düşey aralığa göre bay oluşturur,ray orta kotunu kullanır ve kayıt/çapraz uç temasını denetler. Temas kontrolü2B zarf içindir; makine uç şekli/vida/statik kapasite doğrulaması değildir.
+
+Gereksiz kullanım araştırması: ilk canlı demoda özellikle tüm gözler seçilmişti; bu20çapraz üretiyordu. Aynı kaynakta kenar göz seçimi6çapraz üretir. Bu14elemanın hesap olmadan tamamının gerekli veya gereksiz olduğu söylenemez; yazılım seçeneğinin malzeme etkisidir. Programın dönüşüm menüsünde zaten kenar göz varsayılandır. Açıklıklardaki king/jack çiftleri tek tip taslaktır; yük/başlık kapasitesi bilinmeden silinmedi.
+
+Yalnız azaltma doğru sonuç vermiyor: x3000mm levha derzinde kapı başlığı üzerindeki destek kesilmişti.0.4.3yalnız2145..2755mm kısa dikme ekler; onun kestiği yatay kayıt2parça olur. Sonuç aynı tüm göz seçimi57den59a,kenar karşılaştırması45parçaya çıkar. Kenar karşılaştırması eski demodan12parça az fakat farklı çapraz şemasıdır.0.4.2ile yalnız sayı kıyaslayıp59fazla demek yanlış olur;2parça eksik levha desteğinin tamamlanmasıdır.
+
+Resmi araştırma:
+https://knowledgehub.framecad.com/wall-framing-commands — çapraz gereksinimi hesaplama,yerleştirme,plan ve rapor ayrı komuttur; yazılım tüm gözleri koşulsuz çaprazlamayı genel mühendislik kuralı olarak tanımlamaz.
+https://knowledgehub.framecad.com/wall-framing-details — başlık ve çapraz bağlantıları ayrı detay dosyalarıdır.
+https://www.howickltd.com/applications/commercial-construction/partitions-infill-panelsdry-lining — kapı/pencere ve çaprazlar tasarım aşamasında eklenir; makine geometrisi tek başına gerekli profil sayısını belirlemez.
+
+Yapılan kontroller:120FrameCore yerleşim/açıklık,OpeningCore, destek ızgarası ve yeni bağımsız endpoint/201kot levha destek örneklemesi. Tüm geçerli seçeneklerde temassız kayıt/çapraz ucu0. Gerçek makas,statik optimum,king/jack boyutlandırması ve kaplama üreticisi vida aralıkları halen açık. Canlı yeni sürüm kontrolü yeniden yükleme gerektirir.

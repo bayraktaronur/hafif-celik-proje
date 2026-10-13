@@ -1,4 +1,6 @@
-# SketchUp MCP köprüsü 0.3.3
+# SketchUp MCP köprüsü 0.3.4
+
+0.3.4: `opening_comparison` yalnız önceki kendi demoUUIDsini ve onun kaynak grubunu kabul eder; eski modeli koruyup4200mm yanında0.4.3kenar çaprazlı karşılaştırma oluşturur. Sabit C80/t1,GUID/UUID/bağlam/boyut denetimi; tek geri alma; otomatik kaydetme/silme yok. Karşılaştırma statik optimum iddiası taşımaz.
 
 0.3.3: `opening_demo(pid,model_guid,request_id)` yalnız yeni boş/şablon insanlı modelde veya kurulu Simple şablonunda sabit3600×2800mm,100mm kalınlıklı kapı/pencereli kaynak duvar oluşturur.900×2100mm kapı ve600×1000mm pencere gerçek yüz boşluklarıdır. `source_panel` ile geometriden algılanır, ardından C80,t1 karkas ayrı grupta300mm ötelenerek oluşturulur. Kaynak korunur; tek geri alma ve UUID tekrar koruması, modelGUID/bağlam/boş model kontrolü vardır. Kaydetme veya keyfi kod komutu yoktur. Bu yalnız sınırlı canlı kabul aracı; mevcut seçili müşteri duvarını dönüştüren genel MCP komutu değildir.0.4.2 gerçek SketchUp kabulü için eklenmiştir.
 
