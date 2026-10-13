@@ -1,0 +1,11 @@
+13 Ekim 2026 — DEV-105 gerçek SketchUp / MCP kabul denemesi
+
+Kendi ürettiğimiz deneme geometrisi; müşteri projesinden veri aktarımı yok.
+SketchUp2026, Karkas0.4.2, MCP0.3.3. Yeni kaydedilmemiş modelde opening_demo çalıştırıldı.
+Kaynak:3600×2800mm,100mm kalınlıklı gerçek duvar; tabana açık900×2100mm kapı ve600×1000mm pencere deliği. Kaynak yüz/kenarları MCPread_entities ile okundu:50nesne. source_panel bu gerçek geometriden2açıklığı buldu. Seçilen yüzün ekseni ters olduğundan yerel x değerleri pencere900mm,kapı2100mm; dünya geometrisinde pencere2100..2700,kapı600..1500mm. Bu yüz yönü değişimidir, açıklığın yer değiştirmesi değildir.
+
+FrameCore ve build_frame ile ayrı grupta C80,t1,alçıpan dikey,600mm azami aks, tüm gözlerde çapraz denemesi oluşturuldu. Kaynak duvar korunur; karkas300mm normal yönünde ötelenir.57katı profil ve57görünür parça etiketi MCPile doğrulandı. Türler:2alt kayıt,1üst kayıt,12dikme,4yardımcı dikme,15ara kayıt,2açıklık başlığı,1denizlik,20çapraz. Tüm göz çaprazı test kapsamıdır;57parça optimize edilmiş taşıyıcı çözüm sayılmaz.
+
+57profilin tamamı MCPile altgrup olarak okundu; gerçek kenarların dünyaXZ izdüşümünde kapı ve pencere iç dikdörtgenleriyle kesişimi kontrol edildi (0.05mm sınır toleransı).57/57tam geometri sayfası;0boşluk ihlali. Yerel ayrıntı ornekler/kapi-pencere-canli-kontrol-2026-10-13.json. AynıUUID isteği tekrarlandı; aynı kaynak ve karkas PIDleri döndü, kopya oluşturulmadı.
+
+Kaynak geometri algılama ve katı karkas oluşturma canlı kabulü tamamlandı. Menüde elle seçim/parametre penceresi akışı bu MCP denemesinde kullanılmadı; aynı source_panel/FrameCore/build_frame çekirdeği çalıştırıldı. Karmaşık kullanıcı duvarları, kemerli açıklıklar, genel statik başlık/jack/king yeterliliği ve gerçek makas kapsamı açık. Model otomatik kaydedilmedi; kullanıcı yeni dosya adıyla kaydetmeli. Kurulu şablon dosyası veya müşteri projeleri değiştirilmedi.

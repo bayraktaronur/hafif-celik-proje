@@ -1,5 +1,7 @@
 # Prefabrikten Karkas 0.4.2
 
+13 Ekim canlı çekirdek kabulü: MCP0.3.3 ile yeni modelde gerçek kapı/pencereli duvar oluşturuldu, source_panel/FrameCore/build_frame çalıştı.2açıklık algılandı,57katı profil ve etiket doğrulandı; tüm57profil kenarlarında0açıklık ihlali. AynıUUID tekrarında kopya yok. Menüde elle seçim akışı ayrıca denenmedi. Kanıt: analizler/2026-10-13-bosluklu-duvar-canli-kabul.txt.
+
 Seçili düz duvar grubunun aynı düzlemdeki yüzleri birleştirilerek dikdörtgen pencere delikleri ve tabana açık kapı girintileri otomatik algılanır. Önceden yalnız en büyük dikdörtgen yüzün iç döngüleri okunuyordu; kapı girintili dış sınır reddediliyordu. Yeni OpeningCore örtülen alanın birleşiminden boş dikdörtgen alanları bulur. Döndürülmüş/nested grup geometrisi mevcut dünya koordinatı dönüşümü üzerinden projekte edilir; ters yüz yönleri kabul edilir. Duvar yanına/tepesine açık veya düzensiz, eğik/kemerli sınırlar reddedilir. Sadece eklenmiş kapı/pencere bileşeninin kutusundan açıklık tahmin edilmez; duvar geometrisinde gerçek boşluk bulunmalıdır.
 
 Dönüşüm öncesi tüm seçili duvarların algılanan açıklıkları ölçüleriyle gösterilir. İlk duvarın açıklıkları mevcut parametre penceresinde düzenlenebilir; diğerleri kendi algılanmış ölçülerini kullanır. Kaynak model korunur. Dikme/kayıtlar mevcut FrameCore açıklık çevresi kurallarıyla oluşturulur; başlık/jack/king yeterliliği statik olarak doğrulanmaz.
