@@ -1,0 +1,49 @@
+14 Ekim 2026 — Ev bilgisayarından iş bilgisayarına Kommo devir kaydı (CRM-011)
+
+KULLANICININ SON KARARI
+“İş PC'sinde devam edeceğim hale getir, yarın bakacağız.” Bu oturum yalnız devir içindir. Ayrı Meta formu seçeneği ONAYLANMADI; mevcut mesaj reklamları değiştirilmemeli. Otomatik arka plan çalışma veya zamanlanmış görev kurulmadı.
+
+ÖNCE OKUNACAKLAR
+DEVAM.md, CALISMA_KAYDI.md, bu dosya; ardından analizler/2026-10-14-kommo-dort-urun-ayrim-test.txt ve analizler/2026-10-14-kommo-67-84-kesin-ayrim-engeli.txt.
+Başlangıç: iş bilgisayarında git durumunu/uzak bağlantıyı kontrol et, fetch yap; temiz ve upstream bağlıysa yalnız pull --ff-only. Yerel değişiklikleri/çizimleri silme veya üzerine yazma. Yeni proje (11).json bu ev bilgisayarında takipsiz ve kullanıcıya ait; görevle ilgisiz, ortak depoya eklenmedi. Güncel müşteri çizimi olduğu doğrulanmadı; diğer bilgisayara taşındığını söyleme. Bu CRM devrinde uygulama kodu, sürümü, dağıtımı veya çizimler değişmedi.
+
+CANLI HESAPLAR VE BOTLAR
+Kommo: https://prefabrikten.kommo.com/chats/tools/bots/
+Meta reklam hesabı199150513628575; işletme315822685906986.
+67: Moe-67 reklam52581114367325 → bot20311. Ayrı PDF/karşılama/kategori/aranma akışı hazır. Otomatik reklam tetikleyicisi YOK.
+84: Moe-3 reklam6870411642321 → bot20247. Başlangıç doğrudan MOE-3 PDF adımına bağlandı, ürün menüsü atlanır. Genel yeni görüşme tetikleyicisi KALDIRILDI. Reklam kimliğiyle otomatik tetikleyici YOK. Önce başlamış1 aktif oturum en son korunmuştu; müşteri oturumunu kapatma.
+54: reklam52602561965925, bot20237; Meta Leads pipeline14609967/Yeni Meta Lead112878431, kaynak19183 veya19193. Onaylı moduler_54m2_karsilama_pdf şablonu. Son sayaç4, aktif0; gerçek PDF teslimi doğrulanmadı. Form970049288790589 ve ayrı v2 form1522800649864421 vardır; kaynak adından formID varsayma, canlı reklam editöründen eşleştir.
+Bahçe: üç reklam52603996367325 /52603996367525 /52603975051525; ortak form4612454642370267, Kommo kaynağı19245 → yalnız bot20335. Onaylı bahce_ofisi_karsilama_pdf12405 ilk mesajda Garden Life PDF+karşılama, Evet beni arayın→Prefabrikten dahili ücretsiz keşif arama bildirimi, Hayır→kapanış. Eski20103 botunun çift başlatıcısı kaldırıldı; bot silinmedi.
+
+DOĞRULANANLAR / AÇIK KALANLAR
+Bahçe Meta dummy testi1684483083017417 → Kommo4455417; yalnız bahçe botu sayacı0→1, diğer bot sayaçları değişmedi. Test numarası gerçek değil; PDF teslimi veya gerçek müşteri uçtan uca testi GEÇTİ sayılmaz.
+67/84 için reklamID/referral aktarımı ÇÖZÜLMEDİ. Genel kaynak veya anahtar kelime eşlemesini kesin reklam ayrımı gibi sunma. Bilinmeyen kaynağa ürün PDF'si tahmin ederek gönderme.
+Kommo destek talebi kullanıcı onayıyla gönderildi, aynı vakada03:04 takip var; son kontrolde teknik yanıt yok. İlk sonraki adım bu sohbetin yanıtını okumak: https://prefabrikten.kommo.com/teams/mentions/cfc4a8b7-46ae-11e7-b0dc-5254001b80b2
+İşletmenin kendi Meta app2317199089035923 yayımlanmamış; business verification In review, privacy URL eksik, Publish kapalı, webhook callback/verify token boş. Bu app canlı veri alamaz. Kommo'nun kendi bağlantısının da aynı doğrulamayı beklediğini varsayma; yerleşik reklamID aktarımı ayrı netleşmeli.
+Instagram entegrasyonunun resmi destek listesinde PDF eki yok: https://support.kommo.com/docs/instagram-overview . Instagram için kalıcı katalog indirme bağlantısı hazırlanmalı; WhatsApp'ta PDF eki kullanılabilir. Önizleme gerçek teslim kanıtı değildir.
+Meta önizleme linkleri kullanıcıda tekrar açılmadı; aynı link yöntemini yeniden başarı gibi sunma. Bahçe/54 form paylaşımı Kısıtlı; aynı Facebook hesabında önceki gönderim nedeniyle teşekkür ekranı açılıyor. Meta test lead silmek gerçek hesap form geçmişini sıfırlamaz. Eski bahçe deneme1614202573440012 kullanıcı onayıyla silindi; başka kalıcı silme için yeni işlem onayı gerekir.
+Yetkili test kişisi Fatmanur Bayraktar; Kommo4439549, telefon sonu8350. Kullanıcı test için hazır demişti; sonraki oturumda erişilebilirliğini varsayma. Gerçek67/84 Instagram+WhatsApp ve54/bahçe form→WhatsApp doğru PDF, tek karşılama, diğer ürün botları başlamaz testleri AÇIK.
+
+KORUNACAK KARARLAR
+Meta'daki16 önceden kalan yayımlanmamış değişikliği topluca yayımlama veya silme. 67/84 hazır otomatik FAQ cevapları ayrı ayrı boşaltılıp yayıma gönderilmişti; son UI durumu Hazırlanıyor, sonraki oturumda nihai durum kontrol edilmeli. Yeni yayım bu devirde yapılmadı.
+Arsa/zamanlama gibi uzun soru akışlarını ekleme. PDF, kısa ürün metni, model bağlantıları ve aranma/ücretsiz keşif tercihi yeterli. 84 reklamı ile80 m² brüt katalog aynı üründür; kullanıcı açıkça onayladı, tekrar sorma.
+Ayrı kısa Meta formu alternatifi kullanıcı tarafından kabul edilmedi veya reddedilmedi; karar ertelendi. Mevcut67/84 mesaj reklamlarını bu alternatife kendiliğinden çevirme.
+
+ORTAK DOSYALAR / SHA-256
+referanslar/kommo/Prefabrikten_Modern_Modul_Ev_67m2_Urun_Karti.pdf
+c3c4a714fbfa2ba5d13ab1e14538f5064644323487491e6eda53a2abf6d8fbfe
+referanslar/kommo/Prefabrikten_Garden_Life_Bahce_Ofisleri.pdf
+1748dfe003a3d5a2dd4beb15caa922a456a0cfc566658331dbcd82a800cc153b
+referanslar/kommo/Prefabrikten_YMOE_3_80m2.pdf
+4da0a9de72a1b933d7a9a61b6253303010de6065a98ce490278407fdaeda0dfe
+84 PDF bu devirde C:/Users/obayr/Desktop/Prefabrikten_YMOE_3_80m2.pdf kaynağından kopyalandı; kaynak/kopya SHA-256 eşit. Orijinal korunur.67/bahçe zaten ortak depodaydı, hashleri tekrar doğrulandı.
+54m2-moduler-celik-ev-tanitim.pdf Kommo onaylı şablonunda mevcut; yerel kaynak/ortak depo kopyası bu çalışmada doğrulanmadı. Açık aktarım işi olarak koru.
+Bot exportları referanslar/kommo/2026-10-14-bot-20311-67m2.json ve2026-10-14-bot-20335-bahce.json.84 exportları tarihsel; son doğrudan PDF başlangıcı değişikliğinden ÖNCEYE ait. Güncel84 botunu bunlarla yeniden yükleyip geriye alma. Canlı Kommo ayarları sunucuda; tarayıcı sekmeleri/oturumları Git ile taşınmaz, iş PC'sinde hesap oturumları ayrıca açılmalıdır.
+
+SONRAKİ OTURUM SIRASI
+1. Git devir kontrolü ve bu kaydı oku; mevcut iş PC'si dosyalarını koru.
+2. Kommo destek yanıtı, Meta yayın/doğrulama durumları ve bot tetikleyicilerinde dışarıdan değişiklik var mı kontrol et.
+3. Mesajdan bağımsız reklamID aktarımının desteklenen yöntemini kur;67→20311,84→20247. Çalışır aktarım kanıtı olmadan genel tetikleyici açma.
+4. Instagram katalog bağlantısı/54 PDF ortak kaynak işini tamamla.
+5. Yetkili gerçek testle dört ürün doğru PDF/kanal/tek gönderim/çapraz başlamama kanıtlarını topla. Başarısızlıkta müşteri numaralarını/logları ortak depoya koyma; anonim kanıt kullan.
+6. Tamamlanan her anlamlı adımı DEVAM/CALISMA/rapora kaydet, yalnız ilgili dosyaları gönder, yerel/uzak commit eşitliğini doğrula.
