@@ -828,3 +828,6 @@ Taslak renk ayrımı tamamlandı: koyu çizim zemini, ayrı panel/araç tonları
 
 ## 16 Ekim 2026 — DEV-116
 Taslak görünürlük paneli tamamlandı: Mimari/Ölçüler/Üretim/Yardımcılar; src/view-filters.js seçenekleri eşlendi. Örnek oda, ölçü, tefriş, veranda taraması ve ızgara filtreleri çalışır. 3B/Kesit ve üretim filtreleri gerçek motor bağlantısını bekliyor. Mevcut uygulamaya entegrasyon tamamlandı denmez. Test ve görsel kontrol geçti; kullanıcı değerlendirmesi sonraki adım.
+
+## 16 Ekim 2026 — DEV-117
+Kaynak düğme envanteri ve taslakta Komut bul eklendi.160 kayıt; otomatik alan sınıflandırması ön eşleştirmedir. analizler/2026-10-16-komut-envanteri.json kapsam sınırlarını içerir. Kısayol/canvas/input/select/programatik kontrol denetimi ve gerçek uygulamaya taşıma açık. Komut arama ve taslak testi geçti.

@@ -900,3 +900,6 @@ Kullanıcı açık taslakta alanları ayırt edemediğini bildirdi. Taslak koyu 
 
 ## 16 Ekim 2026 — DEV-116
 Görünüş seçimi ve gruplandırılmış görünürlük ayrı prototipte düzenlendi. Görüntü durumu projeye göre WeakMap içinde, modelden ayrı tutulur. H/U/köşeleri gizleyen kontrol yok. ui-workflow-prototype testine oda gizleme ve pencere ölçüsünün korunması eklendi; geçti. 3B/Kesit açıkça devre dışı; gerçek çizim motoru ve sürüm değişmedi.
+
+## 16 Ekim 2026 — DEV-117
+plan_cizim.html ve src JS şablonlarından160 button kaydı kaynak/satır/handler ile çıkarıldı. tools/inventory-ui.cjs yeniden üretir. Taslakta Komut bul araması ve alan filtresi eklendi; komut çalıştırmaz. Otomatik gruplar manuel doğrulanmalı; tüm komutların kapsandığı iddia edilmez. Test geçti. Gerçek uygulama ve çizimler korunur.
