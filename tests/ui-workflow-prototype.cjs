@@ -1,0 +1,12 @@
+const {chromium}=require(require('path').resolve(require('path').dirname(process.execPath),'../node_modules/playwright'));
+const path=require('path');
+(async()=>{const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true}); const page=await browser.newPage({viewport:{width:1600,height:1000}}); const errors=[];page.on('pageerror',e=>errors.push(e.message)); await page.goto(require('url').pathToFileURL(path.resolve('taslaklar/is-akisi/index.html')).href);
+await page.locator('#tools [data-select="window"]:enabled').click();await page.locator('#centerWindow').click();if(await page.locator('#left').inputValue()!=='127')throw Error('center');await page.locator('#width').fill('160');await page.locator('#applyWindow').click();
+await page.locator('#tools [data-select="veranda"]').click();await page.locator('#verandaType').selectOption('Beşik');await page.locator('#applyVeranda').click();if(!await page.locator('#stage').textContent().then(x=>x.includes('Beşik çatı')))throw Error('veranda');
+await page.locator('#system').selectOption('steel');await page.locator('[data-area="Üretim"]').first().click();if(!await page.locator('#tools').textContent().then(x=>x.includes('Duvar karkası')&&!x.includes('H / U')))throw Error('system');
+await page.locator('#newProject').click();await page.locator('[data-project="0"]').click();if(await page.locator('#system').inputValue()!=='steel')throw Error('tab state');
+await page.locator('[data-area="Plan"]').first().click();await page.locator('#tools [data-select="window"]:enabled').click();if(await page.locator('#width').inputValue()!=='160')throw Error('window state');
+await page.locator('#system').selectOption('prefab');await page.screenshot({path:'artifacts/ui-workflow-prototype.png',fullPage:true});
+for(const width of [1280,800]){await page.setViewportSize({width,height:900});if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('overflow '+width);}
+if(errors.length)throw Error(errors.join('\n'));console.log('PASS: window, veranda, system tools, project state, responsive layout, console');await browser.close();})().catch(e=>{console.error(e);process.exit(1)});
+

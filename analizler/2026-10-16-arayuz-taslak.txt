@@ -1,0 +1,8 @@
+16 Ekim 2026 — İş akışı arayüz taslağı (DEV-114)
+Kapsam: ayrı, tıklanabilir HTML prototipi. Çalışan 5.9.110 uygulaması ve kullanıcı çizimleri değiştirilmedi.
+Giriş: taslaklar/is-akisi/index.html
+Plan / Çatı / Üretim / Metraj / Sunum-Çıktı; proje ağacı, nesne özellikleri, sisteme göre araçlar.
+Çalışan örnekler: pencere ölçü/konum, ortalama, veranda çatı seçimi, kaplama seçimi, proje sekmeleri, örnek JSON indirme.
+Sınırlar: gerçek CAD/3B/imalat hesabı ve PDF çıktısı yok. Metraj örnek sayılardır. Stok120x250, tavan döşemesi60x125 ayrıdır.
+Kontrol: tests/ui-workflow-prototype.cjs geçti; pencere, veranda, sistem araçları, proje durumu,1280/800 yatay taşma, konsol.1600px ekran görüntüsü görsel incelendi.
+Sıradaki adım: kullanıcı taslağı denedikten sonra gerçek uygulamaya kademeli taşıma kapsamı belirlenir.

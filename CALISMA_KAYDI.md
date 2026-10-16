@@ -891,3 +891,6 @@ Kaydet destekleyen tarayıcıda ad/klasör seçimi açar; iptal ve yazma hatası
 Antete çatı, duvar ve tavan kaplama satırı eklendi. Çatı bölüm malzemeleri öncelikli; bölüm yoksa varsayılan. Duvar alçıpanı gerçek seçimden, mevcut özel antet/logo alanları korunur. Yeni 84 mm antet için sayfa boşluğu dinamik. title-block PDF/PNG, logo/kayıt, iptal, çoklu malzeme, tüm/seçili oda ve çizim çakışmaması kontrolleri geçti; çıktı görseli incelendi. Rapor analizler/2026-10-16-antet.md. Canlı çizim değiştirilmedi, önceki açık işler ve özel notlar korunur.
 
 16 Ekim 2026 — DEV-113 arayüz araştırması: resmi AutoCAD/SketchUp/Tekla/FRAMECAD belgeleri ve mevcut kaynak/önceki ekranlar incelendi; canlı rakip uygulama testi yapılmadı. Sistem bazlı üretim, seçime bağlı özellikler, ortak Plan/Çatı/Metraj/Sunum çalışma alanları önerildi. analizler/2026-10-16-arayuz-arastirma-oneri.txt. Kod/sürüm değişmedi (5.9.110); sonraki adım tıklanabilir taslak, uygulama henüz yok. Önceki açık işler/özel notlar korunur.
+
+## 16 Ekim 2026 — DEV-114 / İş bilgisayarı
+Ayrı arayüz prototipi hazırlandı. Beş çalışma alanı, sisteme özel araçlar, nesne özellikleri ve örnek proje sekmeleri. Etkileşim ve duyarlı düzen testi geçti; ekran görüntüsü incelendi. Sonraki adım kullanıcı değerlendirmesi; gerçek uygulama entegrasyonu yapılmadı. Rapor: analizler/2026-10-16-arayuz-taslak.txt.
