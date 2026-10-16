@@ -5221,7 +5221,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.110',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.111',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5667,6 +5667,7 @@ updateStatus();
     documentsReady=true;renderDocuments();
   },{once:true});
 })();
+
 
 </script><script>
 /* Prefabricated production editing: panel objects, matched joints and strict snaps. */
@@ -6291,8 +6292,9 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.110';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.111';syncUI();draw();
 })();
+
 
 </script><script>
 /* Manufacturing constraints. Existing geometry is inspected, never auto-moved. */
@@ -8498,5 +8500,28 @@ LoadingReference.rows.push({id:"tuna-92",row:92,group:"Metal",name:"Yeşil alç�
  window.LoadingList={open,calculate,items};
 })();
 
+</script><style>
+#workflowShell[hidden]{display:none}#workflowShell{flex:none;background:#243247;border-bottom:1px solid #50657d}.workflow-nav,.workflow-tools{display:flex;gap:8px;align-items:center;padding:7px 18px;flex-wrap:wrap}.workflow-nav{border-bottom:1px solid #45586f}.workflow-nav button,.workflow-tools button{font:inherit;color:#dce9f4;border:1px solid #536981;border-radius:5px;padding:8px 14px;background:#1b2b3c;cursor:pointer}.workflow-nav button.active{background:#315e50;border-color:#80dfba;color:#c0ffe1}.workflow-tools{background:#2d3d51}.workflow-tools button:hover{background:#41617b}.workflow-tools span{margin-left:auto;color:#bacddd;font-size:11px}.workflow-enabled .inspector{background:#243247;border-left:1px solid #52657d}.workflow-enabled #projectSidebar{background:#1c2838}.workflow-focus{outline:2px solid #80dfba;outline-offset:-2px}#workflowToggle{border-color:#80bca7;color:#a4efcc}
+
+</style><script>
+/* Optional navigation shell. Existing commands and DOM controls remain authoritative. */
+(function(){
+'use strict';
+const button=document.createElement('button');button.id='workflowToggle';button.className='tb';button.textContent='Yeni düzeni dene';button.setAttribute('aria-pressed','false');document.querySelector('.header-actions').append(button);
+const bar=document.createElement('section');bar.id='workflowShell';bar.hidden=true;bar.setAttribute('aria-label','İş akışı');document.querySelector('.workspace-bar').after(bar);
+let active='Plan';
+const groups={
+'Plan':[['Seç',()=>setTool('sec')],['Duvar',()=>setTool('duvar')],['Kapı',()=>setTool('kapi')],['Pencere',()=>setTool('pencere')],['Veranda',()=>setTool('veranda')],['Plan kontrolü',()=>Studio.tab('analysis')]],
+'Çatı':[['Çatı planı',()=>roof('plan')],['Tavan',()=>roof('ceiling')],['3B',()=>roof('3d')],['Kesit',()=>roof('section')]],
+'Üretim':[['Seçili eleman',()=>Studio.tab('properties')],['Makas yerleşimi',()=>focus('trussEditor')],['Üretim ve kaplama',()=>focus('optBox')],['Plan kontrolü',()=>Studio.tab('analysis')]],
+'Metraj':[['Metraj listesi',()=>metrajAc()],['Yükleme listesi',()=>LoadingList.open()]],
+'Sunum / Çıktı':[['PNG',()=>PlanExport.open('png')],['PDF',()=>PlanExport.open('pdf')],['DXF',()=>PlanExport.open('dxf')]]};
+function roof(view){RoofStudio.open();RoofStudio.setView(view);}
+function focus(id){Studio.tab('properties');const el=document.getElementById(id);if(!el||!el.getClientRects().length){Studio.toast('İlgili ayarı mevcut proje panelinden açın; sistem ve seçime göre kullanılabilir.');return;}el.scrollIntoView({block:'nearest'});el.classList.add('workflow-focus');setTimeout(()=>el.classList.remove('workflow-focus'),1800);}
+function render(){bar.replaceChildren();const nav=document.createElement('nav');nav.className='workflow-nav';nav.setAttribute('aria-label','İş akışı alanları');Object.keys(groups).forEach(name=>{const b=document.createElement('button');b.type='button';b.textContent=name;b.className=name===active?'active':'';b.setAttribute('aria-pressed',String(name===active));b.onclick=()=>{active=name;render();};nav.append(b);});bar.append(nav);const tools=document.createElement('div');tools.className='workflow-tools';groups[active].forEach(([label,run])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=run;tools.append(b);});const note=document.createElement('span');note.textContent='Mevcut çizim motoru · Tüm klasik araçlar aşağıda korunur';tools.append(note);bar.append(tools);window.dispatchEvent(new Event('resize'));}
+button.onclick=()=>{const enabled=bar.hidden;bar.hidden=!enabled;document.body.classList.toggle('workflow-enabled',enabled);button.textContent=enabled?'Klasik düzene dön':'Yeni düzeni dene';button.setAttribute('aria-pressed',String(enabled));if(enabled)render();else window.dispatchEvent(new Event('resize'));};
+})();
+
 </script></body></html>
+
 

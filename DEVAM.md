@@ -831,3 +831,6 @@ Taslak görünürlük paneli tamamlandı: Mimari/Ölçüler/Üretim/Yardımcıla
 
 ## 16 Ekim 2026 — DEV-117
 Kaynak düğme envanteri ve taslakta Komut bul eklendi.160 kayıt; otomatik alan sınıflandırması ön eşleştirmedir. analizler/2026-10-16-komut-envanteri.json kapsam sınırlarını içerir. Kısayol/canvas/input/select/programatik kontrol denetimi ve gerçek uygulamaya taşıma açık. Komut arama ve taslak testi geçti.
+
+## 17 Ekim 2026 — DEV-118 / 5.9.111
+Gerçek uygulamada isteğe bağlı Yeni düzeni dene gezinme katmanı eklendi. Plan/Çatı/Üretim/Metraj/Sunum mevcut API ve kontrollere bağlanır. Klasik düzene dön düğmesi var; eski DOM kontrolleri silinmez/taşınmaz. Bu ilk entegrasyondur; tüm komutları sadeleştirip taşıma işi açık. workflow-shell ve save-as testleri geçti, görsel incelendi.

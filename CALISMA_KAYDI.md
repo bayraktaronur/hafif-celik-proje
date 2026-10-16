@@ -903,3 +903,6 @@ Görünüş seçimi ve gruplandırılmış görünürlük ayrı prototipte düze
 
 ## 16 Ekim 2026 — DEV-117
 plan_cizim.html ve src JS şablonlarından160 button kaydı kaynak/satır/handler ile çıkarıldı. tools/inventory-ui.cjs yeniden üretir. Taslakta Komut bul araması ve alan filtresi eklendi; komut çalıştırmaz. Otomatik gruplar manuel doğrulanmalı; tüm komutların kapsandığı iddia edilmez. Test geçti. Gerçek uygulama ve çizimler korunur.
+
+## 17 Ekim 2026 — DEV-118 / 5.9.111
+Yeni gezinme gerçek uygulamaya isteğe bağlı eklendi; RoofStudio, PlanExport, LoadingList ve mevcut çizim komutları kullanılır. Model/kayıt şeması değişmedi; revision güncellendi. Test: düzen açılışında Studio.state eşitliği, eski kontrol DOM kimliklerinin korunması, pencere komutu, çatı aç/kapat, klasik dönüş ve konsol. save-as geçti. İzole örnek proje screenshot incelendi; kullanıcının açık çizimine dokunulmadı. Tam arayüz taşıması sonraki aşama.
