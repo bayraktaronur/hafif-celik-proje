@@ -894,3 +894,6 @@ Antete çatı, duvar ve tavan kaplama satırı eklendi. Çatı bölüm malzemele
 
 ## 16 Ekim 2026 — DEV-114 / İş bilgisayarı
 Ayrı arayüz prototipi hazırlandı. Beş çalışma alanı, sisteme özel araçlar, nesne özellikleri ve örnek proje sekmeleri. Etkileşim ve duyarlı düzen testi geçti; ekran görüntüsü incelendi. Sonraki adım kullanıcı değerlendirmesi; gerçek uygulama entegrasyonu yapılmadı. Rapor: analizler/2026-10-16-arayuz-taslak.txt.
+
+## 16 Ekim 2026 — DEV-115 / İş bilgisayarı
+Kullanıcı açık taslakta alanları ayırt edemediğini bildirdi. Taslak koyu çalışma paletine geçirildi; panel sınırları, kontroller ve aktif sekme vurgusu artırıldı. Pafta beyaz korundu. ui-workflow-prototype testi geçti;1600px görsel incelendi. Uygulama sürümü değişmedi.

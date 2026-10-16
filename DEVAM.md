@@ -822,3 +822,6 @@ Meta'daki 16 bekleyen düzenleme yayımlanmadı/silinmedi; reklam, bütçe ve fo
 
 ## 16 Ekim 2026 — DEV-114
 Tıklanabilir iş akışı taslağı tamamlandı: [Aç](taslaklar/is-akisi/index.html). [Kapsam ve kontroller](analizler/2026-10-16-arayuz-taslak.txt). Gerçek uygulamaya entegrasyon bekliyor; 5.9.110 değişmedi.
+
+## 16 Ekim 2026 — DEV-115
+Taslak renk ayrımı tamamlandı: koyu çizim zemini, ayrı panel/araç tonları, belirgin aktif sekme ve okunaklı alanlar. Mevcut prototip testi geçti, ekran görüntüsü incelendi. Gerçek uygulama entegrasyonu bekliyor.
