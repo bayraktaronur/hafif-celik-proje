@@ -906,3 +906,6 @@ plan_cizim.html ve src JS şablonlarından160 button kaydı kaynak/satır/handle
 
 ## 17 Ekim 2026 — DEV-118 / 5.9.111
 Yeni gezinme gerçek uygulamaya isteğe bağlı eklendi; RoofStudio, PlanExport, LoadingList ve mevcut çizim komutları kullanılır. Model/kayıt şeması değişmedi; revision güncellendi. Test: düzen açılışında Studio.state eşitliği, eski kontrol DOM kimliklerinin korunması, pencere komutu, çatı aç/kapat, klasik dönüş ve konsol. save-as geçti. İzole örnek proje screenshot incelendi; kullanıcının açık çizimine dokunulmadı. Tam arayüz taşıması sonraki aşama.
+
+## 17 Ekim 2026 — DEV-119 / 5.9.112
+Çizim araçları yeniden yaratılmadan taşındı; dinleyiciler ve kimlikler korunur. Görünürlük modalı, ortak geçmiş, alan grupları ve klasik dönüş tamamlandı. İki sistemde model eşitliği kontrol edildi; ana31/31 ve kayıt/görünürlük/antet testleri geçti. Testte eski download varsayımı düzeltildi. Rapor analizler/2026-10-17-yeni-duzen.txt. Canlı müşteri çizimi üzerinde işlem yapılmadı.

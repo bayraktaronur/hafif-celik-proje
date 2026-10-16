@@ -1,0 +1,9 @@
+17 Ekim 2026 — 5.9.112 / DEV-119
+Kapsam: gerçek uygulamada geri alınabilir çalışma alanı düzeni.
+Plan: mevcut tool-ribbon düğmeleri ve tüm alt kontroller aynen taşınır. Kopya çizim düğmeleri kaldırıldı.
+Ortak: geçmiş araçları, görünürlük, plan kontrolü, sığdır. Görünürlük mevcut viewFilters DOM düğümüdür.
+Çatı: mevcut plan/tavan/3B/kesit/rapor ekranları. Üretim: mevcut özellik/kaplama/makas/çelik aktarımı. Metraj ve çıktı aynı API'leri kullanır.
+Klasik dönüş: yorum ankrajlarıyla gerçek DOM nesneleri eski yerlerine döner. Model ve kayıt şeması değiştirilmez. Yeni düzen isteğe bağlıdır.
+Kontrol: workflow-shell iki sistemde tekrarlı aç/kapat ve alan geçişlerinde Studio.state eşitliği; kontrollerin bağlı kalması, eski yerlerine dönüş, pencere ve D kısayolu, çatı, görünürlük. İzole örnek ekran incelendi.
+Ana test31/31. save-as, view-filters, title-block geçti. Eski download testi dosya seçici yerine indirme yedeğini açıkça seçerek düzeltildi; dosya seçici ayrı testte doğrulandı.
+Sınır: her müşteri projesinin bütün etkileşim kombinasyonlarının garantisi değildir. Çatı ve çıktı ayrıntıları mevcut diyaloglarda kalır. Kullanıcının canlı çizimi değiştirilmedi. Taslak örnek geometrisi gerçek programa taşınmadı.

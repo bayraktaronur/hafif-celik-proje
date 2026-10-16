@@ -834,3 +834,6 @@ Kaynak düğme envanteri ve taslakta Komut bul eklendi.160 kayıt; otomatik alan
 
 ## 17 Ekim 2026 — DEV-118 / 5.9.111
 Gerçek uygulamada isteğe bağlı Yeni düzeni dene gezinme katmanı eklendi. Plan/Çatı/Üretim/Metraj/Sunum mevcut API ve kontrollere bağlanır. Klasik düzene dön düğmesi var; eski DOM kontrolleri silinmez/taşınmaz. Bu ilk entegrasyondur; tüm komutları sadeleştirip taşıma işi açık. workflow-shell ve save-as testleri geçti, görsel incelendi.
+
+## 17 Ekim 2026 — DEV-119 / 5.9.112
+Gerçek çalışma alanı düzeni tamamlandı: Plan gerçek araç şeridi, ortak geçmiş/görünürlük, Çatı/Üretim/Metraj/Çıktı. Kopya üst kontroller sadeleştirildi; klasik dönüş ankrajlarla yapılır. Ana31/31, workflow-shell, save-as, view-filters, title-block geçti. [Kapsam ve sınırlar](analizler/2026-10-17-yeni-duzen.txt). Mevcut ayrıntı diyalogları korunur; yeni düzen isteğe bağlı.

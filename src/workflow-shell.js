@@ -1,17 +1,27 @@
-/* Optional navigation shell. Existing commands and DOM controls remain authoritative. */
+/* Layout-only relocation. Controls retain their identity, listeners and original anchors. */
 (function(){
 'use strict';
-const button=document.createElement('button');button.id='workflowToggle';button.className='tb';button.textContent='Yeni düzeni dene';button.setAttribute('aria-pressed','false');document.querySelector('.header-actions').append(button);
-const bar=document.createElement('section');bar.id='workflowShell';bar.hidden=true;bar.setAttribute('aria-label','İş akışı');document.querySelector('.workspace-bar').after(bar);
-let active='Plan';
-const groups={
-'Plan':[['Seç',()=>setTool('sec')],['Duvar',()=>setTool('duvar')],['Kapı',()=>setTool('kapi')],['Pencere',()=>setTool('pencere')],['Veranda',()=>setTool('veranda')],['Plan kontrolü',()=>Studio.tab('analysis')]],
-'Çatı':[['Çatı planı',()=>roof('plan')],['Tavan',()=>roof('ceiling')],['3B',()=>roof('3d')],['Kesit',()=>roof('section')]],
-'Üretim':[['Seçili eleman',()=>Studio.tab('properties')],['Makas yerleşimi',()=>focus('trussEditor')],['Üretim ve kaplama',()=>focus('optBox')],['Plan kontrolü',()=>Studio.tab('analysis')]],
-'Metraj':[['Metraj listesi',()=>metrajAc()],['Yükleme listesi',()=>LoadingList.open()]],
-'Sunum / Çıktı':[['PNG',()=>PlanExport.open('png')],['PDF',()=>PlanExport.open('pdf')],['DXF',()=>PlanExport.open('dxf')]]};
-function roof(view){RoofStudio.open();RoofStudio.setView(view);}
-function focus(id){Studio.tab('properties');const el=document.getElementById(id);if(!el||!el.getClientRects().length){Studio.toast('İlgili ayarı mevcut proje panelinden açın; sistem ve seçime göre kullanılabilir.');return;}el.scrollIntoView({block:'nearest'});el.classList.add('workflow-focus');setTimeout(()=>el.classList.remove('workflow-focus'),1800);}
-function render(){bar.replaceChildren();const nav=document.createElement('nav');nav.className='workflow-nav';nav.setAttribute('aria-label','İş akışı alanları');Object.keys(groups).forEach(name=>{const b=document.createElement('button');b.type='button';b.textContent=name;b.className=name===active?'active':'';b.setAttribute('aria-pressed',String(name===active));b.onclick=()=>{active=name;render();};nav.append(b);});bar.append(nav);const tools=document.createElement('div');tools.className='workflow-tools';groups[active].forEach(([label,run])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=run;tools.append(b);});const note=document.createElement('span');note.textContent='Mevcut çizim motoru · Tüm klasik araçlar aşağıda korunur';tools.append(note);bar.append(tools);window.dispatchEvent(new Event('resize'));}
-button.onclick=()=>{const enabled=bar.hidden;bar.hidden=!enabled;document.body.classList.toggle('workflow-enabled',enabled);button.textContent=enabled?'Klasik düzene dön':'Yeni düzeni dene';button.setAttribute('aria-pressed',String(enabled));if(enabled)render();else window.dispatchEvent(new Event('resize'));};
+const $=id=>document.getElementById(id),anchors=new Map(),panels=new Map();let enabled=false,active='Plan';
+const toggle=document.createElement('button');toggle.id='workflowToggle';toggle.className='tb';toggle.textContent='Yeni düzene geç';toggle.setAttribute('aria-pressed','false');document.querySelector('.header-actions').append(toggle);
+const shell=document.createElement('section');shell.id='workflowShell';shell.hidden=true;document.querySelector('.workspace-bar').after(shell);
+const nav=document.createElement('nav');nav.className='workflow-nav';nav.setAttribute('aria-label','Çalışma alanları');shell.append(nav);
+const common=document.createElement('div');common.className='workflow-common';shell.append(common);
+function move(el,host){if(!el)return;if(!anchors.has(el)){const marker=document.createComment('workflow anchor');el.before(marker);anchors.set(el,marker);}host.append(el);}
+function action(host,label,run){const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=run;host.append(b);return b;}
+function roof(v){RoofStudio.open();RoofStudio.setView(v);}
+function focus(id){Studio.tab('properties');const el=$(id);if(!el||!el.getClientRects().length){Studio.toast('Bu kontrol mevcut yapı sistemi veya seçim için kullanılabilir değil.');return;}for(let p=el.parentElement;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;el.scrollIntoView({block:'nearest'});}
+for(const name of ['Plan','Çatı','Üretim','Metraj','Sunum / Çıktı']){const p=document.createElement('div');p.className='workflow-tools';p.dataset.area=name;panels.set(name,p);shell.append(p);action(nav,name,()=>select(name));}
+function select(name){active=name;panels.forEach((p,n)=>p.hidden=n!==name);[...nav.children].forEach(b=>{b.classList.toggle('active',b.textContent===name);b.setAttribute('aria-pressed',String(b.textContent===name));});window.dispatchEvent(new Event('resize'));}
+const roofPanel=panels.get('Çatı');for(const [n,v] of [['Çatı planı','plan'],['Tavan','ceiling'],['3B','3d'],['Kesit','section'],['Çatı metrajı / kesim','report']])action(roofPanel,n,()=>roof(v));
+const prod=panels.get('Üretim');action(prod,'Seçili eleman',()=>Studio.tab('properties'));action(prod,'Üretim ve kaplama',()=>focus('optBox'));action(prod,'Makas yerleşimi',()=>focus('trussEditor'));action(prod,'Plan kontrolü',()=>Studio.tab('analysis'));
+const met=panels.get('Metraj');action(met,'Metraj listesi',()=>metrajAc());action(met,'Yükleme listesi',()=>LoadingList.open());
+for(const format of ['png','pdf','dxf'])action(panels.get('Sunum / Çıktı'),format.toUpperCase(),()=>PlanExport.open(format));
+const visibility=document.createElement('dialog');visibility.id='workflowVisibility';visibility.innerHTML='<div class="workflow-dialog-heading"><strong>Görünürlük</strong><button type="button">Kapat</button></div>';document.body.append(visibility);visibility.querySelector('button').onclick=()=>visibility.close();
+action(common,'Görünürlük',()=>visibility.showModal());action(common,'Plan kontrolü',()=>Studio.tab('analysis'));action(common,'Ekrana sığdır',()=>Studio.fit());
+function setEnabled(on){if(enabled===on)return;enabled=on;if(!on){visibility.close();for(const [el,marker]of anchors){marker.replaceWith(el);}anchors.clear();}else{move(document.querySelector('.tool-ribbon'),panels.get('Plan'));move(document.querySelector('.history-tools'),common);move($('viewFilters'),visibility);move($('hcBtn'),prod);}
+shell.hidden=!on;document.body.classList.toggle('workflow-enabled',on);toggle.textContent=on?'Klasik düzene dön':'Yeni düzene geç';toggle.setAttribute('aria-pressed',String(on));select(active);}
+toggle.onclick=()=>setEnabled(!enabled);
+// Drawing shortcuts continue to use the existing engine; reveal their toolbar after dispatch.
+document.addEventListener('keydown',e=>{if(!enabled||e.ctrlKey||e.altKey||e.metaKey||['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)||document.querySelector('dialog[open],.mbg.open'))return;if(['s','d','k','p','v'].includes(e.key.toLowerCase()))select('Plan');});
+window.WorkflowShell={setEnabled,select};
 })();

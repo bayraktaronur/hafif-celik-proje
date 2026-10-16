@@ -70,7 +70,7 @@ async function main(){
    const d=rectangle();d.e=[{id:'e200',tip_:'kapi',segId:'e101',t:.1,en:100,yuk:210},{id:'e201',tip_:'pencere',segId:'e101',t:.4,en:120,yuk:120}];await load(d);
    const r=await page.evaluate(()=>{G.secili=G.elemanlar[0];G.seciliTip='eleman';upSelEl('en',250);const width=G.elemanlar[0].en;const e=G.elemanlar[0],old=e.t;elemanKonumla(e,getSeg(e.segId),240,5);return{width,old,now:e.t,issues:Studio.issues().filter(i=>i.level==='error').length};});assert.equal(r.width,100);near(r.old,r.now);assert.equal(r.issues,0);
   });
-  await test('JSON download round-trip retains production settings and project name',async()=>{await load(prefab());await page.evaluate(()=>{Studio.rename('Deneme 01');Studio.projectField('fire',17);optUygula('ic',10);});const dl=page.waitForEvent('download');await page.locator('.header-actions button').filter({hasText:'Kaydet'}).click();const file=await dl;const d=JSON.parse(fs.readFileSync(await file.path(),'utf8'));assert.equal(d.projectName,'Deneme 01');assert.equal(d.fire,17);assert.equal(d.opt.ic,10);Project.validate(d);await load(d);assert.equal(await page.evaluate(()=>ALCI.FIRE),17);});
+  await test('JSON download round-trip retains production settings and project name',async()=>{await load(prefab());await page.evaluate(()=>{window.showSaveFilePicker=undefined;Studio.rename('Deneme 01');Studio.projectField('fire',17);optUygula('ic',10);});const dl=page.waitForEvent('download');await page.locator('.header-actions button').filter({hasText:'Kaydet'}).click();const file=await dl;const d=JSON.parse(fs.readFileSync(await file.path(),'utf8'));assert.equal(d.projectName,'Deneme 01');assert.equal(d.fire,17);assert.equal(d.opt.ic,10);Project.validate(d);await load(d);assert.equal(await page.evaluate(()=>ALCI.FIRE),17);});
   await test('Real mouse and keyboard draw a closed room; undo/redo works',async()=>{
    await load(fixture([],[]));await page.evaluate(()=>{G.zoom=1;G.pan={x:100,y:100};draw();});
    await page.locator('#t-duvar').click();const box=await page.locator('#cv').boundingBox();
@@ -92,3 +92,4 @@ async function main(){
  console.log(`\n${results.filter(r=>r.passed).length}/${results.length} passed`);if(results.some(r=>!r.passed))process.exitCode=1;
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});
+
