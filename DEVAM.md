@@ -53,6 +53,7 @@ Program **5.9.110**. [H üzerinde pencere yerleşimi ve gerçek proje testleri](
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-113 | Sistem ve iş akışına göre arayüz | ÖNERİ HAZIR: resmi AutoCAD/SketchUp/Tekla/FRAMECAD belgeleri incelendi; Plan/Çatı/Üretim/Metraj/Sunum düzeni. Uygulama yapılmadı. [Araştırma](analizler/2026-10-16-arayuz-arastirma-oneri.txt). |
 | DEV-112 | Malzeme bilgili antet | TAMAMLANDI 5.9.110: çatı/duvar/tavan kaplaması otomatik, ayrı renkli satır, dinamik sayfa payı. PDF/PNG ve malzeme seçenekleri testleri geçti. [Rapor](analizler/2026-10-16-antet.md). |
 | DEV-111 | Farklı Kaydet ve alçıpan stok ölçüsü | TAMAMLANDI 5.9.109: destekleyen tarayıcıda dosya seçimi; tüm alçıpan hesabı 120×250, döşeme 60×125 ayrı. save-as testi geçti; canlı işletim sistemi penceresi doğrulanmadı. [Rapor](analizler/2026-10-16-kaydet-alcipan.md). |
 | DEV-110 | Hafif çelik 3B kapı/pencere ve çatı | TAMAMLANDI 5.9.108: aks/kalınlığa göre açıklıklı duvar, katalog doğraması, çatı tipi/eğim seçimi. Steel-3d ve iki prefabrik regresyon testi geçti. [Rapor](analizler/2026-10-16-hafif-celik-3b.md). |

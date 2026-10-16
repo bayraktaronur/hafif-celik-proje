@@ -1,0 +1,29 @@
+ARAYÜZ ARAŞTIRMASI VE ÖNERİ — 16 Ekim 2026 — DEV-113
+Kapsam: resmi yardım/ürün belgeleri, mevcut kaynak arayüz ve kullanıcının önceki ekranları. Rakip uygulamalar canlı çalıştırılmadı; kullanıcı açık sayfasına erişilmedi. Uygulama değiştirilmedi, sürüm 5.9.110.
+
+Kaynaklar:
+AutoCAD bağlama göre sekmeler: https://help.autodesk.com/cloudhelp/2024/ENU/AutoCAD-Customization/files/GUID-46187AC0-F25B-4A19-8E95-1722D780596F.htm
+SketchUp panel tepsileri: https://help.sketchup.com/en/sketchup/managing-dialog-boxes-windows
+Tekla seçime bağlı araçlar: https://support.tekla.com/doc/tekla-structures/2025/gen_contextual_toolbar
+FRAMECAD yerleşim/detay ortamları: https://knowledgehub.framecad.com/steelwise-procedure-guide
+FRAMECAD detay hazırlama ve üretim aktarımı: https://knowledgehub.framecad.com/framecad-detailer-user-manual
+
+Bulgular: Araçlar iş ve seçime göre gruplanır. Panel tepsileri kapatılabilir/düzenlenebilir. Yerleşim ile imalat detaylandırma farklı çalışma ortamlarıdır. Bunlar birebir kopyalanacak arayüz değil, düzenleme ilkeleridir.
+Bizde: src/studio.js üretim kontrollerini eski kaplarından taşıyor; sistem kartı, sol ayarlar, sağ özellik/görünüm ve ayrı çatı iletişim kutusu arasında dağınıklık var. Kaynak/screenshot incelemesi; kullanım süresi ölçülmedi.
+
+Öneri:
+Üst sabit: Dosya (Yeni/Aç/Kaydet/Farklı Kaydet/Yedekler), Geri/İleri, proje adı ve sistem rozeti, komut arama, Çıktı. Altında proje sekmeleri.
+Çalışma alanları: Plan, Çatı, Üretim, Metraj, Sunum/Çıktı. Bunlar zorunlu sıra değil, aynı modele bağlı geçişler.
+Plan: Duvar, Kapı, Pencere, Oda, Veranda, Ölçü/Yazı; tefriş/vitrifiye/mutfak tek Yerleşim kataloğunda.
+Sol: Proje ağacı (katlar/odalar/çatılar/verandalar); özet ve oda listesi tek yerde. Sağ: yalnız seçili nesne özellikleri, varsayılanlar ayrı Proje ayarlarında. Alt: koordinat, yakalama, dik çizim, giriş birimi, yakınlaştırma.
+Plan/3B/Tavan/Kesit görünüm sekmeleri aynı çalışma alanında; 2B+3B bölünmüş görünüm sonraki aşama. Çatı tam ekran açılır pencere yerine aynı kabukta.
+Prefabrik üretim: panel yerleşimi, tam/yarım/özel, böl/birleştir, H/U/köşe, makas mesnetleri, kesim/sevk. Çizimde panel girişi ve yakalama kalır; gerekli H/U/köşe görünümü korunur.
+Hafif çelik üretim: duvar karkası, profil kesiti/et kalınlığı, dikme/kayıt/çapraz, açıklık başlığı, makas/döşeme. Henüz uygulanmayan yetenekler çalışır komut gibi sunulmaz. Prefabrik modül kontrolleri burada gösterilmez. Proje doluyken sistem değişimi açık bir dönüştürme akışı olmalı.
+Kaplama: duvar/tavan/cephe/çatı ayrı kartlar. Stok levhası120x250, tavan döşemesi60x125 ayrı etiketlenir. Proje varsayılanı ile seçili nesne değeri açıkça ayrılır.
+Kontrol: çizim hatası, üretim kontrolü, bilgi olarak ayrılır; tıklayınca nesneye odaklanır. Seçime bağlı kısa araç çubuğu en sık4-6işlem; tüm özellikler sağda.
+Metraj: net alan, stok ihtiyacı/fire, kesim, sevk ayrı sekmeler. Sunum/Çıktı: görünüm, ölçü katmanları, pafta/antet, PDF/PNG/DXF.
+
+Örnek pencere akışı: pencereyi seç -> en/boy, duvara mesafe, ortala, yön -> prefabrikte gerekirse iki yan paneli düzenle önerisi. H/makas tüm ekranı kaplamaz, ilgili kontrol yerinde kalır.
+Uygulama sırası: 1 mevcut komutları sınıflandırma ve tıklanabilir arayüz taslağı; 2 mevcut motor korunarak üst/yan alanları düzenleme; 3 çatı/3B ve seçim eşlemesi; 4 sistem bazlı üretim çalışma alanları. Eski JSON, çoklu sekmeler, undo/redo ve ölçü/metraj korunmalı.
+Kabul senaryoları: projeyi aç, pencere ortala, veranda çatısı ekle, tüm odalara alçıpan seç, metraj ve antetli çıktı al. Sık araçlar en fazla iki seçimle erişilir, yatay kaydırma gerektirmez. Ölçülmüş hız artışı iddiası yok; kullanıcı testi gerekir.
+Durum: araştırma/öneri tamam; arayüz uygulaması yapılmadı. Kullanıcı taslak onayı sonraki adım; DEV-080 ertelenmiş eski dal üzerine yazılmaz.
