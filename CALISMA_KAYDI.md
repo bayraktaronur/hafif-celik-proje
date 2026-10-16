@@ -886,3 +886,6 @@ Hafif çelik 3B görünümüne açıklıklı duvar ve temsilî katalog doğramas
 
 ## 16 Ekim 2026 — DEV-111 / 5.9.109
 Kaydet destekleyen tarayıcıda ad/klasör seçimi açar; iptal ve yazma hatasında başarılı kayıt işaretlenmez, destek yoksa indirme korunur. Tavan ve duvar alçıpanında 120×250 stok levhası kalıcı kural; 60×125 döşeme geometrisi ayrı. save-as otomatik testleri geçti, yerel in-app sayfasında gerçek iletişim kutusu doğrulanmadı. Zonguldak JSON ve ekran seçimi farklı; dosya geometrisi+tüm odalar senaryosu 165 levha, dosya aynen 59 levha. Rapor analizler/2026-10-16-kaydet-alcipan.md. Canlı çizim değişmedi; önceki açık işler ve özel yerel notlar korunur.
+
+## 16 Ekim 2026 — DEV-112 / 5.9.110
+Antete çatı, duvar ve tavan kaplama satırı eklendi. Çatı bölüm malzemeleri öncelikli; bölüm yoksa varsayılan. Duvar alçıpanı gerçek seçimden, mevcut özel antet/logo alanları korunur. Yeni 84 mm antet için sayfa boşluğu dinamik. title-block PDF/PNG, logo/kayıt, iptal, çoklu malzeme, tüm/seçili oda ve çizim çakışmaması kontrolleri geçti; çıktı görseli incelendi. Rapor analizler/2026-10-16-antet.md. Canlı çizim değiştirilmedi, önceki açık işler ve özel notlar korunur.

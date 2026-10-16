@@ -21,7 +21,7 @@
  function record(s=1){const r=PlanCanvasRecorder();render(r,s);if(!Number.isFinite(r.bounds.minX))throw Error('Önce bir plan veya metin oluşturun.');return r;}
  function layout(paper,orientation,scale,antet=false,info=G.sheetInfo||{}){
   if(!PAPERS[paper]||![20,50,100,200].includes(scale))throw Error('Geçersiz kâğıt veya ölçek.');const [a,b]=PAPERS[paper],w=orientation==='landscape'?b:a,h=orientation==='landscape'?a:b,s=10*PX/scale;
-  const r=record(s),B=r.bounds,width=(B.maxX-B.minX)/PX,height=(B.maxY-B.minY)/PX,aw=w-24,ah=h-(antet?106:24);
+  const r=record(s),B=r.bounds,width=(B.maxX-B.minX)/PX,height=(B.maxY-B.minY)/PX,aw=w-24,ah=h-(antet?TitleBlock.height+36:24);
   if(width>aw||height>ah)throw Error(`Plan bu sayfaya 1:${scale} ölçekte sığmıyor (${Math.ceil(width)} × ${Math.ceil(height)} mm). Daha büyük kâğıt veya 1:${scale<100?100:200} ölçek seçin.`);
   const dpi=[300,200,150].find(d=>w*h*d*d/(25.4*25.4)<=40000000);return {paper,orientation,scale,w,h,s,dpi,antet,info,bounds:B,score:Math.abs(Math.log(Math.max(1,width)/Math.max(1,height)/(aw/ah))),pan:{x:(w*PX-(B.maxX-B.minX))/2-B.minX,y:12*PX+(ah*PX-(B.maxY-B.minY))/2-B.minY}};
  }
