@@ -3,7 +3,12 @@
 'use strict';
 const panelColor='#e3e0d3';
 function build(){
- const surfaces=[],parts=[],warnings=new Set(),height=Number(G.opt.h)||280,A=pfAnaliz();
+ const surfaces=[],parts=[],warnings=new Set(),height=Number(G.opt.h)||280,prefab=isPref();
+ // Steel walls follow their drawn axes and thickness, without prefab panel modules.
+ const A=prefab?pfAnaliz():{bag:[],runs:G.segs.filter(s=>s.tip!=='veranda').flatMap(seg=>{
+  const a=getNode(seg.n1),b=getNode(seg.n2);if(!a||!b)return [];
+  const L=Math.hypot(b.x-a.x,b.y-a.y);if(L<.001)return [];
+  return [{ax:a.x,ay:a.y,ux:(b.x-a.x)/L,uy:(b.y-a.y)/L,owner:seg,items:[{seg,off:0,L,rev:false}],slots:[{a:0,b:L,w:L,k:Number(seg.k)}]}];})};
  function box(poly,z0,z1,color,meta){if(z1<=z0)return;
  if(meta.kind==='wallJoint'&&!meta.clipped){const center=poly.reduce((a,p)=>({x:a.x+p.x/poly.length,y:a.y+p.y/poly.length}),{x:0,y:0});let ranges=[[z0,z1]];
  for(const e of G.elemanlar){const seg=getSeg(e.segId),a=seg&&getNode(seg.n1),b=seg&&getNode(seg.n2);if(!a||!b)continue;const L=Math.hypot(b.x-a.x,b.y-a.y),ux=(b.x-a.x)/L,uy=(b.y-a.y)/L,t=(center.x-a.x)*ux+(center.y-a.y)*uy,n=-(center.x-a.x)*uy+(center.y-a.y)*ux;if(t<=e.t*L||t>=e.t*L+e.en||Math.abs(n)>seg.k/2+.2)continue;const lo=e.tip_==='kapi'?0:210-e.yuk,hi=lo+e.yuk;ranges=ranges.flatMap(([x,y])=>[[x,Math.min(y,lo)],[Math.max(x,hi),y]].filter(([x,y])=>y>x));warnings.add('Açıklıkla çakışan birleşim yalnız açıklık dışında gösterilir; plan mesnetlerini kontrol edin.');}
@@ -13,7 +18,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
 
  function openings(r){return r.items.flatMap(it=>G.elemanlar.filter(e=>e.segId===it.seg.id).map(e=>{const a=it.rev?it.off+it.L-e.t*it.L-e.en:it.off+e.t*it.L,z=e.tip_==='kapi'?0:210-e.yuk;return {e,a,b:a+e.en,z,top:z+e.yuk};}));}
  for(const r of A.runs){const holes=openings(r),models=[];
-  for(const o of holes){if(o.e.tip_!=='pencere')continue;
+  for(const o of holes){if(!prefab||o.e.tip_!=='pencere')continue;
    const label=Number(o.e.en)+'×'+Number(o.e.yuk)+' cm';
    const mesh=(window.WindowSTLModels||[]).find(m=>m.key===Number(o.e.en)+'x'+Number(o.e.yuk));
    if(!mesh){warnings.add(label+': gerçek STL henüz bağlı değil; şematik pencere.');continue;}
@@ -40,9 +45,9 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    warnings.add(label+' pano: STL pencere ölçüleri korunur; pano '+height+' cm. PVC beyaz; cam yarı saydam. Malzeme ayrımı geometriden tahmin edilir.');
   }
   for(const p of r.slots){
-   const core=({6:4,10:8,15:13})[p.k],cut=LoadingCore.stockWidth(p.w,Modular.cutMm(p.w))?.cutMm;
+   const core=prefab?({6:4,10:8,15:13})[p.k]:null,cut=prefab?LoadingCore.stockWidth(p.w,Modular.cutMm(p.w))?.cutMm:null;
    const id='panel:'+r.owner.id+':'+p.a+':'+p.b,meta={kind:'wallPanel',partId:id,panelLabel:p.no||'',segmentId:r.owner.id};
-   const schematic=core==null||!cut;if(schematic)warnings.add('Kesimi tanımsız panonun dış ölçüsü yerleşim aralığından gösterilir.');
+   const schematic=core==null||!cut;if(schematic&&prefab)warnings.add('Kesimi tanımsız panonun dış ölçüsü yerleşim aralığından gösterilir.');
    const w=cut?cut/10:p.b-p.a,a=(p.a+p.b-w)/2,b=a+w,t=core==null?p.k:core+1.6;
    parts.push({...meta,widthMm:cut||w*10,thicknessMm:t*10,heightMm:height*10,schematic});
    const xs=[a,b],zs=[0,height];for(const m of models){if(m.b>a&&m.a<b)xs.push(Math.max(a,m.a),Math.min(b,m.b));}for(const o of holes){if(o.b<=a||o.a>=b)continue;xs.push(Math.max(a,o.a),Math.min(b,o.b));zs.push(Math.max(0,Math.min(height,o.z)),Math.max(0,Math.min(height,o.top)));}

@@ -94,6 +94,10 @@
   });
  }
  function direction(yon){
+  if(!isPref()){
+   try{checkDirection(yon);const previous=copy(G.roofs),ok=R.commit(()=>{setDirection(yon);synchronize(previous);},{preserveLayout:true});catiBtnGuncelle();draw();if(ok)R.notice('Makas yönü güncellendi; hafif çelik duvar aksları ve açıklıkları korundu.');return ok;}
+   catch(e){R.notice(e.message,true);return false;}
+  }
   try{checkDirection(yon);if(yon===G.catiYon)return true;const previous=copy(G.roofs),ok=R.commit(()=>{setDirection(yon);synchronize(previous);},{preserveLayout:true});catiBtnGuncelle();draw();if(ok){const warnings=Prefab.issues().filter(i=>['truss-support','opening-joint','module-width','module-axis','module-junction'].includes(i.code));const message='Köşe payları ölçülere yansıtıldı; köşe direkleri, panel uçları ve H ekleri yeni makas akslarına göre hesaplandı.'+(warnings.length?' '+warnings.length+' kesim / mesnet kontrolü Plan kontrolünde.':'');R.notice(message,!!warnings.length);Studio.toast(message,!!warnings.length);}return ok;}
   catch(e){R.notice(e.message,true);Studio.toast(e.message,true);$('roofProductionDirection').value=G.catiYon;return false;}
  }

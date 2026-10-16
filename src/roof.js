@@ -29,7 +29,7 @@
     if(!p.length){notice('Önce kat planını çizin veya “Bölüm çiz” ile çatı alanı belirleyin.',true);return;}
     const x=Math.min(...p.map(p=>p.x)),y=Math.min(...p.map(p=>p.y)),w=Math.max(...p.map(p=>p.x))-x,d=Math.max(...p.map(p=>p.y))-y;
     const gableMm=Number($('roofDrawGable')?.value??220),sideMm=Number($('roofDrawSide')?.value??300);
-    add(make({x,y,w,d,datum:'trim',fasciaDepth:12,eaveRule:{gableMm,sideMm},vergeWidth:gableMm,eaves:[gableMm/10,gableMm/10,sideMm/10,sideMm/10],type:'besik',name:G.roofs.length?'Yeni ana çatı':'Ana çatı'}));notice('Dış sınırların dikdörtgen zarfı oluşturuldu. L / T planlarda bölümleri ölçülerine göre düzenleyip birleştirin.');
+    add(make({x,y,w,d,datum:'trim',fasciaDepth:12,eaveRule:{gableMm,sideMm},vergeWidth:gableMm,eaves:[gableMm/10,gableMm/10,sideMm/10,sideMm/10],type:$('roofBoundaryType')?.value||'besik',pitch:Number($('roofDrawPitch')?.value||G.opt.egim||33),name:G.roofs.length?'Yeni ana çatı':'Ana çatı'}));notice('Dış sınırların dikdörtgen zarfı oluşturuldu. L / T planlarda bölümleri ölçülerine göre düzenleyip birleştirin.');
   }
   function fromVeranda(){
     const room=G.rooms.find(r=>r.id===$('roofVerandaRoom').value);if(!room){notice('Kat planında önce veranda alanını tanımlayın.',true);return;}
@@ -338,7 +338,7 @@
     const drawEdge=(e,project)=>{const p=project(e.p),q=project(e.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=COLORS[e.type];ctx.lineWidth=['ridge','valley'].includes(e.type)?2:1;ctx.stroke();};
     if(mode==='3d'){
 
-      const wallModel=showWallDetails&&isPref()?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&['cladding','gableOmega'].includes(s.kind))]:planStructure();if(wallModel)$('roofHint').textContent='Sol sürükle: döndür · Tekerlek: yakınlaş · Shift/orta tuş: kaydır · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId){items.push(...verandaStructure(z));return;}
+      const wallModel=(showWallDetails||!isPref())?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&['cladding','gableOmega'].includes(s.kind))]:planStructure();if(wallModel)$('roofHint').textContent='Sol sürükle: döndür · Tekerlek: yakınlaş · Shift/orta tuş: kaydır · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId){items.push(...verandaStructure(z));return;}
         if(z.parapet){const poly=C.footprint(z).map(p=>C.transform(z,p)),top=Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))))+z.parapet;poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];items.push({poly:[{...p,z:z.h},{...q,z:z.h},{...q,z:top},{...p,z:top}],color:'#77818b',zone:z.id});});}
       });
       const ceiling=CeilingPanels.build();if(!hideRoof)items.push(...ceiling.surfaces);
@@ -408,6 +408,7 @@
     m.cutList.slice(0,1000).forEach(c=>html+=`<tr><td>${c.number} · ${escape(c.name)} / ${escape(c.face.split('-').at(-1))}</td><td>${c.strip} / ${c.part}</td><td>${number(c.width)}</td><td>${number(c.length,1)}</td></tr>`);html+='</tbody></table>';if(m.cutList.length>1000)html+='<p>İlk 1000 satır gösteriliyor; CSV tüm satırları içerir.</p>';$('roofReport').innerHTML=html;
   }
   function render(){if(!dialog.open)return;if(!get())selected=G.roofs[0]?.id||null;
+    $('roofWallDetails').hidden=!isPref();
     $('roofZones').innerHTML=G.roofs.map(z=>`<button class="roof-zone ${z.id===selected?'active':''}" data-roof-id="${z.id}">${escape(z.name)}<small>${TYPES[z.type]} · +${number(z.h,1)} cm</small></button>`).join('');$('roofZones').querySelectorAll('button').forEach(b=>b.onclick=()=>{selected=b.dataset.roofId;render();});
     const vr=$('roofVerandaRoom'),previous=vr.value;vr.replaceChildren();G.rooms.filter(r=>r.tip==='veranda').forEach((r,i)=>{const option=document.createElement('option');option.value=r.id;option.textContent=(r.ozelAd||'Veranda '+(i+1))+' · '+number(r.area)+' m²';vr.append(option);});if([...vr.options].some(o=>o.value===previous))vr.value=previous;const syncBeam=()=>{const z=G.roofs.find(z=>z.sourceRoomId===vr.value);$('roofVerandaBeam').value=z?.supports?.beam?.enabled?(z.supports.beam.left&&z.supports.beam.right?'all':'yes'):'no';};vr.onchange=syncBeam;syncBeam();
     const parents=$('roofVerandaParent'),prior=parents.value,active=get(),preferred=active?.attachment?.parentId||(!active?.sourceRoomId?active?.id:null)||prior;parents.replaceChildren();G.roofs.filter(r=>!r.sourceRoomId).forEach(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=r.name;parents.append(o);});if([...parents.options].some(o=>o.value===preferred))parents.value=preferred;
