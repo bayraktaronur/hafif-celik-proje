@@ -883,3 +883,6 @@ Kullanıcı çalışmayı sonraki iş PC oturumuna erteledi; ayrı kısa Meta fo
 
 ## 16 Ekim 2026 — iş bilgisayarı — DEV-110 / 5.9.108
 Hafif çelik 3B görünümüne açıklıklı duvar ve temsilî katalog doğraması bağlandı. Aks/kalınlık korunur, prefabrik H/pano/STL aktarılmaz. Dikdörtgen çatı seçilen tür ve eğimi kullanır; hafif çelik yön değişimi prefabrik uyarı üretmez. steel-3d, wall-3d, window-stl geçti; bağımsız 3B test görüntüsü incelendi. Rapor analizler/2026-10-16-hafif-celik-3b.md. Taşıyıcı karkas imalatı ayrı açık kapsam; müşteri canlı JSON doğrulanmadı, açık çizime dokunulmadı. Önceki özel yerel notlar/SketchUp referansları gönderime katılmadı. Diğer açık işler korunur.
+
+## 16 Ekim 2026 — DEV-111 / 5.9.109
+Kaydet destekleyen tarayıcıda ad/klasör seçimi açar; iptal ve yazma hatasında başarılı kayıt işaretlenmez, destek yoksa indirme korunur. Tavan ve duvar alçıpanında 120×250 stok levhası kalıcı kural; 60×125 döşeme geometrisi ayrı. save-as otomatik testleri geçti, yerel in-app sayfasında gerçek iletişim kutusu doğrulanmadı. Zonguldak JSON ve ekran seçimi farklı; dosya geometrisi+tüm odalar senaryosu 165 levha, dosya aynen 59 levha. Rapor analizler/2026-10-16-kaydet-alcipan.md. Canlı çizim değişmedi; önceki açık işler ve özel yerel notlar korunur.

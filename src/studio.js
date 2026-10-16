@@ -14,7 +14,7 @@
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.108',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.109',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -148,7 +148,24 @@
   function download(data,name,type='application/json'){
     const b=new Blob([typeof data==='string'?data:JSON.stringify(data,null,2)],{type});const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),3000);
   }
-  window.planKaydet=function(){try{const d=PlanProject.validate(state());const name=projectName.replace(/[<>:"/\\|?*\x00-\x1F]/g,'_').trim()||'plan';download(d,name+'.json');fileSnapshot=snapshot();lastStored='';persist();toast('Proje dosyası indirildi.');}catch(e){toast(e.message,true);}};
+  let savingProject=false;
+  window.planKaydet=async function(){
+    if(savingProject)return;savingProject=true;
+    try{
+      const saved=snapshot(),tab=documentIndex,d=PlanProject.validate(JSON.parse(saved));
+      const name=projectName.replace(/[<>:"/\\|?*\x00-\x1F]/g,'_').trim()||'plan';let written=false;
+      if(typeof window.showSaveFilePicker==='function'){
+        let handle;
+        try{handle=await window.showSaveFilePicker({suggestedName:name+'.json',types:[{description:'Plan Studio projesi',accept:{'application/json':['.json']}}]});}
+        catch(e){if(e.name==='AbortError'){toast('Kaydetme iptal edildi.');return;}if(!['SecurityError','NotAllowedError','NotSupportedError'].includes(e.name))throw e;}
+        if(handle){const stream=await handle.createWritable();try{await stream.write(JSON.stringify(d,null,2));await stream.close();written=true;}catch(e){try{await stream.abort();}catch{}throw e;}}
+      }
+      if(!written)download(d,name+'.json');
+      // A delayed save must never mark edits or another tab as saved.
+      if(documentIndex===tab&&snapshot()===saved){fileSnapshot=saved;lastStored='';persist();}
+      toast(written?'Proje seçtiğiniz dosyaya kaydedildi.':'Bu tarayıcı dosya seçme penceresini desteklemiyor; proje indirildi.');
+    }catch(e){toast('Kaydedilemedi: '+e.message,true);}finally{savingProject=false;}
+  };
   function loadProject(input){
     const valid=PlanProject.validate(input),before=snapshot(),h=G.hist.slice(),f=future.slice();
     preserveCurrent();

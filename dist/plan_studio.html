@@ -2050,10 +2050,10 @@ function metrajKalemleri(){
     function m2(v){return Math.round(v*100)/100;}
     var gB='Alçıpan — Beyaz (kuru mahaller)',gY='Alçıpan — Yeşil (ıslak mahaller + veranda tavanı)';
     if(AL.beyazDuvar>0)ekle(gB,'Beyaz alçıpan — Duvar',m2(AL.beyazDuvar).toString().replace('.',',')+' m² net'+fr,'levha',levhaAdet(AL.beyazDuvar));
-    ekle(gB,'Beyaz alçıpan — Tavan',m2(AL.beyazTavan).toString().replace('.',',')+' m² net · 60×125 cm pano'+fr,'levha',Math.ceil(AL.beyazTavan*(1+ALCI.FIRE/100)/0.75-1e-9));
+    ekle(gB,'Beyaz alçıpan — Tavan',m2(AL.beyazTavan).toString().replace('.',',')+' m² net · 120×250 cm levha'+fr,'levha',levhaAdet(AL.beyazTavan));
     if(AL.yesilDuvar>0)ekle(gY,'Yeşil alçıpan — Duvar (banyo/WC)',m2(AL.yesilDuvar).toString().replace('.',',')+' m² net'+fr,'levha',levhaAdet(AL.yesilDuvar));
-    ekle(gY,'Yeşil alçıpan — Tavan (banyo/WC)',m2(AL.yesilTavan).toString().replace('.',',')+' m² net · 60×125 cm pano'+fr,'levha',Math.ceil(AL.yesilTavan*(1+ALCI.FIRE/100)/0.75-1e-9));
-    ekle(gY,'Yeşil alçıpan — Veranda tavanı',m2(AL.verTavan).toString().replace('.',',')+' m² net · 60×125 cm pano'+fr,'levha',Math.ceil(AL.verTavan*(1+ALCI.FIRE/100)/0.75-1e-9));
+    ekle(gY,'Yeşil alçıpan — Tavan (banyo/WC)',m2(AL.yesilTavan).toString().replace('.',',')+' m² net · 120×250 cm levha'+fr,'levha',levhaAdet(AL.yesilTavan));
+    ekle(gY,'Yeşil alçıpan — Veranda tavanı',m2(AL.verTavan).toString().replace('.',',')+' m² net · 120×250 cm levha'+fr,'levha',levhaAdet(AL.verTavan));
     // Dış cephe kaplaması
     var CP=cepheHesap();
     if(CP&&G.opt.cephe!=='yok'){
@@ -4942,11 +4942,11 @@ function updatePanelBox(){
       return '<div style="color:#d29922;margin-top:5px">⚠ '+o.length+' bölme duvarı H\'a çok yakın ('+o.map(function(x){return fmtCm(Math.abs(x.d));}).join(', ')+' cm) — çektirme U sayılıyor</div>'+
         '<button class="sib" style="margin-top:3px;border-color:#d29922;color:#d29922" onclick="pfUHaOturt()">↦ H\'a oturt (3\'lü H yap)</button>';})()+
     (function(){if(!G.rooms.length)return '';var AL=alcipanHesap();
-      var b=levhaAdet(AL.beyazDuvar)+Math.ceil(AL.beyazTavan*(1+ALCI.FIRE/100)/0.75-1e-9),y=levhaAdet(AL.yesilDuvar)+Math.ceil(AL.yesilTavan*(1+ALCI.FIRE/100)/0.75-1e-9)+Math.ceil(AL.verTavan*(1+ALCI.FIRE/100)/0.75-1e-9);
+      var b=levhaAdet(AL.beyazDuvar)+levhaAdet(AL.beyazTavan),y=levhaAdet(AL.yesilDuvar)+levhaAdet(AL.yesilTavan)+levhaAdet(AL.verTavan);
       return '<div style="margin:6px 0 2px;color:#8b949e;font-weight:600">Alçıpan (120×250, fire %'+ALCI.FIRE+')</div>'+
-        r('Beyaz — duvar / tavan',levhaAdet(AL.beyazDuvar)+' / '+Math.ceil(AL.beyazTavan*(1+ALCI.FIRE/100)/0.75-1e-9))+
-        r('Yeşil — duvar / tavan',levhaAdet(AL.yesilDuvar)+' / '+Math.ceil(AL.yesilTavan*(1+ALCI.FIRE/100)/0.75-1e-9))+
-        r('Yeşil — veranda tavanı',Math.ceil(AL.verTavan*(1+ALCI.FIRE/100)/0.75-1e-9))+
+        r('Beyaz — duvar / tavan',levhaAdet(AL.beyazDuvar)+' / '+levhaAdet(AL.beyazTavan))+
+        r('Yeşil — duvar / tavan',levhaAdet(AL.yesilDuvar)+' / '+levhaAdet(AL.yesilTavan))+
+        r('Yeşil — veranda tavanı',levhaAdet(AL.verTavan))+
         r('Kapı / pencere boşluğu',(Math.round(AL.kapiM2*100)/100)+' / '+(Math.round(AL.pencereM2*100)/100)+' m²')+
         (function(){if(G.opt.cephe==='yok')return '';var C=cepheHesap();if(!C)return '';
           return '<div style="margin:6px 0 2px;color:#8b949e;font-weight:600">Dış cephe — '+(G.opt.cephe==='tasonit'?'Taşonit':'Yalıpan')+'</div>'+
@@ -5221,7 +5221,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.108',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.109',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5355,7 +5355,24 @@ updateStatus();
   function download(data,name,type='application/json'){
     const b=new Blob([typeof data==='string'?data:JSON.stringify(data,null,2)],{type});const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),3000);
   }
-  window.planKaydet=function(){try{const d=PlanProject.validate(state());const name=projectName.replace(/[<>:"/\\|?*\x00-\x1F]/g,'_').trim()||'plan';download(d,name+'.json');fileSnapshot=snapshot();lastStored='';persist();toast('Proje dosyası indirildi.');}catch(e){toast(e.message,true);}};
+  let savingProject=false;
+  window.planKaydet=async function(){
+    if(savingProject)return;savingProject=true;
+    try{
+      const saved=snapshot(),tab=documentIndex,d=PlanProject.validate(JSON.parse(saved));
+      const name=projectName.replace(/[<>:"/\\|?*\x00-\x1F]/g,'_').trim()||'plan';let written=false;
+      if(typeof window.showSaveFilePicker==='function'){
+        let handle;
+        try{handle=await window.showSaveFilePicker({suggestedName:name+'.json',types:[{description:'Plan Studio projesi',accept:{'application/json':['.json']}}]});}
+        catch(e){if(e.name==='AbortError'){toast('Kaydetme iptal edildi.');return;}if(!['SecurityError','NotAllowedError','NotSupportedError'].includes(e.name))throw e;}
+        if(handle){const stream=await handle.createWritable();try{await stream.write(JSON.stringify(d,null,2));await stream.close();written=true;}catch(e){try{await stream.abort();}catch{}throw e;}}
+      }
+      if(!written)download(d,name+'.json');
+      // A delayed save must never mark edits or another tab as saved.
+      if(documentIndex===tab&&snapshot()===saved){fileSnapshot=saved;lastStored='';persist();}
+      toast(written?'Proje seçtiğiniz dosyaya kaydedildi.':'Bu tarayıcı dosya seçme penceresini desteklemiyor; proje indirildi.');
+    }catch(e){toast('Kaydedilemedi: '+e.message,true);}finally{savingProject=false;}
+  };
   function loadProject(input){
     const valid=PlanProject.validate(input),before=snapshot(),h=G.hist.slice(),f=future.slice();
     preserveCurrent();
@@ -6274,7 +6291,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.108';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.109';syncUI();draw();
 })();
 
 </script><script>
