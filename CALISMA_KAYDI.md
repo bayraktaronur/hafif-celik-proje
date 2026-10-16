@@ -897,3 +897,6 @@ Ayrı arayüz prototipi hazırlandı. Beş çalışma alanı, sisteme özel ara�
 
 ## 16 Ekim 2026 — DEV-115 / İş bilgisayarı
 Kullanıcı açık taslakta alanları ayırt edemediğini bildirdi. Taslak koyu çalışma paletine geçirildi; panel sınırları, kontroller ve aktif sekme vurgusu artırıldı. Pafta beyaz korundu. ui-workflow-prototype testi geçti;1600px görsel incelendi. Uygulama sürümü değişmedi.
+
+## 16 Ekim 2026 — DEV-116
+Görünüş seçimi ve gruplandırılmış görünürlük ayrı prototipte düzenlendi. Görüntü durumu projeye göre WeakMap içinde, modelden ayrı tutulur. H/U/köşeleri gizleyen kontrol yok. ui-workflow-prototype testine oda gizleme ve pencere ölçüsünün korunması eklendi; geçti. 3B/Kesit açıkça devre dışı; gerçek çizim motoru ve sürüm değişmedi.

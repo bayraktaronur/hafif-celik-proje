@@ -825,3 +825,6 @@ Tıklanabilir iş akışı taslağı tamamlandı: [Aç](taslaklar/is-akisi/index
 
 ## 16 Ekim 2026 — DEV-115
 Taslak renk ayrımı tamamlandı: koyu çizim zemini, ayrı panel/araç tonları, belirgin aktif sekme ve okunaklı alanlar. Mevcut prototip testi geçti, ekran görüntüsü incelendi. Gerçek uygulama entegrasyonu bekliyor.
+
+## 16 Ekim 2026 — DEV-116
+Taslak görünürlük paneli tamamlandı: Mimari/Ölçüler/Üretim/Yardımcılar; src/view-filters.js seçenekleri eşlendi. Örnek oda, ölçü, tefriş, veranda taraması ve ızgara filtreleri çalışır. 3B/Kesit ve üretim filtreleri gerçek motor bağlantısını bekliyor. Mevcut uygulamaya entegrasyon tamamlandı denmez. Test ve görsel kontrol geçti; kullanıcı değerlendirmesi sonraki adım.
