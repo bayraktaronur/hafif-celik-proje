@@ -823,6 +823,23 @@ function optPanelGuncelle(){
         '<div style="font-size:10px;color:#8b949e">Mahya, dere, saçak, alın ve oluk: uzunluk ÷ (parça boyu − bindirme)</div>':''):'');
   if(el._html!==html){el._html=html;document.getElementById('optIc').innerHTML=html;}
 }
+// Room-owned free-ended and detached walls: shared by quantity and plan display.
+function odaSerbestAlciDuvarlar(r,g){
+  var seen=new Set(g.kenar.map(function(k){return k.e.seg&&k.e.seg.id;})),out=[];
+  function add(s){if(!s||s.tip==='veranda'||seen.has(s.id))return;seen.add(s.id);out.push(s);}
+  g.spikes.forEach(add);
+  G.segs.forEach(function(s){if(seen.has(s.id)||s.tip==='veranda')return;var a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)return;
+    var x=(a.x+b.x)/2,y=(a.y+b.y)/2;if(!ptInPolygon(x,y,g.poly))return;
+    if(G.rooms.some(function(other){if(other===r||other.tip==='veranda')return false;var og=odaIcGeometri(other);return og&&og.alan<g.alan&&ptInPolygon(x,y,og.poly);}))return;add(s);
+  });return out;
+}
+function serbestAlciCizgileri(r,g){
+  var lines=[];odaSerbestAlciDuvarlar(r,g).forEach(function(s){var a=getNode(s.n1),b=getNode(s.n2),L=_segLen(s);if(L<.01)return;
+    var ux=(b.x-a.x)/L,uy=(b.y-a.y)/L,d=(+s.k||10)/2+2/sc(),ranges=[[0,L]];
+    G.elemanlar.filter(function(e){return e.segId===s.id;}).forEach(function(e){var lo=e.t*L,hi=lo+e.en;ranges=ranges.flatMap(function(v){if(hi<=v[0]||lo>=v[1])return [v];return [[v[0],Math.max(v[0],lo)],[Math.min(v[1],hi),v[1]]].filter(function(v){return v[1]-v[0]>.01;});});});
+    [-1,1].forEach(function(side){ranges.forEach(function(v){lines.push({segId:s.id,side,p:{x:a.x+ux*v[0]-uy*d*side,y:a.y+uy*v[0]+ux*d*side},q:{x:a.x+ux*v[1]-uy*d*side,y:a.y+uy*v[1]+ux*d*side}});});});
+  });return lines;
+}
 // Planda göster: duvarına alçıpan gelen odaların iç yüzü (beyaz → sarı, ıslak → yeşil kesikli çizgi)
 function drawAlciGorsel(){
   if(!isPref())return;
@@ -834,6 +851,7 @@ function drawAlciGorsel(){
     ctx.beginPath();
     g.poly.forEach(function(p,i){var c=toCv(p.x,p.y);if(i===0)ctx.moveTo(c.x,c.y);else ctx.lineTo(c.x,c.y);});
     ctx.closePath();ctx.stroke();
+    serbestAlciCizgileri(r,g).forEach(function(l){var a=toCv(l.p.x,l.p.y),b=toCv(l.q.x,l.q.y);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();});
   });
   ctx.restore();
 }
@@ -1003,19 +1021,8 @@ function alcipanHesap(){
         if(seen[k.e.seg.id])return;seen[k.e.seg.id]=1;
         G.elemanlar.forEach(function(e){if(e.segId===k.e.seg.id)o.bosluk+=e.en*(e.yuk||(e.tip_==='kapi'?210:120))/10000;});
       });
-      // oda içindeki serbest duvar uçları: iki yüz
-      geo.spikes.forEach(function(sg){if(sg.tip==='veranda'||seen[sg.id])return;seen[sg.id]=1;cevre+=2*Math.max(0,_segLen(sg));
-        G.elemanlar.forEach(function(e){if(e.segId===sg.id)o.bosluk+=2*e.en*(e.yuk||210)/10000;});});
-      // odanın içinde bağımsız duran duvarlar (hiçbir odanın kenarı değil): iki yüz
-      var rp=r.nodeIds.map(getNode);
-      G.segs.forEach(function(sg){
-        if(seen[sg.id]||sg.tip==='veranda')return;
-        var a=getNode(sg.n1),b=getNode(sg.n2);if(!a||!b)return;
-        if(r.nodeIds.indexOf(sg.n1)>=0&&r.nodeIds.indexOf(sg.n2)>=0)return;
-        if(!ptInPolygon((a.x+b.x)/2,(a.y+b.y)/2,rp))return;
-        if(G.rooms.some(function(r2){return r2!==r&&r2.tip!=='veranda'&&r2.area<r.area&&ptInPolygon((a.x+b.x)/2,(a.y+b.y)/2,r2.nodeIds.map(getNode));}))return;
-        seen[sg.id]=1;cevre+=2*_segLen(sg);
-        G.elemanlar.forEach(function(e){if(e.segId===sg.id)o.bosluk+=2*e.en*(e.yuk||210)/10000;});
+      odaSerbestAlciDuvarlar(r,geo).forEach(function(sg){cevre+=2*_segLen(sg);
+        G.elemanlar.forEach(function(e){if(e.segId===sg.id)o.bosluk+=2*e.en*(e.yuk||(e.tip_==='kapi'?210:120))/10000;});
       });
       o.duvarBrut=cevre*h/10000;o.duvarNet=Math.max(0,o.duvarBrut-o.bosluk);
       if(!o.duvarVar){o.duvarBrut=0;o.duvarNet=0;o.bosluk=0;} // duvar alçıpanı opsiyonu bu odada yok (tavan standart)

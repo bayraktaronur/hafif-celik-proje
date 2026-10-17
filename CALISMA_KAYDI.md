@@ -947,3 +947,7 @@ Tamamlandı: ortak özellikler Duvarlar, Tavan, Dış cephe, Doğramalar olarak 
 
 ## 17 Ekim 2026 — DEV-131 / 5.9.123 — Alçıpan montaj seçenekleri
 Tamamlandı: Alçıpan kaplama grubunda bağımsız duvar ve tavan seçimleri. Standart tavan 60×120 cm + mini H; alçıpan montajı 120×250 cm, mini H yok. Her iki durumda stok levhası120×250 ve aynı net tavan alanı. Banyo/WC duvarları her koşulda yeşil; veranda/sundurma oda alanı tavanları yeşil. Duvar hesabı ortak bina yüksekliğine bağlı. Tavan/3B çizgileri, renkleri, antet ve metraj güncellendi; yükleme listesinde mini H net metre, stok/fire eklenmedi. Eski ceilingBoard aç/kapat alanı yerine ceilingMode kullanılır, eski dosyalar standart montajla açılır; tavan yok seçeneği kaldırıldı. Testler: gypsum-modes, ceiling-panels, project-specs, loading-gypsum; izole görsel incelendi. Kullanıcı çizimi değiştirilmedi. Önceki açık işler korunur.
+
+
+## 17 Ekim 2026 — DEV-132 / 5.9.124 — Serbest duvar alçıpanı
+Tamamlandı: oda içindeki serbest uçlu ve bağımsız duvarların iki yüzündeki alçıpan kesikli çizgileri eklendi. Kapı/pencere açıklıklarında çizgi kesilir. Gösterim ve metraj aynı serbest duvar listesini kullanır; iki yüz yüksekliği ve boşluk düşümü korunur. Test: free-wall-gypsum (bağlı serbest uç, bağımsız duvar, iki yüz ve boşluklar), gypsum-modes, loading-gypsum geçti. Açık kullanıcı çizimi değiştirilmedi; önceki açık işler korunur.
