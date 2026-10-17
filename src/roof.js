@@ -147,7 +147,7 @@
   }
   function vergeEdges(m){return m.edges.filter(e=>['verge','step'].includes(e.type)&&e.length>0);}
   function roofShade(f){return Math.min(1.15,Math.max(.65,.9+f.a*.25-f.b*.3));}
-  function roofColor(id){const z=G.roofs.find(z=>z.id===id);return materials().find(m=>m.id===z?.material)?.color||'#8391a5';}
+  function roofColor(id){if(G.paint3D?.roof)return G.paint3D.roof.hex;const z=G.roofs.find(z=>z.id===id);return materials().find(m=>m.id===z?.material)?.color||'#8391a5';}
   function darken(hex){return '#'+[1,3,5].map(i=>Math.round(parseInt(hex.slice(i,i+2),16)*.72).toString(16).padStart(2,'0')).join('');}
   function edges3D(m){return m.edges.map(e=>['ridge','hip'].includes(e.type)?{...e,color:darken(roofColor(e.zoneId))}:e.type==='step'?{...e,color:'#d8dedc'}:e);}
   function trimSurfaces(m){
@@ -343,7 +343,7 @@
         if(z.parapet){const poly=C.footprint(z).map(p=>C.transform(z,p)),top=Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))))+z.parapet;poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];items.push({poly:[{...p,z:z.h},{...q,z:z.h},{...q,z:top},{...p,z:top}],color:'#77818b',zone:z.id});});}
       });
       const ceiling=CeilingPanels.build();if(!hideRoof)items.push(...ceiling.surfaces);
-      if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:mat.color,zone:z.id,shade:roofShade(f),roof:true});});
+      if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),mat=materials().find(m=>m.id===z.material);items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:roofColor(z.id),zone:z.id,shade:roofShade(f),roof:true});});
       if(!hideRoof)items.push(...fasciaSurfaces(m),...soffitSurfaces(m),...trimSurfaces(m));
       Camera3D.state.yaw=angle;const project=Camera3D.project(items.flatMap(i=>i.poly),w,h);
       renderScene3D(ctx,w,h,items,[...(!hideRoof&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof?[]:edges3D(m)),...(hideRoof?[]:ceiling.lines)],project);

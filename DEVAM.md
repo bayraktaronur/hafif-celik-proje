@@ -846,3 +846,6 @@ Gerçek çalışma alanı düzeni tamamlandı: Plan gerçek araç şeridi, ortak
 
 ## 17 Ekim 2026 — DEV-122 / 5.9.115
 Boyacı tasarımı yenilendi: sağda dar panel, biçimlendirilmiş yüzey sekmeleri ve arama, üç sütun kartela, seçili renkte çerçeve/onay. Çizim modeli ve boya kuralları korunur. paint-3d testi seçili durum kontrolleriyle geçti; izole ekran görüntüsü incelendi. Kullanıcı çizimine dokunulmadı.
+
+## 17 Ekim 2026 — DEV-123 / 5.9.116
+Köşe kartelasına ilk sırada beyaz eklendi; kırık beyaz varsayılan korunur. Boyacı Çatı sekmesi: RAL 3009 kırmızı, RAL 7016 antrasit, RAL 9016 beyaz, galvaniz. Dijital tonlar temsilidir. 3B üst örtü/mahya rengi değişir; başmakas dış duvar rengini izler. JSON doğrulaması roof rengini korur. paint-3d testi ve görsel kontrol geçti.

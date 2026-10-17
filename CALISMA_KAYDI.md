@@ -918,3 +918,6 @@ Boyacı 3B görünümüne eklendi. Resmi DYO sayfalarından doğrulanmış dijit
 
 ## 17 Ekim 2026 — DEV-122 / 5.9.115
 Boyacı native düğmeleri scoped CSS ile düzenlendi; pencere sağa alındı ve 440px ile sınırlandı. Seçili yüzey/renk aria-pressed ve çerçeve ile belirtilir. Kaynak ve dağıtım güncellendi. paint-3d testi renk, JSON, undo/redo ve 3B sınırını doğruladı; görsel kontrol yapıldı. Önceki açık işler korunur.
+
+## 17 Ekim 2026 — DEV-123 / 5.9.116
+Beyaz köşe kısayolu ve dört çatı rengi tamamlandı. Boyacı sekme, seçim ve JSON testleri geçti; 3B dışındaki plan malzeme rengi/hesaplar değişmedi. İzole görsel incelendi. Canlı çizim değiştirilmedi; önceki açık işler korunur.
