@@ -861,3 +861,6 @@ Seçili OSB/nem bariyeri/membran 3B'de çatı örtüsünün altında gösterilir
 
 ## 17 Ekim 2026 — DEV-127 / 5.9.119
 Ortak proje anteti eklendi: seçenekler, pencere renkleri, H kapak lata 3B/adet/alan/fiyat, tavan aç/kapat, çatı kaplama iki yönlü bağlantı. Antet çıktısı genişletildi. [Kapsam ve açık sınırlar](analizler/2026-10-17-proje-anteti.txt). Tests project-specs/title-block/roof20/ana31 geçti. Açık: ayrı kotlu ters tavan anlamı kullanıcıdan bekleniyor; genel fiyat motoru ve gerçek cephe dokuları yok; özel çatı malzemeleri bölüm bazında kalır. Önceki çatı arayüzü gruplama işi devam ediyor.
+
+## 17 Ekim 2026 — DEV-128 / 5.9.120
+Kullanıcı kararı: fiyat listesi verilene kadar hiçbir ürün için fiyatlandırma eklenmeyecek. Lata birim fiyat alanı ve TL maliyet satırı kaldırıldı; adet/alan ve 3B korunur. Sol menüde eski yükseklik ve eski hızlı yükseklik grubu gizlendi; ortak antette tek yükseklik girişi kalır. project-specs testi geçti.

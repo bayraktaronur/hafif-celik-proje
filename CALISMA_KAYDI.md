@@ -933,3 +933,6 @@ Net en bazlı toplamlar ayrıldı, 3B 27mm/200mm trapez yüzeyleri kırpılarak 
 
 ## 17 Ekim 2026 — DEV-127 / 5.9.119
 Ana çizimde ortak özellik paneli ve çıktı anteti alanları. Çatı trapez/sandviç değişimleri iki yönlü, lata tek geometriyle hesaplanır. Eski çizim dosyaları değiştirilmedi; seçimde eşitleme. 31 ana test,20 roof,antet ve ortak özellik testleri geçti. Ayrıntılar analizler/2026-10-17-proje-anteti.txt; ayrı asma tavan ve genel fiyat motoru tamamlandı sayılmaz.
+
+## 17 Ekim 2026 — DEV-128 / 5.9.120
+İzinsiz kapsam genişleten lata fiyatlandırması kaldırıldı. Fiyat listesi kullanıcıdan gelmeden fiyat eklenmez. Tekrarlı eski yükseklik alanı kaldırıldı (arka plandaki mevcut veri bağlantısı korunur). Ortak özellik testi fiyat yokluğu/tek görünür yükseklik doğruladı.
