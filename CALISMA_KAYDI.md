@@ -921,3 +921,6 @@ Boyacı native düğmeleri scoped CSS ile düzenlendi; pencere sağa alındı ve
 
 ## 17 Ekim 2026 — DEV-123 / 5.9.116
 Beyaz köşe kısayolu ve dört çatı rengi tamamlandı. Boyacı sekme, seçim ve JSON testleri geçti; 3B dışındaki plan malzeme rengi/hesaplar değişmedi. İzole görsel incelendi. Canlı çizim değiştirilmedi; önceki açık işler korunur.
+
+## 17 Ekim 2026 — DEV-124
+Üretici kaynaklarıyla 27/200 form araştırması kaydedildi. 3B hadve yönü ve ölçüler için öneri; kesin kesit ve tedarikçi bilgisi bekliyor. Kod değişmedi. Rapor kaynak erişim sınırını belirtir.

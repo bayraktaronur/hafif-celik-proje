@@ -1,0 +1,10 @@
+27/200 trapez sac araştırması — 17 Ekim 2026
+Kapsam: Üretici ürün bilgileri; uygulama kodu değiştirilmedi.
+27 mm profil yüksekliği, 200 mm hadve adımıdır; sac kalınlığı veya levha boyu değildir.
+Tek kat boyalı galvaniz/alüminyum ürünler mevcuttur. Tekiz ÇK27/200 teknik verisinde faydalı en 1000 mm, kalınlıklar 0,5–0,8 mm listelenir. Form adı tek başına tüm üreticilerin net enini belirlemez.
+3B önerisi: eğim boyunca mahyadan saçağa uzanan hadveler; 20 cm tekrar, 2,7 cm yükseklik. Kesin tepe/taban genişliği ve bindirme üretici kesitinden alınmalı. Renk geometriden bağımsızdır.
+Belirsizlik: Kullanıcının tedarikçisi, sac kalınlığı, net eni ve kesit çizimi henüz bilinmiyor. Taşıma hesabı yapılmadı. Uygulama geliştirmesi bu araştırmanın kapsamında değil.
+Kaynaklar:
+https://www.alpercelik.com.tr/urun/goTo/90/27200-trapez.html
+https://tekiz.com.tr/pdffiles/product/CK-27-200-Cati-Trapezi557.pdf
+Tekiz PDF metni arama dizininden erişildi; doğrudan PDF açılışı başarısız. Kesit resmi incelenmedi.

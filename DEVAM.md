@@ -849,3 +849,6 @@ Boyacı tasarımı yenilendi: sağda dar panel, biçimlendirilmiş yüzey sekmel
 
 ## 17 Ekim 2026 — DEV-123 / 5.9.116
 Köşe kartelasına ilk sırada beyaz eklendi; kırık beyaz varsayılan korunur. Boyacı Çatı sekmesi: RAL 3009 kırmızı, RAL 7016 antrasit, RAL 9016 beyaz, galvaniz. Dijital tonlar temsilidir. 3B üst örtü/mahya rengi değişir; başmakas dış duvar rengini izler. JSON doğrulaması roof rengini korur. paint-3d testi ve görsel kontrol geçti.
+
+## 17 Ekim 2026 — DEV-124
+27/200 trapez araştırması tamamlandı: analizler/2026-10-17-trapez-27-200.txt. Form yüksekliği/adımı ile net en/kalınlık ayrıldı. Tedarikçi kesiti belirsiz; uygulama değişikliği yapılmadı. Sürüm 5.9.116 korunur.
