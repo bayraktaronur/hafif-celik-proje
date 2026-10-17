@@ -936,3 +936,6 @@ Ana çizimde ortak özellik paneli ve çıktı anteti alanları. Çatı trapez/s
 
 ## 17 Ekim 2026 — DEV-128 / 5.9.120
 İzinsiz kapsam genişleten lata fiyatlandırması kaldırıldı. Fiyat listesi kullanıcıdan gelmeden fiyat eklenmez. Tekrarlı eski yükseklik alanı kaldırıldı (arka plandaki mevcut veri bağlantısı korunur). Ortak özellik testi fiyat yokluğu/tek görünür yükseklik doğruladı.
+
+## 17 Ekim 2026 — DEV-129 / 5.9.121
+Prefabrik serbest yükseklik girişi kaldırıldı;250/280/300 seçimleri geri geldi. Çelik elle girilir. Yapı sistemi üstte, ortak antet altında. Mevcut çizim verisi açılışta değiştirilmedi. İlgili test geçti; fiyat listesi gelmeden fiyatlandırma yapılmaması kararı korunur.

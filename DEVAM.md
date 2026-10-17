@@ -864,3 +864,6 @@ Ortak proje anteti eklendi: seçenekler, pencere renkleri, H kapak lata 3B/adet/
 
 ## 17 Ekim 2026 — DEV-128 / 5.9.120
 Kullanıcı kararı: fiyat listesi verilene kadar hiçbir ürün için fiyatlandırma eklenmeyecek. Lata birim fiyat alanı ve TL maliyet satırı kaldırıldı; adet/alan ve 3B korunur. Sol menüde eski yükseklik ve eski hızlı yükseklik grubu gizlendi; ortak antette tek yükseklik girişi kalır. project-specs testi geçti.
+
+## 17 Ekim 2026 — DEV-129 / 5.9.121
+Kullanıcı kesinleştirdi: prefabrik yüksekliği yalnız 250/280/300 cm seçmeli, hafif çelik elle girilir. Ortak panel buna göre düzenlendi. Yapı sistemi mevcut kontrolü korunarak sol menünün en üstüne taşındı. project-specs testi seçenekleri,280 seçim etkisini,çelik325 elle girişini ve menü sırasını doğruladı.
