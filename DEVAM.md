@@ -843,3 +843,6 @@ Gerçek çalışma alanı düzeni tamamlandı: Plan gerçek araç şeridi, ortak
 
 ## 17 Ekim 2026 — DEV-121 / 5.9.114
 3B Boyacı tamamlandı: DYO164 dijital örnek, iç/dış/köşe; standart köşe kırık beyaz. H duvara yakın ton/kenar, başmakas dış rengini izler. Proje JSON/undo kaydı. [Kaynaklar ve sınırlar](analizler/2026-10-17-boyaci.txt). paint-3d, wall-3d, scene-3d ve ana31/31 geçti.
+
+## 17 Ekim 2026 — DEV-122 / 5.9.115
+Boyacı tasarımı yenilendi: sağda dar panel, biçimlendirilmiş yüzey sekmeleri ve arama, üç sütun kartela, seçili renkte çerçeve/onay. Çizim modeli ve boya kuralları korunur. paint-3d testi seçili durum kontrolleriyle geçti; izole ekran görüntüsü incelendi. Kullanıcı çizimine dokunulmadı.

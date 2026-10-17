@@ -1,0 +1,26 @@
+/* Scoped paint controls: keep the drawing UI and geometry untouched. */
+#paint3DDialog{box-sizing:border-box;width:min(440px,calc(100vw - 32px));max-height:calc(100vh - 40px);margin:20px 20px 20px auto;padding:24px;border:1px solid #526479;border-radius:16px;background:#1c2838;color:#e9eff6;box-shadow:0 18px 70px #0006;overflow:auto;font:14px/1.5 system-ui,sans-serif}
+#paint3DDialog::backdrop{background:#10192530}
+#paint3DDialog h3{font-size:23px;letter-spacing:-.5px;margin:0 0 18px;color:#f5f8fc}
+#paint3DDialog button,#paint3DDialog input{box-sizing:border-box;font:inherit;outline-offset:3px}
+#paint3DDialog button{cursor:pointer;border:1px solid #45556a;border-radius:8px;background:#29384b;color:#dce6f2;padding:9px 12px}
+#paint3DDialog button:hover{background:#35485e;border-color:#89b4be}
+#paint3DDialog :focus-visible{outline:2px solid #8cdec3}
+#paintTargets{display:flex;gap:4px;padding:4px;background:#121e2c;border-radius:10px}
+#paintTargets button{flex:1;white-space:nowrap;border-color:transparent;padding:9px 5px;font-size:13px;background:transparent}
+#paintTargets button[aria-pressed=true]{background:#365e56;color:#c3ffe9;border-color:#70ad99}
+#paintCurrent{padding:13px 12px;margin:16px 0 12px;border-left:3px solid #82cbb0;border-radius:0 7px 7px 0;background:#253548;font-size:13px;color:#eef5fa}
+#paintSearch{display:block;width:100%;height:42px;border:1px solid #53667c;border-radius:8px;background:#111d2b;color:#f0f5fb;padding:10px 12px}
+#paintSearch::placeholder{color:#a3b3c6}
+#paintSwatches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-height:min(400px,calc(100vh - 430px));min-height:130px;overflow:auto;margin:18px 0;padding:3px 5px 3px 2px;scrollbar-width:thin;scrollbar-color:#63788b transparent}
+#paintSwatches button{position:relative;overflow:hidden;padding:0 6px 9px;min-height:98px;font-size:10px;line-height:1.35;text-align:left;background:#233246;border:1px solid #43546a;border-radius:8px}
+#paintSwatches button::before{content:'';display:block;height:54px;background:var(--swatch);margin:0 -6px 8px}
+#paintSwatches button[aria-pressed=true]{outline:2px solid #8cdec3;outline-offset:0;border-color:#8cdec3}
+#paintSwatches button[aria-pressed=true]::after{content:'✓';position:absolute;top:6px;right:6px;background:#183f34;color:white;border-radius:50%;width:21px;height:21px;text-align:center;line-height:21px;font-size:14px;box-shadow:0 1px 4px #0005}
+#paint3DDialog p:not(#paintCurrent){font-size:11px;color:#9eafc2;line-height:1.5;margin:9px 0}
+#paintSource{color:#a0dac8;font-size:12px;text-decoration:none}
+#paintSource:hover{text-decoration:underline}
+#paintReset{margin-top:12px;font-size:12px!important;background:transparent!important}
+#paintClose{float:right;margin-top:12px;background:#86d2b6!important;color:#122d25!important;border-color:#86d2b6!important;min-width:80px;font-weight:600!important}
+@media(max-height:650px){#paint3DDialog{padding:16px;margin:10px 10px 10px auto;max-height:calc(100vh - 20px)}#paintSwatches{max-height:180px}}
+

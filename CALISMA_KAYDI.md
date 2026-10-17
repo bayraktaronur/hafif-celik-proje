@@ -915,3 +915,6 @@ Kullanıcının işaretlediği gereksiz üst satır kaldırıldı. Grid ile navi
 
 ## 17 Ekim 2026 — DEV-121 / 5.9.114
 Boyacı 3B görünümüne eklendi. Resmi DYO sayfalarından doğrulanmış dijital renkler; proje bazlı kayıt, iç/dış/köşe ayrımı. Fiziksel renk ekranda temsili; kapalı oda poligonu gerekliliği raporda. H renk ve kenar tonları yumuşatıldı, kırık beyaz köşe varsayılanı. Testler geçti, izole görsel incelendi; canlı kullanıcı çizimine dokunulmadı.
+
+## 17 Ekim 2026 — DEV-122 / 5.9.115
+Boyacı native düğmeleri scoped CSS ile düzenlendi; pencere sağa alındı ve 440px ile sınırlandı. Seçili yüzey/renk aria-pressed ve çerçeve ile belirtilir. Kaynak ve dağıtım güncellendi. paint-3d testi renk, JSON, undo/redo ve 3B sınırını doğruladı; görsel kontrol yapıldı. Önceki açık işler korunur.
