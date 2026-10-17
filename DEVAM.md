@@ -867,3 +867,7 @@ Kullanıcı kararı: fiyat listesi verilene kadar hiçbir ürün için fiyatland
 
 ## 17 Ekim 2026 — DEV-129 / 5.9.121
 Kullanıcı kesinleştirdi: prefabrik yüksekliği yalnız 250/280/300 cm seçmeli, hafif çelik elle girilir. Ortak panel buna göre düzenlendi. Yapı sistemi mevcut kontrolü korunarak sol menünün en üstüne taşındı. project-specs testi seçenekleri,280 seçim etkisini,çelik325 elle girişini ve menü sırasını doğruladı.
+
+
+## 17 Ekim 2026 — DEV-130 / 5.9.122 — Ayarların bölüm ayrımı
+Tamamlandı: ortak özellikler Duvarlar, Tavan, Dış cephe, Doğramalar olarak açılır gruplandı. Eski Üretim ve kaplama tekrarı gizlendi; çatı kaplaması ve ileri yeni çatı varsayılanları yalnız Çatı ekranına taşındı. Mevcut veri bağları ve ileri cephe/aksesuar komutları korunur. Kontrol: project-specs (gruplar, tek giriş, malzeme-antet eşleşmesi, cephe alanlarının yeniden çizimde korunması), roof 20 kontrol; dağıtım üretildi. Kullanıcının açık çizimi değiştirilmedi. Çatı ekranının tamamının komuta özel panel tasarımı ayrı açık iştir. Önceki açık işler korunur.

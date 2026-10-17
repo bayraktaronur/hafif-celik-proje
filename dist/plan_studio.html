@@ -80,6 +80,12 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 
 #projectSpecs > small{display:block;color:#9aabba;line-height:1.5;margin-bottom:12px} #projectSpecs > label{display:grid;gap:5px;margin:10px 0}
 
+/* Single-purpose project settings groups. */
+#projectSpecs details,#roofProjectDefaults{margin-top:12px;border:1px solid var(--border,#354457);border-radius:8px;overflow:hidden}
+#projectSpecs summary,#roofProjectDefaults>summary{cursor:pointer;padding:11px 12px;background:#263548;color:#dce8f0;font-weight:600}
+#projectSpecs details>label,#projectSpecs details>div,#roofProjectDefaults>div{margin:10px 12px!important}
+#roofProjectDefaults .sr{flex-wrap:wrap;gap:6px}
+
 </style><style>
 /* Scoped paint controls: keep the drawing UI and geometry untouched. */
 #paint3DDialog{box-sizing:border-box;width:min(440px,calc(100vw - 32px));max-height:calc(100vh - 40px);margin:20px 20px 20px auto;padding:24px;border:1px solid #526479;border-radius:16px;background:#1c2838;color:#e9eff6;box-shadow:0 18px 70px #0006;overflow:auto;font:14px/1.5 system-ui,sans-serif}
@@ -5285,7 +5291,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.121',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.122',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6359,7 +6365,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.121';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.122';syncUI();draw();
 })();
 
 
@@ -8668,11 +8674,22 @@ window.Paint3D={decorate,sync,defaults};
  }
  function render(){document.getElementById('katYuk').closest('.sr').style.display='none';const oldHeight=document.getElementById('panelHeightChoices');if(oldHeight)oldHeight.style.display='none';let box=document.getElementById('projectSpecs');if(!box){box=document.createElement('section');box.id='projectSpecs';box.className='sb';document.getElementById('projectSidebar').prepend(box);}const system=document.getElementById('sistemSel')?.closest('.system-card');if(system&&system.nextElementSibling!==box)box.before(system);const o=G.opt;
   const select=(key,label,opts)=>'<label style="display:grid;gap:5px;margin:10px 0">'+label+'<select class="si" style="width:100%" data-spec="'+key+'">'+opts.map(([v,n])=>'<option value="'+v+'" '+(String(o[key]??(key==='ceilingBoard'?true:key==='windowColor'?'beyaz':false))===String(v)?'selected':'')+'>'+n+'</option>').join('')+'</select></label>';
+  const hadGroups=!!box.querySelector('details');
+  const openGroups=[...box.querySelectorAll('details[open]')].map(d=>d.dataset.group);
   box.innerHTML='<div class="sb-t">PROJE ANTETİ · ORTAK ÖZELLİKLER</div><small>Seçimler çizim, 3B ve metrajın ortak bilgisidir.</small>'+ (isPref()?select('h','Panel / duvar yüksekliği',[[250,'250 cm'],[280,'280 cm'],[300,'300 cm']]):'<label>Yükseklik · cm<input class="si" style="width:100%" type="number" min="50" max="10000" data-spec="h" value="'+o.h+'"></label>')+select('ic','İç duvar · cm',[[6,6],[10,10],[15,15]])+select('dis','Dış duvar · cm',[[6,6],[10,10],[15,15]])+select('alciDuvar','Duvar alçıpanı',[['yok','Standart · yalnız ıslak hacimler'],['hepsi','Tüm odalar'],['secili','Seçili odalar + ıslak hacimler']])+select('ceilingBoard','Tavan alçıpanı',[[true,'Var'],[false,'Yok']])+select('cephe','Dış cephe',[['yok','Standart'],['tasonit','Taşonit'],['yalipan','Yalıpan']])+select('windowColor','Pencere rengi',[['beyaz','Beyaz'],['antrasit','Antrasit'],['altinmese','Altın meşe']])+select('hCover','H kapak lata',[[false,'Yok'],[true,'Betopan · 6 × 2 cm']])+select('kaplama','Çatı kaplaması',[['trapez','27/200 Trapez sac'],['sandvic','Sandviç panel']])+(o.kaplama==='trapez'?select('trapezEn','Net kapatma eni',[[80,'80 cm kapatır'],[100,'100 cm kapatır']]):'');
-  box.querySelectorAll('[data-spec]').forEach(el=>el.onchange=()=>{let v=el.value;if(['hCover','ceilingBoard'].includes(el.dataset.spec))v=v==='true';optUygula(el.dataset.spec,v);render();});
+  const remembered=new Set(openGroups);
+  let roof=document.getElementById('roofProjectDefaults');if(!roof){roof=document.createElement('details');roof.id='roofProjectDefaults';roof.innerHTML='<summary>Proje kaplaması ve yeni çatı varsayılanları</summary><div></div>';document.getElementById('roofZones').after(roof);}
+  const roofBody=roof.querySelector('div');roofBody.replaceChildren();
+  for(const key of ['kaplama','trapezEn']){const field=box.querySelector('[data-spec="'+key+'"]');if(field)roofBody.append(field.closest('label'));}
+  const groups=[['Duvarlar',['h','ic','dis','alciDuvar']],['Tavan',['ceilingBoard']],['Dış cephe',['cephe','hCover']],['Doğramalar',['windowColor']]];
+  const facadeGroup=document.createElement('div');
+  for(const [name,keys]of groups){const section=document.createElement('details');section.dataset.group=name;section.open=hadGroups?remembered.has(name):name==='Duvarlar';const title=document.createElement('summary');title.textContent=name;section.append(title);for(const key of keys){const field=box.querySelector('[data-spec="'+key+'"]');if(field)section.append(field.closest('label'));}if(name==='Dış cephe')section.append(facadeGroup);box.append(section);}
+  const legacy=document.getElementById('optIc');if(legacy){let roofPart=false;for(const child of [...legacy.children]){if(child.tagName==='BUTTON'&&child.textContent.includes('Çatı')){roofPart=true;continue;}const control=child.querySelector('[onchange]');const handler=control?.getAttribute('onchange')||'';if(['ic','dis','alciDuvar','cephe','kaplama','trapezEn'].some(k=>handler.includes("'"+k+"'")))continue;if(roofPart)roofBody.append(child);else if(['plaka','bindirme','cepheFire'].some(k=>handler.includes("'"+k+"'")))facadeGroup.append(child);}}
+  const legacyBox=document.getElementById('optBox');if(legacyBox)legacyBox.style.display='none';
+  [...box.querySelectorAll('[data-spec]'),...roofBody.querySelectorAll('[data-spec]')].forEach(el=>el.onchange=()=>{let v=el.value;if(['hCover','ceilingBoard'].includes(el.dataset.spec))v=v==='true';optUygula(el.dataset.spec,v);});
  }
  window.ProjectSpecs={facade,propagate,fromRoofs,covers,billRows,render,windowHex:()=>colors[G.opt.windowColor]||colors.beyaz};
- const old=window.optPanelGuncelle;window.optPanelGuncelle=function(){old();render();};render();
+ const old=window.optPanelGuncelle;window.optPanelGuncelle=function(){const legacy=document.getElementById('optBox');if(legacy)legacy._html=null;old();render();};optPanelGuncelle();
 })();
 
 </script></body></html>

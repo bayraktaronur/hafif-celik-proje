@@ -24,3 +24,9 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 .project-tab [role=tab]{cursor:grab}.project-tab.dragging{opacity:.5}.project-tab.drop-target{outline:2px solid #83d1b5}.project-tab .project-tab-close{display:flex;align-items:center;justify-content:center;flex:0 0 30px;min-width:30px;opacity:1;color:#e5edf4;font-size:19px;border-left:1px solid #405168}.project-tab .project-tab-close:hover{background:#754048;color:white}
 
 #projectSpecs > small{display:block;color:#9aabba;line-height:1.5;margin-bottom:12px} #projectSpecs > label{display:grid;gap:5px;margin:10px 0}
+
+/* Single-purpose project settings groups. */
+#projectSpecs details,#roofProjectDefaults{margin-top:12px;border:1px solid var(--border,#354457);border-radius:8px;overflow:hidden}
+#projectSpecs summary,#roofProjectDefaults>summary{cursor:pointer;padding:11px 12px;background:#263548;color:#dce8f0;font-weight:600}
+#projectSpecs details>label,#projectSpecs details>div,#roofProjectDefaults>div{margin:10px 12px!important}
+#roofProjectDefaults .sr{flex-wrap:wrap;gap:6px}

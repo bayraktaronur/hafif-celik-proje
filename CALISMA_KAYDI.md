@@ -939,3 +939,7 @@ Ana çizimde ortak özellik paneli ve çıktı anteti alanları. Çatı trapez/s
 
 ## 17 Ekim 2026 — DEV-129 / 5.9.121
 Prefabrik serbest yükseklik girişi kaldırıldı;250/280/300 seçimleri geri geldi. Çelik elle girilir. Yapı sistemi üstte, ortak antet altında. Mevcut çizim verisi açılışta değiştirilmedi. İlgili test geçti; fiyat listesi gelmeden fiyatlandırma yapılmaması kararı korunur.
+
+
+## 17 Ekim 2026 — DEV-130 / 5.9.122 — Ayarların bölüm ayrımı
+Tamamlandı: ortak özellikler Duvarlar, Tavan, Dış cephe, Doğramalar olarak açılır gruplandı. Eski Üretim ve kaplama tekrarı gizlendi; çatı kaplaması ve ileri yeni çatı varsayılanları yalnız Çatı ekranına taşındı. Mevcut veri bağları ve ileri cephe/aksesuar komutları korunur. Kontrol: project-specs (gruplar, tek giriş, malzeme-antet eşleşmesi, cephe alanlarının yeniden çizimde korunması), roof 20 kontrol; dağıtım üretildi. Kullanıcının açık çizimi değiştirilmedi. Çatı ekranının tamamının komuta özel panel tasarımı ayrı açık iştir. Önceki açık işler korunur.
