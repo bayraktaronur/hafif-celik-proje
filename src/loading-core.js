@@ -102,6 +102,7 @@
    const q=r.sources[0].gypsumRule,a=c.adjustments.find(a=>a.key===r.key);r.unit='levha';r.calculated=r.sources.reduce((n,s)=>n+s.gypsumRule.count,0);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;
    r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik alçıpan';r.reason=a?.reason||`Mevcut metraj hesabı: ${q.area.toFixed(3)} m² net, %${q.fire} fire dahil, ${r.calculated} levha. Duvar/tavan ve beyaz/yeşil ayrımı korunur; ayrıca yedek eklenmedi.`;
   }
+  for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.ceilingProfileRule))continue;const a=c.adjustments.find(a=>a.key===r.key);r.unit='m';r.calculated=Math.round(r.sources.reduce((n,s)=>n+s.ceilingProfileRule.length,0)*100)/100;r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik tavan profili';r.reason=a?.reason||'60×120 cm tavan birleşimlerinin net uzunluğu; stok boyu ve kesim firesi dahil değil.';}
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};
  }

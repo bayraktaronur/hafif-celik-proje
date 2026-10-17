@@ -332,9 +332,9 @@
     if(mode==='section'){section(ctx,w,h);return;}if(mode==='report')return;
     if(mode==='ceiling'){
       const ceiling=CeilingPanels.build();
-      ctx.beginPath();for(const s of ceiling.surfaces){s.poly.forEach((p,i)=>{const q=at(p);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();}ctx.fillStyle='#ebece6';ctx.fill();
+      for(const s of ceiling.surfaces){ctx.beginPath();s.poly.forEach((p,i)=>{const q=at(p);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();ctx.fillStyle=s.color;ctx.fill();}
       for(const l of ceiling.lines){const p=at(l.p),q=at(l.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=l.color;ctx.lineWidth=1;ctx.stroke();}
-      $('roofHint').textContent='Tavan · 60 × 125 cm · uzun kenar makas açıklığına dik · ince çizgiler mini H birleşimleri';return;
+      $('roofHint').textContent=G.opt.ceilingMode==='board'?'Tavan · 120 × 250 cm alçıpan · mini H yok · yeşil: ıslak hacim ve veranda/sundurma':'Tavan · 60 × 120 cm · mini H birleşimleri · yeşil: ıslak hacim ve veranda/sundurma';return;
     }
     const drawEdge=(e,project)=>{const p=project(e.p),q=project(e.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=COLORS[e.type];ctx.lineWidth=['ridge','valley'].includes(e.type)?2:1;ctx.stroke();};
     if(mode==='3d'){

@@ -943,3 +943,7 @@ Prefabrik serbest yükseklik girişi kaldırıldı;250/280/300 seçimleri geri g
 
 ## 17 Ekim 2026 — DEV-130 / 5.9.122 — Ayarların bölüm ayrımı
 Tamamlandı: ortak özellikler Duvarlar, Tavan, Dış cephe, Doğramalar olarak açılır gruplandı. Eski Üretim ve kaplama tekrarı gizlendi; çatı kaplaması ve ileri yeni çatı varsayılanları yalnız Çatı ekranına taşındı. Mevcut veri bağları ve ileri cephe/aksesuar komutları korunur. Kontrol: project-specs (gruplar, tek giriş, malzeme-antet eşleşmesi, cephe alanlarının yeniden çizimde korunması), roof 20 kontrol; dağıtım üretildi. Kullanıcının açık çizimi değiştirilmedi. Çatı ekranının tamamının komuta özel panel tasarımı ayrı açık iştir. Önceki açık işler korunur.
+
+
+## 17 Ekim 2026 — DEV-131 / 5.9.123 — Alçıpan montaj seçenekleri
+Tamamlandı: Alçıpan kaplama grubunda bağımsız duvar ve tavan seçimleri. Standart tavan 60×120 cm + mini H; alçıpan montajı 120×250 cm, mini H yok. Her iki durumda stok levhası120×250 ve aynı net tavan alanı. Banyo/WC duvarları her koşulda yeşil; veranda/sundurma oda alanı tavanları yeşil. Duvar hesabı ortak bina yüksekliğine bağlı. Tavan/3B çizgileri, renkleri, antet ve metraj güncellendi; yükleme listesinde mini H net metre, stok/fire eklenmedi. Eski ceilingBoard aç/kapat alanı yerine ceilingMode kullanılır, eski dosyalar standart montajla açılır; tavan yok seçeneği kaldırıldı. Testler: gypsum-modes, ceiling-panels, project-specs, loading-gypsum; izole görsel incelendi. Kullanıcı çizimi değiştirilmedi. Önceki açık işler korunur.

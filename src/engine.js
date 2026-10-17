@@ -981,7 +981,7 @@ function catiHesap(){
   return R;
 }
 function alcipanHesap(){
-  var h=(+document.getElementById('katYuk').value||280);
+  var h=(+G.opt.h||280);
   var R={beyazDuvar:0,beyazTavan:0,yesilDuvar:0,yesilTavan:0,verTavan:0,kapiM2:0,pencereM2:0,kapiAdet:0,pencereAdet:0,
     dusulen:{beyaz:0,yesil:0},odalar:[]};
   // boşluk alanları (plan geneli, sağlama için)
@@ -992,7 +992,7 @@ function alcipanHesap(){
   G.rooms.forEach(function(r){
     var geo=odaIcGeometri(r);if(!geo)return;
     var ver=r.tip==='veranda',islak=!!ALCI.ISLAK[r.tip];
-    var o={ad:roomLabel(r),tip:ver?'veranda':islak?'yesil':'beyaz',tavan:G.opt.ceilingBoard===false?0:geo.alan,duvarBrut:0,bosluk:0,duvarNet:0};
+    var o={ad:roomLabel(r),tip:ver?'veranda':islak?'yesil':'beyaz',tavan:geo.alan,duvarBrut:0,bosluk:0,duvarNet:0};
     o.duvarVar=!ver&&odaDuvarAlci(r);
     if(!ver){
       var cevre=0,seen={};
@@ -1080,7 +1080,7 @@ function metrajKalemleri(){
   Object.keys(grp).sort().forEach(function(k){var p=k.split('|');ekle(p[0],p[1],p[2],'adet',grp[k]);});
   // Alçıpan
   if(G.rooms.length){
-    var AL=alcipanHesap(),fr=' · fire %'+ALCI.FIRE,lv=' · levha '+ALCI.EN+'×'+ALCI.BOY;
+    var AL=alcipanHesap(),ceiling=window.CeilingPanels?.build();if(ceiling&&ceiling.miniH>0)ekle('Tavan montajı','Mini H birleşim profili','60×120 cm standart döşeme','m',Math.round(ceiling.miniH*100)/100);var fr=' · fire %'+ALCI.FIRE,lv=' · levha '+ALCI.EN+'×'+ALCI.BOY;
     function m2(v){return Math.round(v*100)/100;}
     var gB='Alçıpan — Beyaz (kuru mahaller)',gY='Alçıpan — Yeşil (ıslak mahaller + veranda tavanı)';
     if(AL.beyazDuvar>0)ekle(gB,'Beyaz alçıpan — Duvar',m2(AL.beyazDuvar).toString().replace('.',',')+' m² net'+fr,'levha',levhaAdet(AL.beyazDuvar));

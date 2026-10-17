@@ -2,7 +2,7 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PlanProject=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   const furniture=typeof FurnitureCatalog!=='undefined'?FurnitureCatalog:require('./furniture-catalog.js');
-  const DEFAULT_OPTIONS={windowColor:'beyaz',hCover:false,ceilingBoard:true,h:250,dis:10,ic:6,alciDuvar:'yok',cephe:'yok',plaka:'40x250',bindirme:3,cepheFire:5,cati:'besik',egim:33,sacak:30,trapezEn:100,kaplama:'trapez',osb:false,catiFire:5,suRulo:75,suBindirme:10,parcaBoy:200,parcaBind:10,vidaM2:5,inisAralik:10,aksAcik:false};
+  const DEFAULT_OPTIONS={windowColor:'beyaz',hCover:false,ceilingBoard:true,ceilingMode:'standard',h:250,dis:10,ic:6,alciDuvar:'yok',cephe:'yok',plaka:'40x250',bindirme:3,cepheFire:5,cati:'besik',egim:33,sacak:30,trapezEn:100,kaplama:'trapez',osb:false,catiFire:5,suRulo:75,suBindirme:10,parcaBoy:200,parcaBind:10,vidaM2:5,inisAralik:10,aksAcik:false};
   const fail=message=>{throw new Error(message);};
   const finite=(x,min,max)=>typeof x==='number'&&Number.isFinite(x)&&x>=min&&x<=max;
   function safeTree(o,depth=0){
@@ -73,7 +73,7 @@
       if(typeof v==='number'&&!finite(d.opt[k],0,10000))fail('Geçersiz seçenek değeri: '+k);
     }
     if(![6,10,15].includes(d.opt.ic)||![6,10,15].includes(d.opt.dis))fail('Prefabrik iç ve dış duvar kalınlığı 6, 10 veya 15 cm olmalı.');
-    for(const [key,values] of Object.entries({windowColor:['beyaz','antrasit','altinmese'],alciDuvar:['yok','hepsi','secili'],cephe:['yok','tasonit','yalipan'],cati:['besik','kirma','tek','yok'],kaplama:['trapez','sandvic']}))if(!values.includes(d.opt[key]))fail('Geçersiz üretim seçeneği: '+key);
+    for(const [key,values] of Object.entries({ceilingMode:['standard','board'],windowColor:['beyaz','antrasit','altinmese'],alciDuvar:['yok','hepsi','secili'],cephe:['yok','tasonit','yalipan'],cati:['besik','kirma','tek','yok'],kaplama:['trapez','sandvic']}))if(!values.includes(d.opt[key]))fail('Geçersiz üretim seçeneği: '+key);
     if(d.opt.h<50||d.opt.trapezEn<=0||d.opt.suRulo<=0||d.opt.parcaBoy<=0||d.opt.inisAralik<=0)fail('Üretim ölçüleri sıfırdan büyük olmalı.');
     if(d.catiYon&&!['yatay','dikey'].includes(d.catiYon))fail('Makas yönü geçersiz.');
     d.catiYon=d.catiYon||'yatay';

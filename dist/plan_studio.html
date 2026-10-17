@@ -850,6 +850,7 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
    const q=r.sources[0].gypsumRule,a=c.adjustments.find(a=>a.key===r.key);r.unit='levha';r.calculated=r.sources.reduce((n,s)=>n+s.gypsumRule.count,0);r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;
    r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik alçıpan';r.reason=a?.reason||`Mevcut metraj hesabı: ${q.area.toFixed(3)} m² net, %${q.fire} fire dahil, ${r.calculated} levha. Duvar/tavan ve beyaz/yeşil ayrımı korunur; ayrıca yedek eklenmedi.`;
   }
+  for(const r of rows){if(!r.sources.length||!r.sources.every(s=>s.ceilingProfileRule))continue;const a=c.adjustments.find(a=>a.key===r.key);r.unit='m';r.calculated=Math.round(r.sources.reduce((n,s)=>n+s.ceilingProfileRule.length,0)*100)/100;r.spare=0;r.qty=a?(r.stale?null:a.qty):r.calculated;r.status=r.stale?'Çizim değişti':a?'Manuel doğrulandı':'Otomatik tavan profili';r.reason=a?.reason||'60×120 cm tavan birleşimlerinin net uzunluğu; stok boyu ve kesim firesi dahil değil.';}
   for(const a of c.manual)rows.push({...a,key:a.id,group:'Manuel',calculated:null,status:'Manuel ek',sources:[],qty:a.qty});
   const orphan=c.adjustments.filter(a=>!groups.has(a.key));return {rows,orphan};
  }
@@ -891,7 +892,7 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PlanProject=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   const furniture=typeof FurnitureCatalog!=='undefined'?FurnitureCatalog:require('./furniture-catalog.js');
-  const DEFAULT_OPTIONS={windowColor:'beyaz',hCover:false,ceilingBoard:true,h:250,dis:10,ic:6,alciDuvar:'yok',cephe:'yok',plaka:'40x250',bindirme:3,cepheFire:5,cati:'besik',egim:33,sacak:30,trapezEn:100,kaplama:'trapez',osb:false,catiFire:5,suRulo:75,suBindirme:10,parcaBoy:200,parcaBind:10,vidaM2:5,inisAralik:10,aksAcik:false};
+  const DEFAULT_OPTIONS={windowColor:'beyaz',hCover:false,ceilingBoard:true,ceilingMode:'standard',h:250,dis:10,ic:6,alciDuvar:'yok',cephe:'yok',plaka:'40x250',bindirme:3,cepheFire:5,cati:'besik',egim:33,sacak:30,trapezEn:100,kaplama:'trapez',osb:false,catiFire:5,suRulo:75,suBindirme:10,parcaBoy:200,parcaBind:10,vidaM2:5,inisAralik:10,aksAcik:false};
   const fail=message=>{throw new Error(message);};
   const finite=(x,min,max)=>typeof x==='number'&&Number.isFinite(x)&&x>=min&&x<=max;
   function safeTree(o,depth=0){
@@ -962,7 +963,7 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
       if(typeof v==='number'&&!finite(d.opt[k],0,10000))fail('Geçersiz seçenek değeri: '+k);
     }
     if(![6,10,15].includes(d.opt.ic)||![6,10,15].includes(d.opt.dis))fail('Prefabrik iç ve dış duvar kalınlığı 6, 10 veya 15 cm olmalı.');
-    for(const [key,values] of Object.entries({windowColor:['beyaz','antrasit','altinmese'],alciDuvar:['yok','hepsi','secili'],cephe:['yok','tasonit','yalipan'],cati:['besik','kirma','tek','yok'],kaplama:['trapez','sandvic']}))if(!values.includes(d.opt[key]))fail('Geçersiz üretim seçeneği: '+key);
+    for(const [key,values] of Object.entries({ceilingMode:['standard','board'],windowColor:['beyaz','antrasit','altinmese'],alciDuvar:['yok','hepsi','secili'],cephe:['yok','tasonit','yalipan'],cati:['besik','kirma','tek','yok'],kaplama:['trapez','sandvic']}))if(!values.includes(d.opt[key]))fail('Geçersiz üretim seçeneği: '+key);
     if(d.opt.h<50||d.opt.trapezEn<=0||d.opt.suRulo<=0||d.opt.parcaBoy<=0||d.opt.inisAralik<=0)fail('Üretim ölçüleri sıfırdan büyük olmalı.');
     if(d.catiYon&&!['yatay','dikey'].includes(d.catiYon))fail('Makas yönü geçersiz.');
     d.catiYon=d.catiYon||'yatay';
@@ -2016,7 +2017,7 @@ function catiHesap(){
   return R;
 }
 function alcipanHesap(){
-  var h=(+document.getElementById('katYuk').value||280);
+  var h=(+G.opt.h||280);
   var R={beyazDuvar:0,beyazTavan:0,yesilDuvar:0,yesilTavan:0,verTavan:0,kapiM2:0,pencereM2:0,kapiAdet:0,pencereAdet:0,
     dusulen:{beyaz:0,yesil:0},odalar:[]};
   // boşluk alanları (plan geneli, sağlama için)
@@ -2027,7 +2028,7 @@ function alcipanHesap(){
   G.rooms.forEach(function(r){
     var geo=odaIcGeometri(r);if(!geo)return;
     var ver=r.tip==='veranda',islak=!!ALCI.ISLAK[r.tip];
-    var o={ad:roomLabel(r),tip:ver?'veranda':islak?'yesil':'beyaz',tavan:G.opt.ceilingBoard===false?0:geo.alan,duvarBrut:0,bosluk:0,duvarNet:0};
+    var o={ad:roomLabel(r),tip:ver?'veranda':islak?'yesil':'beyaz',tavan:geo.alan,duvarBrut:0,bosluk:0,duvarNet:0};
     o.duvarVar=!ver&&odaDuvarAlci(r);
     if(!ver){
       var cevre=0,seen={};
@@ -2115,7 +2116,7 @@ function metrajKalemleri(){
   Object.keys(grp).sort().forEach(function(k){var p=k.split('|');ekle(p[0],p[1],p[2],'adet',grp[k]);});
   // Alçıpan
   if(G.rooms.length){
-    var AL=alcipanHesap(),fr=' · fire %'+ALCI.FIRE,lv=' · levha '+ALCI.EN+'×'+ALCI.BOY;
+    var AL=alcipanHesap(),ceiling=window.CeilingPanels?.build();if(ceiling&&ceiling.miniH>0)ekle('Tavan montajı','Mini H birleşim profili','60×120 cm standart döşeme','m',Math.round(ceiling.miniH*100)/100);var fr=' · fire %'+ALCI.FIRE,lv=' · levha '+ALCI.EN+'×'+ALCI.BOY;
     function m2(v){return Math.round(v*100)/100;}
     var gB='Alçıpan — Beyaz (kuru mahaller)',gY='Alçıpan — Yeşil (ıslak mahaller + veranda tavanı)';
     if(AL.beyazDuvar>0)ekle(gB,'Beyaz alçıpan — Duvar',m2(AL.beyazDuvar).toString().replace('.',',')+' m² net'+fr,'levha',levhaAdet(AL.beyazDuvar));
@@ -5291,7 +5292,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.122',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.123',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6365,7 +6366,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.122';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.123';syncUI();draw();
 })();
 
 
@@ -7059,29 +7060,29 @@ window.Wall3D={build,panelColor};
 
 
 </script><script>
-/* Standard 60 x 125 cm ceiling panels; mini-H lines are schematic, not a section. */
+/* Standard 60 x 120 cm ceiling panels; mini-H lines are schematic, not a section. */
 (function(){
  const C=RoofCore,EPS=.001;
- function layout(poly,longX,z=250){
+ function layout(poly,longX,z=250,mode='standard',green=false){
   poly=poly.filter((p,i)=>!i||Math.hypot(p.x-poly[i-1].x,p.y-poly[i-1].y)>EPS).map(p=>({x:p.x,y:p.y}));
   if(poly.length>1&&Math.hypot(poly[0].x-poly.at(-1).x,poly[0].y-poly.at(-1).y)<EPS)poly.pop();
   if(poly.length<3)return {surfaces:[],lines:[],area:0,panels:0};
   if(poly.reduce((s,p,i)=>{const q=poly[(i+1)%poly.length];return s+p.x*q.y-q.x*p.y},0)<0)poly.reverse();
-  const xmin=Math.min(...poly.map(p=>p.x)),xmax=Math.max(...poly.map(p=>p.x)),ymin=Math.min(...poly.map(p=>p.y)),ymax=Math.max(...poly.map(p=>p.y)),dx=longX?125:60,dy=longX?60:125;
-  const surfaces=C.triangulate(poly).map(p=>({kind:'ceiling',material:'panel',poly:p.map(q=>({...q,z})),color:'#ebece6',shade:1})),lines=[];
+  const xmin=Math.min(...poly.map(p=>p.x)),xmax=Math.max(...poly.map(p=>p.x)),ymin=Math.min(...poly.map(p=>p.y)),ymax=Math.max(...poly.map(p=>p.y)),large=mode==='board',short=large?120:60,long=large?250:120,dx=longX?long:short,dy=longX?short:long;
+  const surfaces=C.triangulate(poly).map(p=>({kind:'ceiling',material:'panel',poly:p.map(q=>({...q,z})),color:green?'#cbd8c4':'#ebece6',gypsum:green?'green':'white',shade:1})),lines=[];
   for(const [axis,start,end,step] of [['x',xmin,xmax,dx],['y',ymin,ymax,dy]])for(let value=start+step;value<end-EPS;value+=step){
    const other=axis==='x'?'y':'x',cross=[];
    poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];if((p[axis]<=value&&q[axis]>value)||(q[axis]<=value&&p[axis]>value))cross.push(p[other]+(value-p[axis])*(q[other]-p[other])/(q[axis]-p[axis]));});cross.sort((a,b)=>a-b);
-   for(let i=0;i+1<cross.length;i+=2)if(cross[i+1]-cross[i]>EPS)lines.push({p:{[axis]:value,[other]:cross[i],z:z-.04},q:{[axis]:value,[other]:cross[i+1],z:z-.04},color:'#9aa8a6',kind:'miniH',length:(cross[i+1]-cross[i])/100});
+   for(let i=0;i+1<cross.length;i+=2)if(cross[i+1]-cross[i]>EPS)lines.push({p:{[axis]:value,[other]:cross[i],z:z-.04},q:{[axis]:value,[other]:cross[i+1],z:z-.04},color:large?'#c2c7be':'#9aa8a6',kind:large?'boardJoint':'miniH',length:(cross[i+1]-cross[i])/100});
   }
   return {surfaces,lines,area:C.area(poly)/10000,dx,dy};
  }
- function build(){const surfaces=[],lines=[];let area=0;if(G.opt.ceilingBoard===false)return {surfaces,lines,area,miniH:0};
-  for(const room of G.rooms){const geo=odaIcGeometri(room);if(!geo)continue;const roof=G.roofs.find(z=>z.sourceRoomId===room.id);if(room.tip==='veranda'&&!roof)continue;
+ function build(){const surfaces=[],lines=[];let area=0;const mode=G.opt.ceilingMode||'standard';
+  for(const room of G.rooms){const geo=odaIcGeometri(room);if(!geo)continue;const roof=G.roofs.find(z=>z.sourceRoomId===room.id),green=room.tip==='veranda'||!!ALCI.ISLAK[room.tip];
    let poly=geo.poly,longX=catiYatay(),level=+G.opt.h||250;
-   if(roof?.attachment){const b=roof.attachment.base,members=RoofStudio.verandaMembers(roof);level=Math.min(...members.map(m=>m.kind==='post'?m.top:m.bottom));const local=poly.map(p=>C.untransform(b,p));const result=layout(local,false,level);result.surfaces.forEach(s=>s.poly=s.poly.map(p=>({...C.transform(b,p),z:p.z})));result.lines.forEach(l=>{l.p={...C.transform(b,l.p),z:l.p.z};l.q={...C.transform(b,l.q),z:l.q.z};});surfaces.push(...result.surfaces);lines.push(...result.lines);area+=result.area;
-   }else{const r=layout(poly,longX,level);surfaces.push(...r.surfaces);lines.push(...r.lines);area+=r.area;}
-  }return {surfaces,lines,area,miniH:lines.reduce((s,l)=>s+l.length,0)};
+   if(roof?.attachment){const b=roof.attachment.base,members=RoofStudio.verandaMembers(roof);level=Math.min(...members.map(m=>m.kind==='post'?m.top:m.bottom));const local=poly.map(p=>C.untransform(b,p));const result=layout(local,false,level,mode,green);result.surfaces.forEach(s=>s.poly=s.poly.map(p=>({...C.transform(b,p),z:p.z})));result.lines.forEach(l=>{l.p={...C.transform(b,l.p),z:l.p.z};l.q={...C.transform(b,l.q),z:l.q.z};});surfaces.push(...result.surfaces);lines.push(...result.lines);area+=result.area;
+   }else{const r=layout(poly,longX,level,mode,green);surfaces.push(...r.surfaces);lines.push(...r.lines);area+=r.area;}
+  }return {surfaces,lines,area,miniH:lines.filter(l=>l.kind==='miniH').reduce((s,l)=>s+l.length,0)};
  }
  window.CeilingPanels={layout,build};
 })();
@@ -7420,9 +7421,9 @@ window.Wall3D={build,panelColor};
     if(mode==='section'){section(ctx,w,h);return;}if(mode==='report')return;
     if(mode==='ceiling'){
       const ceiling=CeilingPanels.build();
-      ctx.beginPath();for(const s of ceiling.surfaces){s.poly.forEach((p,i)=>{const q=at(p);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();}ctx.fillStyle='#ebece6';ctx.fill();
+      for(const s of ceiling.surfaces){ctx.beginPath();s.poly.forEach((p,i)=>{const q=at(p);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();ctx.fillStyle=s.color;ctx.fill();}
       for(const l of ceiling.lines){const p=at(l.p),q=at(l.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=l.color;ctx.lineWidth=1;ctx.stroke();}
-      $('roofHint').textContent='Tavan · 60 × 125 cm · uzun kenar makas açıklığına dik · ince çizgiler mini H birleşimleri';return;
+      $('roofHint').textContent=G.opt.ceilingMode==='board'?'Tavan · 120 × 250 cm alçıpan · mini H yok · yeşil: ıslak hacim ve veranda/sundurma':'Tavan · 60 × 120 cm · mini H birleşimleri · yeşil: ıslak hacim ve veranda/sundurma';return;
     }
     const drawEdge=(e,project)=>{const p=project(e.p),q=project(e.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=COLORS[e.type];ctx.lineWidth=['ridge','valley'].includes(e.type)?2:1;ctx.stroke();};
     if(mode==='3d'){
@@ -8301,7 +8302,7 @@ window.Wall3D={build,panelColor};
   const mats=[...RoofCore.MATERIALS,...(G.roofMaterials||[])],ids=G.roofs.length?G.roofs.map(z=>z.material):[G.opt.kaplama];
   const roof=G.roofs.length||G.opt.cati!=='yok'?[...new Set(ids.map(id=>mats.find(m=>m.id===id)?.name||id||'Belirtilmedi'))].join(' / '):'Çatı yok';
   const walls=G.opt.alciDuvar==='hepsi'?'Tüm odalar alçıpan; banyo/WC yeşil':G.opt.alciDuvar==='secili'?'Seçili odalar + banyo/WC alçıpan':'Yalnız banyo/WC yeşil alçıpan';
-  return {roof,walls,ceiling:G.opt.ceilingBoard===false?'Alçıpan yok':'Alçıpan · ıslak hacimler yeşil',facade:{yok:'Standart',tasonit:'Taşonit',yalipan:'Yalıpan'}[G.opt.cephe],windowColor:{beyaz:'Beyaz',antrasit:'Antrasit',altinmese:'Altın meşe'}[G.opt.windowColor||'beyaz'],hCover:G.opt.hCover?'Betopan · 6 × 2 × '+G.opt.h+' cm':'Yok',stock:'Alçıpan stok levhası: 120 × 250 cm'};
+  return {roof,walls,ceiling:(G.opt.ceilingMode==='board'?'Alçıpan 120×250 · mini H yok':'Standart 60×120 · mini H')+' · ıslak hacim/veranda yeşil',facade:{yok:'Standart',tasonit:'Taşonit',yalipan:'Yalıpan'}[G.opt.cephe],windowColor:{beyaz:'Beyaz',antrasit:'Antrasit',altinmese:'Altın meşe'}[G.opt.windowColor||'beyaz'],hCover:G.opt.hCover?'Betopan · 6 × 2 × '+G.opt.h+' cm':'Yok',stock:'Alçıpan stok levhası: 120 × 250 cm'};
  }
  function paint(c,l,info){
   const px=96/25.4,x=12,y=l.h-106,w=l.w-24,ink='#223946',muted='#647883',edge='#bdcbd0';c.save();c.scale(px,px);c.translate(x,y);c.textAlign='left';c.textBaseline='top';c.lineWidth=.2;
@@ -8549,6 +8550,7 @@ LoadingReference.rows.push({id:"tuna-92",row:92,group:"Metal",name:"Yeşil alç�
   for(const [field,name,ref] of [['beyazDuvar','Beyaz alçıpan — Duvar','tuna-52'],['beyazTavan','Beyaz alçıpan — Tavan','tuna-52'],['yesilDuvar','Yeşil alçıpan — Duvar','tuna-53'],['yesilTavan','Yeşil alçıpan — Tavan','tuna-53'],['verTavan','Yeşil alçıpan — Veranda tavanı','tuna-53']])if(al[field]>0){
    out.push({group:'Kaplama',name,size:`${ALCI.EN} × ${ALCI.BOY} cm`,source:source('gypsum:'+field,[],null,{gypsumRule:{area:al[field],fire:ALCI.FIRE,count:levhaAdet(al[field]),field},rooms:al.odalar,mode:G.opt.alciDuvar,referenceId:ref}),warning:'Mevcut Metraj Listesi hesabı. Banyo/WC duvarları her zaman yeşil; diğer duvarlar kaplama seçiliyse; fire hesaba dahil, ayrıca yedek eklenmez.'});
   }
+  const ceiling=CeilingPanels.build();if(ceiling.miniH>0)out.push({group:'Metal',name:'Mini H tavan birleşim profili',size:'60 × 120 cm standart montaj',warning:'Net birleşim uzunluğu; stok boyu ve kesim firesi dahil değildir.',source:source('ceiling-mini-h',[],null,{ceilingProfileRule:{length:ceiling.miniH}})});
   if(al.yesilDuvar>0)out.push({group:'Metal',name:'Yeşil duvar alçıpan vidası',size:'3.5 × 35 mm',warning:'Yalnız net yeşil duvar alanı. Standart geçme tavanlar ve veranda tavanı vidasız; levha firesi eklenmez. Tuna kontrol taslağına göre geçici sevk oranı.',source:source('gypsum-wall-screw',[],null,{screwRule:{rule:'tuna-green-wall500-v1',amount:al.yesilDuvar,referenceAmount:19.3425,referenceQty:500,unit:'m² net yeşil duvar'},referenceId:'tuna-92'})});
   if(al.beyazDuvar>0)out.push({group:'Metal',name:'Beyaz duvar alçıpan vidası — kural bekliyor',size:'Vida türü / tüketimi doğrulanmalı',warning:'Yeşil duvar katsayısı beyaz duvarlara varsayımla uygulanmaz. Tavanlar hariç.',source:source('gypsum-white-wall-screw',[],null,{whiteWallArea:al.beyazDuvar})});
   return out;
@@ -8676,14 +8678,14 @@ window.Paint3D={decorate,sync,defaults};
   const select=(key,label,opts)=>'<label style="display:grid;gap:5px;margin:10px 0">'+label+'<select class="si" style="width:100%" data-spec="'+key+'">'+opts.map(([v,n])=>'<option value="'+v+'" '+(String(o[key]??(key==='ceilingBoard'?true:key==='windowColor'?'beyaz':false))===String(v)?'selected':'')+'>'+n+'</option>').join('')+'</select></label>';
   const hadGroups=!!box.querySelector('details');
   const openGroups=[...box.querySelectorAll('details[open]')].map(d=>d.dataset.group);
-  box.innerHTML='<div class="sb-t">PROJE ANTETİ · ORTAK ÖZELLİKLER</div><small>Seçimler çizim, 3B ve metrajın ortak bilgisidir.</small>'+ (isPref()?select('h','Panel / duvar yüksekliği',[[250,'250 cm'],[280,'280 cm'],[300,'300 cm']]):'<label>Yükseklik · cm<input class="si" style="width:100%" type="number" min="50" max="10000" data-spec="h" value="'+o.h+'"></label>')+select('ic','İç duvar · cm',[[6,6],[10,10],[15,15]])+select('dis','Dış duvar · cm',[[6,6],[10,10],[15,15]])+select('alciDuvar','Duvar alçıpanı',[['yok','Standart · yalnız ıslak hacimler'],['hepsi','Tüm odalar'],['secili','Seçili odalar + ıslak hacimler']])+select('ceilingBoard','Tavan alçıpanı',[[true,'Var'],[false,'Yok']])+select('cephe','Dış cephe',[['yok','Standart'],['tasonit','Taşonit'],['yalipan','Yalıpan']])+select('windowColor','Pencere rengi',[['beyaz','Beyaz'],['antrasit','Antrasit'],['altinmese','Altın meşe']])+select('hCover','H kapak lata',[[false,'Yok'],[true,'Betopan · 6 × 2 cm']])+select('kaplama','Çatı kaplaması',[['trapez','27/200 Trapez sac'],['sandvic','Sandviç panel']])+(o.kaplama==='trapez'?select('trapezEn','Net kapatma eni',[[80,'80 cm kapatır'],[100,'100 cm kapatır']]):'');
+  box.innerHTML='<div class="sb-t">PROJE ANTETİ · ORTAK ÖZELLİKLER</div><small>Seçimler çizim, 3B ve metrajın ortak bilgisidir.</small>'+ (isPref()?select('h','Panel / duvar yüksekliği',[[250,'250 cm'],[280,'280 cm'],[300,'300 cm']]):'<label>Yükseklik · cm<input class="si" style="width:100%" type="number" min="50" max="10000" data-spec="h" value="'+o.h+'"></label>')+select('ic','İç duvar · cm',[[6,6],[10,10],[15,15]])+select('dis','Dış duvar · cm',[[6,6],[10,10],[15,15]])+select('alciDuvar','Duvar alçıpanı',[['yok','Standart · yalnız ıslak hacimler'],['hepsi','Tüm odalar'],['secili','Seçili odalar + ıslak hacimler']])+select('ceilingMode','Tavan montajı',[['standard','Standart · 60×120 cm + mini H'],['board','Alçıpan · 120×250 cm']])+select('cephe','Dış cephe',[['yok','Standart'],['tasonit','Taşonit'],['yalipan','Yalıpan']])+select('windowColor','Pencere rengi',[['beyaz','Beyaz'],['antrasit','Antrasit'],['altinmese','Altın meşe']])+select('hCover','H kapak lata',[[false,'Yok'],[true,'Betopan · 6 × 2 cm']])+select('kaplama','Çatı kaplaması',[['trapez','27/200 Trapez sac'],['sandvic','Sandviç panel']])+(o.kaplama==='trapez'?select('trapezEn','Net kapatma eni',[[80,'80 cm kapatır'],[100,'100 cm kapatır']]):'');
   const remembered=new Set(openGroups);
   let roof=document.getElementById('roofProjectDefaults');if(!roof){roof=document.createElement('details');roof.id='roofProjectDefaults';roof.innerHTML='<summary>Proje kaplaması ve yeni çatı varsayılanları</summary><div></div>';document.getElementById('roofZones').after(roof);}
   const roofBody=roof.querySelector('div');roofBody.replaceChildren();
   for(const key of ['kaplama','trapezEn']){const field=box.querySelector('[data-spec="'+key+'"]');if(field)roofBody.append(field.closest('label'));}
-  const groups=[['Duvarlar',['h','ic','dis','alciDuvar']],['Tavan',['ceilingBoard']],['Dış cephe',['cephe','hCover']],['Doğramalar',['windowColor']]];
+  const groups=[['Duvarlar',['h','ic','dis']],['Alçıpan kaplama',['alciDuvar','ceilingMode']],['Dış cephe',['cephe','hCover']],['Doğramalar',['windowColor']]];
   const facadeGroup=document.createElement('div');
-  for(const [name,keys]of groups){const section=document.createElement('details');section.dataset.group=name;section.open=hadGroups?remembered.has(name):name==='Duvarlar';const title=document.createElement('summary');title.textContent=name;section.append(title);for(const key of keys){const field=box.querySelector('[data-spec="'+key+'"]');if(field)section.append(field.closest('label'));}if(name==='Dış cephe')section.append(facadeGroup);box.append(section);}
+  for(const [name,keys]of groups){const section=document.createElement('details');section.dataset.group=name;section.open=hadGroups?remembered.has(name):name==='Duvarlar';const title=document.createElement('summary');title.textContent=name;section.append(title);for(const key of keys){const field=box.querySelector('[data-spec="'+key+'"]');if(field)section.append(field.closest('label'));}if(name==='Alçıpan kaplama'){const note=document.createElement('small');note.textContent='Banyo/WC duvarları ve veranda/sundurma tavanları daima yeşil alçıpan. Levha hesabı her iki montajda 120×250 cm; duvar alanı bina yüksekliğine bağlıdır.';section.append(note);}if(name==='Dış cephe')section.append(facadeGroup);box.append(section);}
   const legacy=document.getElementById('optIc');if(legacy){let roofPart=false;for(const child of [...legacy.children]){if(child.tagName==='BUTTON'&&child.textContent.includes('Çatı')){roofPart=true;continue;}const control=child.querySelector('[onchange]');const handler=control?.getAttribute('onchange')||'';if(['ic','dis','alciDuvar','cephe','kaplama','trapezEn'].some(k=>handler.includes("'"+k+"'")))continue;if(roofPart)roofBody.append(child);else if(['plaka','bindirme','cepheFire'].some(k=>handler.includes("'"+k+"'")))facadeGroup.append(child);}}
   const legacyBox=document.getElementById('optBox');if(legacyBox)legacyBox.style.display='none';
   [...box.querySelectorAll('[data-spec]'),...roofBody.querySelectorAll('[data-spec]')].forEach(el=>el.onchange=()=>{let v=el.value;if(['hCover','ceilingBoard'].includes(el.dataset.spec))v=v==='true';optUygula(el.dataset.spec,v);});

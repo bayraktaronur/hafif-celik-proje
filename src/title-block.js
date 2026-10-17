@@ -8,7 +8,7 @@
   const mats=[...RoofCore.MATERIALS,...(G.roofMaterials||[])],ids=G.roofs.length?G.roofs.map(z=>z.material):[G.opt.kaplama];
   const roof=G.roofs.length||G.opt.cati!=='yok'?[...new Set(ids.map(id=>mats.find(m=>m.id===id)?.name||id||'Belirtilmedi'))].join(' / '):'Çatı yok';
   const walls=G.opt.alciDuvar==='hepsi'?'Tüm odalar alçıpan; banyo/WC yeşil':G.opt.alciDuvar==='secili'?'Seçili odalar + banyo/WC alçıpan':'Yalnız banyo/WC yeşil alçıpan';
-  return {roof,walls,ceiling:G.opt.ceilingBoard===false?'Alçıpan yok':'Alçıpan · ıslak hacimler yeşil',facade:{yok:'Standart',tasonit:'Taşonit',yalipan:'Yalıpan'}[G.opt.cephe],windowColor:{beyaz:'Beyaz',antrasit:'Antrasit',altinmese:'Altın meşe'}[G.opt.windowColor||'beyaz'],hCover:G.opt.hCover?'Betopan · 6 × 2 × '+G.opt.h+' cm':'Yok',stock:'Alçıpan stok levhası: 120 × 250 cm'};
+  return {roof,walls,ceiling:(G.opt.ceilingMode==='board'?'Alçıpan 120×250 · mini H yok':'Standart 60×120 · mini H')+' · ıslak hacim/veranda yeşil',facade:{yok:'Standart',tasonit:'Taşonit',yalipan:'Yalıpan'}[G.opt.cephe],windowColor:{beyaz:'Beyaz',antrasit:'Antrasit',altinmese:'Altın meşe'}[G.opt.windowColor||'beyaz'],hCover:G.opt.hCover?'Betopan · 6 × 2 × '+G.opt.h+' cm':'Yok',stock:'Alçıpan stok levhası: 120 × 250 cm'};
  }
  function paint(c,l,info){
   const px=96/25.4,x=12,y=l.h-106,w=l.w-24,ink='#223946',muted='#647883',edge='#bdcbd0';c.save();c.scale(px,px);c.translate(x,y);c.textAlign='left';c.textBaseline='top';c.lineWidth=.2;
