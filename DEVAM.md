@@ -837,3 +837,6 @@ Gerçek uygulamada isteğe bağlı Yeni düzeni dene gezinme katmanı eklendi. P
 
 ## 17 Ekim 2026 — DEV-119 / 5.9.112
 Gerçek çalışma alanı düzeni tamamlandı: Plan gerçek araç şeridi, ortak geçmiş/görünürlük, Çatı/Üretim/Metraj/Çıktı. Kopya üst kontroller sadeleştirildi; klasik dönüş ankrajlarla yapılır. Ana31/31, workflow-shell, save-as, view-filters, title-block geçti. [Kapsam ve sınırlar](analizler/2026-10-17-yeni-duzen.txt). Mevcut ayrıntı diyalogları korunur; yeni düzen isteğe bağlı.
+
+## 17 Ekim 2026 — DEV-120 / 5.9.113
+Çizim alanı için üst yerleşim kompaktlaştırıldı: ortak eylemler sekmelerle aynı satır, başlık52px/proje sekmeleri32px, araç boşlukları azaltıldı.1600x1000 görsel kontrol ve workflow-shell geçti. Sadece CSS; çizim mantığı korunur.

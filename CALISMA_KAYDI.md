@@ -909,3 +909,6 @@ Yeni gezinme gerçek uygulamaya isteğe bağlı eklendi; RoofStudio, PlanExport,
 
 ## 17 Ekim 2026 — DEV-119 / 5.9.112
 Çizim araçları yeniden yaratılmadan taşındı; dinleyiciler ve kimlikler korunur. Görünürlük modalı, ortak geçmiş, alan grupları ve klasik dönüş tamamlandı. İki sistemde model eşitliği kontrol edildi; ana31/31 ve kayıt/görünürlük/antet testleri geçti. Testte eski download varsayımı düzeltildi. Rapor analizler/2026-10-17-yeni-duzen.txt. Canlı müşteri çizimi üzerinde işlem yapılmadı.
+
+## 17 Ekim 2026 — DEV-120 / 5.9.113
+Kullanıcının işaretlediği gereksiz üst satır kaldırıldı. Grid ile navigasyon/ortak eylemler aynı sırada;1000px altı ayrı sıra. Proje sekmeleri, başlık ve araç çubukları basık.1600x1000 ekranında çizim üst sınırı yaklaşık140px yükseldi. Gerçek kontrol/model korunumu ve klasik dönüş testi geçti; ekran incelendi.

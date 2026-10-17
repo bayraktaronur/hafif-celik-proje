@@ -5221,7 +5221,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.112',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.113',projectName,sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5667,6 +5667,7 @@ updateStatus();
     documentsReady=true;renderDocuments();
   },{once:true});
 })();
+
 
 
 
@@ -6293,8 +6294,9 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.112';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.113';syncUI();draw();
 })();
+
 
 
 
@@ -8504,6 +8506,10 @@ LoadingReference.rows.push({id:"tuna-92",row:92,group:"Metal",name:"Yeşil alç�
 
 </script><style>
 #workflowShell[hidden],#workflowShell [hidden]{display:none!important}#workflowShell{flex:none;background:#243247;border-bottom:1px solid #50657d}.workflow-nav,.workflow-tools,.workflow-common{display:flex;gap:8px;align-items:center;padding:7px 18px;flex-wrap:wrap}.workflow-nav{border-bottom:1px solid #45586f}.workflow-nav button,.workflow-tools>button,.workflow-common>button{font:inherit;color:#dce9f4;border:1px solid #536981;border-radius:5px;padding:8px 14px;background:#1b2b3c;cursor:pointer}.workflow-nav button.active{background:#315e50;border-color:#80dfba;color:#c0ffe1}.workflow-common{float:right;padding:5px 18px}.workflow-tools{background:#2d3d51;clear:both}.workflow-tools button:hover{background:#41617b}.workflow-enabled .inspector{background:#243247;border-left:1px solid #52657d}.workflow-enabled #projectSidebar{background:#1c2838}#workflowToggle{border-color:#80bca7;color:#a4efcc}.workflow-enabled .workspace-bar{display:none}.workflow-enabled .header-actions>button:not(#workflowToggle):not([onclick*="yeniPlan"]):not([onclick*="planKaydet"]):not([onclick*="showBackups"]){display:none}.workflow-tools .tool-ribbon{border:0;padding:0;min-height:0;width:100%;background:transparent}.workflow-common .history-tools{border:0;padding:0}#workflowVisibility{background:#243247;color:#e6edf5;border:1px solid #637b96;border-radius:10px;width:min(440px,90vw);max-height:85vh;overflow:auto;padding:18px;margin:auto}#workflowVisibility::backdrop{background:#08101a99}.workflow-dialog-heading{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px}.workflow-dialog-heading button{background:#315e50;color:white;padding:8px;border:1px solid #80dfba;border-radius:5px}
+/* Compact drafting workspace: navigation and common actions share one row. */
+.workflow-enabled .app-header{height:52px;min-height:52px;padding:0 14px;gap:16px}.workflow-enabled .identity strong{font-size:17px}.workflow-enabled .identity small{font-size:7px}.workflow-enabled .brand-mark{width:34px;height:34px;font-size:26px}.workflow-enabled .header-actions .tb{padding:6px 10px}.workflow-enabled .project-tabs{min-height:32px;height:32px;padding:2px 8px;gap:4px}.workflow-enabled .project-tab button{padding:4px 10px;font-size:12px;line-height:18px}.workflow-enabled .project-tab .project-tab-close{padding:2px 6px;min-width:26px;flex-basis:26px;font-size:17px}.workflow-enabled .project-tabs>.tb{padding:4px 10px;font-size:12px}
+#workflowShell{display:grid;grid-template-columns:minmax(0,1fr) auto}.workflow-nav{min-width:0;flex-wrap:nowrap;overflow-x:auto;padding:3px 10px;gap:5px;border:0}.workflow-common{float:none;padding:3px 10px;gap:5px;flex-wrap:nowrap;border:0}.workflow-nav button,.workflow-common>button,.workflow-tools>button{padding:5px 10px;font-size:12px;white-space:nowrap}.workflow-tools{grid-column:1/-1;padding:3px 10px;gap:5px;min-height:34px;border-top:1px solid #45586f}.workflow-tools .tool-ribbon{height:auto;min-height:28px;padding:0;gap:8px;overflow-x:auto;flex-wrap:nowrap}.workflow-tools .tool-group{flex-shrink:0;padding-top:0;padding-bottom:0}.workflow-tools .t{padding:4px 8px;min-height:28px;font-size:12px}.workflow-tools .ss{padding:3px 6px;height:28px}.workflow-common .icon-btn{width:28px;height:28px;padding:3px}.workflow-enabled .context-ribbon{height:34px;min-height:34px;padding:2px 12px}.workflow-enabled .drafting-bar{height:32px;min-height:32px}.workflow-enabled .studio-main{min-height:0}
+@media(max-width:1000px){#workflowShell{grid-template-columns:1fr}.workflow-common{justify-content:flex-end}.workflow-tools{grid-column:1}.workflow-enabled .app-header{height:auto;min-height:52px}}
 
 </style><script>
 /* Layout-only relocation. Controls retain their identity, listeners and original anchors. */
