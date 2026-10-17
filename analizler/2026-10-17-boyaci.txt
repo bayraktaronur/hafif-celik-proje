@@ -1,0 +1,9 @@
+17 Ekim 2026 — DEV-121 / 5.9.114 — 3B Boyacı
+Kaynaklar (17 Ekim 2026 erişim):
+https://dekoratif.dyo.com.tr/renkler/2025-renk-kartelasi-ic-cephe
+https://dekoratif.dyo.com.tr/renkler/dis-cephe-renklerimiz
+Bu resmi sayfalardaki color divlerinin background-color, data-code, data-title değerlerinden164 dijital örnek alındı. Fiziksel boya eşleşme garantisi değildir; ürün önerisi veya tüm DYO kartelaları iddiası yok.
+İç/dış/köşe seçimi, ad/kod araması ve varsayılana dönüş. Standart köşe kırık beyaz #f4f1e8; bir DYO kodu olarak sunulmaz. Dış renk tüm cladding, canopyCladding ve gableCornerClosure başmakas kaplamalarını izler. H/U/çoklu birleşimler yüzey tarafının %94 tonunda; kenarlar aynı tonun %72 değeri. Geometri ve ışık gölgesi korunur.
+Kapalı veranda dışı oda poligonları yüzey merkezine göre iç/dış ayrımı yapar. Açık veya tespit edilemeyen odalarda dış ton kullanılır; iç/dış sınıflama için kapalı plan gerekir. Boya yalnız renderScene3D girişindeki kopyalara uygulanır; 2B/metraj/parça geometrisi değişmez.
+paint3D proje alanı doğrulanır; JSON, geçmiş ve proje sekmeleriyle taşınır. Boyacı yalnız3B modunda görünür. Köşe rengi dış boyadan bağımsız.
+Testler: paint-3d, wall-3d, scene-3d ve ana31/31 geçti. Boya/UI modu, kaynak renk, iki yüz, köşe/H, başmakas, değişmeyen yüzey girdisi, şema, geri/ileri alma; GPU ve fallback regresyonu. İzole3B örnek görseli incelendi. Kullanıcı canlı çizimi değiştirilmedi.

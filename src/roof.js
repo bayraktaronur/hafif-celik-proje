@@ -300,6 +300,7 @@
   }
   function projected3D(m,w,h){const points=[...m.faces.flatMap(f=>f.poly.map(p=>({...p,z:C.height(f,p)}))),...planStructure().flatMap(i=>i.poly)];Camera3D.state.yaw=angle;return Camera3D.project(points,w,h);}
   function renderScene3D(ctx,w,h,items,edges,project){
+    if(window.Paint3D)items=Paint3D.decorate(items);
     if(window.Scene3D&&Scene3D.render(ctx,w,h,items,edges,project))return;
     raster3D(ctx,w,h,items,edges,project);
   }
@@ -408,6 +409,7 @@
     m.cutList.slice(0,1000).forEach(c=>html+=`<tr><td>${c.number} · ${escape(c.name)} / ${escape(c.face.split('-').at(-1))}</td><td>${c.strip} / ${c.part}</td><td>${number(c.width)}</td><td>${number(c.length,1)}</td></tr>`);html+='</tbody></table>';if(m.cutList.length>1000)html+='<p>İlk 1000 satır gösteriliyor; CSV tüm satırları içerir.</p>';$('roofReport').innerHTML=html;
   }
   function render(){if(!dialog.open)return;if(!get())selected=G.roofs[0]?.id||null;
+    window.Paint3D?.sync(mode);
     $('roofWallDetails').hidden=!isPref();
     $('roofZones').innerHTML=G.roofs.map(z=>`<button class="roof-zone ${z.id===selected?'active':''}" data-roof-id="${z.id}">${escape(z.name)}<small>${TYPES[z.type]} · +${number(z.h,1)} cm</small></button>`).join('');$('roofZones').querySelectorAll('button').forEach(b=>b.onclick=()=>{selected=b.dataset.roofId;render();});
     const vr=$('roofVerandaRoom'),previous=vr.value;vr.replaceChildren();G.rooms.filter(r=>r.tip==='veranda').forEach((r,i)=>{const option=document.createElement('option');option.value=r.id;option.textContent=(r.ozelAd||'Veranda '+(i+1))+' · '+number(r.area)+' m²';vr.append(option);});if([...vr.options].some(o=>o.value===previous))vr.value=previous;const syncBeam=()=>{const z=G.roofs.find(z=>z.sourceRoomId===vr.value);$('roofVerandaBeam').value=z?.supports?.beam?.enabled?(z.supports.beam.left&&z.supports.beam.right?'all':'yes'):'no';};vr.onchange=syncBeam;syncBeam();
@@ -438,3 +440,4 @@
   $('roofContours').onclick=()=>{Scene3D.state.outlines=!Scene3D.state.outlines;$('roofContours').setAttribute('aria-pressed',String(Scene3D.state.outlines));paint();};
   window.RoofStudio={verandaBase,seat,raster3D,vergeEdges,edges3D,trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,soffitSurfaces,model,render,fit,setView,verandaMembers,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
 })();
+

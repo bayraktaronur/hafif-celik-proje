@@ -840,3 +840,6 @@ Gerçek çalışma alanı düzeni tamamlandı: Plan gerçek araç şeridi, ortak
 
 ## 17 Ekim 2026 — DEV-120 / 5.9.113
 Çizim alanı için üst yerleşim kompaktlaştırıldı: ortak eylemler sekmelerle aynı satır, başlık52px/proje sekmeleri32px, araç boşlukları azaltıldı.1600x1000 görsel kontrol ve workflow-shell geçti. Sadece CSS; çizim mantığı korunur.
+
+## 17 Ekim 2026 — DEV-121 / 5.9.114
+3B Boyacı tamamlandı: DYO164 dijital örnek, iç/dış/köşe; standart köşe kırık beyaz. H duvara yakın ton/kenar, başmakas dış rengini izler. Proje JSON/undo kaydı. [Kaynaklar ve sınırlar](analizler/2026-10-17-boyaci.txt). paint-3d, wall-3d, scene-3d ve ana31/31 geçti.

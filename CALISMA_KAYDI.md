@@ -912,3 +912,6 @@ Yeni gezinme gerçek uygulamaya isteğe bağlı eklendi; RoofStudio, PlanExport,
 
 ## 17 Ekim 2026 — DEV-120 / 5.9.113
 Kullanıcının işaretlediği gereksiz üst satır kaldırıldı. Grid ile navigasyon/ortak eylemler aynı sırada;1000px altı ayrı sıra. Proje sekmeleri, başlık ve araç çubukları basık.1600x1000 ekranında çizim üst sınırı yaklaşık140px yükseldi. Gerçek kontrol/model korunumu ve klasik dönüş testi geçti; ekran incelendi.
+
+## 17 Ekim 2026 — DEV-121 / 5.9.114
+Boyacı 3B görünümüne eklendi. Resmi DYO sayfalarından doğrulanmış dijital renkler; proje bazlı kayıt, iç/dış/köşe ayrımı. Fiziksel renk ekranda temsili; kapalı oda poligonu gerekliliği raporda. H renk ve kenar tonları yumuşatıldı, kırık beyaz köşe varsayılanı. Testler geçti, izole görsel incelendi; canlı kullanıcı çizimine dokunulmadı.

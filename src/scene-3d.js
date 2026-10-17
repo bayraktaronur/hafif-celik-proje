@@ -32,13 +32,13 @@
   const opaque=[],glass=[],edgeMap=new Map(),lineData=[];
   for(const {item,pts,n} of projected){
    const base=rgb(item.color),diff=Math.abs(n[0]*.36+n[1]*-.48+n[2]*.8),shade=.60+.35*diff+.05*Math.abs(n[2]);
-   const metallic=item.kind==='wallJoint'||item.kind==='gableOmega',highlight=metallic?.07*Math.pow(diff,12):0;
+   const metallic=!item.painted&&(item.kind==='wallJoint'||item.kind==='gableOmega'),highlight=metallic?.07*Math.pow(diff,12):0;
    let color=[...base.map(v=>Math.min(1,v*shade+highlight)),item.alpha??1];
    if(color[3]<1){const yaw=Camera3D.state.yaw*Math.PI/180,pitch=Camera3D.state.pitch*Math.PI/180,view=[Math.sin(yaw)*Math.cos(pitch),Math.cos(yaw)*Math.cos(pitch),Math.sin(pitch)],facing=Math.abs(n.reduce((sum,v,i)=>sum+v*view[i],0)),reflection=.08+.35*Math.pow(1-facing,5);color=[...base.map(v=>v*(1-reflection)+reflection),Math.min(.7,color[3]+reflection*.4)];}
    for(let j=1;j<pts.length-1;j++){const tri=[pts[0],pts[j],pts[j+1]];if(color[3]<1)glass.push({tri,color,depth:tri.reduce((s,p)=>s+p.depth,0)/3});else tri.forEach(p=>vertex(opaque,p,color));}
    // Roof seams are supplied explicitly; panel patch boundaries are not physical joints.
    if(state.outlines&&!item.roof&&item.material!=='panel'&&item.material!=='glass'&&!['openingMark','wallPanel','ridgeCap','vergeTrim','vergeBottom','soffit','cladding'].includes(item.kind)){
-    item.poly.forEach((a,i)=>{const b=item.poly[(i+1)%item.poly.length],keyPoint=p=>[p.x,p.y,p.z].map(v=>Math.round(v*1000)).join(','),ka=keyPoint(a),kb=keyPoint(b);if(ka===kb)return;const key=ka<kb?ka+'|'+kb:kb+'|'+ka,old=edgeMap.get(key);if(old){old.count++;if(Math.abs(old.n.reduce((s,v,j)=>s+v*n[j],0))<.94||old.color!==item.color)old.feature=true;}else edgeMap.set(key,{a:pts[i],b:pts[(i+1)%pts.length],n,color:item.color,count:1,feature:false});});
+    item.poly.forEach((a,i)=>{const b=item.poly[(i+1)%item.poly.length],keyPoint=p=>[p.x,p.y,p.z].map(v=>Math.round(v*1000)).join(','),ka=keyPoint(a),kb=keyPoint(b);if(ka===kb)return;const key=ka<kb?ka+'|'+kb:kb+'|'+ka,old=edgeMap.get(key);if(old){old.count++;if(Math.abs(old.n.reduce((s,v,j)=>s+v*n[j],0))<.94||old.color!==item.color)old.feature=true;}else edgeMap.set(key,{a:pts[i],b:pts[(i+1)%pts.length],n,color:item.color,edgeColor:item.edgeColor,count:1,feature:false});});
    }
   }
   if(state.grid&&Number.isFinite(x0)){
@@ -49,7 +49,7 @@
   }
   gl.enable(gl.POLYGON_OFFSET_FILL);gl.polygonOffset(1,1);batch(opaque,gl.TRIANGLES);gl.disable(gl.POLYGON_OFFSET_FILL);
   const ink=light?[.19,.23,.27,1]:[.10,.14,.18,1];
-  for(const e of edgeMap.values())if(e.count===1||e.feature){vertex(lineData,e.a,ink,1e-6);vertex(lineData,e.b,ink,1e-6);}
+  for(const e of edgeMap.values())if(e.count===1||e.feature){const stroke=e.edgeColor?[...rgb(e.edgeColor),1]:ink;vertex(lineData,e.a,stroke,1e-6);vertex(lineData,e.b,stroke,1e-6);}
   // Explicit roof seams use the same depth test as the solid model.
   for(const e of edges){const color=[...rgb(e.color||'#73838c'),1];vertex(lineData,project(e.p),color,1e-6);vertex(lineData,project(e.q),color,1e-6);}
   gl.lineWidth(1);batch(lineData,gl.LINES);
@@ -60,3 +60,4 @@
  }
  window.Scene3D={render,state,stats};
 })();
+
