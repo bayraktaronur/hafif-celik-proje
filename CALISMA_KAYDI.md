@@ -927,3 +927,6 @@ Beyaz köşe kısayolu ve dört çatı rengi tamamlandı. Boyacı sekme, seçim 
 
 ## 17 Ekim 2026 — DEV-125 / 5.9.117
 Net en bazlı toplamlar ayrıldı, 3B 27mm/200mm trapez yüzeyleri kırpılarak eklendi. Gerçek çatı alanı değişmez; fiyat için net en x kesim boyu alanı ayrı. Testler: roof 20/20, trapez-profile, trapez-3d. Görsel incelendi. Üretici omuz/tepe kesiti henüz temsili; kullanıcı çizimi değiştirilmedi. Kaynaklar ve dağıtım birlikte teslim.
+
+## 17 Ekim 2026 — DEV-126 / 5.9.118
+Çatı alt katman yüzeyleri ve görüntüye özel kademeli kesit tamamlandı. Nem bariyeri açık gri, OSB ahşap tonunda; yalnız seçilenler oluşturulur. Kesit metrajı değiştirmez, PNG mevcut görünümü kullanır. Test ve izole screenshot geçti. Tam makas karkası ve gerçek ürün kalınlığı ayrı işlerdir; bu teslim katman gösterimidir.

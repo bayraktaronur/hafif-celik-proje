@@ -319,6 +319,22 @@
     }
     return out;
   }
+
+  // Display-only stepped reveal. Thicknesses are illustrative, not production inputs.
+  function roofLayerView(face,zone,cutaway=false,legacyOSB=false){
+    const selected=layers(zone,legacyOSB),order=['osb','nem','membran'].filter(id=>selected.some(l=>l.id===id));
+    const angle=zone.angle*Math.PI/180,ux=Math.cos(angle),uy=Math.sin(angle),origin=zone.x*ux+zone.y*uy;
+    const bounds=footprint(zone).map(p=>p.x),min=Math.min(...bounds),span=Math.max(...bounds)-min;
+    const crop=(poly,fraction)=>cutaway?clip(poly,ux,uy,-(origin+min+span*fraction)):poly;
+    const top=crop(face.poly,.60),surfaces=[];let depth=.12;
+    for(let i=order.length-1;i>=0;i--){const id=order[i],thickness=id==='osb'?1.2:.08,poly=crop(face.poly,.60*(i+1)/(order.length+1));
+      if(poly.length){const upper=poly.map(p=>({...p,z:height(face,p)-depth})),lower=upper.map(p=>({...p,z:p.z-thickness})),color=id==='osb'?'#c6a574':id==='nem'?'#e2e6df':'#586168';
+        surfaces.push({kind:'roofLayer',layer:id,zone:zone.id,poly:upper,color,shade:1});
+        poly.forEach((p,j)=>{const k=(j+1)%poly.length;surfaces.push({kind:'roofLayerEdge',layer:id,zone:zone.id,poly:[upper[j],upper[k],lower[k],lower[j]],color,shade:.74});});
+      }depth+=thickness;
+    }
+    return {top:top.length?{...face,poly:top}:null,surfaces,order};
+  }
   function calculate(zones,custom=[],legacyOSB=false){
     validate(zones,custom);const materials=[...clone(MATERIALS),...clone(custom)],fs=faces(zones),edges=topology(fs),cutList=cuts(fs,zones,materials),warnings=[];
     const byZone=zones.map(z=>{const visible=fs.filter(f=>f.zoneId===z.id),net=visible.reduce((s,f)=>s+area(f.poly)*Math.sqrt(1+f.a*f.a+f.b*f.b)/10000,0),plan=visible.reduce((s,f)=>s+area(f.poly)/10000,0),m=materials.find(m=>m.id===z.material);
@@ -369,5 +385,5 @@
     }
     return {runs,pending};
   }
-  return {trapezSurfaces,purlinRuns,purlinStations,connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
+  return {roofLayerView,trapezSurfaces,purlinRuns,purlinStations,connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
 });

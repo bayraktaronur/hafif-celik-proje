@@ -855,3 +855,6 @@ Köşe kartelasına ilk sırada beyaz eklendi; kırık beyaz varsayılan korunur
 
 ## 17 Ekim 2026 — DEV-125 / 5.9.117
 27/200 trapez 3B form eklendi; 80/100 kapatma enleri metraj/CSV/genel listede ayrı. Kesim alanı fiyatlandırma için m² kalemi olarak eklenir; birim fiyat hesabı yapılmaz. [Kapsam ve sınırlar](analizler/2026-10-17-trapez-uygulama.txt). 20 roof kontrolü, trapez-profile ve trapez-3d geçti; görüntü incelendi. Tepe/taban genişlikleri temsili; kesin imalat kesiti için tedarikçi çizimi açık.
+
+## 17 Ekim 2026 — DEV-126 / 5.9.118
+Seçili OSB/nem bariyeri/membran 3B'de çatı örtüsünün altında gösterilir. 3B kesit düğmesi katmanları kademeli açar; tekrar basınca tam örtüye döner. Yalnız görüntü değişir; metraj/model korunur. roof-cutaway testi (seçim, sıra, dönüş, aç/kapat, proje eşitliği) geçti; görsel incelendi. OSB 12mm, ince katman 0,8mm görsel temsildir, imalat verisi değildir. Referans fotoğraftaki makas karkası bu değişiklikte eklenmedi; mevcut yapı görünümü korunur.
