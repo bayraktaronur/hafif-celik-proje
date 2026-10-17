@@ -852,3 +852,6 @@ Köşe kartelasına ilk sırada beyaz eklendi; kırık beyaz varsayılan korunur
 
 ## 17 Ekim 2026 — DEV-124
 27/200 trapez araştırması tamamlandı: analizler/2026-10-17-trapez-27-200.txt. Form yüksekliği/adımı ile net en/kalınlık ayrıldı. Tedarikçi kesiti belirsiz; uygulama değişikliği yapılmadı. Sürüm 5.9.116 korunur.
+
+## 17 Ekim 2026 — DEV-125 / 5.9.117
+27/200 trapez 3B form eklendi; 80/100 kapatma enleri metraj/CSV/genel listede ayrı. Kesim alanı fiyatlandırma için m² kalemi olarak eklenir; birim fiyat hesabı yapılmaz. [Kapsam ve sınırlar](analizler/2026-10-17-trapez-uygulama.txt). 20 roof kontrolü, trapez-profile ve trapez-3d geçti; görüntü incelendi. Tepe/taban genişlikleri temsili; kesin imalat kesiti için tedarikçi çizimi açık.

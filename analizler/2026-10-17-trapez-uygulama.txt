@@ -1,0 +1,5 @@
+27/200 trapez uygulaması — 5.9.117
+80/100 cm mevcut net en seçimi korunur, etiket kapatır olarak açıklandı. Metraj toplamları sac enine göre ayrılır; CSV ve billRows bu ayrımı taşır. Kesim alanı net en x kesim boyu olup fiyat analizinde kullanılabilir; ham rulo alanı veya otomatik fiyat değildir. Birim fiyat tanımlanmadı.
+3B: çatı düzlemine dik 27 mm yükseklik, eğim yönüne dik 200 mm periyot; hadveler eğim boyunca ilerler. Her parça asıl görünür çatı poligonuna kırpılır. Tepe/taban/omuz genişlikleri üretici çizimi gelene kadar temsilidir; imalat kalıbı kesiti değildir. Ana ölçü ve net en kullanıcı tarafından belirtildi.
+Geometri metraj yüzeyini değiştirmez. Boyacı çatı rengi uygulanır, mahya kapaması form üstüne çıkarıldı. Başmakas dış renk kuralı korunur.
+Kontrol: trapez-profile (80/100 ayrı adet ve alan, 3 biçim x 3 yön, kırpma ve yükseklik), trapez-3d (yerleşim aç/kapat ve model değişmezliği), roof regresyonu. Eski roof testi artık kilitli olan e0 alanını doldurmaya çalışıyordu; mevcut kilit kuralına göre düzeltildi.

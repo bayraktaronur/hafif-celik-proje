@@ -924,3 +924,6 @@ Beyaz köşe kısayolu ve dört çatı rengi tamamlandı. Boyacı sekme, seçim 
 
 ## 17 Ekim 2026 — DEV-124
 Üretici kaynaklarıyla 27/200 form araştırması kaydedildi. 3B hadve yönü ve ölçüler için öneri; kesin kesit ve tedarikçi bilgisi bekliyor. Kod değişmedi. Rapor kaynak erişim sınırını belirtir.
+
+## 17 Ekim 2026 — DEV-125 / 5.9.117
+Net en bazlı toplamlar ayrıldı, 3B 27mm/200mm trapez yüzeyleri kırpılarak eklendi. Gerçek çatı alanı değişmez; fiyat için net en x kesim boyu alanı ayrı. Testler: roof 20/20, trapez-profile, trapez-3d. Görsel incelendi. Üretici omuz/tepe kesiti henüz temsili; kullanıcı çizimi değiştirilmedi. Kaynaklar ve dağıtım birlikte teslim.

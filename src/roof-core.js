@@ -4,7 +4,7 @@
   'use strict';
   const EPS=1e-7;
   const MATERIALS=[
-    {id:'trapez',name:'Trapez sac',unit:'sheet',widths:[80,100],color:'#ab6260'},
+    {id:'trapez',name:'27/200 Trapez sac',unit:'sheet',widths:[80,100],color:'#ab6260'},
     {id:'sandvic',name:'Sandviç panel',unit:'sheet',widths:[100],color:'#769395'},
     {id:'tekkat',name:'Tek kat panel',unit:'sheet',widths:[100],color:'#8391a5'},
     {id:'metal',name:'Metal kiremit',unit:'sheet',widths:[80,100],color:'#b75b49'},
@@ -304,6 +304,21 @@
     if(link.mode==='tek'&&z.frontClearance<link.minClearance-EPS)throw Error('Sundurma ön açıklığı '+z.frontClearance.toFixed(1)+' cm; seçilen minimum '+link.minClearance+' cm. Eğimi azaltın veya başlangıç kotunu yükseltin.');
     return z;
   }
+
+  // 27/200: centimetres. Crest/shoulder widths are schematic pending supplier section.
+  // Clip each planar facet to the original face; metraj uses the untouched roof model.
+  function trapezSurfaces(face){
+    const pitch=Math.hypot(face.a,face.b);if(pitch<EPS)return [{poly:face.poly.map(p=>({...p,z:height(face,p)}))}];
+    const ux=face.b/pitch,uy=-face.a/pitch,factor=Math.sqrt(1+pitch*pitch);
+    const xs=face.poly.map(p=>p.x*ux+p.y*uy),lo=Math.floor(Math.min(...xs)/20)*20,hi=Math.max(...xs);
+    const profile=[[0,0],[6,0],[9,2.7],[13,2.7],[16,0],[20,0]],out=[];
+    for(let start=lo;start<hi-EPS;start+=20)for(let i=0;i<profile.length-1;i++){
+      const [x,h]=profile[i],[next,h2]=profile[i+1],left=start+x,right=start+next;
+      const poly=clip(clip(face.poly,ux,uy,-left),-ux,-uy,right);if(!poly.length)continue;
+      out.push({kind:'trapezProfile',roof:true,zone:face.zoneId,poly:poly.map(p=>({...p,z:height(face,p)+(h+(h2-h)*(p.x*ux+p.y*uy-left)/(right-left))*factor})),profileShade:h2>h?.83:h2<h?1:.94});
+    }
+    return out;
+  }
   function calculate(zones,custom=[],legacyOSB=false){
     validate(zones,custom);const materials=[...clone(MATERIALS),...clone(custom)],fs=faces(zones),edges=topology(fs),cutList=cuts(fs,zones,materials),warnings=[];
     const byZone=zones.map(z=>{const visible=fs.filter(f=>f.zoneId===z.id),net=visible.reduce((s,f)=>s+area(f.poly)*Math.sqrt(1+f.a*f.a+f.b*f.b)/10000,0),plan=visible.reduce((s,f)=>s+area(f.poly)/10000,0),m=materials.find(m=>m.id===z.material);
@@ -312,8 +327,8 @@
       if(z.parapet)warnings.push(z.name+': parapetli çatı; iç süzgeç, taşma ve parapet kaplaması ayrıca projelendirilir.');
       return {id:z.id,name:z.name,material:z.material,area:net,planArea:plan,purchaseArea:net*(1+z.fire/100),pieces:cutList.filter(c=>c.zoneId===z.id).length};});
     // Package quantities aggregate by actual coverage value, so mixed products are never rounded together.
-    const totals=new Map();byZone.forEach(v=>{const z=zones.find(z=>z.id===v.id),m=materials.find(m=>m.id===v.material),key=m.id+'|'+(m.unit==='package'?z.packageArea:'');if(!totals.has(key))totals.set(key,{material:m.id,name:m.name,unit:m.unit,area:0,purchaseArea:0,coverage:z.packageArea,pieces:0,blankArea:0});const t=totals.get(key);t.area+=v.area;t.purchaseArea+=v.purchaseArea;t.pieces+=v.pieces;});
-    cutList.forEach(c=>{totals.get(c.material+'|').blankArea+=c.width*c.length/10000;});
+    const totals=new Map();byZone.forEach(v=>{const z=zones.find(z=>z.id===v.id),m=materials.find(m=>m.id===v.material),key=m.id+'|'+(m.unit==='package'?z.packageArea:m.unit==='sheet'?z.width:'');if(!totals.has(key))totals.set(key,{material:m.id,name:m.name+(m.unit==='sheet'?' · '+z.width+' cm kapatır':''),width:z.width,unit:m.unit,area:0,purchaseArea:0,coverage:z.packageArea,pieces:0,blankArea:0});const t=totals.get(key);t.area+=v.area;t.purchaseArea+=v.purchaseArea;t.pieces+=v.pieces;});
+    cutList.forEach(c=>{totals.get(c.material+'|'+c.width).blankArea+=c.width*c.length/10000;});
     for(const t of totals.values())t.packages=t.unit==='package'?Math.ceil(t.purchaseArea/t.coverage-1e-9):0;
     const lengths={};edges.forEach(e=>{lengths[e.type]=(lengths[e.type]||0)+e.length;});
     const layerTotals=[],layerCuts=[];
@@ -354,5 +369,5 @@
     }
     return {runs,pending};
   }
-  return {purlinRuns,purlinStations,connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
+  return {trapezSurfaces,purlinRuns,purlinStations,connectChild,pointIn,checkOutline,offsetOutline,triangulate,MATERIALS,LAYERS,layers,attachVeranda,turn,defaults,validate,calculate,zoneFaces,footprint,basePolygon,transform,untransform,height,area,clip,intersect,contains,stripLines};
 });
