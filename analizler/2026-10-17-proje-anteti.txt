@@ -1,0 +1,9 @@
+Ortak proje anteti — 5.9.119 / 17 Ekim 2026
+Tek kaynak G.opt. Ana çizimde proje anteti: yükseklik, iç/dış duvar, duvar alçıpanı, tavan alçıpanı, cephe, pencere rengi, H kapak lata, çatı kaplaması ve net en. Seçimler mevcut JSON/undo üzerinden çalışır.
+Trapez/sandviç ve net en proje seçimi tüm çatılara uygulanır; çatıdan bu iki malzemeye geçiş de ortak seçimi değiştirir. Özel kaplama türleri bu ortak ikili seçimin dışında mevcut bölüm davranışını korur. Eski projedeki çelişkiler yükleme sırasında sessizce değiştirilmez; kullanıcı ortak seçim yaptığında eşitlenir.
+Pencere beyaz/antrasit/altın meşe: PVC modeller ve şematik pencere kasaları; altın meşe düz temsili ton, ahşap dokusu değil.
+H kapak lata: prefabrik H/H3 dış yüzlerinde 6x2cm, yükseklik G.opt.h. Aynı cover geometrisi adet/alan ve 3B kaynağıdır. TL/m² kullanıcı fiyatıyla maliyet hesaplanır; 0 ise fiyat yok. Dış yüz sınıflandırması kapalı oda poligonlarına bağlıdır; açık/kapanmamış planda lata hesaplanmaz. H birleşimleri kaldırılmaz; fiziksel kapama üstüne gelir.
+Cephe: mevcut Taşonit/Yalıpan miktar hesabı korunur; 3B dış yüzlerde plaka/bindirme adımında temsili yatay ayrım. Ürün yüzey dokusu/kalınlığı modellenmedi.
+Tavan: yanıt gelmediğinden mevcut düz tavan kaplaması varsayıldı. Var/yok seçimi tavan yüzeyi ve alçıpan hesabına bağlıdır. Ayrı kotlu asma tavan yapılmadı. Alçıpan stok 120x250 korunur.
+Çıktı antetine cephe/pencere/lata satırı eklendi. Genel fiyat motoru yapılmadı; yalnız lata birim fiyatı ve maliyeti eklendi.
+Kontroller: project-specs, title-block, roof 20/20, ana31/31. İzole ekran görüntüsü incelendi. Canlı çizim değiştirilmedi.

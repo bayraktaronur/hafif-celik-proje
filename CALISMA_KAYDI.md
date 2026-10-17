@@ -930,3 +930,6 @@ Net en bazlı toplamlar ayrıldı, 3B 27mm/200mm trapez yüzeyleri kırpılarak 
 
 ## 17 Ekim 2026 — DEV-126 / 5.9.118
 Çatı alt katman yüzeyleri ve görüntüye özel kademeli kesit tamamlandı. Nem bariyeri açık gri, OSB ahşap tonunda; yalnız seçilenler oluşturulur. Kesit metrajı değiştirmez, PNG mevcut görünümü kullanır. Test ve izole screenshot geçti. Tam makas karkası ve gerçek ürün kalınlığı ayrı işlerdir; bu teslim katman gösterimidir.
+
+## 17 Ekim 2026 — DEV-127 / 5.9.119
+Ana çizimde ortak özellik paneli ve çıktı anteti alanları. Çatı trapez/sandviç değişimleri iki yönlü, lata tek geometriyle hesaplanır. Eski çizim dosyaları değiştirilmedi; seçimde eşitleme. 31 ana test,20 roof,antet ve ortak özellik testleri geçti. Ayrıntılar analizler/2026-10-17-proje-anteti.txt; ayrı asma tavan ve genel fiyat motoru tamamlandı sayılmaz.

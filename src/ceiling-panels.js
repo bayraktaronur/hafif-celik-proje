@@ -15,7 +15,7 @@
   }
   return {surfaces,lines,area:C.area(poly)/10000,dx,dy};
  }
- function build(){const surfaces=[],lines=[];let area=0;
+ function build(){const surfaces=[],lines=[];let area=0;if(G.opt.ceilingBoard===false)return {surfaces,lines,area,miniH:0};
   for(const room of G.rooms){const geo=odaIcGeometri(room);if(!geo)continue;const roof=G.roofs.find(z=>z.sourceRoomId===room.id);if(room.tip==='veranda'&&!roof)continue;
    let poly=geo.poly,longX=catiYatay(),level=+G.opt.h||250;
    if(roof?.attachment){const b=roof.attachment.base,members=RoofStudio.verandaMembers(roof);level=Math.min(...members.map(m=>m.kind==='post'?m.top:m.bottom));const local=poly.map(p=>C.untransform(b,p));const result=layout(local,false,level);result.surfaces.forEach(s=>s.poly=s.poly.map(p=>({...C.transform(b,p),z:p.z})));result.lines.forEach(l=>{l.p={...C.transform(b,l.p),z:l.p.z};l.q={...C.transform(b,l.q),z:l.q.z};});surfaces.push(...result.surfaces);lines.push(...result.lines);area+=result.area;

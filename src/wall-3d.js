@@ -39,7 +39,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    parts.push({...meta,widthMm:mesh.width*10,heightMm:height*10});
    for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+(mesh.vertices[i+j]-mesh.centerX)*flip,y=(mesh.vertices[i+j+1]-mesh.wallCenterY)*flip;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:Math.abs(mesh.vertices[i+j+2]-mesh.height)<.001?height:mesh.vertices[i+j+2]});}
     const u={x:poly[1].x-poly[0].x,y:poly[1].y-poly[0].y,z:poly[1].z-poly[0].z},v={x:poly[2].x-poly[0].x,y:poly[2].y-poly[0].y,z:poly[2].z-poly[0].z},nx=u.y*v.z-u.z*v.y,ny=u.z*v.x-u.x*v.z,nz=u.x*v.y-u.y*v.x,L=Math.hypot(nx,ny,nz);
-    const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?panelColor:material==='pvc'?'#ffffff':'#85b9cb';
+    const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?panelColor:material==='pvc'?(window.ProjectSpecs?.windowHex()||'#ffffff'):'#85b9cb';
     if(L>1e-8)surfaces.push({...meta,poly,color,material,alpha:material==='glass'?.38:1,shade:Math.abs(nz)/L>.9?1:.78+.18*Math.abs(ny)/L});
    }
    warnings.add(label+' pano: STL pencere ölçüleri korunur; pano '+height+' cm. PVC beyaz; cam yarı saydam. Malzeme ayrımı geometriden tahmin edilir.');
@@ -60,7 +60,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    warnings.add('PVC/kapı kasa ve kanat kesitleri temsilî; pencere üst kotu210 cm.');
    if(o.z<0||o.top>height){warnings.add('Açıklık yüksekliği210 cm üst kotuna veya duvar yüksekliğine sığmıyor.');continue;}
    parts.push({...meta,widthMm:e.en*10,heightMm:e.yuk*10,sillMm:o.z*10,cols,type:cat?.opening||e.penTip||style});
-   const f=Math.min(4,e.en/8,e.yuk/8),col='#eef0e9';
+   const f=Math.min(4,e.en/8,e.yuk/8),col=door?'#eef0e9':(window.ProjectSpecs?.windowHex()||'#eef0e9');
    rect(r,o.a,o.a+f,-3,3,o.z,o.top,col,meta);rect(r,o.b-f,o.b,-3,3,o.z,o.top,col,meta);rect(r,o.a,o.b,-3,3,o.top-f,o.top,col,meta);if(!door)rect(r,o.a,o.b,-3,3,o.z,o.z+f,col,meta);
    const low=o.z+(door?0:f),top=o.top-f,transom=cat?.transom?top-(top-low)*cat.transom:null;
    function mark(x0,z0,x1,z1){const dx=x1-x0,dz=z1-z0,L=Math.hypot(dx,dz);if(!L)return;for(const side of [-1,1]){const coords=[[x0-dz/L*.25,z0+dx/L*.25],[x1-dz/L*.25,z1+dx/L*.25],[x1+dz/L*.25,z1-dx/L*.25],[x0+dz/L*.25,z0-dx/L*.25]];surfaces.push({...meta,kind:'openingMark',poly:coords.map(([x,z])=>({x:r.ax+r.ux*x-r.uy*side*.5,y:r.ay+r.uy*x+r.ux*side*.5,z})),color:'#dbe6e9',shade:1});}}
@@ -89,7 +89,8 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    }
   }else warnings.add('Üçlü H, U ve diğer kalınlıkların profil geometrisi henüz detaylandırılmadı.');
  }
- return {surfaces,parts,warnings:[...warnings]};
+ if(window.ProjectSpecs)for(const cover of ProjectSpecs.covers()){box(cover.poly,0,height,panelColor,{kind:'hCover',partId:cover.id});parts.push({kind:'hCover',partId:cover.id,widthMm:60,depthMm:20,heightMm:height*10});}
+ return {surfaces:window.ProjectSpecs?ProjectSpecs.facade(surfaces):surfaces,parts,warnings:[...warnings]};
 }
 window.Wall3D={build,panelColor};
 })();

@@ -858,3 +858,6 @@ Köşe kartelasına ilk sırada beyaz eklendi; kırık beyaz varsayılan korunur
 
 ## 17 Ekim 2026 — DEV-126 / 5.9.118
 Seçili OSB/nem bariyeri/membran 3B'de çatı örtüsünün altında gösterilir. 3B kesit düğmesi katmanları kademeli açar; tekrar basınca tam örtüye döner. Yalnız görüntü değişir; metraj/model korunur. roof-cutaway testi (seçim, sıra, dönüş, aç/kapat, proje eşitliği) geçti; görsel incelendi. OSB 12mm, ince katman 0,8mm görsel temsildir, imalat verisi değildir. Referans fotoğraftaki makas karkası bu değişiklikte eklenmedi; mevcut yapı görünümü korunur.
+
+## 17 Ekim 2026 — DEV-127 / 5.9.119
+Ortak proje anteti eklendi: seçenekler, pencere renkleri, H kapak lata 3B/adet/alan/fiyat, tavan aç/kapat, çatı kaplama iki yönlü bağlantı. Antet çıktısı genişletildi. [Kapsam ve açık sınırlar](analizler/2026-10-17-proje-anteti.txt). Tests project-specs/title-block/roof20/ana31 geçti. Açık: ayrı kotlu ters tavan anlamı kullanıcıdan bekleniyor; genel fiyat motoru ve gerçek cephe dokuları yok; özel çatı malzemeleri bölüm bazında kalır. Önceki çatı arayüzü gruplama işi devam ediyor.

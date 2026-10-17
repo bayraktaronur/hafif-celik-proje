@@ -8,14 +8,14 @@
   const mats=[...RoofCore.MATERIALS,...(G.roofMaterials||[])],ids=G.roofs.length?G.roofs.map(z=>z.material):[G.opt.kaplama];
   const roof=G.roofs.length||G.opt.cati!=='yok'?[...new Set(ids.map(id=>mats.find(m=>m.id===id)?.name||id||'Belirtilmedi'))].join(' / '):'Çatı yok';
   const walls=G.opt.alciDuvar==='hepsi'?'Tüm odalar alçıpan; banyo/WC yeşil':G.opt.alciDuvar==='secili'?'Seçili odalar + banyo/WC alçıpan':'Yalnız banyo/WC yeşil alçıpan';
-  return {roof,walls,ceiling:'Alçıpan · ıslak hacimler yeşil',stock:'Alçıpan stok levhası: 120 × 250 cm'};
+  return {roof,walls,ceiling:G.opt.ceilingBoard===false?'Alçıpan yok':'Alçıpan · ıslak hacimler yeşil',facade:{yok:'Standart',tasonit:'Taşonit',yalipan:'Yalıpan'}[G.opt.cephe],windowColor:{beyaz:'Beyaz',antrasit:'Antrasit',altinmese:'Altın meşe'}[G.opt.windowColor||'beyaz'],hCover:G.opt.hCover?'Betopan · 6 × 2 × '+G.opt.h+' cm':'Yok',stock:'Alçıpan stok levhası: 120 × 250 cm'};
  }
  function paint(c,l,info){
-  const px=96/25.4,x=12,y=l.h-96,w=l.w-24,ink='#223946',muted='#647883',edge='#bdcbd0';c.save();c.scale(px,px);c.translate(x,y);c.textAlign='left';c.textBaseline='top';c.lineWidth=.2;
+  const px=96/25.4,x=12,y=l.h-106,w=l.w-24,ink='#223946',muted='#647883',edge='#bdcbd0';c.save();c.scale(px,px);c.translate(x,y);c.textAlign='left';c.textBaseline='top';c.lineWidth=.2;
   function text(value,x,y,width,size=2.7,lines=1,bold=false,color=ink){c.font=(bold?'600 ':'')+size+'px sans-serif';c.fillStyle=color;const words=String(value||'—').replace(/[\r\n]+/g,' ').split(/\s+/);let rows=[],line='';for(const word of words){if(line&&c.measureText(line+' '+word).width>width){rows.push(line);line=word;}else line+=(line?' ':'')+word;}if(line)rows.push(line);if(rows.length>lines)rows=rows.slice(0,lines).map((s,i)=>i===lines-1?s+'…':s);rows.forEach((s,i)=>{while(c.measureText(s).width>width&&s.length>1)s=s.slice(0,-2)+'…';c.fillText(s,x,y+i*size*1.25);});}
   function rect(x,y,w,h,bg){if(bg){c.fillStyle=bg;c.fillRect(x,y,w,h);}c.strokeStyle=edge;c.strokeRect(x,y,w,h);}
   function cell(label,value,x,y,w,h){rect(x,y,w,h);text(label.toLocaleUpperCase('tr-TR'),x+2.5,y+1.7,w-5,1.8,1,false,muted);text(value,x+2.5,y+5,w-5,2.55,h>=13?2:1,true);}
-  rect(0,0,w,84,'#ffffff');rect(0,0,w,19,'#eef4f3');c.fillStyle='#287565';c.fillRect(0,0,w,.8);
+  rect(0,0,w,94,'#ffffff');rect(0,0,w,19,'#eef4f3');c.fillStyle='#287565';c.fillRect(0,0,w,.8);
   const logoW=Math.min(70,w*.26),metaW=35,titleW=w-logoW-metaW,url=info.logo?.join(''),img=url&&images.get(url);
   if(url&&!img){c.restore();throw Error('Logo hazırlanıyor; çıktı ekranını yeniden açın.');}
   if(img){const s=Math.min((logoW-7)/img.width,12/img.height);c.drawImage(img,3.5+(logoW-7-img.width*s)/2,2,img.width*s,img.height*s);text(info.company||'PREFABRİKTEN',3.5,15,logoW-7,1.9,1,true);}else{text(info.company||'PREFABRİKTEN',3.5,5,logoW-7,3.6,2,true);}
@@ -27,8 +27,8 @@
   [['Yapı sistemi',type],['Yükseklik / duvar',height+(d.sistem==='prefabrik'?' · Dış '+fmt(d.opt.dis)+' / iç '+fmt(d.opt.ic)+' cm':'')],['Kapalı alan · aks',fmt(closed)+' m²'],['Veranda · aks',fmt(ver)+' m²']].forEach(([k,v],i)=>cell(k,v,w*i/4,cy,w/4,15));
   cy+=15;const spec=specifications();rect(0,cy,w,14,'#f1f6f5');
   [['Çatı kaplaması',spec.roof],['Duvar kaplaması',spec.walls],['Tavan kaplaması',spec.ceiling]].forEach(([k,v],i)=>cell(k,v,w*i/3,cy,w/3,14));
-  cy+=14;text(info.notes||spec.stock,3,cy+2,w-45,2.3,2);text(info.contact,3,cy+8,w-45,1.9,1,false,muted);text(l.paper+' · '+(l.orientation==='portrait'?'Dikey':'Yatay')+' · Ölçüler cm',w-42,cy+2,39,1.9);text('PDF yazdırma: %100 / Gerçek boyut',w-42,cy+6,39,1.6);
+  cy+=14;[["Dış cephe",spec.facade],["Pencere rengi",spec.windowColor],["H kapak lata",spec.hCover]].forEach(([k,v],i)=>cell(k,v,w*i/3,cy,w/3,10));cy+=10;text(info.notes||spec.stock,3,cy+2,w-45,2.3,2);text(info.contact,3,cy+8,w-45,1.9,1,false,muted);text(l.paper+' · '+(l.orientation==='portrait'?'Dikey':'Yatay')+' · Ölçüler cm',w-42,cy+2,39,1.9);text('PDF yazdırma: %100 / Gerçek boyut',w-42,cy+6,39,1.6);
   c.restore();
  }
- window.TitleBlock={fields,ready,importLogo,paint,specifications,height:84};
+ window.TitleBlock={fields,ready,importLogo,paint,specifications,height:94};
 })();

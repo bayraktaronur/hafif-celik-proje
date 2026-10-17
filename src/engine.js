@@ -992,7 +992,7 @@ function alcipanHesap(){
   G.rooms.forEach(function(r){
     var geo=odaIcGeometri(r);if(!geo)return;
     var ver=r.tip==='veranda',islak=!!ALCI.ISLAK[r.tip];
-    var o={ad:roomLabel(r),tip:ver?'veranda':islak?'yesil':'beyaz',tavan:geo.alan,duvarBrut:0,bosluk:0,duvarNet:0};
+    var o={ad:roomLabel(r),tip:ver?'veranda':islak?'yesil':'beyaz',tavan:G.opt.ceilingBoard===false?0:geo.alan,duvarBrut:0,bosluk:0,duvarNet:0};
     o.duvarVar=!ver&&odaDuvarAlci(r);
     if(!ver){
       var cevre=0,seen={};
@@ -1139,6 +1139,7 @@ function metrajKalemleri(){
       }
     });
   }
+  if(window.ProjectSpecs)ProjectSpecs.billRows().forEach(function(r){ekle(r.grup,r.kalem,r.olcu,r.birim,r.miktar);});
   if(window.RoofStudio&&G.roofs&&G.roofs.length)RoofStudio.billRows().forEach(function(r){ekle(r.grup,r.kalem,r.olcu,r.birim,r.miktar);});
   // Oda özeti (önce odalar, sonra verandalar)
   G.rooms.slice().sort(function(a,b){return (a.tip==='veranda')-(b.tip==='veranda');}).forEach(function(r){ekle(r.tip==='veranda'?'Verandalar':'Odalar',roomLabel(r),'aks ölçüsü','m²',Math.round(r.area*100)/100);});

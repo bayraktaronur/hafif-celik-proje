@@ -78,6 +78,8 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 .project-tabs{display:flex;flex-shrink:0;gap:5px;padding:5px 12px;background:#101923;border-bottom:1px solid #334254;overflow-x:auto;min-height:39px;align-items:center}.project-tab{display:flex;flex-shrink:0;border:1px solid #405168;border-radius:6px 6px 0 0;background:#1b2838}.project-tab.active{border-color:#83d1b5;background:#294a45}.project-tab button{border:0;background:transparent;color:#dce8ef;padding:8px 12px;cursor:pointer;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}.project-tab button:focus-visible{outline:2px solid #83d1b5;outline-offset:-2px}.project-tab .project-tab-close{padding:8px}.project-tab-close:hover{background:#754048}.project-tabs>.tb{flex-shrink:0}
 .project-tab [role=tab]{cursor:grab}.project-tab.dragging{opacity:.5}.project-tab.drop-target{outline:2px solid #83d1b5}.project-tab .project-tab-close{display:flex;align-items:center;justify-content:center;flex:0 0 30px;min-width:30px;opacity:1;color:#e5edf4;font-size:19px;border-left:1px solid #405168}.project-tab .project-tab-close:hover{background:#754048;color:white}
 
+#projectSpecs > small{display:block;color:#9aabba;line-height:1.5;margin-bottom:12px} #projectSpecs > label{display:grid;gap:5px;margin:10px 0}
+
 </style><style>
 /* Scoped paint controls: keep the drawing UI and geometry untouched. */
 #paint3DDialog{box-sizing:border-box;width:min(440px,calc(100vw - 32px));max-height:calc(100vh - 40px);margin:20px 20px 20px auto;padding:24px;border:1px solid #526479;border-radius:16px;background:#1c2838;color:#e9eff6;box-shadow:0 18px 70px #0006;overflow:auto;font:14px/1.5 system-ui,sans-serif}
@@ -883,7 +885,7 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PlanProject=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   const furniture=typeof FurnitureCatalog!=='undefined'?FurnitureCatalog:require('./furniture-catalog.js');
-  const DEFAULT_OPTIONS={h:250,dis:10,ic:6,alciDuvar:'yok',cephe:'yok',plaka:'40x250',bindirme:3,cepheFire:5,cati:'besik',egim:33,sacak:30,trapezEn:100,kaplama:'trapez',osb:false,catiFire:5,suRulo:75,suBindirme:10,parcaBoy:200,parcaBind:10,vidaM2:5,inisAralik:10,aksAcik:false};
+  const DEFAULT_OPTIONS={windowColor:'beyaz',hCover:false,ceilingBoard:true,hCoverPrice:0,h:250,dis:10,ic:6,alciDuvar:'yok',cephe:'yok',plaka:'40x250',bindirme:3,cepheFire:5,cati:'besik',egim:33,sacak:30,trapezEn:100,kaplama:'trapez',osb:false,catiFire:5,suRulo:75,suBindirme:10,parcaBoy:200,parcaBind:10,vidaM2:5,inisAralik:10,aksAcik:false};
   const fail=message=>{throw new Error(message);};
   const finite=(x,min,max)=>typeof x==='number'&&Number.isFinite(x)&&x>=min&&x<=max;
   function safeTree(o,depth=0){
@@ -954,7 +956,7 @@ body{background:#0b131e;color:var(--ink);font:12px 'Segoe UI',Arial,sans-serif;m
       if(typeof v==='number'&&!finite(d.opt[k],0,10000))fail('Geçersiz seçenek değeri: '+k);
     }
     if(![6,10,15].includes(d.opt.ic)||![6,10,15].includes(d.opt.dis))fail('Prefabrik iç ve dış duvar kalınlığı 6, 10 veya 15 cm olmalı.');
-    for(const [key,values] of Object.entries({alciDuvar:['yok','hepsi','secili'],cephe:['yok','tasonit','yalipan'],cati:['besik','kirma','tek','yok'],kaplama:['trapez','sandvic']}))if(!values.includes(d.opt[key]))fail('Geçersiz üretim seçeneği: '+key);
+    for(const [key,values] of Object.entries({windowColor:['beyaz','antrasit','altinmese'],alciDuvar:['yok','hepsi','secili'],cephe:['yok','tasonit','yalipan'],cati:['besik','kirma','tek','yok'],kaplama:['trapez','sandvic']}))if(!values.includes(d.opt[key]))fail('Geçersiz üretim seçeneği: '+key);
     if(d.opt.h<50||d.opt.trapezEn<=0||d.opt.suRulo<=0||d.opt.parcaBoy<=0||d.opt.inisAralik<=0)fail('Üretim ölçüleri sıfırdan büyük olmalı.');
     if(d.catiYon&&!['yatay','dikey'].includes(d.catiYon))fail('Makas yönü geçersiz.');
     d.catiYon=d.catiYon||'yatay';
@@ -2019,7 +2021,7 @@ function alcipanHesap(){
   G.rooms.forEach(function(r){
     var geo=odaIcGeometri(r);if(!geo)return;
     var ver=r.tip==='veranda',islak=!!ALCI.ISLAK[r.tip];
-    var o={ad:roomLabel(r),tip:ver?'veranda':islak?'yesil':'beyaz',tavan:geo.alan,duvarBrut:0,bosluk:0,duvarNet:0};
+    var o={ad:roomLabel(r),tip:ver?'veranda':islak?'yesil':'beyaz',tavan:G.opt.ceilingBoard===false?0:geo.alan,duvarBrut:0,bosluk:0,duvarNet:0};
     o.duvarVar=!ver&&odaDuvarAlci(r);
     if(!ver){
       var cevre=0,seen={};
@@ -2166,6 +2168,7 @@ function metrajKalemleri(){
       }
     });
   }
+  if(window.ProjectSpecs)ProjectSpecs.billRows().forEach(function(r){ekle(r.grup,r.kalem,r.olcu,r.birim,r.miktar);});
   if(window.RoofStudio&&G.roofs&&G.roofs.length)RoofStudio.billRows().forEach(function(r){ekle(r.grup,r.kalem,r.olcu,r.birim,r.miktar);});
   // Oda özeti (önce odalar, sonra verandalar)
   G.rooms.slice().sort(function(a,b){return (a.tip==='veranda')-(b.tip==='veranda');}).forEach(function(r){ekle(r.tip==='veranda'?'Verandalar':'Odalar',roomLabel(r),'aks ölçüsü','m²',Math.round(r.area*100)/100);});
@@ -5282,7 +5285,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.118',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.119',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5525,7 +5528,7 @@ updateStatus();
     return original.splitSeg(s,id);
   };
   window.optUygula=function(k,v){if(typeof PlanProject.DEFAULT_OPTIONS[k]==='number')v=Number(v);edit(()=>{
-    const proposed=state();proposed.opt[k]=v;PlanProject.validate(proposed);G.opt[k]=v;
+    const proposed=state();proposed.opt[k]=v;PlanProject.validate(proposed);G.opt[k]=v;window.ProjectSpecs?.propagate(k);
     if(k==='h')$('katYuk').value=v;
     if(k==='ic'){PF.IC=v;G.segs.forEach(s=>{if(!s.dis&&s.tip!=='veranda')delete s.kSabit;});}
     if(k==='dis'){PF.DIS=v;G.segs.forEach(s=>{if(s.dis&&s.tip!=='veranda')delete s.kSabit;});}
@@ -6356,7 +6359,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.118';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.119';syncUI();draw();
 })();
 
 
@@ -6914,7 +6917,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    parts.push({...meta,widthMm:mesh.width*10,heightMm:height*10});
    for(let i=0;i<mesh.vertices.length;i+=9){const poly=[];for(let j=0;j<9;j+=3){const x=(o.a+o.b)/2+(mesh.vertices[i+j]-mesh.centerX)*flip,y=(mesh.vertices[i+j+1]-mesh.wallCenterY)*flip;poly.push({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y,z:Math.abs(mesh.vertices[i+j+2]-mesh.height)<.001?height:mesh.vertices[i+j+2]});}
     const u={x:poly[1].x-poly[0].x,y:poly[1].y-poly[0].y,z:poly[1].z-poly[0].z},v={x:poly[2].x-poly[0].x,y:poly[2].y-poly[0].y,z:poly[2].z-poly[0].z},nx=u.y*v.z-u.z*v.y,ny=u.z*v.x-u.x*v.z,nz=u.x*v.y-u.y*v.x,L=Math.hypot(nx,ny,nz);
-    const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?panelColor:material==='pvc'?'#ffffff':'#85b9cb';
+    const material=mesh.materialIds[i/9]||'panel',color=material==='panel'?panelColor:material==='pvc'?(window.ProjectSpecs?.windowHex()||'#ffffff'):'#85b9cb';
     if(L>1e-8)surfaces.push({...meta,poly,color,material,alpha:material==='glass'?.38:1,shade:Math.abs(nz)/L>.9?1:.78+.18*Math.abs(ny)/L});
    }
    warnings.add(label+' pano: STL pencere ölçüleri korunur; pano '+height+' cm. PVC beyaz; cam yarı saydam. Malzeme ayrımı geometriden tahmin edilir.');
@@ -6935,7 +6938,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    warnings.add('PVC/kapı kasa ve kanat kesitleri temsilî; pencere üst kotu210 cm.');
    if(o.z<0||o.top>height){warnings.add('Açıklık yüksekliği210 cm üst kotuna veya duvar yüksekliğine sığmıyor.');continue;}
    parts.push({...meta,widthMm:e.en*10,heightMm:e.yuk*10,sillMm:o.z*10,cols,type:cat?.opening||e.penTip||style});
-   const f=Math.min(4,e.en/8,e.yuk/8),col='#eef0e9';
+   const f=Math.min(4,e.en/8,e.yuk/8),col=door?'#eef0e9':(window.ProjectSpecs?.windowHex()||'#eef0e9');
    rect(r,o.a,o.a+f,-3,3,o.z,o.top,col,meta);rect(r,o.b-f,o.b,-3,3,o.z,o.top,col,meta);rect(r,o.a,o.b,-3,3,o.top-f,o.top,col,meta);if(!door)rect(r,o.a,o.b,-3,3,o.z,o.z+f,col,meta);
    const low=o.z+(door?0:f),top=o.top-f,transom=cat?.transom?top-(top-low)*cat.transom:null;
    function mark(x0,z0,x1,z1){const dx=x1-x0,dz=z1-z0,L=Math.hypot(dx,dz);if(!L)return;for(const side of [-1,1]){const coords=[[x0-dz/L*.25,z0+dx/L*.25],[x1-dz/L*.25,z1+dx/L*.25],[x1+dz/L*.25,z1-dx/L*.25],[x0+dz/L*.25,z0-dx/L*.25]];surfaces.push({...meta,kind:'openingMark',poly:coords.map(([x,z])=>({x:r.ax+r.ux*x-r.uy*side*.5,y:r.ay+r.uy*x+r.ux*side*.5,z})),color:'#dbe6e9',shade:1});}}
@@ -6964,7 +6967,8 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    }
   }else warnings.add('Üçlü H, U ve diğer kalınlıkların profil geometrisi henüz detaylandırılmadı.');
  }
- return {surfaces,parts,warnings:[...warnings]};
+ if(window.ProjectSpecs)for(const cover of ProjectSpecs.covers()){box(cover.poly,0,height,panelColor,{kind:'hCover',partId:cover.id});parts.push({kind:'hCover',partId:cover.id,widthMm:60,depthMm:20,heightMm:height*10});}
+ return {surfaces:window.ProjectSpecs?ProjectSpecs.facade(surfaces):surfaces,parts,warnings:[...warnings]};
 }
 window.Wall3D={build,panelColor};
 })();
@@ -7066,7 +7070,7 @@ window.Wall3D={build,panelColor};
   }
   return {surfaces,lines,area:C.area(poly)/10000,dx,dy};
  }
- function build(){const surfaces=[],lines=[];let area=0;
+ function build(){const surfaces=[],lines=[];let area=0;if(G.opt.ceilingBoard===false)return {surfaces,lines,area,miniH:0};
   for(const room of G.rooms){const geo=odaIcGeometri(room);if(!geo)continue;const roof=G.roofs.find(z=>z.sourceRoomId===room.id);if(room.tip==='veranda'&&!roof)continue;
    let poly=geo.poly,longX=catiYatay(),level=+G.opt.h||250;
    if(roof?.attachment){const b=roof.attachment.base,members=RoofStudio.verandaMembers(roof);level=Math.min(...members.map(m=>m.kind==='post'?m.top:m.bottom));const local=poly.map(p=>C.untransform(b,p));const result=layout(local,false,level);result.surfaces.forEach(s=>s.poly=s.poly.map(p=>({...C.transform(b,p),z:p.z})));result.lines.forEach(l=>{l.p={...C.transform(b,l.p),z:l.p.z};l.q={...C.transform(b,l.q),z:l.q.z};});surfaces.push(...result.surfaces);lines.push(...result.lines);area+=result.area;
@@ -7097,7 +7101,7 @@ window.Wall3D={build,panelColor};
   function get(){return G.roofs.find(z=>z.id===selected);}
   function materials(){return [...C.MATERIALS,...G.roofMaterials];}
   function model(){const key=JSON.stringify([G.roofs,G.roofMaterials,G.opt.osb]);if(key!==cacheKey){cache=C.calculate(G.roofs,G.roofMaterials,!!G.opt.osb);cacheKey=key;}return cache;}
-  function commit(mutate,options){let failure='';const ok=Studio.edit(()=>{try{mutate();if(window.RoofWorkflow)RoofWorkflow.synchronize();C.validate(G.roofs,G.roofMaterials);G.roofs=G.roofs.map(z=>z.attachment?C.attachVeranda(z,G.roofs.find(p=>p.id===z.attachment.parentId)):z);}catch(e){failure=e.message;throw e;}C.validate(G.roofs,G.roofMaterials);C.calculate(G.roofs,G.roofMaterials);G.roofs.filter(z=>z.sourceRoomId).forEach(verandaMembers);},options);if(ok){cacheKey='';render();notice('Çatı güncellendi. Projeyle birlikte kaydedilir; geri alma kullanılabilir.');}else notice(failure||'Değişiklik uygulanamadı. Ölçüleri kontrol edin.',true);return ok;}
+  function commit(mutate,options){const previous=clone(G.roofs);let failure='';const ok=Studio.edit(()=>{try{mutate();window.ProjectSpecs?.fromRoofs(previous);if(window.RoofWorkflow)RoofWorkflow.synchronize();C.validate(G.roofs,G.roofMaterials);G.roofs=G.roofs.map(z=>z.attachment?C.attachVeranda(z,G.roofs.find(p=>p.id===z.attachment.parentId)):z);}catch(e){failure=e.message;throw e;}C.validate(G.roofs,G.roofMaterials);C.calculate(G.roofs,G.roofMaterials);G.roofs.filter(z=>z.sourceRoomId).forEach(verandaMembers);},options);if(ok){cacheKey='';render();notice('Çatı güncellendi. Projeyle birlikte kaydedilir; geri alma kullanılabilir.');}else notice(failure||'Değişiklik uygulanamadı. Ölçüleri kontrol edin.',true);return ok;}
   function id(){return 'roof_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);}
   function seat(z){if(!z.attachment){z.datum='trim';z.h=z.wallTop??(+G.opt.h||250);z.wallTop=z.h;z.fasciaDepth=12;}return z;}
   function make(overrides={}){const z=C.defaults({id:id(),layers:G.opt.osb?[{...C.LAYERS[0]}]:[],datum:'eave',wallTop:+G.opt.h||250,floorLevel:0,pitch:+G.opt.egim||33,eaves:Array(4).fill(+G.opt.sacak||0),h:+G.opt.h||280,material:G.opt.kaplama,width:+G.opt.trapezEn||100,fire:+G.opt.catiFire||0,...overrides});if(!materials().some(m=>m.id===z.material))z.material='trapez';const mat=materials().find(m=>m.id===z.material);if(mat.unit==='sheet'&&!mat.widths.includes(z.width))z.width=mat.widths.at(-1);z.group=overrides.group||z.id;return seat(z);}
@@ -8291,14 +8295,14 @@ window.Wall3D={build,panelColor};
   const mats=[...RoofCore.MATERIALS,...(G.roofMaterials||[])],ids=G.roofs.length?G.roofs.map(z=>z.material):[G.opt.kaplama];
   const roof=G.roofs.length||G.opt.cati!=='yok'?[...new Set(ids.map(id=>mats.find(m=>m.id===id)?.name||id||'Belirtilmedi'))].join(' / '):'Çatı yok';
   const walls=G.opt.alciDuvar==='hepsi'?'Tüm odalar alçıpan; banyo/WC yeşil':G.opt.alciDuvar==='secili'?'Seçili odalar + banyo/WC alçıpan':'Yalnız banyo/WC yeşil alçıpan';
-  return {roof,walls,ceiling:'Alçıpan · ıslak hacimler yeşil',stock:'Alçıpan stok levhası: 120 × 250 cm'};
+  return {roof,walls,ceiling:G.opt.ceilingBoard===false?'Alçıpan yok':'Alçıpan · ıslak hacimler yeşil',facade:{yok:'Standart',tasonit:'Taşonit',yalipan:'Yalıpan'}[G.opt.cephe],windowColor:{beyaz:'Beyaz',antrasit:'Antrasit',altinmese:'Altın meşe'}[G.opt.windowColor||'beyaz'],hCover:G.opt.hCover?'Betopan · 6 × 2 × '+G.opt.h+' cm':'Yok',stock:'Alçıpan stok levhası: 120 × 250 cm'};
  }
  function paint(c,l,info){
-  const px=96/25.4,x=12,y=l.h-96,w=l.w-24,ink='#223946',muted='#647883',edge='#bdcbd0';c.save();c.scale(px,px);c.translate(x,y);c.textAlign='left';c.textBaseline='top';c.lineWidth=.2;
+  const px=96/25.4,x=12,y=l.h-106,w=l.w-24,ink='#223946',muted='#647883',edge='#bdcbd0';c.save();c.scale(px,px);c.translate(x,y);c.textAlign='left';c.textBaseline='top';c.lineWidth=.2;
   function text(value,x,y,width,size=2.7,lines=1,bold=false,color=ink){c.font=(bold?'600 ':'')+size+'px sans-serif';c.fillStyle=color;const words=String(value||'—').replace(/[\r\n]+/g,' ').split(/\s+/);let rows=[],line='';for(const word of words){if(line&&c.measureText(line+' '+word).width>width){rows.push(line);line=word;}else line+=(line?' ':'')+word;}if(line)rows.push(line);if(rows.length>lines)rows=rows.slice(0,lines).map((s,i)=>i===lines-1?s+'…':s);rows.forEach((s,i)=>{while(c.measureText(s).width>width&&s.length>1)s=s.slice(0,-2)+'…';c.fillText(s,x,y+i*size*1.25);});}
   function rect(x,y,w,h,bg){if(bg){c.fillStyle=bg;c.fillRect(x,y,w,h);}c.strokeStyle=edge;c.strokeRect(x,y,w,h);}
   function cell(label,value,x,y,w,h){rect(x,y,w,h);text(label.toLocaleUpperCase('tr-TR'),x+2.5,y+1.7,w-5,1.8,1,false,muted);text(value,x+2.5,y+5,w-5,2.55,h>=13?2:1,true);}
-  rect(0,0,w,84,'#ffffff');rect(0,0,w,19,'#eef4f3');c.fillStyle='#287565';c.fillRect(0,0,w,.8);
+  rect(0,0,w,94,'#ffffff');rect(0,0,w,19,'#eef4f3');c.fillStyle='#287565';c.fillRect(0,0,w,.8);
   const logoW=Math.min(70,w*.26),metaW=35,titleW=w-logoW-metaW,url=info.logo?.join(''),img=url&&images.get(url);
   if(url&&!img){c.restore();throw Error('Logo hazırlanıyor; çıktı ekranını yeniden açın.');}
   if(img){const s=Math.min((logoW-7)/img.width,12/img.height);c.drawImage(img,3.5+(logoW-7-img.width*s)/2,2,img.width*s,img.height*s);text(info.company||'PREFABRİKTEN',3.5,15,logoW-7,1.9,1,true);}else{text(info.company||'PREFABRİKTEN',3.5,5,logoW-7,3.6,2,true);}
@@ -8310,10 +8314,10 @@ window.Wall3D={build,panelColor};
   [['Yapı sistemi',type],['Yükseklik / duvar',height+(d.sistem==='prefabrik'?' · Dış '+fmt(d.opt.dis)+' / iç '+fmt(d.opt.ic)+' cm':'')],['Kapalı alan · aks',fmt(closed)+' m²'],['Veranda · aks',fmt(ver)+' m²']].forEach(([k,v],i)=>cell(k,v,w*i/4,cy,w/4,15));
   cy+=15;const spec=specifications();rect(0,cy,w,14,'#f1f6f5');
   [['Çatı kaplaması',spec.roof],['Duvar kaplaması',spec.walls],['Tavan kaplaması',spec.ceiling]].forEach(([k,v],i)=>cell(k,v,w*i/3,cy,w/3,14));
-  cy+=14;text(info.notes||spec.stock,3,cy+2,w-45,2.3,2);text(info.contact,3,cy+8,w-45,1.9,1,false,muted);text(l.paper+' · '+(l.orientation==='portrait'?'Dikey':'Yatay')+' · Ölçüler cm',w-42,cy+2,39,1.9);text('PDF yazdırma: %100 / Gerçek boyut',w-42,cy+6,39,1.6);
+  cy+=14;[["Dış cephe",spec.facade],["Pencere rengi",spec.windowColor],["H kapak lata",spec.hCover]].forEach(([k,v],i)=>cell(k,v,w*i/3,cy,w/3,10));cy+=10;text(info.notes||spec.stock,3,cy+2,w-45,2.3,2);text(info.contact,3,cy+8,w-45,1.9,1,false,muted);text(l.paper+' · '+(l.orientation==='portrait'?'Dikey':'Yatay')+' · Ölçüler cm',w-42,cy+2,39,1.9);text('PDF yazdırma: %100 / Gerçek boyut',w-42,cy+6,39,1.6);
   c.restore();
  }
- window.TitleBlock={fields,ready,importLogo,paint,specifications,height:84};
+ window.TitleBlock={fields,ready,importLogo,paint,specifications,height:94};
 })();
 
 </script><script>
@@ -8627,11 +8631,49 @@ function refresh(){const selected=G.paint3D?.[target];$('paintCurrent').textCont
 $('paintSearch').oninput=refresh;$('paintClose').onclick=()=>panel.close();button.onclick=()=>{if(!visible)return;refresh();panel.showModal();};$('paintReset').onclick=()=>{Studio.edit(()=>{if(G.paint3D)delete G.paint3D[target];});refresh();RoofStudio.repaint();};
 function sync(mode){visible=mode==='3d';button.hidden=!visible;if(!visible&&panel.open)panel.close();}
 function tint(hex,factor){return '#'+[1,3,5].map(i=>Math.round(parseInt(hex.slice(i,i+2),16)*factor).toString(16).padStart(2,'0')).join('');}
-function decorate(items){const rooms=G.rooms.filter(r=>r.tip!=='veranda').map(r=>(r.nodeIds||[]).map(getNode)).filter(r=>r.length>=3&&r.every(Boolean));return items.map(item=>{let hex;const wall=item.kind==='wallPanel'||item.material==='panel'||item.kind==='wall'||(!item.kind&&item.segmentId);if(wall||item.kind==='wallJoint'){const p=item.poly.reduce((s,v)=>({x:s.x+v.x/item.poly.length,y:s.y+v.y/item.poly.length}),{x:0,y:0}),inside=rooms.some(r=>ptInPolygon(p.x,p.y,r));hex=color(inside?'interior':'exterior');if(item.kind==='wallJoint')hex=item.jointType==='kose'?color('corners'):tint(hex,.94);}else if(['cladding','gableCornerClosure','canopyCladding'].includes(item.kind))hex=color('exterior');return hex?{...item,color:hex,painted:true,edgeColor:item.kind==='wallJoint'?tint(hex,.72):undefined}:item;});}
+function decorate(items){const rooms=G.rooms.filter(r=>r.tip!=='veranda').map(r=>(r.nodeIds||[]).map(getNode)).filter(r=>r.length>=3&&r.every(Boolean));return items.map(item=>{let hex;const wall=item.kind==='wallPanel'||item.material==='panel'||item.kind==='wall'||(!item.kind&&item.segmentId);if(wall||item.kind==='wallJoint'){const p=item.poly.reduce((s,v)=>({x:s.x+v.x/item.poly.length,y:s.y+v.y/item.poly.length}),{x:0,y:0}),inside=rooms.some(r=>ptInPolygon(p.x,p.y,r));hex=color(inside?'interior':'exterior');if(item.kind==='wallJoint')hex=item.jointType==='kose'?color('corners'):tint(hex,.94);}else if(['cladding','gableCornerClosure','canopyCladding','hCover'].includes(item.kind))hex=color('exterior');return hex?{...item,color:hex,painted:true,edgeColor:item.kind==='wallJoint'?tint(hex,.72):undefined}:item;});}
 window.Paint3D={decorate,sync,defaults};
 })();
 
 
+
+</script><script>
+/* Shared project specifications; rendering and quantities read the same options. */
+(function(){
+ const colors={beyaz:'#ffffff',antrasit:'#383e42',altinmese:'#b58a47'};
+ function propagate(key){
+  if(['kaplama','trapezEn'].includes(key))for(const z of G.roofs){z.material=G.opt.kaplama;z.width=z.material==='trapez'?(+G.opt.trapezEn||100):100;}
+  if(key==='osb')for(const z of G.roofs){z.layers=(z.layers||[]).filter(l=>l.id!=='osb');if(G.opt.osb)z.layers.unshift({...RoofCore.LAYERS[0]});}
+  if(key==='h')for(const z of G.roofs){z.wallTop=+G.opt.h;z.h=+G.opt.h;}
+ }
+ function fromRoofs(previous){const changed=G.roofs.find(z=>{const old=previous.find(p=>p.id===z.id);return old&&(old.material!==z.material||old.width!==z.width);});if(changed&&['trapez','sandvic'].includes(changed.material)){G.opt.kaplama=changed.material;G.opt.trapezEn=changed.width;propagate('kaplama');}}
+ function covers(){
+  if(!G.opt.hCover||!isPref())return [];
+  const rooms=G.rooms.filter(r=>r.tip!=='veranda').map(r=>(r.nodeIds||[]).map(getNode)).filter(p=>p.length>=3&&p.every(Boolean));if(!rooms.length)return [];
+  const inside=p=>rooms.some(poly=>ptInPolygon(p.x,p.y,poly)),out=[];
+  for(const j of pfAnaliz().bag){if(!['H','H3','X'].includes(j.tip)||!j.run)continue;const r=j.run,a=j.pos,k=parseFloat(j.k)||10;
+   const point=(x,y)=>({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y});
+   for(const side of [-1,1]){if(inside(point(a,side*(k/2+.5)))||!inside(point(a,-side*(k/2+.5))))continue;
+    const d=side*k/2,e=d+side*2;out.push({id:'hCover:'+out.length,poly:[point(a-3,d),point(a+3,d),point(a+3,e),point(a-3,e)]});}
+  }return out;
+ }
+ function billRows(){const n=covers().length,h=+G.opt.h||250,rows=[];if(n){rows.push({grup:'Proje özellikleri',kalem:'H kapak lata · betopan',olcu:'6 × 2 × '+h+' cm',birim:'adet',miktar:n},{grup:'Proje özellikleri',kalem:'H kapak lata alanı',olcu:'6 cm × bina yüksekliği × adet',birim:'m²',miktar:n*.06*h/100});if(+G.opt.hCoverPrice>0)rows.push({grup:'Proje özellikleri',kalem:'H kapak lata maliyeti',olcu:G.opt.hCoverPrice+' TL/m²',birim:'TL',miktar:n*.06*h/100*G.opt.hCoverPrice});}return rows;}
+
+ function facade(items){
+  if(G.opt.cephe==='yok'||!G.opt.cephe)return items;
+  const rooms=G.rooms.filter(r=>r.tip!=='veranda').map(r=>(r.nodeIds||[]).map(getNode)).filter(p=>p.length>=3&&p.every(Boolean));
+  const step=Math.max(1,(plakaOlcu()?.en||40)-(G.opt.cephe==='yalipan'?(+G.opt.bindirme||0):0));
+  function clip(poly,z,up){const out=[];poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length],a=up?p.z>=z:p.z<=z,b=up?q.z>=z:q.z<=z;if(a)out.push(p);if(a!==b){const t=(z-p.z)/(q.z-p.z);out.push({x:p.x+t*(q.x-p.x),y:p.y+t*(q.y-p.y),z});}});return out;}
+  return items.flatMap(item=>{if(item.kind!=='wallPanel'&&item.material!=='panel')return [item];if(item.kind==='ceiling')return [item];const c=item.poly.reduce((a,p)=>({x:a.x+p.x/item.poly.length,y:a.y+p.y/item.poly.length}),{x:0,y:0});if(!rooms.length||rooms.some(r=>ptInPolygon(c.x,c.y,r)))return [item];const lo=Math.min(...item.poly.map(p=>p.z)),hi=Math.max(...item.poly.map(p=>p.z));if(hi-lo<.1)return [item];const out=[];for(let z=Math.floor(lo/step)*step;z<hi;z+=step){const poly=clip(clip(item.poly,z,true),z+step,false);if(poly.length>=3)out.push({...item,poly,facade:G.opt.cephe,shade:(item.shade||1)*(Math.round(z/step)%2?.97:1)});}return out;});
+ }
+ function render(){let box=document.getElementById('projectSpecs');if(!box){box=document.createElement('section');box.id='projectSpecs';box.className='sb';document.getElementById('projectSidebar').prepend(box);}const o=G.opt;
+  const select=(key,label,opts)=>'<label style="display:grid;gap:5px;margin:10px 0">'+label+'<select class="si" style="width:100%" data-spec="'+key+'">'+opts.map(([v,n])=>'<option value="'+v+'" '+(String(o[key]??(key==='ceilingBoard'?true:key==='windowColor'?'beyaz':false))===String(v)?'selected':'')+'>'+n+'</option>').join('')+'</select></label>';
+  box.innerHTML='<div class="sb-t">PROJE ANTETİ · ORTAK ÖZELLİKLER</div><small>Seçimler çizim, 3B ve metrajın ortak bilgisidir.</small>'+ '<label>Yükseklik · cm<input class="si" style="width:100%" type="number" min="50" max="10000" data-spec="h" value="'+o.h+'"></label>'+select('ic','İç duvar · cm',[[6,6],[10,10],[15,15]])+select('dis','Dış duvar · cm',[[6,6],[10,10],[15,15]])+select('alciDuvar','Duvar alçıpanı',[['yok','Standart · yalnız ıslak hacimler'],['hepsi','Tüm odalar'],['secili','Seçili odalar + ıslak hacimler']])+select('ceilingBoard','Tavan alçıpanı',[[true,'Var'],[false,'Yok']])+select('cephe','Dış cephe',[['yok','Standart'],['tasonit','Taşonit'],['yalipan','Yalıpan']])+select('windowColor','Pencere rengi',[['beyaz','Beyaz'],['antrasit','Antrasit'],['altinmese','Altın meşe']])+select('hCover','H kapak lata',[[false,'Yok'],[true,'Betopan · 6 × 2 cm']])+ (o.hCover?'<label>Lata birim fiyatı · TL/m²<input class="si" style="width:100%" type="number" min="0" data-spec="hCoverPrice" value="'+(o.hCoverPrice||0)+'"></label><small>Bina yüksekliğinde; fiyat 0 ise tutar hesaplanmaz.</small>':'')+select('kaplama','Çatı kaplaması',[['trapez','27/200 Trapez sac'],['sandvic','Sandviç panel']])+(o.kaplama==='trapez'?select('trapezEn','Net kapatma eni',[[80,'80 cm kapatır'],[100,'100 cm kapatır']]):'');
+  box.querySelectorAll('[data-spec]').forEach(el=>el.onchange=()=>{let v=el.value;if(['hCover','ceilingBoard'].includes(el.dataset.spec))v=v==='true';optUygula(el.dataset.spec,v);render();});
+ }
+ window.ProjectSpecs={facade,propagate,fromRoofs,covers,billRows,render,windowHex:()=>colors[G.opt.windowColor]||colors.beyaz};
+ const old=window.optPanelGuncelle;window.optPanelGuncelle=function(){old();render();};render();
+})();
 
 </script></body></html>
 
