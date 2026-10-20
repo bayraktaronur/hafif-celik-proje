@@ -883,3 +883,7 @@ Tamamlandı: oda içindeki serbest uçlu ve bağımsız duvarların iki yüzünd
 
 ## 20 Ekim 2026 — DEV-133 / 5.9.125 — Ölçülü açıklama çizgileri ve semboller
 Tamamlandı: Çizgi / şekil aracı; düz, kesik, noktalı, noktalı kesik stiller; çizgi, daire, üçgen, kare, dikdörtgen. İki noktayla canlı ölçü veya cm ölçü girerek yerleştirme; isim, renk, açı, ölçüyü göster seçimi. Çift tık düzenle, sürükle taşı, sil/geri al, JSON ve çıktı ortak açıklama modeli üzerinden çalışır. İmalat ve oda geometrisi değişmez. Testler: plan-shapes, text-notes, run31/31 geçti; ekran görüntüsü incelendi. Mevcut kullanıcı çizimi değiştirilmedi. Üçgen ikizkenar çevre kutusuyla, daire çapıyla tanımlanır. Önceki açık işler korunur.
+
+
+## 20 Ekim 2026 — DEV-134 / 5.9.126 — Çizgi kilidi ve duvar yakalama
+Tamamlandı: çizimde serbest/yatay-dikey/sabit açı kilidi; duvar aksına yakalama; A/B uç etiketleri ve iki uca mesafe/toplam boy. A ucundan cm girişi ve Noktayı kullan ile kesin yerleştirme. Kilitle uyumsuz mesafe uyarılır. Ölçü duvar aksından alınır, duvar yüzü mesafesi değildir. Testler shape-snap (eksen,30 derece,50 cm offset) ve plan-shapes geçti. Çizim/imalat verisi korunur; önceki açık işler korunur.
