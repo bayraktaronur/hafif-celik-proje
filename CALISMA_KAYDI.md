@@ -951,3 +951,7 @@ Tamamlandı: Alçıpan kaplama grubunda bağımsız duvar ve tavan seçimleri. S
 
 ## 17 Ekim 2026 — DEV-132 / 5.9.124 — Serbest duvar alçıpanı
 Tamamlandı: oda içindeki serbest uçlu ve bağımsız duvarların iki yüzündeki alçıpan kesikli çizgileri eklendi. Kapı/pencere açıklıklarında çizgi kesilir. Gösterim ve metraj aynı serbest duvar listesini kullanır; iki yüz yüksekliği ve boşluk düşümü korunur. Test: free-wall-gypsum (bağlı serbest uç, bağımsız duvar, iki yüz ve boşluklar), gypsum-modes, loading-gypsum geçti. Açık kullanıcı çizimi değiştirilmedi; önceki açık işler korunur.
+
+
+## 20 Ekim 2026 — DEV-133 / 5.9.125 — Ölçülü açıklama çizgileri ve semboller
+Tamamlandı: Çizgi / şekil aracı; düz, kesik, noktalı, noktalı kesik stiller; çizgi, daire, üçgen, kare, dikdörtgen. İki noktayla canlı ölçü veya cm ölçü girerek yerleştirme; isim, renk, açı, ölçüyü göster seçimi. Çift tık düzenle, sürükle taşı, sil/geri al, JSON ve çıktı ortak açıklama modeli üzerinden çalışır. İmalat ve oda geometrisi değişmez. Testler: plan-shapes, text-notes, run31/31 geçti; ekran görüntüsü incelendi. Mevcut kullanıcı çizimi değiştirilmedi. Üçgen ikizkenar çevre kutusuyla, daire çapıyla tanımlanır. Önceki açık işler korunur.

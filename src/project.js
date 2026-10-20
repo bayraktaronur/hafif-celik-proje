@@ -31,7 +31,8 @@
       if(!o||typeof o!=='object'||typeof o.id!=='string'||!/^[-a-zA-Z0-9_]{1,80}$/.test(o.id))fail('Geçersiz nesne kimliği.');
       if(all.has(o.id))fail('Tekrarlanan nesne kimliği: '+o.id);all.add(o.id);
     }
-    for(const a of d.annotations){if(typeof a.text!=='string'||!a.text.trim()||a.text.length>1000||!finite(a.x,-1e7,1e7)||!finite(a.y,-1e7,1e7)||!finite(a.size,2,100)||!finite(a.angle,0,359))fail('Metin içeriği, boyutu veya konumu geçersiz.');}
+    for(const a of d.annotations)if(a.shape&&(!['line','circle','triangle','square','rectangle'].includes(a.shape)||!['solid','dashed','dotted','dashdot'].includes(a.style)||!finite(a.w,.01,100000)||!finite(a.h,0,100000)||!/^#[0-9a-f]{6}$/i.test(a.color)||typeof a.showDims!=='boolean'||(a.shape!=='line'&&a.h<.01)))fail('Çizgi / şekil ölçüleri geçersiz.');
+    for(const a of d.annotations){if(typeof a.text!=='string'||(!a.shape&&!a.text.trim())||a.text.length>1000||!finite(a.x,-1e7,1e7)||!finite(a.y,-1e7,1e7)||!finite(a.size,2,100)||!finite(a.angle,0,359))fail('Metin içeriği, boyutu veya konumu geçersiz.');}
     const nodes=new Map(d.n.map(n=>[n.id,n])),segs=new Map(d.s.map(s=>[s.id,s]));
     for(const n of d.n)if(!finite(n.x,-10000000,10000000)||!finite(n.y,-10000000,10000000))fail('Geçersiz düğüm koordinatı: '+n.id);
     for(const s of d.s){
