@@ -887,3 +887,6 @@ Tamamlandı: Çizgi / şekil aracı; düz, kesik, noktalı, noktalı kesik still
 
 ## 20 Ekim 2026 — DEV-134 / 5.9.126 — Çizgi kilidi ve duvar yakalama
 Tamamlandı: çizimde serbest/yatay-dikey/sabit açı kilidi; duvar aksına yakalama; A/B uç etiketleri ve iki uca mesafe/toplam boy. A ucundan cm girişi ve Noktayı kullan ile kesin yerleştirme. Kilitle uyumsuz mesafe uyarılır. Ölçü duvar aksından alınır, duvar yüzü mesafesi değildir. Testler shape-snap (eksen,30 derece,50 cm offset) ve plan-shapes geçti. Çizim/imalat verisi korunur; önceki açık işler korunur.
+
+## 20 Ekim 2026 — DEV-135 / 5.9.127 — Çizgiyle alt alan ayırma
+Tamamlandı: Alan sınırı oluştur seçeneği açık çizgiler, duvarlarla kapanan alt alanları ayrı seçilebilir ve çift tıkla isimlendirilebilir yapar. Alanlar aks üzerinden m² gösterir; fiziksel oda/duvar ve imalat metrajı değiştirilmez. Eski çizgiler de sınır kabul edilir; seçenek kapatılabilir. Duvar gövdesindeki çizgi parçaları görünmez. İsimler JSON ile korunur; açık kalan sınır alan bölmez. Testler: area-regions (1,95 + 8,55 = 10,5 m², isim/JSON, kısaltma/silme/geri al, fiziksel geometri korunması), plan-shapes, ana run31/31 geçti; izole ekran görüntüsü incelendi. Açık kullanıcı çizimine müdahale edilmedi. Önceki açık işler korunur; alt alanlar ayrı fiziksel oda veya otomatik kaplama metrajı değildir.

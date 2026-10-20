@@ -2480,7 +2480,7 @@ function drawRooms(){
       var tile=30*sc(),left=Math.min.apply(null,pts.map(function(p){return p.x;})),right=Math.max.apply(null,pts.map(function(p){return p.x;})),top=Math.min.apply(null,pts.map(function(p){return p.y;})),bottom=Math.max.apply(null,pts.map(function(p){return p.y;}));
       if(tile>=4){ctx.beginPath();for(var tx=left;tx<=right;tx+=tile){ctx.moveTo(tx,top);ctx.lineTo(tx,bottom);}for(var ty=top;ty<=bottom;ty+=tile){ctx.moveTo(left,ty);ctx.lineTo(right,ty);}ctx.stroke();}ctx.restore();
     }
-    if(!planVisible('rooms'))return;
+    if(!planVisible('rooms')||window.AreaRegions?.has(room.id))return;
     // Etiket: oda içi etiket noktası + kullanıcı ofseti (cm)
     var lp=toCv((room.lx!==undefined?room.lx:0)+(room.lblDx||0),(room.ly!==undefined?room.ly:0)+(room.lblDy||0));
     if(room.lx===undefined){lp={x:pts.reduce(function(s,p){return s+p.x;},0)/pts.length,y:pts.reduce(function(s,p){return s+p.y;},0)/pts.length};}
