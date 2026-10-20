@@ -965,3 +965,6 @@ Tamamlandı: Alan sınırı oluştur seçeneği açık çizgiler, duvarlarla kap
 
 ## 20 Ekim 2026 — DEV-136 / 5.9.128 — Uç yakalama ve basit çizgi kilidi
 Duvar uç noktaları yakalamada öncelikli; uç kapağının hemen dışındaki tıklamalar da yakalanır. Varsayılan yatay/dikey, Shift geçici serbest; açı ve mesafe girişleri açılır ayrıntıda korunur. Kontroller: area-regions artık gerçek iki fare tıklamasıyla (duvar ucunun dışından) tam 150 cm yatay sınır,1,95 m² alan kapanışı ve kayıt/geri al doğrular; shape-snap açı ve kesin mesafe testi geçti. Önceki hatalı çizgiler otomatik taşınmaz; yeniden çizilmelidir. Açık kullanıcı çizimi korunur, önceki açık işler sürer.
+
+## 20 Ekim 2026 — DEV-137 / 5.9.129 — Bağlı sınır çizgisini kaydırma
+İki ucu karşılıklı duvar akslarına bağlı yatay/dikey çizgi sürüklenirken yalnız dik yönde kayar; duvarların ortak boy aralığında sınırlanır, uçlar kopmaz. Canlı göstergede her iki duvarın iki ucuna mesafe ve toplam boy cm aks ölçüsü gösterilir. Önceden duvardan kopmuş çizgi otomatik bağlanmaz; eğik çizgi serbest taşıma davranışını korur. area-regions fareyle çapraz sürükleme, sabit x/boy, değişen y, canlı100cm, alan kapanışı ve geri al testi geçti. Açık çizim değiştirilmedi; önceki açık işler korunur.
