@@ -974,3 +974,6 @@ Kesik çizgi alt alanları mevcut oda türü/özel ad penceresinden düzenlenir;
 
 ## 23 Ekim 2026 — DEV-139 / 5.9.131 — Ölçülü duvar bölme
 Duvar böl aracı: duvara tıklama, A/B ucundan cm girişi, iki parça boyu ve uç işaretleri. Mevcut splitSeg/Studio.edit işlemiyle kalınlık ve aks korunur; kapı/pencere içinden bölme engellenir. En az1cm parça; özel pnlCfg diziliminde işlem engellenir, mevcut modüler doğrulama sürer. Test wall-split: gerçek tıklama123,45cm,JSON, açıklık içi ret/geri dönüş ve undo geçti. Önceki açık işler korunur; açık çizim değiştirilmedi.
+
+## 23 Ekim 2026 — DEV-140 / 5.9.132 — Yazı, ölçü ve bölünmüş mutfak hattı
+Oda etiketi genişliği etiket konumundaki oda kesitine sığdırılır (ekran/çıktı). Elle ölçüler mevcut _dimLine font,renk,çentik ve yönünü kullanır; cm eki kaldırıldı, çap simgesi korunur. Ölçü sürükleme referansları taşımadan uzaklığı değiştirir. Mutfak aynı kalınlıkta bağlı doğrusal duvar parçalarını takip eder; oda tarafındaki dik duvarda durur, tüm parçalardaki kapı kontrolü korunur. Test kitchen100cm parça üzerinden400cm tezgah, mevcut kitchen testleri, plan-dimensions ve ana31/31 geçti. Kullanıcının gerçek JSON'u olmadan ekran görüntüsündeki proje birebir doğrulanmadı. Önceki açık işler korunur.

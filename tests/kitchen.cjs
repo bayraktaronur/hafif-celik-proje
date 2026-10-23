@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),path=require('path');let pw;try{pw=re
  const b=await pw.chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'}),p=await b.newPage({viewport:{width:1600,height:1050}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
  await p.goto(require('url').pathToFileURL(path.resolve('dist/plan_studio.html')).href);
  await p.evaluate(()=>Studio.loadProject({v:'5',n:[{id:'n1',x:0,y:0},{id:'n2',x:500,y:0},{id:'n3',x:500,y:400},{id:'n4',x:0,y:400}],s:[{id:'s1',n1:'n1',n2:'n2',k:10},{id:'s2',n1:'n2',n2:'n3',k:10},{id:'s3',n1:'n3',n2:'n4',k:10},{id:'s4',n1:'n4',n2:'n1',k:10}],e:[],r:[]}));
+ const splitRun=await p.evaluate(()=>{const before=JSON.stringify(G.segs);const ok=Studio.edit(()=>WallSplit.split(getSeg('s1'),100),{geometry:true});const w=Kitchen.pick({x:50,y:10}),counter=Kitchen.make(w,0,400,'none',0);const result={ok,length:w.L,available:w.hi-w.lo,span:counter.runs[0].length};geriAl();result.restored=before===JSON.stringify(G.segs);return result;});assert.deepEqual(splitRun,{ok:true,length:500,available:490,span:400,restored:true});
  const click=async(x,y)=>{const a=await p.evaluate(({x,y})=>{const r=cv.getBoundingClientRect(),a=toCv(x,y);return {x:r.left+a.x,y:r.top+a.y};},{x,y});await p.mouse.click(a.x,a.y);};
  const original=await p.evaluate(()=>({n:Studio.state().n,s:Studio.state().s}));
  await p.click('#t-kitchen');await p.click('#counterStart');await click(200,10);

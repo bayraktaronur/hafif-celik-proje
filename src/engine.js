@@ -2490,6 +2490,9 @@ function drawRooms(){
     var alt=(room.ozelAd&&room.tip&&ODA_TIPLER[room.tip]&&room.ozelAd.toLowerCase().indexOf(ODA_TIPLER[room.tip].toLowerCase())<0)?ODA_TIPLER[room.tip]:'';
     var fsA=E?15:Math.round(Math.max(11,Math.min(16,13*Math.sqrt(G.zoom))));
     var fsB=E?12:Math.round(Math.max(9,Math.min(13,10.5*Math.sqrt(G.zoom))));
+    // Fit labels to the room width at their actual position, including paper exports.
+    var cuts=[];for(var pi=0;pi<pts.length;pi++){var pa=pts[pi],pb=pts[(pi+1)%pts.length];if((pa.y>cy)!==(pb.y>cy))cuts.push(pa.x+(cy-pa.y)*(pb.x-pa.x)/(pb.y-pa.y));}cuts.sort(function(a,b){return a-b;});var available=Infinity;for(var ci=0;ci+1<cuts.length;ci+=2)if(cx>=cuts[ci]&&cx<=cuts[ci+1])available=Math.max(10,Math.min(cx-cuts[ci],cuts[ci+1]-cx)*2-16);
+    ctx.font='600 '+fsA+'px '+FF;var labelWidth=ctx.measureText(ad).width;ctx.font='400 '+fsB+'px '+FF;labelWidth=Math.max(labelWidth,ctx.measureText(alt||room.area.toFixed(1)+' m²').width);var fit=Math.min(1,available/Math.max(1,labelWidth));fsA*=fit;fsB*=fit;
     var lh=fsA*0.62+fsB*0.62+3,y1=cy-(alt?lh:lh/2),yAlt=y1+fsA*0.62+fsB*0.62+2,yA=(alt?yAlt+fsB+3:y1+fsA*0.62+fsB*0.62+3);
     ctx.textAlign='center';ctx.textBaseline='middle';
     var drag=G.lblDrag&&G.lblDrag.active&&G.lblDrag.roomId===room.id;

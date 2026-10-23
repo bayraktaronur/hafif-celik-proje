@@ -12,6 +12,12 @@
  $('counterStart').onclick=()=>{menu.close();setTool('counter');Studio.toast('Tezgâhın geleceği duvarın oda tarafına, duvara yakın tıklayın.');};
  const add=(a,b,k=1)=>({x:a.x+b.x*k,y:a.y+b.y*k}),dot=(a,b)=>a.x*b.x+a.y*b.y;
  function pick(p){let best=null;for(const s of G.segs){if(s.tip==='veranda')continue;const a=getNode(s.n1),b=getNode(s.n2),dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(L<60||Math.min(Math.abs(dx),Math.abs(dy))>.01)continue;const u={x:dx/L,y:dy/L},v={x:-u.y,y:u.x},q={x:p.x-a.x,y:p.y-a.y},t=dot(q,u),side=dot(q,v);if(t<0||t>L||Math.abs(side)>s.k/2+25)continue;if(!best||Math.abs(side)<best.distance)best={s,a,b,u,v:side>=0?v:{x:-v.x,y:-v.y},L,distance:Math.abs(side)};}if(!best)return null;
+   // Follow connected collinear pieces, stopping at walls on the cabinet side.
+   best.members=[best.s.id];let first=best.s.n1,last=best.s.n2;
+   function extend(id,sign){const n=getNode(id);const adjacent=G.segs.filter(s=>!best.members.includes(s.id)&&s.tip!=='veranda'&&(s.n1===id||s.n2===id));if(adjacent.some(s=>{const b=getNode(s.n1===id?s.n2:s.n1);return Math.abs(dot({x:b.x-n.x,y:b.y-n.y},best.u))<.01&&dot({x:b.x-n.x,y:b.y-n.y},best.v)>.01;}))return null;return adjacent.find(s=>{const b=getNode(s.n1===id?s.n2:s.n1),q={x:b.x-n.x,y:b.y-n.y};return s.k===best.s.k&&Math.abs(q.x*best.u.y-q.y*best.u.x)<.01&&dot(q,best.u)*sign>0;});}
+   for(let guard=0;guard<G.segs.length;guard++){const s=extend(first,-1);if(!s)break;best.members.push(s.id);first=s.n1===first?s.n2:s.n1;}
+   for(let guard=0;guard<G.segs.length;guard++){const s=extend(last,1);if(!s)break;best.members.push(s.id);last=s.n1===last?s.n2:s.n1;}
+   best.s={...best.s,n1:first,n2:last};best.a=getNode(first);best.b=getNode(last);best.L=Math.hypot(best.b.x-best.a.x,best.b.y-best.a.y);
    function neighbor(id){return G.segs.filter(s=>s.id!==best.s.id&&s.tip!=='veranda'&&(s.n1===id||s.n2===id)).map(s=>{const a=getNode(id),b=getNode(s.n1===id?s.n2:s.n1),q={x:b.x-a.x,y:b.y-a.y};return {s,q,L:Math.hypot(q.x,q.y)};}).find(o=>Math.abs(dot(o.q,best.u))<.01&&dot(o.q,best.v)>60);}
    best.left=neighbor(best.s.n1);best.right=neighbor(best.s.n2);best.lo=best.left?best.left.s.k/2:0;best.hi=best.L-(best.right?best.right.s.k/2:0);return best;
  }
@@ -31,7 +37,7 @@
    const angle=(Math.atan2(w.u.y,w.u.x)*180/Math.PI+360)%360;
    const runs=[{...world([length/2,30]),angle,length}];if(side!=='none')runs.push({...world([side==='start'?30:length-30,ret/2]),angle:(Math.atan2(w.v.y,w.v.x)*180/Math.PI+360)%360,length:ret});
    // Door openings are reserved space; never place a counter through them.
-   for(const e of G.elemanlar.filter(e=>e.tip_==='kapi')){let a,b;if(e.segId===w.s.id){a=start;b=end;}else if(side!=='none'&&e.segId===neighbor.s.id){const atStart=neighbor.s.n1===w.s.n1||neighbor.s.n1===w.s.n2;a=atStart?w.s.k/2:neighbor.L-w.s.k/2-ret;b=atStart?w.s.k/2+ret:neighbor.L-w.s.k/2;}else continue;const s=getSeg(e.segId),A=getNode(s.n1),B=getNode(s.n2),pos=e.t*Math.hypot(B.x-A.x,B.y-A.y)+e.en/2;if(pos+e.en/2>a+.01&&pos-e.en/2<b-.01)throw Error('Tezgâh kapı açıklığıyla çakışıyor; boşluk veya uzunluğu değiştirin.');}
+   for(const e of G.elemanlar.filter(e=>e.tip_==='kapi')){let a,b;if(w.members?.includes(e.segId)){const sg=getSeg(e.segId),A=getNode(sg.n1),B=getNode(sg.n2),L=_segLen(sg),u={x:(B.x-A.x)/L,y:(B.y-A.y)/L},p=add(A,u,e.t*L),q=add(p,u,e.en),lo=dot({x:p.x-w.a.x,y:p.y-w.a.y},w.u),hi=dot({x:q.x-w.a.x,y:q.y-w.a.y},w.u);if(Math.max(lo,hi)>start+.01&&Math.min(lo,hi)<end-.01)throw Error('Tezgâh kapı açıklığıyla çakışıyor.');continue;}if(e.segId===w.s.id){a=start;b=end;}else if(side!=='none'&&e.segId===neighbor.s.id){const atStart=neighbor.s.n1===w.s.n1||neighbor.s.n1===w.s.n2;a=atStart?w.s.k/2:neighbor.L-w.s.k/2-ret;b=atStart?w.s.k/2+ret:neighbor.L-w.s.k/2;}else continue;const s=getSeg(e.segId),A=getNode(s.n1),B=getNode(s.n2),pos=e.t*Math.hypot(B.x-A.x,B.y-A.y)+e.en/2;if(pos+e.en/2>a+.01&&pos-e.en/2<b-.01)throw Error('Tezgâh kapı açıklığıyla çakışıyor; boşluk veya uzunluğu değiştirin.');}
    return {id:'counter-'+crypto.randomUUID(),points:points.map(world),runs};
  }
  function form(){return make(wall,+$('counterOffset').value,+$('counterLength').value,$('counterReturn').value,+$('counterReturnLength').value);}
