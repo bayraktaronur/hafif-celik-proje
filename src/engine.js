@@ -2452,6 +2452,35 @@ function drawBg(W,H){
   for(var y=((G.pan.y%g10)+g10)%g10;y<H;y+=g10){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
 }
 
+function drawRoomLabel(room,pts,cx,cy,ad,hl){
+    var E=TH.export;
+    // Özel ad varken tip ayrıca küçük gösterilir (ad tipi zaten söylemiyorsa)
+    var alt=(room.ozelAd&&room.tip&&ODA_TIPLER[room.tip]&&room.ozelAd.toLowerCase().indexOf(ODA_TIPLER[room.tip].toLowerCase())<0)?ODA_TIPLER[room.tip]:'';
+    var fsA=E?15:Math.round(Math.max(11,Math.min(16,13*Math.sqrt(G.zoom))));
+    var fsB=E?12:Math.round(Math.max(9,Math.min(13,10.5*Math.sqrt(G.zoom))));
+    // Fit labels to the room width at their actual position, including paper exports.
+    var cuts=[];for(var pi=0;pi<pts.length;pi++){var pa=pts[pi],pb=pts[(pi+1)%pts.length];if((pa.y>cy)!==(pb.y>cy))cuts.push(pa.x+(cy-pa.y)*(pb.x-pa.x)/(pb.y-pa.y));}cuts.sort(function(a,b){return a-b;});var available=Infinity;for(var ci=0;ci+1<cuts.length;ci+=2)if(cx>=cuts[ci]&&cx<=cuts[ci+1])available=Math.max(10,Math.min(cx-cuts[ci],cuts[ci+1]-cx)*2-16);
+    ctx.font='600 '+fsA+'px '+FF;var labelWidth=ctx.measureText(ad).width;ctx.font='400 '+fsB+'px '+FF;labelWidth=Math.max(labelWidth,ctx.measureText(alt||room.area.toFixed(1)+' m²').width);var fit=Math.min(1,available/Math.max(1,labelWidth));fsA*=fit;fsB*=fit;
+    var lh=fsA*0.62+fsB*0.62+3,y1=cy-(alt?lh:lh/2),yAlt=y1+fsA*0.62+fsB*0.62+2,yA=(alt?yAlt+fsB+3:y1+fsA*0.62+fsB*0.62+3);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+
+    ctx.font='600 '+fsA+'px '+FF;
+    var w=ctx.measureText(ad).width;
+    ctx.fillStyle=hl?'#79c0ff':TH.roomName;ctx.fillText(ad,cx,y1);
+    if(alt){ctx.font='400 '+fsB+'px '+FF;ctx.fillStyle=hl?'#79c0ffaa':TH.roomTip;ctx.fillText(alt,cx,yAlt);w=Math.max(w,ctx.measureText(alt).width);}
+    ctx.font='500 '+fsB+'px '+FF;ctx.fillStyle=hl?'#79c0ffcc':TH.roomArea;
+    var at=room.area.toFixed(1)+' m²';ctx.fillText(at,cx,yA);w=Math.max(w,ctx.measureText(at).width);
+    var top=y1-fsA*0.7,bot=yA+fsB*0.7;
+    if(!E){
+
+      if(hl){ // sürüklenebilir olduğunu belli et
+        ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle='#58a6ff88';ctx.lineWidth=1;
+        ctx.strokeRect(cx-w/2-6,top-3,w+12,bot-top+6);ctx.restore();
+      }
+    }
+    return {x:cx-w/2-4,y:top-2,w:w+8,h:bot-top+4};
+}
+
 function drawRooms(){
   G._lblHits=[];
   G.rooms.forEach(function(room){
@@ -2485,32 +2514,8 @@ function drawRooms(){
     var lp=toCv((room.lx!==undefined?room.lx:0)+(room.lblDx||0),(room.ly!==undefined?room.ly:0)+(room.lblDy||0));
     if(room.lx===undefined){lp={x:pts.reduce(function(s,p){return s+p.x;},0)/pts.length,y:pts.reduce(function(s,p){return s+p.y;},0)/pts.length};}
     var cx=lp.x,cy=lp.y;
-    var E=TH.export,ad=roomLabel(room);
-    // Özel ad varken tip ayrıca küçük gösterilir (ad tipi zaten söylemiyorsa)
-    var alt=(room.ozelAd&&room.tip&&ODA_TIPLER[room.tip]&&room.ozelAd.toLowerCase().indexOf(ODA_TIPLER[room.tip].toLowerCase())<0)?ODA_TIPLER[room.tip]:'';
-    var fsA=E?15:Math.round(Math.max(11,Math.min(16,13*Math.sqrt(G.zoom))));
-    var fsB=E?12:Math.round(Math.max(9,Math.min(13,10.5*Math.sqrt(G.zoom))));
-    // Fit labels to the room width at their actual position, including paper exports.
-    var cuts=[];for(var pi=0;pi<pts.length;pi++){var pa=pts[pi],pb=pts[(pi+1)%pts.length];if((pa.y>cy)!==(pb.y>cy))cuts.push(pa.x+(cy-pa.y)*(pb.x-pa.x)/(pb.y-pa.y));}cuts.sort(function(a,b){return a-b;});var available=Infinity;for(var ci=0;ci+1<cuts.length;ci+=2)if(cx>=cuts[ci]&&cx<=cuts[ci+1])available=Math.max(10,Math.min(cx-cuts[ci],cuts[ci+1]-cx)*2-16);
-    ctx.font='600 '+fsA+'px '+FF;var labelWidth=ctx.measureText(ad).width;ctx.font='400 '+fsB+'px '+FF;labelWidth=Math.max(labelWidth,ctx.measureText(alt||room.area.toFixed(1)+' m²').width);var fit=Math.min(1,available/Math.max(1,labelWidth));fsA*=fit;fsB*=fit;
-    var lh=fsA*0.62+fsB*0.62+3,y1=cy-(alt?lh:lh/2),yAlt=y1+fsA*0.62+fsB*0.62+2,yA=(alt?yAlt+fsB+3:y1+fsA*0.62+fsB*0.62+3);
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    var drag=G.lblDrag&&G.lblDrag.active&&G.lblDrag.roomId===room.id;
-    var hl=isSel||drag;
-    ctx.font='600 '+fsA+'px '+FF;
-    var w=ctx.measureText(ad).width;
-    ctx.fillStyle=hl?'#79c0ff':TH.roomName;ctx.fillText(ad,cx,y1);
-    if(alt){ctx.font='400 '+fsB+'px '+FF;ctx.fillStyle=hl?'#79c0ffaa':TH.roomTip;ctx.fillText(alt,cx,yAlt);w=Math.max(w,ctx.measureText(alt).width);}
-    ctx.font='500 '+fsB+'px '+FF;ctx.fillStyle=hl?'#79c0ffcc':TH.roomArea;
-    var at=room.area.toFixed(1)+' m²';ctx.fillText(at,cx,yA);w=Math.max(w,ctx.measureText(at).width);
-    var top=y1-fsA*0.7,bot=yA+fsB*0.7;
-    if(!E){
-      G._lblHits.push({roomId:room.id,x:cx-w/2-4,y:top-2,w:w+8,h:bot-top+4});
-      if(hl){ // sürüklenebilir olduğunu belli et
-        ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle='#58a6ff88';ctx.lineWidth=1;
-        ctx.strokeRect(cx-w/2-6,top-3,w+12,bot-top+6);ctx.restore();
-      }
-    }
+    var hit=drawRoomLabel(room,pts,cx,cy,roomLabel(room),isSel||(G.lblDrag&&G.lblDrag.active&&G.lblDrag.roomId===room.id));
+    if(!TH.export)G._lblHits.push(Object.assign({roomId:room.id},hit));
   });
 }
 

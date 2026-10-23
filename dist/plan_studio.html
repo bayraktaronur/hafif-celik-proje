@@ -3492,6 +3492,35 @@ function drawBg(W,H){
   for(var y=((G.pan.y%g10)+g10)%g10;y<H;y+=g10){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
 }
 
+function drawRoomLabel(room,pts,cx,cy,ad,hl){
+    var E=TH.export;
+    // Özel ad varken tip ayrıca küçük gösterilir (ad tipi zaten söylemiyorsa)
+    var alt=(room.ozelAd&&room.tip&&ODA_TIPLER[room.tip]&&room.ozelAd.toLowerCase().indexOf(ODA_TIPLER[room.tip].toLowerCase())<0)?ODA_TIPLER[room.tip]:'';
+    var fsA=E?15:Math.round(Math.max(11,Math.min(16,13*Math.sqrt(G.zoom))));
+    var fsB=E?12:Math.round(Math.max(9,Math.min(13,10.5*Math.sqrt(G.zoom))));
+    // Fit labels to the room width at their actual position, including paper exports.
+    var cuts=[];for(var pi=0;pi<pts.length;pi++){var pa=pts[pi],pb=pts[(pi+1)%pts.length];if((pa.y>cy)!==(pb.y>cy))cuts.push(pa.x+(cy-pa.y)*(pb.x-pa.x)/(pb.y-pa.y));}cuts.sort(function(a,b){return a-b;});var available=Infinity;for(var ci=0;ci+1<cuts.length;ci+=2)if(cx>=cuts[ci]&&cx<=cuts[ci+1])available=Math.max(10,Math.min(cx-cuts[ci],cuts[ci+1]-cx)*2-16);
+    ctx.font='600 '+fsA+'px '+FF;var labelWidth=ctx.measureText(ad).width;ctx.font='400 '+fsB+'px '+FF;labelWidth=Math.max(labelWidth,ctx.measureText(alt||room.area.toFixed(1)+' m²').width);var fit=Math.min(1,available/Math.max(1,labelWidth));fsA*=fit;fsB*=fit;
+    var lh=fsA*0.62+fsB*0.62+3,y1=cy-(alt?lh:lh/2),yAlt=y1+fsA*0.62+fsB*0.62+2,yA=(alt?yAlt+fsB+3:y1+fsA*0.62+fsB*0.62+3);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+
+    ctx.font='600 '+fsA+'px '+FF;
+    var w=ctx.measureText(ad).width;
+    ctx.fillStyle=hl?'#79c0ff':TH.roomName;ctx.fillText(ad,cx,y1);
+    if(alt){ctx.font='400 '+fsB+'px '+FF;ctx.fillStyle=hl?'#79c0ffaa':TH.roomTip;ctx.fillText(alt,cx,yAlt);w=Math.max(w,ctx.measureText(alt).width);}
+    ctx.font='500 '+fsB+'px '+FF;ctx.fillStyle=hl?'#79c0ffcc':TH.roomArea;
+    var at=room.area.toFixed(1)+' m²';ctx.fillText(at,cx,yA);w=Math.max(w,ctx.measureText(at).width);
+    var top=y1-fsA*0.7,bot=yA+fsB*0.7;
+    if(!E){
+
+      if(hl){ // sürüklenebilir olduğunu belli et
+        ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle='#58a6ff88';ctx.lineWidth=1;
+        ctx.strokeRect(cx-w/2-6,top-3,w+12,bot-top+6);ctx.restore();
+      }
+    }
+    return {x:cx-w/2-4,y:top-2,w:w+8,h:bot-top+4};
+}
+
 function drawRooms(){
   G._lblHits=[];
   G.rooms.forEach(function(room){
@@ -3525,32 +3554,8 @@ function drawRooms(){
     var lp=toCv((room.lx!==undefined?room.lx:0)+(room.lblDx||0),(room.ly!==undefined?room.ly:0)+(room.lblDy||0));
     if(room.lx===undefined){lp={x:pts.reduce(function(s,p){return s+p.x;},0)/pts.length,y:pts.reduce(function(s,p){return s+p.y;},0)/pts.length};}
     var cx=lp.x,cy=lp.y;
-    var E=TH.export,ad=roomLabel(room);
-    // Özel ad varken tip ayrıca küçük gösterilir (ad tipi zaten söylemiyorsa)
-    var alt=(room.ozelAd&&room.tip&&ODA_TIPLER[room.tip]&&room.ozelAd.toLowerCase().indexOf(ODA_TIPLER[room.tip].toLowerCase())<0)?ODA_TIPLER[room.tip]:'';
-    var fsA=E?15:Math.round(Math.max(11,Math.min(16,13*Math.sqrt(G.zoom))));
-    var fsB=E?12:Math.round(Math.max(9,Math.min(13,10.5*Math.sqrt(G.zoom))));
-    // Fit labels to the room width at their actual position, including paper exports.
-    var cuts=[];for(var pi=0;pi<pts.length;pi++){var pa=pts[pi],pb=pts[(pi+1)%pts.length];if((pa.y>cy)!==(pb.y>cy))cuts.push(pa.x+(cy-pa.y)*(pb.x-pa.x)/(pb.y-pa.y));}cuts.sort(function(a,b){return a-b;});var available=Infinity;for(var ci=0;ci+1<cuts.length;ci+=2)if(cx>=cuts[ci]&&cx<=cuts[ci+1])available=Math.max(10,Math.min(cx-cuts[ci],cuts[ci+1]-cx)*2-16);
-    ctx.font='600 '+fsA+'px '+FF;var labelWidth=ctx.measureText(ad).width;ctx.font='400 '+fsB+'px '+FF;labelWidth=Math.max(labelWidth,ctx.measureText(alt||room.area.toFixed(1)+' m²').width);var fit=Math.min(1,available/Math.max(1,labelWidth));fsA*=fit;fsB*=fit;
-    var lh=fsA*0.62+fsB*0.62+3,y1=cy-(alt?lh:lh/2),yAlt=y1+fsA*0.62+fsB*0.62+2,yA=(alt?yAlt+fsB+3:y1+fsA*0.62+fsB*0.62+3);
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    var drag=G.lblDrag&&G.lblDrag.active&&G.lblDrag.roomId===room.id;
-    var hl=isSel||drag;
-    ctx.font='600 '+fsA+'px '+FF;
-    var w=ctx.measureText(ad).width;
-    ctx.fillStyle=hl?'#79c0ff':TH.roomName;ctx.fillText(ad,cx,y1);
-    if(alt){ctx.font='400 '+fsB+'px '+FF;ctx.fillStyle=hl?'#79c0ffaa':TH.roomTip;ctx.fillText(alt,cx,yAlt);w=Math.max(w,ctx.measureText(alt).width);}
-    ctx.font='500 '+fsB+'px '+FF;ctx.fillStyle=hl?'#79c0ffcc':TH.roomArea;
-    var at=room.area.toFixed(1)+' m²';ctx.fillText(at,cx,yA);w=Math.max(w,ctx.measureText(at).width);
-    var top=y1-fsA*0.7,bot=yA+fsB*0.7;
-    if(!E){
-      G._lblHits.push({roomId:room.id,x:cx-w/2-4,y:top-2,w:w+8,h:bot-top+4});
-      if(hl){ // sürüklenebilir olduğunu belli et
-        ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle='#58a6ff88';ctx.lineWidth=1;
-        ctx.strokeRect(cx-w/2-6,top-3,w+12,bot-top+6);ctx.restore();
-      }
-    }
+    var hit=drawRoomLabel(room,pts,cx,cy,roomLabel(room),isSel||(G.lblDrag&&G.lblDrag.active&&G.lblDrag.roomId===room.id));
+    if(!TH.export)G._lblHits.push(Object.assign({roomId:room.id},hit));
   });
 }
 
@@ -5306,7 +5311,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.134',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.135',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6380,7 +6385,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.134';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.135';syncUI();draw();
 })();
 
 
@@ -8169,7 +8174,7 @@ window.Wall3D={build,panelColor};
  function edit(f){openOdaModal({id:f.key,region:f,ozelAd:f.name,tip:f.tip});}
  const saveRoom=window.odaKaydet;window.odaKaydet=function(){if(!_editRoom?.region)return saveRoom();const f=_editRoom.region,name=document.getElementById('odaAd').value.trim(),tip=document.getElementById('odaTip').value;Studio.edit(()=>{const a=G.annotations.find(a=>a.id===f.owner);a.regionNames={...a.regionNames,[f.key]:name};a.regionTypes={...a.regionTypes,[f.key]:tip};});document.getElementById('mbgOda').classList.remove('open');_editRoom=null;draw();updateSidebar();};
  const sidebar=window.updateSidebar;window.updateSidebar=function(){sidebar();if(G.seciliTip!=='region')return;const f=build().find(f=>f.key===G.secili?.key);if(!f)return;document.getElementById('sbSel').style.display='block';const box=document.getElementById('sbSelIc');box.innerHTML='<div class="sr">'+esc(f.name||ODA_TIPLER[f.tip]||'Oda')+'</div><div class="sr">'+esc(ODA_TIPLER[f.tip]||'Tür seçilmedi')+'</div><div class="sr">'+f.area.toFixed(2)+' m²</div><button class="sib p" id="editRegion">Ad ve tür düzenle</button>';document.getElementById('editRegion').onclick=()=>edit(f);};
- const base=drawRooms;window.drawRooms=function(){labelHits=[];base();if(!planVisible('rooms'))return;const list=build();for(const [i,f]of list.entries()){ctx.save();if(!TH.export&&selected===f.key){ctx.beginPath();f.poly.forEach((p,j)=>{const c=toCv(p.x,p.y);j?ctx.lineTo(c.x,c.y):ctx.moveTo(c.x,c.y)});ctx.closePath();ctx.fillStyle='#4f9fc333';ctx.fill();}const offset=drag?.key===f.key?drag.offset:f.labelOffset,c=toCv(f.x+offset.x,f.y+offset.y);ctx.textAlign='center';ctx.fillStyle=TH.roomName;ctx.font='600 13px '+FF;const name=f.name||ODA_TIPLER[f.tip]||'Oda '+(i+1),width=Math.max(ctx.measureText(name).width,70);ctx.fillText(name,c.x,c.y-5);if(!TH.export){labelHits.push({key:f.key,x:c.x-width/2-5,y:c.y-21,w:width+10,h:39});if(G.seciliTip==='region'&&G.secili?.key===f.key){ctx.save();ctx.strokeStyle='#79c0ff';ctx.setLineDash([3,3]);ctx.strokeRect(c.x-width/2-5,c.y-21,width+10,39);ctx.restore();}}ctx.font='11px sans-serif';ctx.fillStyle=TH.roomArea;ctx.fillText(f.area.toFixed(2)+' m²',c.x,c.y+12);ctx.restore();}};
+ const base=drawRooms;window.drawRooms=function(){labelHits=[];base();if(!planVisible('rooms'))return;const list=build();for(const [i,f]of list.entries()){ctx.save();if(!TH.export&&selected===f.key){ctx.beginPath();f.poly.forEach((p,j)=>{const c=toCv(p.x,p.y);j?ctx.lineTo(c.x,c.y):ctx.moveTo(c.x,c.y)});ctx.closePath();ctx.fillStyle='#4f9fc333';ctx.fill();}const offset=drag?.key===f.key?drag.offset:f.labelOffset,c=toCv(f.x+offset.x,f.y+offset.y);const name=f.name||ODA_TIPLER[f.tip]||'Oda '+(i+1),hit=drawRoomLabel({ozelAd:f.name,tip:f.tip,area:f.area},f.poly.map(p=>toCv(p.x,p.y)),c.x,c.y,name,G.seciliTip==='region'&&G.secili?.key===f.key);if(!TH.export)labelHits.push(Object.assign({key:f.key},hit));ctx.restore();}};
  function labelHit(e){const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;return labelHits.find(h=>x>=h.x&&x<=h.x+h.w&&y>=h.y&&y<=h.y+h.h);}
  function hit(e){const h=labelHit(e);if(h)return build().find(f=>f.key===h.key);const r=cv.getBoundingClientRect(),p=toCm(e.clientX-r.left,e.clientY-r.top);return build().find(f=>ptInPolygon(p.x,p.y,f.poly));}
  window.addEventListener('dblclick',e=>{if(e.target!==cv||G.tool!=='sec')return;const f=hit(e);if(!f)return;e.preventDefault();e.stopImmediatePropagation();edit(f);},true);

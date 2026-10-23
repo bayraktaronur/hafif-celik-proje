@@ -911,3 +911,7 @@ Elle ölçülerde duvar yarı kalınlığı +16px minimum boşluk otomatik ölç
 
 ## 23 Ekim 2026 — DEV-142 / 5.9.134 — Alt oda etiketi taşıma
 Kesik çizgi alt alan etiketlerine seçim kutusu ve ayrı hit alanı eklendi; sürükleme kalıcı regionOffsets kaydına gider, çift tık yeni konumunda oda adı/türü düzenler. JSON konum doğrulaması eklendi. area-regions gerçek fare taşıma/yeni konumda çift tık/isim ve tür kayıt testi geçti. Fiziksel oda/geometri ve önceki açık metraj işleri korunur.
+
+
+## 23 Ekim 2026 — DEV-143 / 5.9.135 — Ortak oda etiketi çizimi
+Tamamlandı: fiziksel oda ve çizgi alt alan etiketleri ortak drawRoomLabel kullanır. Zoom fontu, dar alana sığma, özel ad/tür satırı, tek ondalık m², renk, satır aralığı, hit kutusu ve seçim çerçevesi eşlendi. Mevcut ad/konumlar korunur. area-regions taşıma/düzenleme/JSON ile %22/50/86 ve çıktı tipografi eşitliği, ana31/31 geçti; görsel incelendi. Önceki açık işler ve DEV-138-B metraj entegrasyonu korunur. Kullanıcının açık çizimi değiştirilmedi.
