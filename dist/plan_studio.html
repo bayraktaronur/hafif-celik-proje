@@ -5302,7 +5302,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.130',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.131',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -6376,7 +6376,7 @@ updateStatus();
   const trussEditor=document.createElement('div');trussEditor.id='trussEditor';trussEditor.className='sb';trussEditor.innerHTML='<div class="sb-t">Makas yerleşimi</div><p class="panel-help">Otomatik aks: 125,5 cm. Panel ve kapı düzenlemesi makasları taşımaz.</p><label class="field-label" for="trussSelect">Taşınacak makas</label><select id="trussSelect" class="si full" onchange="Prefab.trussSelect()"></select><label class="field-label" for="trussPosition">Yeni aks koordinatı (cm)</label><input id="trussPosition" class="si full" type="text" inputmode="decimal"><div class="panel-actions"><button id="trussMove" class="sib" onclick="Prefab.trussMove()">Konuma taşı</button><button id="trussReset" class="sib" onclick="Prefab.trussMove(true)">Otomatik aksa dön</button></div><p class="panel-help">Konum çizim başlangıcına göredir. Elle taşıdıktan sonra H mesnet uyumunu Plan kontrolünden inceleyin.</p>';
   document.querySelector('.view-options').parentElement.after(trussEditor);
   const toggleSnap=window.toggleSnapW;window.toggleSnapW=function(){toggleSnap();refreshSnap();};
-  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.130';syncUI();draw();
+  document.querySelector('.inspector-footer>span:last-child').textContent='v5.9.131';syncUI();draw();
 })();
 
 
@@ -8184,6 +8184,23 @@ window.Wall3D={build,panelColor};
  window.addEventListener('keydown',e=>{if(e.key==='Escape'&&mode){stop(e);mode=null;points=[];preview=null;setTool('sec');draw();}},true);
  const drawBase=drawElemanlar;window.drawElemanlar=function(){drawBase();if(!TH.export&&G.tool==='dimension'&&preview)paint(preview,true);};
  window.PlanDimensions={edit,paint,hit,geometry};
+})();
+
+</script><script>
+(function(){
+ let target=null,position=0,active=false;
+ const b=document.createElement('button');b.id='t-split-wall';b.className='t';b.textContent='Duvar böl';document.querySelector('.tool-group').append(b);
+ const d=document.createElement('dialog');d.id='splitWallDialog';d.style.cssText='background:#192334;color:#d6e6ef;border:1px solid #40566b;border-radius:12px;padding:24px';d.innerHTML='<form><h3>Duvarı böl</h3><p id="splitWallTotal"></p><label>Başlangıç <select id="splitWallEnd"><option value="a">A ucundan</option><option value="b">B ucundan</option></select></label><p><label>Mesafe · cm <input id="splitWallDistance" type="number" min="1" step="0.01" required></label></p><p id="splitWallRemaining"></p><p>Duvarın doğrultusu ve kalınlığı korunur. Kapı/pencere içinden bölünmez.</p><button type="submit" class="sib">Böl</button> <button type="button" class="sib" id="splitWallCancel">İptal</button></form>';document.body.append(d);
+ const $=id=>document.getElementById(id);
+ function update(){const L=target?_segLen(target):0,v=+$('splitWallDistance').value;$('splitWallRemaining').textContent='Parçalar: '+v.toFixed(2)+' cm + '+(L-v).toFixed(2)+' cm';position=$('splitWallEnd').value==='b'?L-v:v;draw();}
+ function open(s,t=.5){target=s;position=_segLen(s)*t;$('splitWallEnd').value='a';$('splitWallDistance').value=position.toFixed(2);$('splitWallDistance').max=(_segLen(s)-1).toFixed(2);$('splitWallTotal').textContent='Toplam: '+_segLen(s).toFixed(2)+' cm · duvar aksı';update();d.showModal();$('splitWallDistance').focus();$('splitWallDistance').select();}
+ function split(s,at){const L=_segLen(s);if(!Number.isFinite(at)||at<1||L-at<1)throw Error('Her iki parça en az 1 cm olmalı.');if(s.pnlCfg)throw Error('Özel panel dizilimli duvarı bölmeden önce standart dizilime geçin.');for(const e of G.elemanlar.filter(e=>e.segId===s.id)){const start=e.t*L;if(at>start-.001&&at<start+e.en+.001)throw Error('Bölme noktası kapı/pencere açıklığında. Dolu duvar üzerinde bir nokta seçin.');}const a=getNode(s.n1),z=getNode(s.n2),id=uid();G.nodes.push({id,x:a.x+(z.x-a.x)*at/L,y:a.y+(z.y-a.y)*at/L});if(!splitSeg(s,id))throw Error('Duvar bölünemedi.');}
+ b.onclick=()=>{TextNotes.cancel();setTool('wall-split');active=true;Studio.toast('Bölmek istediğiniz duvarın üzerinde noktayı tıklayın. Ardından kesin mesafeyi girin.');};
+ $('splitWallDistance').oninput=update;$('splitWallEnd').onchange=update;$('splitWallCancel').onclick=()=>d.close();d.addEventListener('close',()=>{target=null;active=false;setTool('sec');draw();});d.querySelector('form').onsubmit=e=>{e.preventDefault();if(Studio.edit(()=>split(target,position),{geometry:true}))d.close();};
+ window.addEventListener('mousedown',e=>{if(!active||e.target!==cv||e.button!==0)return;e.preventDefault();e.stopImmediatePropagation();const r=cv.getBoundingClientRect(),p=toCm(e.clientX-r.left,e.clientY-r.top);let best=null;for(const s of G.segs){if(s.tip==='veranda')continue;const a=getNode(s.n1),b=getNode(s.n2),dx=b.x-a.x,dy=b.y-a.y,L2=dx*dx+dy*dy;if(!L2)continue;const t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/L2)),dist=Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy);if(dist<s.k/2+8/sc()&&(!best||dist<best.dist))best={s,t,dist};}if(best)open(best.s,best.t);},true);
+ window.addEventListener('keydown',e=>{if(e.key==='Escape'&&active&&!d.open){active=false;setTool('sec');draw();}},true);
+ const base=drawElemanlar;window.drawElemanlar=function(){base();if(!target||TH.export)return;const a=getNode(target.n1),z=getNode(target.n2),L=_segLen(target),m={x:a.x+(z.x-a.x)*position/L,y:a.y+(z.y-a.y)*position/L};ctx.save();ctx.fillStyle='#ffd469';ctx.font='14px sans-serif';for(const [label,p]of [['A',a],['B',z],['✚',m]]){const c=toCv(p.x,p.y);ctx.fillText(label,c.x+8,c.y-8);}ctx.restore();};
+ window.WallSplit={split};
 })();
 
 </script><script>
