@@ -905,3 +905,6 @@ Duvar böl aracı: duvara tıklama, A/B ucundan cm girişi, iki parça boyu ve u
 
 ## 23 Ekim 2026 — DEV-140 / 5.9.132 — Yazı, ölçü ve bölünmüş mutfak hattı
 Oda etiketi genişliği etiket konumundaki oda kesitine sığdırılır (ekran/çıktı). Elle ölçüler mevcut _dimLine font,renk,çentik ve yönünü kullanır; cm eki kaldırıldı, çap simgesi korunur. Ölçü sürükleme referansları taşımadan uzaklığı değiştirir. Mutfak aynı kalınlıkta bağlı doğrusal duvar parçalarını takip eder; oda tarafındaki dik duvarda durur, tüm parçalardaki kapı kontrolü korunur. Test kitchen100cm parça üzerinden400cm tezgah, mevcut kitchen testleri, plan-dimensions ve ana31/31 geçti. Kullanıcının gerçek JSON'u olmadan ekran görüntüsündeki proje birebir doğrulanmadı. Önceki açık işler korunur.
+
+## 23 Ekim 2026 — DEV-141 / 5.9.133 — Zoomda metin ve ölçü okunabilirliği
+Elle ölçülerde duvar yarı kalınlığı +16px minimum boşluk otomatik ölçüyle eşlendi; hit/bounds aynı geometriyi kullanır, sürükleme görünen uzaklıktan başlar. Metinler oda adı fontu/renk ve sınırlı zoom ölçeğini kullanır (12 standart, mevcut boy oranı korunur); hit ve çıktı sınırı görünen fonttan hesaplanır. Mevcut nesneler yeniden eklenmez. Test plan-dimensions%22/30/85 boşluk, text-notes%22/27/86 okunabilirlik, kayıt/düzenleme/geri al/PNG geçti. Önceki açık işler korunur; mevcut kullanıcı çizimi değiştirilmedi.
