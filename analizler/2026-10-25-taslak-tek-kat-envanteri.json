@@ -1,0 +1,16 @@
+{
+  "task": "DEV-153",
+  "mainRevision": "5.9.137",
+  "artifacts": {
+    "taslaklar/odak-atolyesi/single-engine.js": "c8d60b4789e27f2d5d7612ee254ebe9803f400467616627d4644b886673d3388",
+    "taslaklar/odak-atolyesi/single-engine.css": "bf5a484b33df20a4356f6ce6c79959c6bde2ab9443bb0d302d43d2d84df8be3f",
+    "taslaklar/odak-atolyesi/single-storey.js": "4199c9ec8f8199a55ce76804ff7b2744124c4596cbcb015b5543f5c43ea4774b",
+    "taslaklar/odak-atolyesi/single-storey.css": "fc648243ba7c5c6e4f56c8ee4798a58685b4693ecf4cc50c1e6054d34117c92f",
+    "taslaklar/odak-atolyesi/single-ceiling.js": "4fdbfac485a7e225fa7db32dac85b51334e841bba7e850bcaaa0ed4587560cd1",
+    "taslaklar/odak-atolyesi/index.html": "960a81732a2d1c7579b0bd35e3de972257f50e3421697be960bbc68471e032b2",
+    "taslaklar/odak-atolyesi/arakat.html": "b9d1ddc4ba81cf556778fe936ce31af393f166b81689485214b9dbe81859f2aa",
+    "taslaklar/odak-atolyesi/single-check.cjs": "7e2d8b1642b2227be708e7e194890c604b9e3b87d110c4de43bdd405c6aefe21",
+    "taslaklar/odak-atolyesi/single-actions-check.cjs": "a96e1707b37ffcb549ff0d93af8eb39371493b2c3b12f4f59063520dcbdf525b",
+    "taslaklar/odak-atolyesi/build-single-storey.cjs": "c44b87ef2f89fe8b47f01476b0cfd30a02fff2530e4ad11e7a709fbd5c5b4153"
+  }
+}

@@ -1,0 +1,30 @@
+DEV-153 — Tek katlı prefabrik çizim taslağı
+25 Ekim 2026 · İş bilgisayarı · Kullanıcı: önce tek katlı prefabrik çizimini bitir; ana programa dokunma.
+
+TESLİM
+taslaklar/odak-atolyesi/index.html gerçek tek kat çizim arayüzüdür. Boş plan ve JSON açma/kaydetme; duvar, açıklık, mekân, çizgi, ölçü ve metin; çatı, 3D, tavan, metraj ve çıktı aynı proje üzerinde çalışır. Önceki arakat/katman çalışması arakat.html dosyasında korunur. Çok kat geliştirmesi sonraya bırakıldı.
+
+KAYNAK VE KORUMA
+Ana uygulama sürümü 5.9.137. Ana plan_cizim.html, src/, dist/ ve müşteri cizimler/ dosyaları değişmedi. build-single-storey.cjs bunları salt okur; yalnız taslak klasörüne bağımsız JS/CSS/HTML kopyası yazar. Ana hesap ve prefabrik panel kuralları yeniden yazılmadı. Üretim motorunun kaynak SHA-256 listesi: taslaklar/odak-atolyesi/single-engine-manifest.json.
+Örnek: cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json; kullanıcının güncel canlı çizimi değildir. Özgün SHA-256: 43862690c526c8ac6a13de8f8242fcee9d9f4a7c63d6c57e80b600efc92b719f. İlk açılışta ayrı kopyası, duvar yüksekliği 280 cm ve sade çizim görünümü kullanılır. Ana müşteri dosyası değişmez.
+Taslak ana depolama anahtarlarını okumaz/yazmaz. Kendi otomatik yedeği, çoklu belge sekmeleri, panosu ve açıklık tercihleri prefabrikten.odak.tek-kat.* / odak-tek-kat-* ad alanındadır. Ana prefabrikten.planstudio.* ve plan-window-last test değerleri korunarak doğrulandı. Bilerek kaydedilen boş proje örnekle değiştirilmez.
+GitHub programı taşır; kullanıcının tarayıcı çizimini taşımaz. Proje JSON olarak kaydedilip diğer bilgisayarda açılmalıdır.
+
+ARAYÜZ VE İŞLEVLER
+İnce üst şeritler, solda tek ortak özellik alanı, ortada geniş çizim, sağda bağlamsal seçim. Üretim/yakalama ayrıntıları açılır gruplarda; ikincil araçlar Düzenle menüsünde. Gerçek kaynak düğmeleri ve dinleyicileri taşındı, işlem mantığı değiştirilmedi. Çatı ayrı modal yerine aynı gezinme altında çalışma alanı olarak açılır; konum/geometri/saçak ve veranda ayarları gruplanır. PDF/PNG/DXF ayrı biçim seçimiyle açılır; metrajdan yükleme listesine geçilir.
+Sabit prefabrik 250/280/300 cm, mevcut 125,5/62,75 panel ve köşe/makas yönü kuralları aynı motordan gelir. H/U/köşe gösterimi korunur. Fiyat eklenmez.
+
+CANLI TAVAN
+Tavanı alttan gör komutu, bu projedeki odaların iç sınırlarından DEV-152 60×120 levha/mini H geometrisini üretir. Özel oda adları canlıdır; ıslak hacimler ve veranda yeşildir. 120×250 seçeneğinde mini H önizlemesi açılmaz; kaynak Tavan görünümüne dönülür. Ana metraj değiştirilmez.
+Mini H kesiti ve 1,25 cm levha kalınlığı temsilîdir. Parça sayıları sevk/satın alma değildir. Özel alttan önizleme ortogonal odalarla sınırlıdır; eğik odaların sayısı bildirilir, standart Tavan görünümünde ana motorun geometrisi korunur. Gerçek ürün kesiti, kesim/fire optimizasyonu ve bağlantı/mesnet doğrulaması açık.
+
+KONTROLLER
+single-check.cjs: aynı örnek için ana uygulamayla panel boyu, birleşim, oda alanı ve metraj eşitliği; gerçek fare/klavyeyle sayısal prefabrik duvar çizimi ve oda kapanışı; undo/redo; oda sınıfı/adı; gerçek metin ve ölçü; çatı ve sandviç panel ortak seçimi; 300 cm yükseklikle çatı kotu, duvar planı değişmeden; canlı tavan alanı/mini H; 120×250 seçiminde mini H iptali; JSON indirme/açma/yenileme; gerçek PDF dosyası; metraj; 980/1280/1920 taşma/çizim alanı; sıfır JS hatası/ağ isteği ve ana kaynak/depolama izolasyonu — GEÇTİ.
+single-actions-check.cjs: gerçek kapı ve pencere diyaloğu/ölçü/yerleştirme; canlı özel oda adının tavana aktarımı; alttan/üstten/dönüş; bilerek kaydedilmiş boş planın korunması — GEÇTİ.
+check.cjs ve ceiling-check.cjs yeni arakat.html yolunda: önceki arakat katmanları, STL şaseleri, levha/mini H, kot/alan/undo/yedek çizici/izolasyon kontrolleri — GEÇTİ. Önceki taslak veri/model davranışı değişmedi.
+Görsel kontrol: -plan.png, -3d.png, -tavan.png. Testler ayrı geçici Edge oturumlarında yapıldı; kullanıcının açık sekmeleri ve çizimleri değiştirilmedi.
+
+SINIRLAR VE SONRAKİ ADIM
+Tamamlanan kapsam bağımsız tek kat çizim çalışma akışıdır; bütün üretim sisteminin onayı veya yeni çok kat modeli değildir. Ana motordaki açık işler korunur; DEV-138-B alt alan metraj entegrasyonu bu görevde yapılmadı.
+Çatı görünümüne geçmek otomatik çatı yaratmaz. Dikdörtgen zarf düğmesi L/T bina konturunu otomatik çözmez; özel sınır ve birleşen bölümler kullanılır. Sonraki duvar sınırı değişikliklerinde çatı konturu ayrıca kontrol edilir. Kaynak motorun hesap sınırları geçerlidir; taşıyıcı kapasite/statik onay yoktur.
+Kullanıcı taslağı tek katlı gerçek işiyle değerlendirecek. Ana programa taşınması ayrıca kabul bekler. Arakat/çok kat işine bundan sonra dönülecek. İlgisiz özel SketchUp rapor/model dosyaları ve önceki yerel devir satırları gönderime katılmaz.

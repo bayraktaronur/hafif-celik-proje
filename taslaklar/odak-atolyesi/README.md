@@ -1,6 +1,25 @@
-# Odak Atölyesi — bağımsız prefabrik / ara kat taslağı
+# Odak Atölyesi — tek katlı prefabrik çizimi
 
-25 Ekim 2026 · DEV-152. `index.html` açılır. Ana uygulama 5.9.137 değişmedi.
+25 Ekim 2026 · DEV-153. `index.html` artık çalışan tek kat çizim taslağıdır. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+
+## Tek kat çalışma akışı — index.html
+
+- İlk açılışta Tuna 84 kayıtlı örneğinin ayrı kopyası; yeni çizim için **Boş plan**, mevcut JSON için **Aç**. Canlı kullanıcı planı kendiliğinden okunmaz.
+- Zemin kat / Çatı / 3D / Tavan / Metraj / Çıktı tek proje üzerinde çalışır. Gerçek duvar, veranda, kapı, pencere, mutfak, tefriş, çizgi, ölçü, metin ve duvar bölme araçları kullanılır. Önceki arayüzdeki işlevsiz komut kartları bu sayfada yoktur.
+- Solda ortak özellikler ve mekânlar; sağda seçili eleman ile açılır üretim/yakalama ayarları. Düzenle menüsünde ikincil araçlar; görünüm seçimi çizim şeridindedir. H/U/köşe gösterimi korunur.
+- Çatı açmak geometri üretmez. Çatı bölümünü kullanıcı oluşturur. “Planı kapsayan dikdörtgen çatı” bir sınır zarfıdır; L/T planda “Özel çatı sınırı çiz” ve birleşen bölümler kullanılmalıdır. Kaynak motorun mevcut güncelleme davranışları korunur; plan sınırı değişince çatı konturu ayrıca kontrol edilir.
+- Ortak yükseklik ve çatı kaplaması mevcut motorun senkronizasyonuyla 3D/metrajda aynı veriyi kullanır. 250/280/300 prefabrik yükseklikleri korunur. Fiyat eklenmedi.
+- “Tavanı alttan gör”, bu çizimdeki odaların gerçek iç sınırlarından 60×120 levha ve mini H önizlemesi üretir. Islak hacim ve veranda levhaları yeşildir. 120×250 seçeneğinde mini H oluşturulmaz; normal Tavan görünümüne dönülür. Özel alttan önizleme ortogonal odalar içindir; eğik oda açıkça bildirilir ve ana tavan görünümünde kalır. Mini H kesiti/1,25 cm kalınlık temsilîdir, satın alma veya üretim onayı değildir. Ana metraj motoru değiştirilmez.
+- Kaydet JSON indirir veya kullanıcının seçtiği dosyaya kaydeder. Otomatik kayıt / açık proje sekmeleri / pano / açıklık tercihleri **taslağa özel anahtarlarla** saklanır. Ana programın otomatik yedeği, sekmeleri ve panosu okunmaz/yazılmaz. Tarayıcı kaydı Git ile taşınmaz; çizimi JSON kaydetmek gerekir. Kaydedilmiş boş plan örnekle değiştirilmez.
+- Çıktı menüsünde PDF / PNG / DXF; Metraj penceresinde yükleme listesine erişim. İmalat ve bağlantı hesabı ana motorun mevcut sınırlarıyla çalışır; yeni taşıma/statik veya fiyat hesabı eklenmedi.
+
+`build-single-storey.cjs` ana HTML ve 52 JS/CSS kaynağını salt okuyarak yalnız bu klasöre `single-engine.js`, `single-engine.css`, `single-example.js`, `index.html` ve `single-engine-manifest.json` üretir. Çalışma anında ana `src/` dosyaları yüklenmez; kopyanın motor sürümü 5.9.137 olarak sabittir. Kaynak ve örnek SHA-256 değerleri manifesttedir. Başka bilgisayarda yalnız `index.html` değil klasörün tamamı gerekir.
+
+Kontroller: `single-check.cjs` gerçek mouse/klavye prefabrik çizim/köşe kapanışı/undo, ana motorla panel-birleşim-metraj eşitliği, oda/metin/ölçü, çatı/kaplama/yükseklik, canlı tavan alanı, JSON indir/aç/yenile, PDF, 980/1280/1920, ağ ve ana kaynak/depolama izolasyonu. `single-actions-check.cjs` gerçek kapı/pencere, özel oda adı/tavan, boş kayıt koruması. Ana dosyaların hashleri değişmez. Rapor: `../../analizler/2026-10-25-taslak-tek-kat.txt`.
+
+## Korunan arakat taslağı — arakat.html
+
+Aşağıdaki DEV-150/151/152 açıklamaları bu ayrı sayfaya aittir. Arakat sayfası ağ/depolama kullanmaz; denemeler bellektedir.
 
 ## Ara katın anlamı
 

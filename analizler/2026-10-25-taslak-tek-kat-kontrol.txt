@@ -1,0 +1,25 @@
+DEV-153 · 25 Ekim 2026 · Kontrol özeti (gerçek test çıktıları)
+
+single-check.cjs
+PASS independent startup, live 49-panel prefab source; no fabricated roof
+PASS same plan -> identical panel widths, joints, room areas and bill as production engine
+PASS actual prefab wall drawing, numeric panel lengths, corner closure, undo/redo
+PASS real text and dimension placement
+PASS roof/material/height synchronization and live standard ceiling area + mini H
+PASS reload recovery, downloaded JSON and file open; all main application storage untouched
+PASS metraj and real PDF download
+PASS 980 / 1280 / 1920 responsive plan and roof workspace
+PASS no runtime errors, no network, all original HTML/src/dist/customer hashes unchanged
+
+single-actions-check.cjs
+PASS actual window and door dialogs, placement and custom dimensions
+PASS live ceiling room name, over/under and return
+PASS an intentionally saved empty project is not replaced by the sample
+
+check.cjs (korunan arakat.html)
+PASS deck/insulation/ceiling in both orientations and all heights; ceiling excludes walls, cavity fit, deck area, bottom faces, exploded transforms, visibility/undo/preset isolation; prefab49/H/corners, STL frame geometry, wall-top seating, all heights, actual/exploded levels, plan selection, orientation/undo, orbit, visibility, reference, existing room/split flows, responsive, fallback, no network/storage, main source hashes unchanged
+
+ceiling-check.cjs (korunan arakat.html)
+PASS standard 60x120 geometry, full/cut/L/small areas, actual shared mini-H joints, H section, ceiling area preserved independently of 125cm frames, heights/directions, selection/undo, underside/upper view, view restoration, responsive/fallback/isolation.
+
+Ana program 5.9.137. Yerel kaynak ve örnek dosya hashleri single-engine-manifest.json ile kayıtlıdır. Ekran görüntüleri aynı tarihli -plan.png / -3d.png / -tavan.png dosyalarıdır.
