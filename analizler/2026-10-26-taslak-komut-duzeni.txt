@@ -1,0 +1,59 @@
+26 Ekim 2026 — DEV-157 — Prefabrik / hafif çelik için komut düzeni araştırması ve taslak
+
+İstek
+Kullanıcı mevcut taslakta komutların karmaşık olduğunu, işe yakın programların incelenerek arayüzün profesyonelleştirilmesini istedi. Çalışma 25 Ekim gecesi başladı, 26 Ekim'de tamamlandı. Önceki kalıcı kapsam korunur: ana program değişmeyecek; taslak üzerinde uygulanacak.
+Görsel kaynak: C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-116eb059-36ae-42e3-8c55-9ab98d0c46fb.png
+Kaynak ve görev dosyası SHA-256: 2026-10-26-taslak-komut-duzeni-envanteri.json.
+
+Araştırma yöntemi
+Üreticilerin resmî ürün ve yardım belgeleri tarandı. Ticari programlara giriş/kurulum veya uçtan uca uygulamalı test yapılmadı. “En yakın” kararı aşağıdaki incelenen ürünler arasında iş akışı benzerliği değerlendirmesidir; bu ürünlerin bizim 125,5 / 62,75 cm ve H/U/köşe kurallarımızı doğrudan uyguladığı iddia edilmez.
+
+1. Vertex BD — iş akışımıza en yakın temel
+LGS eğitim sırası proje parametreleri ve referans çizim, duvar/açıklık, çerçeve, tavan/çatı, makas, panel çizimleri ve üretim çıktısını kapsıyor. Bu sıra prefabrik ve hafif çelik firmasının bina çiziminden imalata giden işine yakındır. Resmî arayüz açıklaması ilişkili komutları sekmelere ayırıyor, çizgi/metin/ölçüyü Drafting grubunda topluyor ve eleman seçildiğinde bağlamsal sekme açıyor. Bizim uygulamada dört küçük iş grubu ve seçili elemanın sağ paneli tercih edildi.
+https://kben.vertex.fi/bd/vertex-bd-training-manual-for-lgs-frame-building-d
+https://docs.vertex.fi/bd2026en/html/bd/interface/ribbon.html
+İkinci sayfanın metni arama dizininden okunabildi; doğrudan açma cache hatası verdi.
+
+2. FRAMECAD Steelwise — hafif çelik üretimine yakın karşılaştırma
+Üretici 2D plan alma, duvar/çatı/döşeme düzeni, detay paftaları ve üretim hazırlığını tanımlıyor. Bizim basit plan ve müşteri sunumu akışımızın tamamı için arayüz kopyası seçilmedi; üretime giden düzenin ayrı aşamalar olması fikrini destekliyor. Makine çıkışı veya mühendislik modülü bu taslağa eklenmedi.
+https://framecad.com/steel-framing-software/steelwise
+https://knowledgehub.framecad.com/steelwise-procedure-guide
+https://knowledgehub.framecad.com/detailing-and-engineering-panels-and-frames
+
+3. Revit + Strucsoft Metal — bağlamsal düzen ve üretim bağlantısı
+Revit'in proje tarayıcısı, özellik paleti ve seçili elemana göre komut gösterme ayrımı alındı. Strucsoft'un Revit duvar/döşemelerinden şablonlarla çerçeve ve üretim belgesi üretmesi, tek modelin farklı çıktıları beslemesi yaklaşımına örnektir. Revit'in tüm şeritleri ve BIM parametreleri taslağa taşınmadı.
+https://help.autodesk.com/cloudhelp/2026/ENU/Revit-GetStarted/files/GUID-3197A4ED-323F-4D32-91C0-BA79E794B806.htm
+https://strucsoftsolutions.com/products/strucsoft-metal/
+
+4. Rayon — sade çalışma alanı ve komuta erişim
+Rayon V2 yazısı sol kaynak/listeler, sağ özellikler ve sabit araç bölgesi ayrımını; komut araması ve erişilebilirliği vurguluyor. Shape tools belgesi aktif komutun seçenekleriyle sağdaki özellikleri ayırıyor. Bizde sol ortak proje özellikleri, ortada çizim, sağda seçili eleman korunarak aynı açıklık hedeflendi. Araçlar alta taşınmadı; kullanıcının üstteki çalışma alışkanlığı korundu.
+https://www.rayon.design/blog/rayon-v2
+https://docs.rayon.design/documentation/design/shape-tools
+
+Mevcut görüntünün sorunu ve uygulanan karar
+Uzun ve yatay kaydırılan satırda mimari çizim, donatı, not ve düzenleme komutları birlikteydi. Sürekli duvar kalınlığı şeridi, seçimden bağımsız üretim/yakalama ayarları ve ikinci seçim kontrolü aramayı zorlaştırıyordu. Yeni taslak 157:
+- Yapı: Duvar / Veranda / Kapı / Pencere.
+- Donatı: Vitrifiye / Mutfak / Tefriş.
+- Ölçü ve not: Ölçülendir / Metin / Çizgi-şekil.
+- Düzenle: Duvar böl / Panel düzenle / Alan seç / Tümünü seç / Kopyala / Kes / Yapıştır.
+- Seç, Referans, geri al/ileri al ve sil her grupta aynı yerde. Araçlar mevcut DOM düğmeleri ve dinleyicileridir; işlevleri yeniden yazılmadı. Dar alanda gruplar satıra sığacak şekilde sarılır; yana kaydırma gerektirmez.
+- Duvar çizim kalınlığı ve giriş birimi yalnız duvar aracında sağda. Özellikler/Ayarlar/Kontrol ayrımı; görünüm ve katmanlar çizim köşesinde.
+- Komut bul / Ctrl+K; Türkçe karakterli veya karaktersiz arama, Enter ve yön tuşları. Arama aynı komutları tetikler; duvar taşıma gibi seçim gerektiren eylemler ilgili seçim olmadan kapalıdır.
+- Sol/sağ paneller üst şeritteki simgelerle katlanabilir. 1200px altı ilk açılışta sol panel katlanır, istenince açılır. Yeni bir eleman/araç seçimi sağ paneli erişilebilir yapar.
+- Çatı: Katmanlar / Bakış / Sunum grupları; Kesit ve Metraj/kesim erişimi. Motorun görünürlük kuralları, boya ve katman davranışı korunur.
+
+Değişen dosyalar
+single-command-ui.js / .css yeni arayüz katmanı; build-single-storey.cjs, üretilen index.html/manifest ve taslak sürümü 157. single-check.cjs not/ölçü grubunu açacak şekilde güncellendi. reference-check.cjs kalibrasyon testi gerçek tıklanan CSS pikselini model koordinatına çevirerek hassas sonucu doğrular; eski ideal nokta/1cm toleransına bağlı düzen varsayımı kaldırıldı. Referans uygulama kodu değişmedi.
+
+Doğrulama
+command-ui-check.cjs: dört komut grubu; proje verisini değiştirmeyen sekme/panel geçişleri; duvar kalınlığı bağlamı; klavyeden duvar aracı; mutfak/ölçü aramasının gerçek diyalogları açması; boş arama/Esc; görünüm filtreleri; Referans; panel katlama ve tekrar açma; gizli özellik panelinden ayar araması; 980/1280/1600/1920 genişlikte yatay taşma yok; dar ilk açılışta çizim alanı >=700px; çatı/3D geçişleri; JavaScript hatası yok.
+single-check.cjs: gerçek sayısal prefabrik çizim ve kapanış, undo/redo; ana motorla panel, birleşim, alan ve metraj eşitliği; oda/metin/ölçü; ortak çatı kaplama/yükseklik; 60x120 tavan/mini H; JSON indir/aç/yenile; PDF; ana HTML/src/dist/çizim ve tarayıcı kaydı izolasyonu geçti.
+wall-move-check.cjs: 198,25→150 ve bağlı duvar uçları, yatay/dikey/iç/dış, kesirli hareket, T birleşimi, açıklık sıkışmasında tam geri alma, çoklu duvar, JSON ve menü testleri geçti.
+reference-check.cjs: PNG/JPG, Ctrl+V, dosya/drop, iki nokta/cm, sabit çıpa/en-boy oranı, taşı/undo, kilitli görsel üzerinden gerçek çizim, JSON/sekme/yenile ve çıktı/metraj izolasyonu geçti.
+single-actions-check.cjs: gerçek kapı/pencere ekleme, özel ölçüler, canlı oda adı/tavan ve bilerek boş kaydın korunması geçti.
+1600 ve 980 plan görselleri, 3D komut şeridi görsel olarak incelendi. Son 1600 görünümde seçili komut sekmesi doğru vurgulanıyor. Kanıt görselleri artifacts/commands-*.png altında, geçici ve Git dışında.
+
+Korunanlar, sınırlar, sonraki adım
+Ana uygulama 5.9.137, src/dist, panel/köşe/H/makas/geometri/metraj hesapları ve önceki arakat sayfası değişmedi. Fiyat, yeni kat veya üretim algoritması eklenmedi. Görünüm/komut gruplaması gerçek model üzerinde aynı motorla çalışır; sahte komut yoktur. Canlı kullanıcının açık çizimleri okunmadı/değiştirilmedi, kullanıcı kaydedip yenileyerek taslağa geçebilir.
+Panel açık/kapalı tercihi bu sürümde oturumluk; kalıcı kişisel çalışma alanı veya düzenlenebilir kısayollar yok. Mevcut ayrıntılı araç diyalogları bu işte tamamen yeniden tasarlanmadı. Tek kat taslak değerlendirmesi ve önceki üretim/çok kat açık işleri korunur. Ana uygulamaya aktarım kullanıcı değerlendirmesinden sonra ayrı çalışmadır.
+Görev kodu, araştırma/karar raporu ve kayıtlar birlikte commit/push edilir. Kaynak ekran görüntüsünün yolu/hash'i kaydedildi; geçici görselin ham dosyası ve ilgisiz yerel not/çizimler depoya eklenmez.

@@ -1,0 +1,20 @@
+{
+  "task": "DEV-157",
+  "mainRevision": "5.9.137",
+  "sourceImage": {
+    "path": "C:\\Users\\ONUR\\AppData\\Local\\Temp\\codex-clipboard-116eb059-36ae-42e3-8c55-9ab98d0c46fb.png",
+    "sha256": "2a94e300088c1bec17510d7f85af11856016505a17e262eba776ce6618812044"
+  },
+  "artifacts": {
+    "taslaklar/odak-atolyesi/build-single-storey.cjs": "aeb52aff448663aade151b7a7ac18d8d4afe3cb5ae3e9c98f650d2193206357d",
+    "taslaklar/odak-atolyesi/index.html": "a6d1819989b38b61d7cf968685c0070bc611b8c284f719df3822bdc840fe7a24",
+    "taslaklar/odak-atolyesi/single-engine-manifest.json": "6dda3d6241ec41f792a00835c56fec30152c8cb70519c6d12b3d3b99efc03ef8",
+    "taslaklar/odak-atolyesi/single-storey.js": "071248c714eff8172db2b8a99a9941b872d5cc253e37d20bd565dfa37c4b8d59",
+    "taslaklar/odak-atolyesi/single-command-ui.js": "866f2d79a38ae90babafa96a02e3c7842e830d1e60393144d4c19aa7c6464563",
+    "taslaklar/odak-atolyesi/single-command-ui.css": "0de1226f2eaf314f8fa2cb69e784ebd4b4f97a667191474b8a66479a75843334",
+    "taslaklar/odak-atolyesi/command-ui-check.cjs": "57135a1a1aab6bc0d0cefb3475f8f3791b10339c907fee4335962579ed8aa69b",
+    "taslaklar/odak-atolyesi/single-check.cjs": "4e7e5cf2cfef1ecb960ec4752ad42de32b9c75309423fc26c43a01ed090fbbbf",
+    "taslaklar/odak-atolyesi/reference-check.cjs": "e697315c8752586742f7561637722443b2a50aa17c06e26c9416495bb0c00409",
+    "taslaklar/odak-atolyesi/README.md": "14f8594c80d2c77ac85a00b1cf716dff907bed14b659766f0214be6334e3a88b"
+  }
+}

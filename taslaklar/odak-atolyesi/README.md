@@ -1,6 +1,21 @@
 # Odak Atölyesi — tek katlı prefabrik çizimi
 
-25 Ekim 2026 · DEV-156. `index.html` çalışan tek kat çizim taslağıdır; Seç altında panel/duvar ayrımı ve seçili duvarı tam ölçüyle taşıma eklendi. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+26 Ekim 2026 · DEV-157. `index.html` çalışan tek kat çizim taslağıdır; komutlar işlerine göre gruplandı, bağlamsal sağ panel ve komut araması eklendi. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+
+## Komut düzeni
+
+Resmî dokümanlara göre iş akışı için [Vertex BD](https://kben.vertex.fi/bd/vertex-bd-training-manual-for-lgs-frame-building-d), bağlamsal araçlar için [Revit](https://help.autodesk.com/cloudhelp/2026/ENU/Revit-GetStarted/files/GUID-3197A4ED-323F-4D32-91C0-BA79E794B806.htm), sabit arayüz bölgeleri için [Rayon](https://www.rayon.design/blog/rayon-v2) incelendi. Bu taslak ürünlerin birebir kopyası değildir; mevcut prefabrik motorunun komutları yeniden düzenlendi. Karşılaştırma ve kararlar: `../../analizler/2026-10-26-taslak-komut-duzeni.txt`.
+
+- **Yapı:** Duvar, veranda, kapı, pencere.
+- **Donatı:** Vitrifiye, mutfak, tefriş.
+- **Ölçü ve not:** Ölçülendir, metin, çizgi / şekil.
+- **Düzenle:** Duvar böl, panel düzenle, alan / tümünü seç, kopyala, kes, yapıştır.
+- **Seç**, **Referans**, geri al/ileri al her grupta erişilebilir. **Komut bul** veya **Ctrl+K**, aynı araçları adlarıyla açar; Enter çalıştırır, Esc kapatır. Seçili duvara bağlı taşıma komutları, duvar seçilmeden etkinleşmez.
+- Duvar çizerken kalınlık ve sayısal giriş birimi sağda görünür. **Özellikler** seçili eleman içindir; **Ayarlar** üretim yönü/panel kuralı/hassas yerleşim; **Kontrol** mevcut plan denetimidir. Görünüm seçimi ve katman düğmesi çizimin sağ üstündedir; görünüm değişikliği model ölçülerini değiştirmez.
+- Üst görünüm şeridindeki iki panel simgesi sol proje ve sağ özellik alanını katlar. 1200 piksel altındaki ilk açılışta proje paneli katlıdır. Araç seçimi, gerekli özellik panelini açar. Panel tercihleri bu sürümde oturumluk arayüz durumudur; proje JSON'una eklenmez.
+- Çatı araçları Katmanlar / Bakış / Sunum olarak gruplanır. Motorun Boyacı ve diğer araç görünürlük kuralları korunur; yeni kat veya üretim işlevi eklenmez.
+
+Kontrol: `command-ui-check.cjs`; önceki `single-check.cjs`, `single-actions-check.cjs`, `wall-move-check.cjs` ve `reference-check.cjs` akışlarıyla birlikte doğrulandı. Ana kaynaklar/çizimler değişmez.
 
 ## Duvar seçimi ve ölçülü taşıma
 
