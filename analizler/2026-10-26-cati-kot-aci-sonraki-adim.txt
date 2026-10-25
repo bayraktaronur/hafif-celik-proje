@@ -1,0 +1,16 @@
+DEV-159 — Yarın yapılacak çatı kotu ve açı girişi
+Karar tarihi: 26 Ekim 2026. Kullanıcı uygulamayı 27 Ekim'e bıraktı.
+
+Kullanıcı isteği
+Bağlantı engelinde ana çatı kotu, yavru çatı kotu ve farkı birlikte gösterilsin. Kullanıcıya "Yavru çatıyı alçalt" veya "Ana çatıyı yükselt" seçeneği sunulsun. Açı/eğim ile yükseklik ayrı ayrı girilebilsin. Bu iş bugün uygulanmayacak.
+
+Sonraki oturumun kapsamı
+- Yalnız bağımsız odak-atolyesi taslağında çalış. Ana programa dokunmama kararı geçerli.
+- Uyarı gerçek proje geometrisinden hesaplanan kot/farkı kullansın. 396,2 / 439,2 / yaklaşık43cm DEV-158 sentetik test örneğidir; kullanıcı projesine sabit değer olarak yazılmasın.
+- Ana/yavru çatı seçimi açık olsun; hangi çatının değişeceği kullanıcıya gösterilsin. Açı(°) / eğim(%) ve yükseklik(cm) girişleri tutarlı olsun.
+- Dört U noktası korunsun; değişiklik önizlensin, kullanıcı uygulayınca gerçek çatı/3D/metraj güncellensin. Kendiliğinden kot veya eğim değiştirme.
+- Kot referansı açık etiketlensin: duvar üstü, saçak veya mahya birbirine karıştırılmasın. Mevcut R.seat/synchronize otomatik wallTop/trim davranışı bağımsız çatı kotunu geri ezmemeli; duvar yüksekliği yanlışlıkla değiştirilmemeli. Ana çatıya bağlı diğer yavrular da işlem sırasında doğrulansın.
+- Undo/redo/JSON/kayıt ve başarısız değişiklikte geri dönme kontrolleri yapılsın. Kaynak ana motor korunarak yalnız taslak genişletilsin.
+
+Bu oturumda
+Yalnız karar/devir kaydı eklendi. Kod, çizim ve sürüm değişmedi: taslak158, ana5.9.137. DEV-159 AÇIK; kullanıcıyla sonraki devamda uygulanacak. Otomatik zamanlanmış çalışma veya bildirim kurulmadı.
