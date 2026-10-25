@@ -991,3 +991,7 @@ Tamamlandı: fiziksel oda ve çizgi alt alan etiketleri ortak drawRoomLabel kull
 
 ## 25 Ekim 2026 — DEV-144 / 5.9.136 — Modern ana çizim arayüzü
 Tamamlandı: açık gri/mint arayüz, dikey sol araç şeridi, açılır proje ayarları, ince üst şeritler ve sağ özellik paneli. Mevcut DOM kontrolleri taşınır; motor ve hesap modeli değiştirilmedi. Modern/klasik tercih yerelde saklanır; ilk açılış klasik, üstte Modern görünüm düğmesi. workflow-shell testi: 1280/1920 taşma ve çizim genişliği, panel aç/kapa, mevcut komutlar/çatı/görünürlük, iki sistemde tekrarlı geçiş ve model eşitliği; ana31/31 geçti. Görsel artifacts/workflow-shell.png incelendi. Açık: çatı/3D iç ekranlarının aynı tasarım diliyle yenilenmesi, açık/koyu çizim zemini seçimi ve daha ayrıntılı komut bazlı panel sadeleştirmesi. Önceki açık işler korunur; kullanıcı çizimi değiştirilmedi.
+
+
+## 25 Ekim 2026 — DEV-145 / 5.9.137 — Modern arayüz geri alındı
+Kullanıcı DEV-144 tasarımını reddetti ve eskiye dönüş istedi. workflow-shell JS/CSS ve testi 5.9.135 haline geri getirildi; dağıtım yeniden üretildi. Modern sol araç şeridi/açık renk düzen ve tercih okuma kaldırıldı. Önceki çizim, etiket ve hesap düzeltmeleri korundu. workflow-shell ve temel31/31 geçti. DEV-144 devam tasarım işleri kullanıcı isteğiyle iptal; diğer açık işler korunur. Çizimler ve tarayıcı kayıtları değiştirilmedi.
