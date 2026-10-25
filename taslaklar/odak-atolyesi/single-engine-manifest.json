@@ -1,7 +1,10 @@
 {
-  "task": "DEV-153",
+  "task": "DEV-154",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
+  "prototypeExtensions": [
+    "referenceImages: project, history, recovery and native paste"
+  ],
   "sources": {
     "plan_cizim.html": "133d22e40170396e02297525ec417222714106a61b175c95938a1de8ba184e7a",
     "src/legacy.css": "bf228dc46fe0c4ed68077e5359f37fa6ba2046b2d171490239d9613669c52859",

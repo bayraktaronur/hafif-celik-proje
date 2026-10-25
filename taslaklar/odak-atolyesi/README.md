@@ -1,6 +1,20 @@
 # Odak Atölyesi — tek katlı prefabrik çizimi
 
-25 Ekim 2026 · DEV-153. `index.html` artık çalışan tek kat çizim taslağıdır. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+25 Ekim 2026 · DEV-154. `index.html` çalışan tek kat çizim taslağıdır; referans pencere ve ölçülü görsel altlığı eklendi. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+
+## Referans plan üzerinden çizim
+
+Araç çubuğunun başındaki **Referans** düğmesiyle PNG/JPG açılır. Görsel çizim alanına sürüklenebilir veya ekran görüntüsü **Ctrl+V** ile yapıştırılabilir. Panodan yapıştır düğmesi, tarayıcı erişim veriyorsa aynı işi yapar; izin yoksa Ctrl+V kullanılır. Yazı alanlarına yapıştırma ve uygulamadaki plan kopyalama korunur.
+
+- **Plana yerleştir:** görsel duvarların arkasında, planla aynı cm koordinatlarında durur; zoom ve kaydırmayı birlikte izler. Kapalı odaların dolgusu referans açıkken hafifler; duvarlar ve etiketler korunur.
+- **İki noktayla ölçekle:** görselde bilinen mesafenin iki ucuna tıkla ve gerçek uzunluğu cm gir. İlk nokta sabit, en/boy oranı aynı kalır. Bu işlem görseli ölçekler; duvarları değiştirmez.
+- **Kilitli** başlangıç durumu üzerinden rahat çizim sağlar. Kilidi aç → Taşı ile görsel sürüklenir. Ölçü ve konum bölümünde genişlik, açı ve X/Y girilebilir. Opaklık, göster/gizle ve Görsele git vardır.
+- **Ayrı pencerede bak:** çizimden bağımsız referans önizlemesi; başlıktan taşı, köşeden boyutlandır, görseli sürükle veya tekerlekle yakınlaş.
+- Referanslar proje JSON’una gömülür; sekme değiştirme, geri al/ileri al, yenileme ve dosya açma/kaydetmeyle korunur. Ana uygulamanın referans veritabanı ve çizimleri okunmaz/değiştirilmez. Önceki `codex/arayuz-duzeni:src/reference-image.js` yalnız ayrı pencere ve IndexedDB’de son görsel tutuyordu; bu taslak kendi proje kaydını kullanır.
+- En fazla 4 referans; toplam gömülü veri 2 MiB. Kaynak en fazla 30 MiB; önizleme uzun kenarı 2000 piksele indirilir, büyük PNG’ler JPEG olarak saklanır, şeffaf arka plan beyaza alınır. Kaynak dosya değişmez. Otomatik yedek kotası dolarsa uygulama JSON indirmeyi bildirir.
+- Referanslar çizim yardımcısıdır; metraja, 3D’ye veya PDF/PNG/DXF çıktısına eklenmez. Otomatik duvar tanıma veya PDF/DWG içe aktarma yoktur.
+
+Kontrol: `reference-check.cjs` — dosya, görsel pano, JPG sürükle/bırak, iki nokta/cm, taşıma/undo, kilitli görsel üstünde gerçek prefabrik çizim, sekme/JSON/yenileme, çıktı/metraj ve kaynak izolasyonu. Rapor: `../../analizler/2026-10-25-taslak-referans.txt`.
 
 ## Tek kat çalışma akışı — index.html
 

@@ -1,0 +1,20 @@
+{
+  "task": "DEV-154",
+  "mainRevision": "5.9.137",
+  "historicalReferenceBranch": "codex/arayuz-duzeni",
+  "historicalSources": {
+    "src/reference-image.js": "744f38f40234b0aa96a3b7abca4716bb87890d2e35d80ffd80e9f60bfcc90aa3",
+    "src/reference-image.css": "5f2fc5140e7d0d0fd70ffcfcbad1c2fedfcffa04ff8e159afe306f755a0fa51f"
+  },
+  "artifacts": {
+    "taslaklar/odak-atolyesi/index.html": "86a08af35c5cc18dc92c0eeaad68e525296c50b74675e5d07e91ef3d5380b267",
+    "taslaklar/odak-atolyesi/single-storey.js": "3942333fdaa2fc1655ee9753abacfd376811f88337d0ecb0f015e9de6ba82057",
+    "taslaklar/odak-atolyesi/build-single-storey.cjs": "151532b0d1a6e43999d54ace5ff85384514f8cb219cf58735fb24d4b770e741e",
+    "taslaklar/odak-atolyesi/single-engine.js": "611800b37455fc82ea7db32997efff32f8c67898409999aebf69a1c688975f39",
+    "taslaklar/odak-atolyesi/single-engine-manifest.json": "fcfef82b4bf7ecfb73db71b9b8c76d917590dcfca4a0caca282724b21c893e7e",
+    "taslaklar/odak-atolyesi/single-reference-core.js": "1186cb978e0b3db5d3ee116e86b45a76387ad283ae445c0126686ca07740904d",
+    "taslaklar/odak-atolyesi/single-reference.js": "cf4a1fa64206b7ae0ddf4fc54f3b8659aab5557efd83b7a1113feb45b3b9c6f6",
+    "taslaklar/odak-atolyesi/single-reference.css": "7c1ddd9fbb0917a6c278636f60c82f2453dcbf628387255e8bf36434e401ee98",
+    "taslaklar/odak-atolyesi/reference-check.cjs": "d89e1c6176119ee3d160e6d1c8a63555fe5df1fb7da5e8ec61581bcdf39dc9f2"
+  }
+}

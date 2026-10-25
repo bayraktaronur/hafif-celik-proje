@@ -1,0 +1,26 @@
+DEV-154 — Referans penceresi ve çizim altlığı
+İstek: Referans projeyi çizim sırasında görmek; PNG/JPG veya panodan ekran görüntüsüyle üzerinden çizmek.
+Kapsam: Yalnız taslaklar/odak-atolyesi. Ana uygulama 5.9.137, src, dist, müşteri planları ve önceki arakat sayfası korunur.
+
+Bulgu
+Eski sistem codex/arayuz-duzeni dalının src/reference-image.js/.css dosyalarında kaldı. Ana 5.9.137 ve DEV-153 taslağında yüklü değildi. Eski sistem taşınabilir pencerede son görseli indexedDB planstudio-reference-preview veritabanında tutuyor, proje JSON’una eklemiyordu. Eski arayüz bütünü geri getirilmedi; yalnız istenen işlev bağımsız taslakta geliştirildi. Kullanıcının canlı tarayıcı kayıtları/özel görselleri okunmadı veya yüklenmedi.
+
+Uygulama
+- Araç şeridinin başında görünür Referans düğmesi. Sade taşınabilir/boyutlandırılabilir pencere.
+- PNG/JPG dosyası, çizime/pencereye sürükle-bırak, Ctrl+V görsel yapıştırma. Panodan yapıştır düğmesi desteklenen tarayıcıda kullanıcı tetiklemesiyle okunur; reddedilirse Ctrl+V yönergesi.
+- Plana yerleştir ve Ayrı pencerede bak. Plan görseli cm koordinatlarında duvarların altında; zoom/pan ortak, oda dolguları yalnız referans görünürken hafifletilir.
+- İki nokta + bilinen cm ölçüsü ile ölçekleme; ilk referans noktası sabit, oran korunur. Görsel varsayılan kilitlidir; kilidi aç/taşı, genişlik/açı/X/Y, opaklık ve görünürlük ayarları.
+- Yer değiştirme, ölçek, silme ve ayarlar asıl motorun işlem geçmişini kullanır. Referans alanı proje state/apply/hasWork döngüsüne yalnız kopya motor üretilirken eklenir. JSON, otomatik yedek ve sekme değişimlerinde taşınır.
+- Ctrl+V önce tarayıcı paste olayına bırakılır. Görsel yoksa mevcut PlanClipboard yapıştırması çalışır; metin alanları ve modal işlemler korunur.
+- Veri yalnız PNG/JPEG base64 parçaları olarak doğrulanır. Dört görsel / toplam 2 MiB gömülü veri; kaynak 30 MiB üst sınırı. Önizleme 2000 piksel uzun kenar, büyük PNG için JPEG .9; şeffaf arka plan beyaz. Kaynak dosya değişmez.
+- Referans metraj, panel kuralları, 3D veya çıktı nesnesi değildir. PDF/PNG/DXF çıktıları asıl planı kullanır.
+
+Kontroller
+reference-check.cjs: PNG dosya ekleme; kilitli altlık; gerçek fare ile iki nokta/cm ölçekleme; oran ve ilk nokta korunumu; sürükleme, geri al/ileri al; açı/genişlik/opaklık/göster/pencere-sahne/zoom; altlık üzerinden gerçek prefabrik duvar çizme; Ctrl+V’nin native paste olayına bırakılması; görsel ClipboardEvent; metin alanında yapıştırmanın ele geçirilmemesi; plan panosu; JPG DragEvent; JSON indir/aç; sekmeler ve yenileme; kaldır/undo; bozuk veri sınırları; 980/1280/1920 yerleşim; sıfır ağ ve çalışma zamanı hatası; ana kayıt/source hash izolasyonu GEÇTİ.
+Metraj ve DXF içerikleri referans var/yok aynı plan için birebir karşılaştırıldı.
+single-check.cjs ve single-actions-check.cjs: tek kat gerçek çizim/oda/kapı/pencere/metin/ölçü/çatı/3D/tavan/metraj/PDF/JSON/boş kayıt kontrolleri GEÇTİ.
+Gerçek kullanıcı panosu değiştirilmedi; tarayıcı sistem izni farklılıkları nedeniyle düğme Ctrl+V’ye yönlendirebilir. Panodan görsel yolu bağımsız test tarayıcısında gerçek image File taşıyan paste olayıyla doğrulandı.
+Görseller: 2026-10-25-taslak-referans-sahne.png ve 2026-10-25-taslak-referans-pencere.png. Görsel denetim yapıldı.
+
+Açık sınırlar
+Çizgileri otomatik duvara çevirme, vektör PDF/DWG içe aktarma, perspektif düzeltme ve görseli müşteri çıktısına basma eklenmedi. Görsel bilinen ölçüye kullanıcı tarafından oturtulur. Ana programa entegrasyon yapılmadı; önceki proje açık işleri korunur. Eski ayrı referans veritabanından otomatik göç yok; görsel dosyası yeniden açılır/yapıştırılır. Kullanıcı çizimini diğer bilgisayara taşımak için taslaktan JSON kaydetmelidir.

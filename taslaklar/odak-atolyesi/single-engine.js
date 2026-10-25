@@ -581,6 +581,7 @@
   function validate(input){
     if(!input||typeof input!=='object'||Array.isArray(input))fail('Geçerli bir proje nesnesi bulunamadı.');
     safeTree(input);
+    ReferenceImageData.validate(input.referenceImages);
     if(!['5','5.1'].includes(String(input.v)))fail('Desteklenen dosya sürümleri: v5 ve v5.1.');
     const d=JSON.parse(JSON.stringify(input));
     d.loading=(typeof LoadingCore!=='undefined'?LoadingCore:require('./loading-core.js')).validate(d.loading);
@@ -4985,7 +4986,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.137',projectName,paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.137',projectName,...(G.referenceImages?.length?{referenceImages:clone(G.referenceImages)}:{}),paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5049,7 +5050,7 @@ updateStatus();
     restoring=true;
     try{
       resetInteraction();
-      G.paint3D=clone(d.paint3D||{});G.loading=clone(d.loading||{adjustments:[],manual:[]});G.sheetInfo=clone(d.sheetInfo||{});G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
+      G.referenceImages=clone(d.referenceImages||[]);G.paint3D=clone(d.paint3D||{});G.loading=clone(d.loading||{adjustments:[],manual:[]});G.sheetInfo=clone(d.sheetInfo||{});G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
@@ -5075,7 +5076,7 @@ updateStatus();
     if(restoring)return;clearTimeout(autoTimer);autoTimer=setTimeout(persist,650);
     clearTimeout(analysisTimer);analysisTimer=setTimeout(()=>{if(activeTab==='analysis')analyze();else refreshIssueCount();},850);
   }
-  function hasWork(d=state()){return ['s','e','r','roofs','annotations','fixtures','counters'].some(k=>d[k]?.length);}
+  function hasWork(d=state()){return ['s','e','r','roofs','annotations','fixtures','counters','referenceImages'].some(k=>d[k]?.length);}
   function backupList(){
     let list=[];try{list=JSON.parse(localStorage.getItem(BACKUPS)||'[]');}catch{}
     if(!Array.isArray(list))return [];
@@ -7997,7 +7998,7 @@ window.Wall3D={build,panelColor};
  window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;if(G.tool==='area-select'){stop(e);drag={start:point(e),end:point(e)};return;}if(G.tool==='plan-paste'&&pending){stop(e);try{const result=C.paste(Studio.state(),pending,point(e),()=> 'paste-'+crypto.randomUUID());if(Studio.applyTransaction(result.state)){pending=ghost=null;setTool('sec');setSelection({s:result.added.s,fixtures:result.added.fixtures,counters:result.added.counters,annotations:result.added.annotations,roofs:result.added.roofs});}}catch(err){Studio.toast(err.message,true);}return;}selection=null;},true);
  window.addEventListener('mousemove',e=>{if(drag){drag.end=point(e);draw();}else if(pending&&e.target===cv){ghost=point(e);draw();}},true);
  window.addEventListener('mouseup',e=>{if(!drag||e.button!==0)return;stop(e);const s=rectSelection(drag.start,point(e));drag=null;setTool('sec');setSelection(s);},true);
- window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable||document.querySelector('dialog[open],.mbg.open'))return;const k=e.key.toLowerCase();if((e.ctrlKey||e.metaKey)&&['a','c','x','v'].includes(k)){stop(e);({a:all,c:()=>copy(false),x:()=>copy(true),v:paste})[k]();}else if(e.key==='Escape'&&(pending||drag||selection)){stop(e);cancel();setTool('sec');draw();}},true);
+ window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable||document.querySelector('dialog[open],.mbg.open'))return;const k=e.key.toLowerCase();if((e.ctrlKey||e.metaKey)&&['a','c','x','v'].includes(k)&&!(k==='v'&&window.ReferenceImages)){stop(e);({a:all,c:()=>copy(false),x:()=>copy(true),v:paste})[k]();}else if(e.key==='Escape'&&(pending||drag||selection)){stop(e);cancel();setTool('sec');draw();}},true);
  window.addEventListener('blur',()=>{drag=null;});
  const baseTool=setTool;window.setTool=function(t){if(t!=='plan-paste')pending=ghost=null;if(t!=='area-select')drag=null;if(t!=='sec')selection=null;baseTool(t);};
  window.PlanClipboard={all,copy,paste,cancel,rectSelection};
