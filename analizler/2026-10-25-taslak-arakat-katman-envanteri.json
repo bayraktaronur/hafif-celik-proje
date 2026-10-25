@@ -1,0 +1,151 @@
+{
+  "date": "2026-10-25",
+  "task": "DEV-151",
+  "applicationVersionUnchanged": "5.9.137",
+  "referenceImage": {
+    "path": "referanslar/2026-10-25-arakat/prefabrik-katlar-arasi-kesit.png",
+    "bytes": 845888,
+    "sha256": "20b7d00d010a8001c3fb61264fdd310105432d3419d3a91dee865ae450d4d4a9"
+  },
+  "sources": [
+    {
+      "path": "referanslar/2026-10-25-arakat/arakat.stl",
+      "bytes": 78984,
+      "sha256": "5a78093de5040bde638285462b395dc549cadecd7e26e5ef00dc939b6c1c8b68"
+    },
+    {
+      "path": "referanslar/2026-10-25-arakat/arakat-montaj-alternatif-1.stl",
+      "bytes": 1902484,
+      "sha256": "5cbd44debc34e9ae02a037935bb41f56128973b1ee4e07c0967633e1c4ac526e"
+    },
+    {
+      "path": "cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json",
+      "bytes": 14673,
+      "sha256": "43862690c526c8ac6a13de8f8242fcee9d9f4a7c63d6c57e80b600efc92b719f"
+    },
+    {
+      "path": "src/wall-3d.js",
+      "bytes": 11969,
+      "sha256": "154b880fa2cb23cb189107d19e6353c086fef39b5eda571195d9b73bb8d33da7"
+    },
+    {
+      "path": "src/camera-3d.js",
+      "bytes": 1696,
+      "sha256": "e8955914b2047dd55d98b2695aff44b70811460159222f72820cfdd4ad48033d"
+    },
+    {
+      "path": "src/scene-3d.js",
+      "bytes": 6814,
+      "sha256": "a8394b69946e194bb18a51769813b8d929a4c965d11b6066b97224b71f173dc4"
+    },
+    {
+      "path": "plan_cizim.html",
+      "bytes": 19015,
+      "sha256": "133d22e40170396e02297525ec417222714106a61b175c95938a1de8ba184e7a"
+    },
+    {
+      "path": "dist/plan_studio.html",
+      "bytes": 4068597,
+      "sha256": "89960158d15675509b0e6b74e2dc8205a5cdbc668d6166fbde1b5893dda2af1c"
+    }
+  ],
+  "protectedFiles": [
+    {
+      "path": "plan_cizim.html",
+      "bytes": 19015,
+      "sha256": "133d22e40170396e02297525ec417222714106a61b175c95938a1de8ba184e7a"
+    },
+    {
+      "path": "dist/plan_studio.html",
+      "bytes": 4068597,
+      "sha256": "89960158d15675509b0e6b74e2dc8205a5cdbc668d6166fbde1b5893dda2af1c"
+    },
+    {
+      "path": "src/wall-3d.js",
+      "bytes": 11969,
+      "sha256": "154b880fa2cb23cb189107d19e6353c086fef39b5eda571195d9b73bb8d33da7"
+    },
+    {
+      "path": "src/scene-3d.js",
+      "bytes": 6814,
+      "sha256": "a8394b69946e194bb18a51769813b8d929a4c965d11b6066b97224b71f173dc4"
+    },
+    {
+      "path": "src/camera-3d.js",
+      "bytes": 1696,
+      "sha256": "e8955914b2047dd55d98b2695aff44b70811460159222f72820cfdd4ad48033d"
+    },
+    {
+      "path": "cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json",
+      "bytes": 14673,
+      "sha256": "43862690c526c8ac6a13de8f8242fcee9d9f4a7c63d6c57e80b600efc92b719f"
+    }
+  ],
+  "draftAssumptionsCm": {
+    "deck": 2,
+    "ceiling": 1.25,
+    "chassis": 20
+  },
+  "files": [
+    {
+      "path": "taslaklar/odak-atolyesi/index.html",
+      "bytes": 7850,
+      "sha256": "6f095dd631267f1451be15d28ccfde5fbb0dc3c3df690699efc6de87a1281475"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/app.js",
+      "bytes": 20960,
+      "sha256": "f2a4f0072fe70fc13c08ed59a60c5d92909a0a88e2175c1a7f550922cd89dbd4"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/model-view.js",
+      "bytes": 16474,
+      "sha256": "858aefce538b23ebb63030a7eb4bf9961c473e3a5e3b6b497109474849acec48"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/floor-layers.js",
+      "bytes": 4163,
+      "sha256": "ea94d504d97ada8921a9ed6dd3346c739d3ae9b396dae69cb6796e243b052e73"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/style.css",
+      "bytes": 19593,
+      "sha256": "1f26785cfccad3199ee6ace0dae7de9bad2d148b07abd947b974b3a0da937f20"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/check.cjs",
+      "bytes": 12742,
+      "sha256": "a9b868c5e85e6204daa5ce7eb6e5f10508f4c7251beddaaa6e90943d5571eea9"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/README.md",
+      "bytes": 5147,
+      "sha256": "b709d19d665da2bbd6d8d36e3a6b4fd2fbd1c066119cc95b66824d75e3859753"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-arakat-katman.txt",
+      "bytes": 4557,
+      "sha256": "49c1b8e2c165e4e9a515cc70f07198bcca23d0ea498f8b8e1c54aa9adab1a95f"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-arakat-katman-kontrol.txt",
+      "bytes": 6179,
+      "sha256": "84e65bdcc18597c21d5d75b7c535012ba6a520db55a7fb974cc4d87fc82abd98"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-arakat-katman-ayrik.png",
+      "bytes": 248915,
+      "sha256": "57631e61ada3f98ce602c981cacf1bd5809163c06087c4316c501bd323477906"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-arakat-katman-birlesik.png",
+      "bytes": 208641,
+      "sha256": "0cd44fe8e0fcadeb81cb967416d116bc803bd6cec5e05deae6b291ed7bf1774b"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-arakat-katman-yalitim.png",
+      "bytes": 333844,
+      "sha256": "e32e8b10bde1a1c32a98e1401db1ceafd000879e3a38b2e56f0554f3a756cf96"
+    }
+  ]
+}

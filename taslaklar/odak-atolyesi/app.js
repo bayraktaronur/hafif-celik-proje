@@ -2,11 +2,11 @@
 // Isolated interaction study: no production scripts, network, storage, or live-project access.
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],clone=o=>JSON.parse(JSON.stringify(o));
 const fmt=(n,d=0)=>!Number.isFinite(Number(n))?'—':Number(n).toLocaleString('tr-TR',{maximumFractionDigits:d}),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const ground=()=>clone(EXAMPLE),initial=()=>({floors:[{id:'ground',name:'Zemin kat',data:ground(),visible:true},{id:'first',name:'1. kat',data:ground(),visible:false},{id:'mezz',name:'Ara kat şasesi',data:{kind:'frames'},visible:true}],system:'prefab',height:280,frameDirection:'y'});
-let project=initial(),view='3d',selected=null,tool='select',split=null,zoom=1,history=[],toastTimer,explode=0,workspace='roof';
+const ground=()=>clone(EXAMPLE),initial=()=>({floors:[{id:'ground',name:'Zemin kat',data:ground(),visible:true},{id:'first',name:'1. kat',data:ground(),visible:true},{id:'mezz',name:'Ara kat şasesi',data:{kind:'frames'},visible:true}],system:'prefab',height:280,frameDirection:'y',layerVisibility:{deck:true,insulation:true,ceiling:true}});
+let project=initial(),view='3d',selected=null,tool='select',split=null,zoom=1,history=[],toastTimer,explode=160,workspace='roof',assemblyMode='layers';
 const nodeMap=Object.fromEntries(EXAMPLE.nodes.map(n=>[n.id,n]));
 const bounds={x:Math.min(...EXAMPLE.nodes.map(n=>n.x)),y:Math.min(...EXAMPLE.nodes.map(n=>n.y)),right:Math.max(...EXAMPLE.nodes.map(n=>n.x)),bottom:Math.max(...EXAMPLE.nodes.map(n=>n.y))};
-const W=bounds.right-bounds.x,H=bounds.bottom-bounds.y,floor=()=>project.floors.find(f=>f.id===view),level=f=>f.id==='ground'?0:f.id==='first'?project.height+20:project.height;
+const W=bounds.right-bounds.x,H=bounds.bottom-bounds.y,floor=()=>project.floors.find(f=>f.id===view),level=f=>f.id==='ground'?0:f.id==='first'?DraftFloorLayers.elevations(project.height).upper.bottom:project.height;
 function toast(s){$('#toast').textContent=s;$('#toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').hidden=true,3200)}
 function save(){history.push(clone(project));$('#undo').disabled=false}
 function undo(){if(!history.length)return;project=history.pop();selected=null;split=null;$('#undo').disabled=!history.length;syncSettings();render();toast('Son deneme geri alındı.')}
@@ -68,7 +68,7 @@ function renderInspector(){
 $$('[data-tool]').forEach(b=>b.onclick=()=>{if(view==='3d')setView('ground');selected=null;split=null;tool=b.dataset.tool;workspace='design';render()});
 $$('[data-workspace]').forEach(b=>b.onclick=()=>{if(b.dataset.workspace==='roof'){setView('3d');return}if(b.dataset.workspace==='design'&&view==='3d')setView('ground');workspace=b.dataset.workspace;render()});
 $('#showNames').onchange=renderCanvas;$('#showDims').onchange=renderCanvas;$('#showGrid').onchange=e=>{$('#viewport').classList.toggle('no-grid',!e.target.checked);Scene3D.state.grid=e.target.checked;if(view==='3d')renderCanvas()};
-$('#undo').onclick=undo;$('#reset').onclick=()=>{project=initial();history=[];view='3d';selected=null;split=null;tool='select';workspace='roof';zoom=1;explode=0;Camera3D.preset('iso');syncSettings();render();toast('Yalnız taslak örneği sıfırlandı.')};
+$('#undo').onclick=undo;$('#reset').onclick=()=>{project=initial();history=[];view='3d';selected=null;split=null;tool='select';workspace='roof';zoom=1;explode=160;assemblyMode='layers';Camera3D.preset('iso');Camera3D.state.pitch=35;syncSettings();render();toast('Yalnız taslak örneği sıfırlandı.')};
 $('#system').onchange=e=>{save();project.system=e.target.value;if(project.system==='prefab'&&![250,280,300].includes(project.height))project.height=280;syncSettings();render()};
 function updateHeight(e){const n=+e.target.value;if(n<200||n>600||!Number.isFinite(n)){e.target.value=project.height;toast('200–600 cm arasında yükseklik girin.');return}save();project.height=n;render()};$('#height').onchange=updateHeight;$('#steelHeight').onchange=updateHeight;
 function zoomBy(d){zoom=Math.max(.4,Math.min(3,zoom+d));Camera3D.state.zoom=zoom;renderCanvas();$('#zoomLabel').textContent=Math.round(zoom*100)+'%'}$('#zoomIn').onclick=()=>zoomBy(.15);$('#zoomOut').onclick=()=>zoomBy(-.15);$('#fit').onclick=()=>{zoom=1;Camera3D.reset();renderCanvas();$('#zoomLabel').textContent='100%'};

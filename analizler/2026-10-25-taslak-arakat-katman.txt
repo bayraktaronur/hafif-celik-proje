@@ -1,0 +1,30 @@
+DEV-151 — Bağımsız taslakta ara kat döşeme katmanları
+25 Ekim 2026 — ONUR yerel çalışma klasörü
+
+İstek ve kapsam
+Kullanıcı taban kaplaması, yalıtım ve alt tavanın yalnız taslağa eklenmesini; katlar ayrılınca gönderdiği kesit görselindeki gibi tüm katmanların görülmesini istedi. Ana uygulama değiştirilmedi. Plan Studio 5.9.137 korunur.
+
+Kaynaklar
+- Kullanıcı kesiti: referanslar/2026-10-25-arakat/prefabrik-katlar-arasi-kesit.png.
+- Kullanıcı şasesi: referanslar/2026-10-25-arakat/arakat.stl. Önceki montaj/alternatif örnekleri referans penceresinde korunur.
+- Plan: cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json dosyasından önceki taslakta alınmış bağımsız örnek. Canlı müşteri çizimi değildir.
+- Dosya yolları ve SHA-256 değerleri: 2026-10-25-taslak-arakat-katman-envanteri.json.
+
+Uygulanan davranış
+taslaklar/odak-atolyesi/index.html doğrudan açılır. İlk görünüm iki katı ve aradaki taban / yalıtım / şase / alt tavanı ayrılmış gösterir. Dört renkli etiket modeldeki karşılıklarına bağlanır. Sağdaki kutular katman görünürlüğünü ayrı değiştirir. Katları ayır, İki kat birlikte, Şaseyi incele önayarları bulunur. Aralık sürgüsü katmanları kademeli ayırır. Kat kotları ve üretim geometrisi bu görsel ayrıştırmayla değişmez.
+
+Birleşik halde galvaniz şase alt kat duvar üstünde durur. Yalıtım, yan/başlık/ara kayıtların arasındaki boşlukları dolduran ayrı hacimlerdir; çeliğin üzerine serilen tam bir plak değildir. Taban kaplaması şase üstündedir. Alt tavan şase altındadır ve duvar yüzlerinde kesilir; duvar hacimlerine girmez. Kaplamaların alt yüzleri de oluşturulur. Veranda/sundurma önceki ara kat kapsamına dahil olmadığı için burada da kapatılmaz.
+
+Katmanları gizlemek yapıdan kaldırmak anlamına gelmez; üst kat kotu değişmez. Şase incelemesi kaplamaları geçici gizler, kullanıcı görünürlük tercihlerini silmez. Katman kutuları geri alınabilir. Şase doğrultusu ve duvar yüksekliği aynı plan sınırına bağlı kaplama/yalıtımı günceller.
+
+Varsayımlar ve açık işler
+Kullanıcının kesin ölçüleri: dış en 125 cm, şase yüksekliği 20 cm, boy projeye göre. Kaplama kalınlıkları verilmediğinden bu teslim yalnız görünüş için tabanda 2 cm, alt tavanda 1,25 cm kullanır; arayüzde açıkça taslak değeri olarak yazılır. Yalıtım şase boşluğunu gösterir; gerçek yalıtım ürünü/kalınlığı seçilmedi. 280 cm duvarda şase 280–300, taslak taban 300–302, alt tavan 278,75–280 cm; üst kat duvar tabanı 302 cm. Önceki DEV-150'de kaplama bulunmadığı için üst kat 300 cm idi.
+Betopan/Hekimboard ve camyünü/taşyünü adları referanstaki alternatif malzeme aileleridir; seçilmiş marka veya ürün değildir. Levha derzlerinin görüntüsü şase bölümlerinden gelir, imalat yerleşimi değildir. Mini H, 60×120 / 120×250 dizilimleri, ıslak hacim yeşil alçıpan ayrımı, bağlantı/mesnet, özel parça üretim sınırları, merdiven boşluğu, metraj ve fiyat hesapları bu görsel taslağa eklenmedi. Kullanıcının önceki üretim kuralları bu gösterimle değiştirilmiş sayılmaz. Ana program entegrasyonu yapılmadı.
+
+Doğrulama
+check.cjs geçici, kullanıcıdan bağımsız Edge/Playwright oturumunda geçti. İki doğrultu ve 250/280/300 cm yükseklikte katman kotları, taban alanı/şase alanı eşitliği, yalıtım boşluk sınırları, alt tavanın duvarlara taşmaması ve alt yüzlerinin varlığı doğrulandı. Ayrıştırmanın yalnız görsel Z ötelemesi yaptığı; görünürlük, geri al ve önayar geçişlerinde kat seviyelerinin/tercihlerin korunması kontrol edildi. Eski prefab49/H/köşe, şase oturması, plan seçimi/yönü, oda/duvar bölme, kamera ve farklı ekran boyları, WebGL yedek çizici, ağ/depolama izolasyonu kontrolleri de geçti. Ana HTML/src/dist ve kaynak çizim hashleri değişmedi.
+2026-10-25-taslak-arakat-katman-kontrol.txt: ayrıntılı test çıktısı.
+2026-10-25-taslak-arakat-katman-ayrik.png: açılıştaki bütün katmanlar.
+2026-10-25-taslak-arakat-katman-birlesik.png: iki kat birleşik.
+2026-10-25-taslak-arakat-katman-yalitim.png: taban gizliyken yalıtımın şase içinde yerleşimi.
+Görseller yerel olarak incelendi. İlgisiz DEV-096/097/098 kayıtları ve özel kaynakları teslim kapsamına alınmaz; yerelde korunur. Sıradaki adım kullanıcının görsel değerlendirmesi ve gerçek ürün/kalınlık/montaj seçeneklerinin netleşmesi.
