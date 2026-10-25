@@ -1,5 +1,7 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+Güncel Plan Studio çalışması: 25 Ekim 2026, DEV-149 alternatif ara kat şase referansı incelendi. [Rapor](analizler/2026-10-25-arakat-alternatif-inceleme.md). Ana uygulama 5.9.137 ve bağımsız arayüz taslağı değişmedi; uygulama aktarımı açık.
+
 Son güncelleme: 14 Ekim 2026, ev bilgisayarından iş bilgisayarına devir. Kullanıcı sonraki iş PC oturumunda devam edecek; ayrı Meta formuna geçiş onaylanmadı. Güncel CRM durumu ve sıradaki adımlar: [İş PC devir kaydı](analizler/2026-10-14-kommo-is-pc-devir.txt). Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
 Bu dosya farklı bilgisayarlardaki sohbetlerin aynı proje durumundan devam etmesi içindir. Sohbet geçmişini eşitlemez. Yeni çalışmada önce Git durumunu kontrol et, sonra bu kaydı ve ilgili raporları oku.
@@ -106,6 +108,7 @@ Ev veya iş fark etmez:git kontrolü/fetch ve güvenli güncelleme,bu dosya,CALI
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
+| DEV-149 | Alternatif ara kat şase montajı | İNCELEME TAMAM: üç ayrı düzen, 7 standart + dar kenar şasesi; iki şasenin 100 cm uzaması veya 250 cm kayması ayrıştırıldı. [Rapor](analizler/2026-10-25-arakat-alternatif-inceleme.md). Kaynak STL ve ölçü/görseller korundu; uygulama aktarımı, mesnet ve özel parça kuralları açık. |
 | DEV-148 | Ara kat şasesi ve montaj STL örnekleri | İNCELEME TAMAM: [rapor](analizler/2026-10-25-arakat-sasesi-inceleme.md). Son dosyada8şase125cm adımlı. Dış125 cm, yükseklik20 cm, projeye göre boy ve alt duvar üstüne oturma kullanıcı kararı. Üretim bağlantı/mesnet/kayıt aralığı ayrıntıları ve uygulama aktarımı açık. |
 | DEV-147 | Revit ve Rayon incelemesi ve program yapısı | ARAŞTIRMA TAMAM: [rapor](analizler/2026-10-25-revit-rayon-program-yapisi.md). Uygulama ve taslak değişmedi. Önerilerin değerlendirilmesi bekliyor; DEV-138-B ve önceki açık işler sürer. |
 | DEV-001 | İş bilgisayarındaki AutoCAD dosyası ve analizini alma | Tamamlandı: iki DWG, Excel ve PDF kopyaları ve önceki bulgular ortak depoda; aşağıdaki rapor/envanter. |
@@ -937,3 +940,7 @@ Resmi Autodesk/Rayon belgeleri ve yerel kaynaklar incelendi. [Araştırma ve uyg
 
 ## 25 Ekim 2026 — DEV-148 — Ara kat şasesi STL incelemesi
 İlk ve güncel iki kullanıcı STL sürümü ayrı korundu; güncel kaynak/kopya SHA-256 eşitliği doğrulandı. [Rapor](analizler/2026-10-25-arakat-sasesi-inceleme.md), [envanter](analizler/2026-10-25-arakat-kaynak-envanteri.json), [ölçüler](analizler/2026-10-25-arakat-geometri.json). Kullanıcı kesinleştirdi: cm, toplam DIŞ genişlik125 cm, yükseklik20 cm, boy projeye göre değişken; alt kat duvarlarının üstüne oturur. İlk137cm/6şase örneği ilk-ornek altında korundu; kullanıcı aynı adlarla125cm/8şase dosyalarını yeniden verdi. Güncel montaj125cm adımla8aynı şase, toplamnominal1000cm; tek şasede2uzun+2başlık+13ara kayıt.8kopyanın bütün üçgenleri eşleşti. İzometrik/üst/yan/kesit görselleri incelendi. Açık: profil/sac standardı, ara kayıt aralığı, mesnet/uç/bağlantı payları, kenar ve boşluk çözümleri. Parametrik modele aktarım yapılmadı. Ana uygulama/taslak/çizimler değişmedi,5.9.137korundu. Önceki açık işler ve ilgisiz yerel raporlar korunur.
+
+
+## 25 Ekim 2026 — DEV-149 — Alternatif ara kat şasesi
+Kullanıcının arakat şasesi montaj-1.stl dosyası üç ayrı montaj içeriyor. Her montajda 7 standart + 1 dar kenar parçası; düz düzen, iki orta şasenin 100 cm uzatıldığı ve aynı boydaki iki şasenin 250 cm kaydırıldığı düzenler. Dar parça dış eni yaklaşık 57,21 cm, genel yarım modül standardı değildir. 19 standart şasenin önceki tek şaseyle bütün üçgenleri eşleşti; normal şasede 13, uzatılmış şasede 15 ara kayıt. Kullanıcının dış 125 cm, yükseklik 20 cm, projeye göre boy ve alt duvar üstüne oturma kuralı korunur. [Rapor](analizler/2026-10-25-arakat-alternatif-inceleme.md), [envanter](analizler/2026-10-25-arakat-alternatif-envanteri.json), [ölçüler](analizler/2026-10-25-arakat-alternatif-geometri.json). Kaynak değişmeden kopyalandı, hash eşitliği ve üçgen/parça sayıları doğrulandı; üst ve izometrik görseller incelendi. Alternatif referans kaydı tamam, parametrik uygulama aktarımı ve mesnet/bağlantı/özel kenar kuralları açık. Ana uygulama 5.9.137, bağımsız taslak ve çizimler değişmedi. Önceki açık işler ve ilgisiz yerel kayıtlar korunur.

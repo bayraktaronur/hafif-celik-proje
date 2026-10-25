@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-25",
+  "task": "DEV-149",
+  "files": [
+    {
+      "original": "C:/Users/ONUR/Desktop/arakat şasesi montaj-1.stl",
+      "copy": "referanslar/2026-10-25-arakat/arakat-montaj-alternatif-1.stl",
+      "bytes": 1902484,
+      "sha256": "5cbd44debc34e9ae02a037935bb41f56128973b1ee4e07c0967633e1c4ac526e",
+      "originalLastModified": "2026-10-25T19:22:01.209117+00:00",
+      "assistantModifiedOriginal": false
+    }
+  ],
+  "referenceSingle": {
+    "path": "referanslar/2026-10-25-arakat/arakat.stl",
+    "sha256": "5a78093de5040bde638285462b395dc549cadecd7e26e5ef00dc939b6c1c8b68"
+  },
+  "userConfirmed": {
+    "unit": "cm",
+    "standardOutsideWidth": 125,
+    "height": 20,
+    "length": "proje boyuna göre",
+    "support": "alt kat duvarlarının üstü"
+  },
+  "sourceGeometryResizedByAssistant": false,
+  "applicationChanged": false,
+  "artifacts": [
+    {
+      "path": "analizler/2026-10-25-arakat-alternatif-genel.png",
+      "bytes": 44930,
+      "sha256": "6a5781f89ab0a803f99dbe2a97e8bffe3015cec326b3d386fdc5f804176ea5a6"
+    },
+    {
+      "path": "analizler/2026-10-25-arakat-alternatif-geometri.json",
+      "bytes": 198535,
+      "sha256": "7a973a27e3373a8b8ef72911c8e92c38df69414ba08caa3030737621e251c334"
+    },
+    {
+      "path": "analizler/2026-10-25-arakat-alternatif-grup-1.png",
+      "bytes": 67714,
+      "sha256": "94934447546e16dc1bf48995b7342d5ad1649fa54902b10e25838c04798e5260"
+    },
+    {
+      "path": "analizler/2026-10-25-arakat-alternatif-grup-2.png",
+      "bytes": 70418,
+      "sha256": "de959bb562d4f10718396efa55003c4bbd185f463b85be1d430423197bd69f9e"
+    },
+    {
+      "path": "analizler/2026-10-25-arakat-alternatif-grup-3.png",
+      "bytes": 65559,
+      "sha256": "9177817373b974f069a7dda87b1e9483b9eb284772ff3d09802d350137a06fba"
+    },
+    {
+      "path": "analizler/2026-10-25-arakat-alternatif-inceleme.md",
+      "bytes": 6177,
+      "sha256": "1df201492b647d543553a8aa2a985c00e6a8f49139c87d2c321180c5988ddb28"
+    },
+    {
+      "path": "tools/inspect-arakat-alternative.py",
+      "bytes": 6599,
+      "sha256": "c48f563110cdf7b7f1db171e342b5e00724ff09d4fe96c8603621e81843c513c"
+    }
+  ]
+}
