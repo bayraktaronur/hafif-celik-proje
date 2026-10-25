@@ -5,10 +5,10 @@ const DraftFloorLayers=(()=>{
   {id:'deck',name:'Taban kaplaması',detail:'Betopan / Hekimboard',color:'#c5b89c',number:'01'},
   {id:'insulation',name:'Yalıtım',detail:'Camyünü / taşyünü · şase içinde',color:'#c2c98a',number:'02'},
   {id:'chassis',name:'Galvaniz şase',detail:'125 cm dış en · 20 cm yükseklik',color:'#a8bac6',number:'03'},
-  {id:'ceiling',name:'Alt tavan',detail:'Alçıpan kaplama',color:'#f0f1e9',number:'04'}
+  {id:'ceiling',name:'Alt tavan',detail:'60 × 120 cm alçıpan · Mini H',color:'#f0f1e9',number:'04'}
  ];
  function elevations(height,spread=0){return {
-  ceiling:{bottom:height-covers.ceiling,top:height,offset:spread*.4},
+  ceiling:{bottom:height-covers.ceiling-2*DraftCeiling.profile.skin,top:height,offset:spread*.4},
   chassis:{bottom:height,top:height+20,offset:spread*1.05},
   insulation:{bottom:height+.5,top:height+19.5,offset:spread*1.7},
   deck:{bottom:height+20,top:height+20+covers.deck,offset:spread*2.35},
@@ -44,10 +44,12 @@ const DraftFloorLayers=(()=>{
   return out;
  }
  function mesh(frames,height,spread,visibility,data){const out=[],z=elevations(height,spread);
-  for(const def of definitions.filter(d=>d.id!=='chassis'&&visibility[d.id]))for(const f of frames){
-   if(f.invalid)continue;const rects=def.id==='insulation'?cavities(f):def.id==='ceiling'?ceilingRects(f,data):[{x0:0,x1:f.width,y0:0,y1:f.length}],e=z[def.id];
+  for(const def of definitions.filter(d=>d.id!=='chassis'&&d.id!=='ceiling'&&visibility[d.id]))for(const f of frames){
+   if(f.invalid)continue;const rects=def.id==='insulation'?cavities(f):[{x0:0,x1:f.width,y0:0,y1:f.length}],e=z[def.id];
    for(const r of rects)out.push(...solid(f,r,e.bottom+e.offset,e.top+e.offset,def));
-  }return out;
+  }
+  if(visibility.ceiling){const e=z.ceiling;out.push(...DraftCeiling.mesh(data,frames[0]?.direction||'y',e.bottom+e.offset+DraftCeiling.profile.skin,e.top+e.offset-DraftCeiling.profile.skin).surfaces);}
+  return out;
  }
  return {covers,definitions,elevations,cavities,ceilingRects,mesh};
 })();

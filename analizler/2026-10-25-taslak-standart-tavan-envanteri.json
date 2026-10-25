@@ -1,0 +1,151 @@
+{
+  "date": "2026-10-25",
+  "task": "DEV-152",
+  "applicationVersionUnchanged": "5.9.137",
+  "nominalBoardCm": [
+    60,
+    120
+  ],
+  "draftOnlySectionCm": {
+    "flangeWidth": 2,
+    "skin": 0.12,
+    "web": 0.12,
+    "boardThickness": 1.25
+  },
+  "sources": [
+    {
+      "path": "analizler/2026-10-04-vida-oranlari.md",
+      "bytes": 6412,
+      "sha256": "433d8faf55a16be82a0a19e533cf62a21af9c662add5a323b17f829e062f4c8f"
+    },
+    {
+      "path": "analizler/2026-10-09-tavan-mini-h.md",
+      "bytes": 2329,
+      "sha256": "eef4e5d5e782ccf7477bbc53da9f98d8d7cc13e30b4ddfe8564da11d0c5a6a72"
+    },
+    {
+      "path": "referanslar/gulsum-veranda/tavan-mini-h-talebi.png",
+      "bytes": 571168,
+      "sha256": "1a40c15d7fa80d8d076a850d6eaf5205b0fac2bc1193cbce917250aabcded27e"
+    },
+    {
+      "path": "referanslar/2026-10-25-arakat/prefabrik-katlar-arasi-kesit.png",
+      "bytes": 845888,
+      "sha256": "20b7d00d010a8001c3fb61264fdd310105432d3419d3a91dee865ae450d4d4a9"
+    }
+  ],
+  "protectedFiles": [
+    {
+      "path": "plan_cizim.html",
+      "bytes": 19015,
+      "sha256": "133d22e40170396e02297525ec417222714106a61b175c95938a1de8ba184e7a"
+    },
+    {
+      "path": "dist/plan_studio.html",
+      "bytes": 4068597,
+      "sha256": "89960158d15675509b0e6b74e2dc8205a5cdbc668d6166fbde1b5893dda2af1c"
+    },
+    {
+      "path": "src/ceiling-panels.js",
+      "bytes": 2868,
+      "sha256": "1eb981e54fb7729ef37b124f559992feaaedd9f4c7b144e9a4fbbe94b9118435"
+    },
+    {
+      "path": "src/engine.js",
+      "bytes": 237152,
+      "sha256": "308a15005a4a0565dac1cbb4595b12b20eb98f363357c40e77681687885b7e6c"
+    },
+    {
+      "path": "src/wall-3d.js",
+      "bytes": 11969,
+      "sha256": "154b880fa2cb23cb189107d19e6353c086fef39b5eda571195d9b73bb8d33da7"
+    },
+    {
+      "path": "src/scene-3d.js",
+      "bytes": 6814,
+      "sha256": "a8394b69946e194bb18a51769813b8d929a4c965d11b6066b97224b71f173dc4"
+    },
+    {
+      "path": "src/camera-3d.js",
+      "bytes": 1696,
+      "sha256": "e8955914b2047dd55d98b2695aff44b70811460159222f72820cfdd4ad48033d"
+    },
+    {
+      "path": "cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json",
+      "bytes": 14673,
+      "sha256": "43862690c526c8ac6a13de8f8242fcee9d9f4a7c63d6c57e80b600efc92b719f"
+    }
+  ],
+  "files": [
+    {
+      "path": "taslaklar/odak-atolyesi/standard-ceiling.js",
+      "bytes": 6785,
+      "sha256": "ae19cc439e40f4f17fbe325b12d921920621ff89144351f84fae259151265b2f"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/ceiling-view.js",
+      "bytes": 5129,
+      "sha256": "cab6c1669989bc3a8405de76e156ddb1c34fb3347fd6990e6164f7b4e5c2aa82"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/floor-layers.js",
+      "bytes": 4389,
+      "sha256": "d8396c471f0db6ea96b6950e87a4e9016a1a4e1396cc551c10f42fa310673452"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/model-view.js",
+      "bytes": 17775,
+      "sha256": "b73be372aff7aaebc506d1d92161d71fa85b7de1c6d59a0bf94d929a3ed67aa6"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/index.html",
+      "bytes": 7932,
+      "sha256": "b9d1ddc4ba81cf556778fe936ce31af393f166b81689485214b9dbe81859f2aa"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/style.css",
+      "bytes": 19950,
+      "sha256": "f833cef058047dd708644fb28308dcae7b6fb60562e82d46413d682c9fc2d2bb"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/ceiling-check.cjs",
+      "bytes": 8230,
+      "sha256": "552f2fbb25dae073326831861b373cbe5789fffac2430c0249b5e10b5856a585"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/check.cjs",
+      "bytes": 12837,
+      "sha256": "82d3d317c09af2519a9b80b1d1afa4865da1fe106f771c404595efb822a698a7"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/README.md",
+      "bytes": 6616,
+      "sha256": "5534ab5dd84e4ad662d0e837473f6fa076d852ed7261d8ca9f6add07a0f9a6fd"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-standart-tavan.txt",
+      "bytes": 4841,
+      "sha256": "2f8ac18ad1a72e69038039c9362c412dd1275915252f229cb390e8d12fba1cec"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-standart-tavan-kontrol.txt",
+      "bytes": 5141,
+      "sha256": "d5f7838d0d879cc75a8d1fe373dfcfe589cc58f817d7a000e33d79a18835ddf4"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-standart-tavan-regresyon.txt",
+      "bytes": 6179,
+      "sha256": "3d353c5468cdb033baee812d851f853ff49c5ecdf0bcad5b1f007e03b8708c8d"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-standart-tavan-ayrik.png",
+      "bytes": 250111,
+      "sha256": "ed8e3ec48ae5f9e0d8ffd1b978bd063d0a64e720581aceaf91fb2a159c8c93cb"
+    },
+    {
+      "path": "analizler/2026-10-25-taslak-standart-tavan-alttan.png",
+      "bytes": 199661,
+      "sha256": "b1e04bfb1b78bb2000ce95dbdbd7fb4332dd6ebab09ae748349ef383d6a62a5f"
+    }
+  ]
+}

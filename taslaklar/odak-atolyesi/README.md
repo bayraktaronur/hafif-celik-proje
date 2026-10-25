@@ -1,15 +1,16 @@
 # Odak Atölyesi — bağımsız prefabrik / ara kat taslağı
 
-25 Ekim 2026 · DEV-151. `index.html` açılır. Ana uygulama 5.9.137 değişmedi.
+25 Ekim 2026 · DEV-152. `index.html` açılır. Ana uygulama 5.9.137 değişmedi.
 
 ## Ara katın anlamı
 
-Kullanıcının ara kat tanımı iki kat arasındaki galvaniz çelik döşeme şasesidir. Alt kat duvarlarının üstünde, üst kat tabanının altında; alt kat tavan kaplaması şasenin altındadır. Standart dış en 125 cm, yükseklik 20 cm, boy plan sınırına bağlıdır. 280 cm duvarda şase altı 280, üstü 300 cm. DEV-151 görsel kaplama varsayımıyla taban 2 cm, alt tavan 1,25 cm: üst kat duvar tabanı 302 cm, alt tavan altı 278,75 cm olur. Bunlar ürün/imalat değerleri değildir; sağdaki “Taslak katman değerleri” içinde açıklanır.
+Kullanıcının ara kat tanımı iki kat arasındaki galvaniz çelik döşeme şasesidir. Alt kat duvarlarının üstünde, üst kat tabanının altında; alt kat tavan kaplaması şasenin altındadır. Standart dış en 125 cm, yükseklik 20 cm, boy plan sınırına bağlıdır. 280 cm duvarda şase altı 280, üstü 300 cm. Görsel kaplama varsayımıyla taban 2 cm, alçıpan 1,25 cm; mini H üst/alt kapak temsili 0,12’şer cm: üst kat duvar tabanı 302 cm, alt tavanın mini H alt yüzü 278,51 cm olur. Bunlar ürün/imalat değerleri değildir; taslak açıklamalarında belirtilir.
 
 ## Kullanım
 
 - Açılış: katmanları ayrılmış iki kat. Katları ayır / İki kat birlikte / Şaseyi incele önayarları. Ayrıştırma yalnız görüntüyü açar, model kotlarını değiştirmez.
 - Taban kaplaması (Betopan/Hekimboard), şase içi yalıtım (camyünü/taşyünü), galvaniz şase ve alt tavan (alçıpan) ayrı gösterilir. Renkli etiketler ve sağ paneldeki görünürlük kutuları eşleşir. Gizlemek ürün seçimini ve kat kotunu değiştirmez. Şase incelemesi kaplamaları geçici gizler; katman görünürlük tercihleri korunur.
+- “Tavanı alttan gör”: 60×120 cm nominal alçıpan düzeni, mini H geçme profilleri, tam/kenar levhası seçimi ve ölçüsü. Alttan/üstten bakış, orbit/zoom, yön değişimi ve geri alma. Katmanlara dön önceki kamerayı ve görünürlük tercihlerini korur.
 - Ara kat şasesi planında veya sağ listede parça seçimi; dış en, boy, kotlar. İki boy doğrultusu, özel kenar parçaları ve geri alma.
 - 3D sürükle döndür; Shift/orta tuş kaydır; tekerlek yakınlaş; açık/koyu zemin, kat görünürlüğü. WebGL ve basit yazılımsal yedek çizici.
 - Prefabrik 250/280/300 cm, çelikte elle yükseklik. Şase ve üst kat kotları birlikte güncellenir.
@@ -24,9 +25,9 @@ Tuna 84 zaten prefabrik kayıttı; ilk taslak çizicisi panel ve birleşimleri g
 
 Ortogonal oda alanları ve duvar üst yüzlerinin birleşiminden sınır bulunur. Boy değişen şeritler ayrı ele alınır; son en özel kenar parçasıdır. Veranda/sundurma kapsam dışında. Dar özel parçalar dahil bu yerleşim üretim onayı değildir: minimum en, mesnet/birleşim, izin verilen açıklık ve kayıt aralığı henüz üretim standardına bağlanmadı. Kayıt dağılımı STL'deki yaklaşık 49,27 cm tekrardan türetilen görsel önizlemedir.
 
-`floor-layers.js` tabanı şase ayak izi üzerinde, yalıtımı STL kayıtları arasındaki boşluklarda, alt tavanı duvar yüzlerinde keserek şasenin altında üretir. Alt yüzler de çizilir. Yalıtım rengi ve lifleri temsilîdir; levha ek çizgileri üretim dizilimi değildir. Her yönde aynı plan sınırı korunur; veranda bu ara katın dışında kalır.
+`floor-layers.js` tabanı şase ayak izi üzerinde, yalıtımı STL kayıtları arasındaki boşluklarda üretir. `standard-ceiling.js` her odanın iç sınırını duvar yüzleriyle keser ve 60×120 nominal hücrelere böler; 125 cm şase sınırları tavanı bölmez. Mini H yalnız komşu hücrelerin ortak kenarındadır; duvar kenarlarına ve yapay poligon bölmelerine eklenmez. Profil iki kapak ve aradaki gövdeyle temsil edilir; standart geçme tavanda vida modellenmez. Banyo/WC levhaları mevcut uygulama sınıflamasıyla yeşildir. Alt/üst yüzler çizilir. Yalıtım rengi ve lifleri temsilîdir; üst taban derzleri üretim dizilimi değildir. Veranda bu ara katın dışında kalır.
 
-Üst kat aynı planın bağımsız örnek kopyasıdır. Katmanların ürün/kalınlık seçimi, mini H ve levha modül yerleşimi, ıslak hacim malzeme ayrımı, çatı, bağlantı, statik, fiyat ve sevk hesapları eklenmedi. Duvar bölme yalnız taslak işaretidir; serbest çizim araçlarının bir kısmı panel önerisidir. Tam çok kat üretim sistemi tamamlandı sayılmaz.
+Üst kat aynı planın bağımsız örnek kopyasıdır. Mini H kesiti (2 cm kapak, 0,12 cm gövde/kapak), geçme boşluğu ve alçıpan kalınlığı görsel varsayımdır. Nominal hücre ölçüsü/alanı ile bu küçük görsel boşluk ayrı tutulur. Ortogonal örnek plan, duvar kenarından başlayan modül ve şase boy doğrultusunu izleyen uzun kenar bu taslağın yerleşim tercihidir. Ürün/kalınlık seçimi, 120×250 seçeneği, gerçek profil kesim/bağlantı payları, fire/artan parça optimizasyonu, çatı, statik, fiyat ve sevk hesapları eklenmedi. Duvar bölme yalnız taslak işaretidir; tam çok kat üretim sistemi tamamlandı sayılmaz.
 
 ## İzolasyon ve kontroller
 
@@ -35,3 +36,5 @@ Ağ, tarayıcı kaydı veya canlı proje erişimi yoktur; denemeler bellektedir.
 Rapor ve kanıtlar: `../../analizler/2026-10-25-taslak-arakat.md`; kaynak/artifact hashleri `../../analizler/2026-10-25-taslak-arakat-envanteri.json`.
 
 DEV-151: `../../analizler/2026-10-25-taslak-arakat-katman.txt`, `-katman-kontrol.txt`, `-katman-envanteri.json`. Yeni kontroller: iki şase yönü × üç yükseklik, kaplama kot sırası, taban alanının şase alanına eşitliği, tavanın duvarlarla çakışmaması, yalıtım boşluk sınırları, alt yüzler, ayrıştırmada yalnız Z dönüşümü, katman gizle/geri al ve önayarlar arasında tercihlerin korunması.
+
+DEV-152: `ceiling-check.cjs` tam/kesilmiş/dar/L biçimli alanlar, 60×120 modül, yalnız ortak kenarlarda mini H, iki doğrultu × üç yükseklik, önceki tavan alanının korunması, üç parçalı H kesiti, levha seçimi, alttan/üstten görünüm, yön/undo, kamera/kat görünürlüğü dönüşü, dar ekran/yedek çizici/izolasyonu doğrular. Rapor: `../../analizler/2026-10-25-taslak-standart-tavan.txt`; yeni kontrol ve eski akış regresyon çıktıları aynı tarihli `-kontrol.txt` / `-regresyon.txt`, dosya hashleri `-envanteri.json`.

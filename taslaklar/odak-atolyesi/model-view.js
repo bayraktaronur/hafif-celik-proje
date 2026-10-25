@@ -28,6 +28,7 @@ function boxSurface(r,z0,z1,color,kind){const p=[{x:r.x0,y:r.y0},{x:r.x1,y:r.y0}
  for(let i=0;i<4;i++)out.push({poly:[{...p[i],z:z0},{...p[(i+1)%4],z:z0},{...p[(i+1)%4],z:z1},{...p[i],z:z1}],color,kind});return out;
 }
 function buildDraftScene(){
+ if(assemblyMode==='ceiling')return ceilingScene();
  const surfaces=[],frames=frameList(),base=project.height,elevations=DraftFloorLayers.elevations(base,explode);
  for(const f of project.floors.filter(f=>f.id!=='mezz'&&f.visible&&f.data)){
   const z=level(f)+(f.id==='first'?elevations.upper.offset:0);
@@ -56,16 +57,19 @@ function render3D(){
  const key=JSON.stringify([project.height,project.system,project.frameDirection,project.floors.map(f=>[f.id,f.visible,!!f.data]),project.layerVisibility,assemblyMode,explode,selected?.id]);
  if(key!==sceneKey){sceneCache=buildDraftScene();sceneKey=key}
  const items=sceneCache.surfaces;Camera3D.state.zoom=zoom;lastProjection=Camera3D.project(items.flatMap(s=>s.poly),w,h);
- if(!Scene3D.render(ctx,w,h,items,[],lastProjection)){
+ const gridSetting=Scene3D.state.grid;if(assemblyMode==='ceiling')Scene3D.state.grid=false;
+ const rendered=Scene3D.render(ctx,w,h,items,[],lastProjection);Scene3D.state.grid=gridSetting;
+ if(!rendered){
   ctx.fillStyle=Scene3D.state.theme==='dark'?'#101d26':'#f4f6f8';ctx.fillRect(0,0,w,h);
   const faces=items.map(s=>({...s,pts:s.poly.map(lastProjection)})).sort((a,b)=>a.pts.reduce((n,p)=>n+p.depth,0)/a.pts.length-b.pts.reduce((n,p)=>n+p.depth,0)/b.pts.length);
   for(const s of faces){ctx.beginPath();s.pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=s.color;ctx.globalAlpha=s.alpha??1;ctx.fill();}ctx.globalAlpha=1;
  }
  if(!items.length){ctx.fillStyle='#819aa6';ctx.font='16px Segoe UI';ctx.fillText('Görünür katları soldan açın.',40,h/2)}
- drawLayerLabels(ctx,w,h);
+ if(assemblyMode==='ceiling')drawCeilingLabels(ctx);else drawLayerLabels(ctx,w,h);
  $('#viewKicker').textContent=explode>0?'ARA KAT / AYRIŞTIRILMIŞ GÖRÜNÜM':'ARA KAT / BİRLEŞİK GÖRÜNÜM';
  $('#viewTitle').textContent=assemblyMode==='frame'?'Galvaniz şase':'Katman katman yapı';
  $('#viewLevel').textContent=assemblyMode==='frame'?'125 cm dış en · 20 cm yükseklik':'Taban · Yalıtım · Şase · Alt tavan';
+ if(assemblyMode==='ceiling'){$('#viewKicker').textContent='STANDART TAVAN / 60 × 120 CM';$('#viewTitle').textContent=Camera3D.state.pitch<0?'Alt tavan · alttan görünüm':'Alt tavan · üstten görünüm';$('#viewLevel').textContent='Alçıpan levhalar · Mini H geçme birleşimleri'}
  $('#viewport').classList.toggle('light-model',Scene3D.state.theme==='light');
 }
 function drawLayerLabels(ctx,w,h){
@@ -88,11 +92,12 @@ function drawLayerLabels(ctx,w,h){
  }ctx.restore();
 }
 function renderFrameInspector(){
+ if(view==='3d'&&assemblyMode==='ceiling'){renderCeilingInspector();return}
  const frames=frameList(),f=frames.find(f=>f.id===selected?.id),special=frames.filter(f=>f.special).length,z=DraftFloorLayers.elevations(project.height);
  const mode=assemblyMode==='frame'?'frame':explode>0?'exploded':'together';
  $('#scope').textContent='Ara kat';$('#inspectorHeading').textContent='KATLAR VE KATMANLAR';
- $('#inspectorBody').innerHTML=section(`<span class="eyebrow">PREFABRİK / KATLAR ARASI DÖŞEME</span><h2>Ara kat sistemi</h2><p>Duvarın üstünde şase, içinde yalıtım.<br>Üstte taban, altta tavan kaplaması.</p><div class="assembly-presets">${[['exploded','Katları ayır'],['together','İki kat birlikte'],['frame','Şaseyi incele']].map(([id,name])=>`<button data-assembly="${id}" aria-pressed="${mode===id}">${name}<span>${id==='exploded'?'↕':id==='together'?'▱':'⌗'}</span></button>`).join('')}</div>`)
- +section(`<div class="section-heading layer-heading"><span>DÖŞEME KATMANLARI</span><span>Üstten alta</span></div><div class="floor-layer-list">${DraftFloorLayers.definitions.map(d=>{const on=d.id==='chassis'?project.floors.find(f=>f.id==='mezz').visible:project.layerVisibility[d.id];return `<label class="floor-layer"><span class="layer-number" style="--layer-color:${d.color}">${d.number}</span><span><strong>${d.name}</strong><small>${d.detail}</small></span><input type="checkbox" data-layer="${d.id}" aria-label="${d.name} görünürlüğü" ${on?'checked':''}></label>`}).join('')}</div><p class="tip">${assemblyMode==='frame'?'Şase incelemesinde kaplamalar geçici olarak gizlidir. Bir katmanı açarak katman görünümüne dönebilirsiniz.':'Gözlem için ayrı ayrı açıp kapatabilirsiniz. Gizlemek ürün seçimini veya kat kotunu değiştirmez.'}</p>${view==='3d'?`<label class="field">Katman aralığı<input id="explode" aria-label="Katları ayrıştır" type="range" min="0" max="260" step="5" value="${explode}"></label>`:''}<details class="draft-layer-note"><summary>Taslak katman değerleri</summary><p>Taban 2 cm, alt tavan 1,25 cm görsel önizlemedir. Yalıtım şase boşluklarını gösterir. Ürün, levha dizilimi, yalıtım kalınlığı ve montaj detayları kesinleştirilmedi; imalat/metraj değeri değildir.</p></details>`)
+ $('#inspectorBody').innerHTML=section(`<span class="eyebrow">PREFABRİK / KATLAR ARASI DÖŞEME</span><h2>Ara kat sistemi</h2><p>Duvarın üstünde şase, içinde yalıtım.<br>Üstte taban, altta tavan kaplaması.</p><div class="assembly-presets">${[['exploded','Katları ayır'],['together','İki kat birlikte'],['frame','Şaseyi incele'],['ceiling','Tavanı alttan gör']].map(([id,name])=>`<button data-assembly="${id}" aria-pressed="${mode===id}">${name}<span>${id==='exploded'?'↕':id==='together'?'▱':'⌗'}</span></button>`).join('')}</div>`)
+ +section(`<div class="section-heading layer-heading"><span>DÖŞEME KATMANLARI</span><span>Üstten alta</span></div><div class="floor-layer-list">${DraftFloorLayers.definitions.map(d=>{const on=d.id==='chassis'?project.floors.find(f=>f.id==='mezz').visible:project.layerVisibility[d.id];return `<label class="floor-layer"><span class="layer-number" style="--layer-color:${d.color}">${d.number}</span><span><strong>${d.name}</strong><small>${d.detail}</small></span><input type="checkbox" data-layer="${d.id}" aria-label="${d.name} görünürlüğü" ${on?'checked':''}></label>`}).join('')}</div><p class="tip">${assemblyMode==='frame'?'Şase incelemesinde kaplamalar geçici olarak gizlidir. Bir katmanı açarak katman görünümüne dönebilirsiniz.':'Gözlem için ayrı ayrı açıp kapatabilirsiniz. Gizlemek ürün seçimini veya kat kotunu değiştirmez.'}</p>${view==='3d'?`<label class="field">Katman aralığı<input id="explode" aria-label="Katları ayrıştır" type="range" min="0" max="260" step="5" value="${explode}"></label>`:''}<details class="draft-layer-note"><summary>Taslak katman değerleri</summary><p>Taban 2 cm, alt tavan 1,25 cm görsel önizlemedir. Yalıtım şase boşluklarını gösterir. 60 × 120 cm tavan düzeni uygulanır; mini H kesiti, geçme payları, yalıtım kalınlığı ve montaj detayları temsilîdir; imalat/metraj değeri değildir.</p></details>`)
  +section(`<details class="level-details"><summary>Gerçek yerleşim kotları</summary><div class="level-stack"><span>Üst kat tabanı<b>+${fmt(z.upper.bottom/100,3)} m</b></span><span>Şase üstü<b>+${fmt(z.chassis.top/100,3)} m</b></span><i>20 cm galvaniz şase</i><span>Duvar üstü / şase altı<b>+${fmt(z.chassis.bottom/100,3)} m</b></span><span>Alt tavan altı<b>+${fmt(z.ceiling.bottom/100,4)} m</b></span></div><p class="tip">Ayrıştırma yalnız görüntüyü açar; bu kotlar değişmez. Üst kat tabanı taslak kaplama kalınlığını içerir.</p></details><label class="field">Şase boy doğrultusu<select id="frameDirection"><option value="y" ${project.frameDirection==='y'?'selected':''}>Planda yukarı–aşağı</option><option value="x" ${project.frameDirection==='x'?'selected':''}>Planda sağ–sol</option></select></label><div class="kv"><span>Şaseler / özel kenar</span><b>${frames.length} / ${special} adet</b></div><button class="secondary" id="frameViewToggle">${view==='3d'?'Şase planına geç':'Duvar üzerinde 3D gör'} →</button><button class="text-button" id="showFrameReferences">Verdiğiniz montaj ve kesit örnekleri ↗</button>`)
  +(f?section(`<span class="eyebrow">SEÇİLİ ŞASE · ${f.special?'ÖZEL KENAR':'STANDART'}</span><h2>${f.id}</h2><div class="kv"><span>Dış genişlik</span><b>${fmt(f.width,2)} cm</b></div><div class="kv"><span>Boy</span><b>${fmt(f.length,2)} cm</b></div><div class="kv"><span>Yükseklik</span><b>20 cm</b></div>`):'')
  +(view==='3d'?section(`<h3>Görünüm</h3><div class="segmented"><button id="rotate">↻ Döndür</button><button id="modelTheme">${Scene3D.state.theme==='light'?'Koyu zemin':'Açık zemin'}</button></div>`)+section('<h3>Görünür katlar</h3>'+project.floors.map(f=>`<label class="field-row layer-choice"><input type="checkbox" data-visibility="${f.id}" ${f.visible?'checked':''}>${f.name}</label>`).join('')):'')
@@ -100,7 +105,7 @@ function renderFrameInspector(){
  $('#frameDirection').onchange=e=>{save();project.frameDirection=e.target.value;selected=null;render()};$('#frameViewToggle').onclick=()=>setView(view==='3d'?'mezz':'3d');
  $$('[data-select-frame]').forEach(b=>b.onclick=()=>{selected={type:'frame',id:b.dataset.selectFrame};renderCanvas();renderInspector()});
  $('#showFrameReferences').onclick=()=>$('#frameReferences').showModal();
- $$('[data-assembly]').forEach(b=>b.onclick=()=>{assemblyMode=b.dataset.assembly==='frame'?'frame':'layers';project.floors.forEach(f=>f.visible=f.id!=='first'||assemblyMode!=='frame');explode=b.dataset.assembly==='exploded'?160:0;setView('3d')});
+ $$('[data-assembly]').forEach(b=>b.onclick=()=>{if(b.dataset.assembly==='ceiling'){openCeilingView();return}Camera3D.state.pitch=35;assemblyMode=b.dataset.assembly==='frame'?'frame':'layers';project.floors.forEach(f=>f.visible=f.id!=='first'||assemblyMode!=='frame');explode=b.dataset.assembly==='exploded'?160:0;setView('3d')});
  $$('[data-layer]').forEach(e=>e.onchange=()=>{save();if(e.dataset.layer==='chassis')project.floors.find(f=>f.id==='mezz').visible=e.checked;else project.layerVisibility[e.dataset.layer]=e.checked;if(assemblyMode==='frame'&&e.dataset.layer!=='chassis')assemblyMode='layers';render()});
  if(view==='3d'){
   $('#explode').oninput=e=>{explode=+e.target.value;assemblyMode='layers';renderCanvas();$$('[data-assembly]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.assembly===(explode>0?'exploded':'together')))};
@@ -111,9 +116,11 @@ function renderFrameInspector(){
 function scheduleModel(){if(drawPending)return;drawPending=true;requestAnimationFrame(()=>{drawPending=false;render3D()})}
 const modelCanvas=$('#modelCanvas');
 modelCanvas.addEventListener('pointerdown',e=>{if(e.button>1)return;drag={x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,pan:e.shiftKey||e.button===1,moved:false};modelCanvas.setPointerCapture(e.pointerId);e.preventDefault()});
-modelCanvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved||=Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)>4;if(drag.pan){Camera3D.state.panX+=dx;Camera3D.state.panY+=dy}else{Camera3D.state.yaw+=dx*.35;Camera3D.state.pitch=Math.max(8,Math.min(85,Camera3D.state.pitch+dy*.25))}drag.x=e.clientX;drag.y=e.clientY;scheduleModel()});
+modelCanvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved||=Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)>4;if(drag.pan){Camera3D.state.panX+=dx;Camera3D.state.panY+=dy}else{Camera3D.state.yaw+=dx*.35;Camera3D.state.pitch=Math.max(-85,Math.min(85,Camera3D.state.pitch+dy*.25))}drag.x=e.clientX;drag.y=e.clientY;scheduleModel()});
 function insidePolygon(x,y,p){let inside=false;for(let i=0,j=p.length-1;i<p.length;j=i++)if((p[i].y>y)!==(p[j].y>y)&&x<(p[j].x-p[i].x)*(y-p[i].y)/(p[j].y-p[i].y)+p[i].x)inside=!inside;return inside}
-modelCanvas.addEventListener('pointerup',e=>{if(!drag)return;const was=drag;drag=null;if(!was.moved&&lastProjection&&project.floors.find(f=>f.id==='mezz').visible){const r=modelCanvas.getBoundingClientRect(),hits=frameList().map(f=>({f,p:DraftFrames.footprint(f).map(p=>lastProjection({...p,z:project.height+20+DraftFloorLayers.elevations(project.height,explode).chassis.offset}))})).filter(o=>insidePolygon(e.clientX-r.x,e.clientY-r.y,o.p)).sort((a,b)=>b.p[0].depth-a.p[0].depth);if(hits.length){selected={type:'frame',id:hits[0].f.id};renderCanvas();renderInspector()}}});
+modelCanvas.addEventListener('pointerup',e=>{if(!drag)return;const was=drag;drag=null;
+ if(!was.moved&&assemblyMode==='ceiling'&&lastProjection){const r=modelCanvas.getBoundingClientRect(),z=sceneCache.elevations.ceiling.bottom,hits=sceneCache.ceiling.boards.filter(b=>b.pieces.some(r=>insidePolygon(e.clientX-modelCanvas.getBoundingClientRect().x,e.clientY-modelCanvas.getBoundingClientRect().y,[{x:r.x0,y:r.y0,z},{x:r.x1,y:r.y0,z},{x:r.x1,y:r.y1,z},{x:r.x0,y:r.y1,z}].map(lastProjection))));selected=hits.length?{type:'ceilingBoard',id:hits[0].id}:null;renderCanvas();renderInspector();return}
+ if(!was.moved&&lastProjection&&project.floors.find(f=>f.id==='mezz').visible){const r=modelCanvas.getBoundingClientRect(),hits=frameList().map(f=>({f,p:DraftFrames.footprint(f).map(p=>lastProjection({...p,z:project.height+20+DraftFloorLayers.elevations(project.height,explode).chassis.offset}))})).filter(o=>insidePolygon(e.clientX-r.x,e.clientY-r.y,o.p)).sort((a,b)=>b.p[0].depth-a.p[0].depth);if(hits.length){selected={type:'frame',id:hits[0].f.id};renderCanvas();renderInspector()}}});
 modelCanvas.addEventListener('pointercancel',()=>drag=null);
 new ResizeObserver(()=>{if(view==='3d')scheduleModel()}).observe($('#viewport'));
 Scene3D.state.theme='light';Camera3D.state.pitch=35;

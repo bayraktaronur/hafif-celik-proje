@@ -1,0 +1,194 @@
+PASS standard 60x120 geometry, full/cut/L/small areas, actual shared mini-H joints, H section, ceiling area preserved independently of 125cm frames, heights/directions, selection/undo, underside/upper view, view restoration, responsive/fallback/isolation.
+{
+  "results": {
+    "synthetic": [
+      {
+        "name": "exact",
+        "expectedArea": 5.76,
+        "expectedCount": 8,
+        "expectedMiniH": 9.6,
+        "area": 5.759999999999999,
+        "boards": 8,
+        "full": 8,
+        "miniH": 9.6
+      },
+      {
+        "name": "cut",
+        "expectedArea": 1.625,
+        "expectedCount": 6,
+        "expectedMiniH": null,
+        "area": 1.625,
+        "boards": 6,
+        "full": 2,
+        "miniH": 3.85
+      },
+      {
+        "name": "small",
+        "expectedArea": 0.06,
+        "expectedCount": 1,
+        "expectedMiniH": 0,
+        "area": 0.06,
+        "boards": 1,
+        "full": 0,
+        "miniH": 0
+      },
+      {
+        "name": "L",
+        "expectedArea": 4.32,
+        "expectedCount": 6,
+        "expectedMiniH": null,
+        "area": 4.319999999999999,
+        "boards": 6,
+        "full": 6,
+        "miniH": 6
+      }
+    ],
+    "main": [
+      {
+        "direction": "x",
+        "height": 250,
+        "area": 64.24853124999997,
+        "oldArea": 64.24853125,
+        "boards": 127,
+        "full": 73,
+        "miniH": 150.0725,
+        "shared": true,
+        "tileSizes": true,
+        "allFinite": true,
+        "boardMin": 248.63,
+        "boardMax": 249.88,
+        "hMin": 248.51,
+        "hMax": 250,
+        "profileParts": [
+          "bottomFlange",
+          "topFlange",
+          "web"
+        ],
+        "green": true,
+        "porch": false
+      },
+      {
+        "direction": "x",
+        "height": 280,
+        "area": 64.24853124999997,
+        "oldArea": 64.24853125,
+        "boards": 127,
+        "full": 73,
+        "miniH": 150.0725,
+        "shared": true,
+        "tileSizes": true,
+        "allFinite": true,
+        "boardMin": 278.63,
+        "boardMax": 279.88,
+        "hMin": 278.51,
+        "hMax": 280,
+        "profileParts": [
+          "bottomFlange",
+          "topFlange",
+          "web"
+        ],
+        "green": true,
+        "porch": false
+      },
+      {
+        "direction": "x",
+        "height": 300,
+        "area": 64.24853124999997,
+        "oldArea": 64.24853125,
+        "boards": 127,
+        "full": 73,
+        "miniH": 150.0725,
+        "shared": true,
+        "tileSizes": true,
+        "allFinite": true,
+        "boardMin": 298.63,
+        "boardMax": 299.88,
+        "hMin": 298.51,
+        "hMax": 300,
+        "profileParts": [
+          "bottomFlange",
+          "topFlange",
+          "web"
+        ],
+        "green": true,
+        "porch": false
+      },
+      {
+        "direction": "y",
+        "height": 250,
+        "area": 64.24853124999998,
+        "oldArea": 64.24853125000001,
+        "boards": 133,
+        "full": 82,
+        "miniH": 154.56250000000006,
+        "shared": true,
+        "tileSizes": true,
+        "allFinite": true,
+        "boardMin": 248.63,
+        "boardMax": 249.88,
+        "hMin": 248.51,
+        "hMax": 250,
+        "profileParts": [
+          "bottomFlange",
+          "topFlange",
+          "web"
+        ],
+        "green": true,
+        "porch": false
+      },
+      {
+        "direction": "y",
+        "height": 280,
+        "area": 64.24853124999998,
+        "oldArea": 64.24853125000001,
+        "boards": 133,
+        "full": 82,
+        "miniH": 154.56250000000006,
+        "shared": true,
+        "tileSizes": true,
+        "allFinite": true,
+        "boardMin": 278.63,
+        "boardMax": 279.88,
+        "hMin": 278.51,
+        "hMax": 280,
+        "profileParts": [
+          "bottomFlange",
+          "topFlange",
+          "web"
+        ],
+        "green": true,
+        "porch": false
+      },
+      {
+        "direction": "y",
+        "height": 300,
+        "area": 64.24853124999998,
+        "oldArea": 64.24853125000001,
+        "boards": 133,
+        "full": 82,
+        "miniH": 154.56250000000006,
+        "shared": true,
+        "tileSizes": true,
+        "allFinite": true,
+        "boardMin": 298.63,
+        "boardMax": 299.88,
+        "hMin": 298.51,
+        "hMax": 300,
+        "profileParts": [
+          "bottomFlange",
+          "topFlange",
+          "web"
+        ],
+        "green": true,
+        "porch": false
+      }
+    ]
+  },
+  "protectedFiles": {
+    "plan_cizim.html": "133d22e40170396e02297525ec417222714106a61b175c95938a1de8ba184e7a",
+    "dist/plan_studio.html": "89960158d15675509b0e6b74e2dc8205a5cdbc668d6166fbde1b5893dda2af1c",
+    "src/ceiling-panels.js": "1eb981e54fb7729ef37b124f559992feaaedd9f4c7b144e9a4fbbe94b9118435",
+    "src/engine.js": "308a15005a4a0565dac1cbb4595b12b20eb98f363357c40e77681687885b7e6c",
+    "cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json": "43862690c526c8ac6a13de8f8242fcee9d9f4a7c63d6c57e80b600efc92b719f"
+  }
+}

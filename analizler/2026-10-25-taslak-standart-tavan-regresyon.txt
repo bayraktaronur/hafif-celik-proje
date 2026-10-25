@@ -1,0 +1,283 @@
+PASS deck/insulation/ceiling in both orientations and all heights; ceiling excludes walls, cavity fit, deck area, bottom faces, exploded transforms, visibility/undo/preset isolation; prefab49/H/corners, STL frame geometry, wall-top seating, all heights, actual/exploded levels, plan selection, orientation/undo, orbit, visibility, reference, existing room/split flows, responsive, fallback, no network/storage, main source hashes unchanged
+{
+  "layerChecks": [
+    {
+      "direction": "x",
+      "height": 250,
+      "deck": [
+        270,
+        272
+      ],
+      "ceiling": [
+        248.51,
+        250
+      ],
+      "insulation": [
+        250.5,
+        269.515
+      ],
+      "area": 691689.3125,
+      "frameArea": 691689.3125,
+      "overlapsWall": false,
+      "stable": true,
+      "boundsInside": true,
+      "ceilingBottom": true
+    },
+    {
+      "direction": "x",
+      "height": 280,
+      "deck": [
+        300,
+        302
+      ],
+      "ceiling": [
+        278.51,
+        280
+      ],
+      "insulation": [
+        280.5,
+        299.515
+      ],
+      "area": 691689.3125,
+      "frameArea": 691689.3125,
+      "overlapsWall": false,
+      "stable": true,
+      "boundsInside": true,
+      "ceilingBottom": true
+    },
+    {
+      "direction": "x",
+      "height": 300,
+      "deck": [
+        320,
+        322
+      ],
+      "ceiling": [
+        298.51,
+        300
+      ],
+      "insulation": [
+        300.5,
+        319.515
+      ],
+      "area": 691689.3125,
+      "frameArea": 691689.3125,
+      "overlapsWall": false,
+      "stable": true,
+      "boundsInside": true,
+      "ceilingBottom": true
+    },
+    {
+      "direction": "y",
+      "height": 250,
+      "deck": [
+        270,
+        272
+      ],
+      "ceiling": [
+        248.51,
+        250
+      ],
+      "insulation": [
+        250.5,
+        269.515
+      ],
+      "area": 691689.3125,
+      "frameArea": 691689.3125,
+      "overlapsWall": false,
+      "stable": true,
+      "boundsInside": true,
+      "ceilingBottom": true
+    },
+    {
+      "direction": "y",
+      "height": 280,
+      "deck": [
+        300,
+        302
+      ],
+      "ceiling": [
+        278.51,
+        280
+      ],
+      "insulation": [
+        280.5,
+        299.515
+      ],
+      "area": 691689.3125,
+      "frameArea": 691689.3125,
+      "overlapsWall": false,
+      "stable": true,
+      "boundsInside": true,
+      "ceilingBottom": true
+    },
+    {
+      "direction": "y",
+      "height": 300,
+      "deck": [
+        320,
+        322
+      ],
+      "ceiling": [
+        298.51,
+        300
+      ],
+      "insulation": [
+        300.5,
+        319.515
+      ],
+      "area": 691689.3125,
+      "frameArea": 691689.3125,
+      "overlapsWall": false,
+      "stable": true,
+      "boundsInside": true,
+      "ceilingBottom": true
+    }
+  ],
+  "geometry": {
+    "base": 280,
+    "top": 300,
+    "minZ": 280,
+    "maxZ": 300,
+    "frames": [
+      {
+        "id": "S01",
+        "x": 308.75,
+        "y": -318.75,
+        "width": 125,
+        "length": 888.5,
+        "height": 20,
+        "direction": "y",
+        "special": false,
+        "invalid": false
+      },
+      {
+        "id": "S02",
+        "x": 433.75,
+        "y": -318.75,
+        "width": 125,
+        "length": 888.5,
+        "height": 20,
+        "direction": "y",
+        "special": false,
+        "invalid": false
+      },
+      {
+        "id": "S03",
+        "x": 558.75,
+        "y": -318.75,
+        "width": 125,
+        "length": 888.5,
+        "height": 20,
+        "direction": "y",
+        "special": false,
+        "invalid": false
+      },
+      {
+        "id": "S04",
+        "x": 683.75,
+        "y": -318.75,
+        "width": 16.5,
+        "length": 888.5,
+        "height": 20,
+        "direction": "y",
+        "special": true,
+        "invalid": false
+      },
+      {
+        "id": "S05",
+        "x": 700.25,
+        "y": -318.75,
+        "width": 125,
+        "length": 637.5,
+        "height": 20,
+        "direction": "y",
+        "special": false,
+        "invalid": false
+      },
+      {
+        "id": "S06",
+        "x": 825.25,
+        "y": -318.75,
+        "width": 53.25,
+        "length": 637.5,
+        "height": 20,
+        "direction": "y",
+        "special": true,
+        "invalid": false
+      },
+      {
+        "id": "S07",
+        "x": 878.5,
+        "y": -318.75,
+        "width": 125,
+        "length": 700.25,
+        "height": 20,
+        "direction": "y",
+        "special": false,
+        "invalid": false
+      },
+      {
+        "id": "S08",
+        "x": 1003.5,
+        "y": -318.75,
+        "width": 125,
+        "length": 700.25,
+        "height": 20,
+        "direction": "y",
+        "special": false,
+        "invalid": false
+      },
+      {
+        "id": "S09",
+        "x": 1128.5,
+        "y": -318.75,
+        "width": 78.75,
+        "length": 700.25,
+        "height": 20,
+        "direction": "y",
+        "special": true,
+        "invalid": false
+      }
+    ],
+    "levels": [
+      0,
+      302,
+      280
+    ],
+    "supported": true,
+    "jointTypes": [
+      "kose",
+      "H3",
+      "U",
+      "H"
+    ],
+    "originalWidth": 6.027211964130402
+  },
+  "protectedFiles": [
+    [
+      "plan_cizim.html",
+      "133d22e40170396e02297525ec417222714106a61b175c95938a1de8ba184e7a"
+    ],
+    [
+      "dist/plan_studio.html",
+      "89960158d15675509b0e6b74e2dc8205a5cdbc668d6166fbde1b5893dda2af1c"
+    ],
+    [
+      "src/wall-3d.js",
+      "154b880fa2cb23cb189107d19e6353c086fef39b5eda571195d9b73bb8d33da7"
+    ],
+    [
+      "src/scene-3d.js",
+      "a8394b69946e194bb18a51769813b8d929a4c965d11b6066b97224b71f173dc4"
+    ],
+    [
+      "src/camera-3d.js",
+      "e8955914b2047dd55d98b2695aff44b70811460159222f72820cfdd4ad48033d"
+    ],
+    [
+      "cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json",
+      "43862690c526c8ac6a13de8f8242fcee9d9f4a7c63d6c57e80b600efc92b719f"
+    ]
+  ]
+}

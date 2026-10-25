@@ -1,0 +1,33 @@
+DEV-152 — Taslakta standart 60×120 alçıpan ve mini H tavan
+25 Ekim 2026 — ONUR yerel çalışma klasörü
+
+İstek
+Kullanıcı 60×120 alçıpan levhaları ve mini H birleşimlerini yalnız taslağa ekleyip 3D’de standart tavan sistemini görmek istedi. Mevcut program değişmedi. Ana uygulama 5.9.137 korunur.
+
+Kaynak ve karar
+- Kullanıcının güncel talebi 60×120 cm. Eski DEV-085 kaydındaki 60×125 cm tarihsel kalır; bu çalışma güncel talebi ve mevcut src/ceiling-panels.js içindeki 60×120 kuralını kullanır.
+- analizler/2026-10-04-vida-oranlari.md: standart tavan mini H’ye geçen, alçıpan vidası kullanılmayan sistemdir.
+- analizler/2026-10-09-tavan-mini-h.md: mini H gerçek kesit ölçüsü verilmemiştir; önceki çizici temsilî çizgi kullanır.
+- Kaynak plan: cizimler/2026-10-02-tuna84-dwg-esleme-taslak.json. Önceki bağımsız taslak örneği kullanılır; canlı proje okunmaz/değiştirilmez.
+- Dosyalar ve SHA-256: 2026-10-25-taslak-standart-tavan-envanteri.json.
+
+Eklenenler
+Yeni standard-ceiling.js oda poligonlarını duvarların iç yüzlerinde keser. Her odada 60×120 cm nominal hücreler, oda kenarında kesilmiş modüller oluşturur. Şasenin 125 cm aralığı levha düzenini kesmez. L biçimli kenarlar hücre içinde parçalanabilir; aynı nominal levha kimliği korunur. Ortogonal örnekle sınırlıdır.
+Mini H yalnız iki farklı levhanın paylaştığı kenarlarda oluşturulur; duvar sınırına veya yapay poligon bölmesine eklenmez. Üç boyutlu profil alt kapak, üst kapak ve gövdeden oluşur. Kesişen kapaklar birbirinin hacmine girmez. Vida eklenmez. Gövde için küçük temsilî görsel boşluk bırakılır; 60×120 nominal hücre ölçüsü ve alanı bundan ayrı korunur. Oda sınırları ve önceki net tavan alanı değişmez.
+Banyo/WC yeşil alçıpan gösterimi, mevcut uygulamanın tavan sınıflamasını izler. Ara kat şasesine dahil olmayan veranda bu modelde ayrıca kapatılmaz; veranda çatı/kiriş/tavan modeli henüz bu taslağın parçası değildir.
+Katmanlı ve birleşik görünümde aynı tavan geometrisi kullanılır. Tavanı gizlemek hem levhaları hem mini H’yi kapatır. Ayrıştırma hepsini birlikte öteler.
+
+İnceleme akışı
+Sağdaki “Tavanı alttan gör” komutu, yalnız standart tavanı ayrı inceleme görünümünde açar. Kullanıcı alttan/üstten bakabilir, modeli döndürebilir ve yakınlaştırabilir. Bir levhaya tıklayınca oda adı, standart/yeşil malzeme, tam/kenar kesimi, nominal yerleşim ölçüsü ve alanı görünür. Katmanlara dön komutu önceki kamera/zoom ve kat görünürlüğünü korur. Taslakta levha yönü şase boy doğrultusunu izler, yön değişimi geri alınabilir. Gösterilen döşeme parçası sayısı satın alma/sevk adedi değildir.
+
+Görsel varsayımlar ve sınırlar
+60×120 cm kullanıcının verdiği nominal modüldür. Kesin mini H ürün kesiti olmadığı için görünüşte kapak eni2 cm, gövde/kapak kalınlığı0,12 cm; levha kalınlığı önceki taslakta olduğu gibi1,25 cm alınır. Profil ölçüleri, geçme boşluğu ve uç birleşimleri üretim detayı sayılmaz. 280 cm duvarda en üst mini H yüzü280 cm, alçıpan279,88–278,63 cm, mini H alt yüzü278,51 cm olur. Şase280–300 cm ve üst kat tabanı302 cm korunur.
+Duvar kenarından başlayan modül yönü/dizimi görsel taslak tercihidir; şantiyedeki en iyi kesim düzeni veya imalat onayı değildir. Fire, artık parça, stok/kesim listesi, mesnet/birleşim hesabı, 120×250 seçeneği ve ana program entegrasyonu kapsam dışında. Fiyat eklenmedi.
+
+Kontroller ve kanıtlar
+ceiling-check.cjs: 240×240 cm net odada8tam levha ve9,6m ortak mini H çizgisi;125×130 cm kenar kesimi,20×30dar oda,L biçimli oda. İki doğrultu×250/280/300 yükseklikte modül/alan korunması, profillerin ortak kenarlar üzerinde bulunması, üç parçalı kesit ve sonlu koordinatlar. Tuna örneği64,24853125m² net tavan; Y yönünde82tam+51kesilmiş modül. Bunlar geometrik kontrol, üretim siparişi değildir.
+Tarayıcı testleri: WebGL, alttan/üstten, levha seçimi, yön/geri al, zoom, görünümden dönünce kamera/kat tercihleri, tavan gizleme/geri alma,980/1280/1920 ekranlar, WebGL olmayan yedek çizici, ağ/depolama izolasyonu geçti. check.cjs önceki katman/prefabrik/şase/oda/duvar bölme/kamera akışları da geçti. Ana HTML,src/dist ve müşteri JSON SHA-256 değerleri değişmedi.
+Kontrol: 2026-10-25-taslak-standart-tavan-kontrol.txt.
+Regresyon: 2026-10-25-taslak-standart-tavan-regresyon.txt.
+Görseller: 2026-10-25-taslak-standart-tavan-ayrik.png ve -alttan.png. Görseller incelendi.
+İlgisiz eski özel model/rapor ve DEV-096/097/098 yerel kayıtları kapsam dışında korunur. Sonraki adım taslak değerlendirmesi ve ölçülü mini H ürün kesitinin tanımlanmasıdır.
