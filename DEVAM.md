@@ -923,3 +923,7 @@ Tamamlandı: açık gri/mint arayüz, dikey sol araç şeridi, açılır proje a
 
 ## 25 Ekim 2026 — DEV-145 / 5.9.137 — Modern arayüz geri alındı
 Kullanıcı DEV-144 tasarımını reddetti ve eskiye dönüş istedi. workflow-shell JS/CSS ve testi 5.9.135 haline geri getirildi; dağıtım yeniden üretildi. Modern sol araç şeridi/açık renk düzen ve tercih okuma kaldırıldı. Önceki çizim, etiket ve hesap düzeltmeleri korundu. workflow-shell ve temel31/31 geçti. DEV-144 devam tasarım işleri kullanıcı isteğiyle iptal; diğer açık işler korunur. Çizimler ve tarayıcı kayıtları değiştirilmedi.
+
+
+## 25 Ekim 2026 — DEV-146 — Bağımsız kat odaklı arayüz taslağı
+Kullanıcı mevcut programa dokunmadan ayrı taslak istedi; zemin/1.kat/ara kat/3D geçişlerini özellikle istedi. taslaklar/odak-atolyesi/index.html: koyu arayüz, kat ağacı/sekmeler, şematik SVG3D ve kat ayrıştırma, duvar seçimi/mesafeli bölme önizlemesi, oda adı ve geri alma. Kaynak Tuna84 kayıtlı örneği; canlı kullanıcı çizimi değildir, hash envanteri yanında. check.cjs geçti: seçim/isim/undo, geçerli-geçersiz bölme, kat kopyalama/3D/görünürlük, yükseklik, 980/1280/1920 taşma, veri izolasyonu. Görseller incelendi. Ana HTML/src/dist/cizimler değişmedi, sürüm5.9.137korundu. Taslak ağ/depolama kullanmaz. Serbest çizim/üretim/çıktı motoru bağlı değil; 3D üretim modeli değildir. Açık: kullanıcının taslak değerlendirmesi; kabul olmadan ana programa taşınmayacak. Önceki açık işler korunur.
