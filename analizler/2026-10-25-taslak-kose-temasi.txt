@@ -1,0 +1,48 @@
+DEV-155 / Taslak 155 — Köşe direği ve panel teması
+25 Ekim 2026 — C:/Users/ONUR yerel çalışma alanı
+
+İstek
+Kullanıcı panel ile köşe direği arasında açıklık olmaması gerektiğini söyledi.
+Son kaynak görsel: codex-clipboard-1e188940-ed96-423a-a7ba-b58a74bcc81d.png.
+Görselde makas yönü aşağı; köşe 10 x 5 cm, ilk paneller 125,5 cm.
+Kapsam yalnız taslaklar/odak-atolyesi. Ana programa dokunmama kararı sürüyor.
+
+Bulgu
+src/engine.js drawPanels, pfKoseRect ile hesaplanan köşe direğinin içini
+TH.opening (zemin rengi) ile boyuyordu. Bu, doğrudan boşluk gibi görünüyordu.
+Ayrıca en az 8 piksel sembol boyutu, uzaktan bakınca gerçek direk sınırını
+büyütüp bitişik panel uçlarının üzerine taşıyordu.
+İncelenen eşit kalınlıklı dikdörtgen ve L planlarda iki panel de köşe direğine
+geometrik olarak temas ediyor; üretim hesabına boşluk kapatma eklemek gerekmedi.
+
+Uygulama
+build-single-storey.cjs yalnız kopyalanan engine.js çizim dalını değiştirir.
+Ana kaynak için tekil metin dayanağı doğrulanır; CRLF/LF desteklenir.
+Direk gerçek model boyutunda metal tonuyla boyanır; kontur sınırın içindedir.
+Planda kullanılan opak sembol, 3D profilin dolu kesite çevrildiği anlamına gelmez.
+3D profiller ve paneller, makas yönüne bağlı köşe payları, özel kesim boyları,
+metraj ve kaydetme şeması değişmedi. CAD kaydedici tek gerçek sınır üretir;
+dolgu ve iç konturun iki ayrı CAD çizgisine dönüşmesi önlendi.
+Taslak rozeti 155; ana sürüm 5.9.137.
+
+Kontroller
+corner-contact-check.cjs geçti:
+- 6/10/15 cm, yatay/dikey makas ve yerel köşe çevirme: 12 örnekte ana motorla
+  bütün panel boyları, direk dikdörtgenleri, metraj ve 3D model birebir eşit.
+- Dikdörtgen/L planların iki makas yönünde 40 panel-direk sınır teması doğrulandı.
+- 5 görünüm filtresi x 4 yakınlaştırma (%15,30,121,300) x koyu/kâğıt:
+  dolgu tam model sınırında, kontur panelin üzerine taşmıyor.
+- Gerçek çıktı kaydedicisinde her direk için ölçüsünde tek kapalı sınır.
+- Çalışma zamanı hatası yok. Koyu ve kâğıt ekran görüntüleri gözle incelendi.
+single-check.cjs geçti: gerçek panel çizimi/oda kapanışı/undo, metin/ölçü,
+kaplama-yükseklik-çatı, tavan/mini H, JSON indir-aç/yenileme, metraj/PDF,
+980/1280/1920 yerleşim; ana uygulama depolaması ve kaynak hashleri korundu.
+
+Sınırlar ve devir
+Bu bir plan sembolü düzeltmesidir; yeni kesit veya üretim kuralı tanımlanmadı.
+Karma kalınlık/eğik köşelerin üretim kuralları değiştirilmedi, bu kapsamda
+yeniden doğrulanmadı. Kullanıcının açık tarayıcı çizimine müdahale edilmedi.
+Tarayıcı çizimi Git aktarımına dahil değildir; JSON kayıt düzeni korunur.
+Önceki DEV-153 taslak değerlendirmesi, alt alan metrajı ve diğer açık işler sürer.
+Sonraki adım: kullanıcının tek kat çiziminde yeni köşe görünümünü değerlendirmesi.
+Kaynak/çıktı SHA-256: 2026-10-25-taslak-kose-temasi-envanteri.json.

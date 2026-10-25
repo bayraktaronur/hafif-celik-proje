@@ -1222,13 +1222,17 @@ function drawPanels(){
       var col={kose:TH.pfKose,H3:TH.pfH3,U:TH.pfU,X:b.uyari?'#f85149':TH.pfH4,ozelB:'#f85149',uc:TH.pnlTick}[b.tip];
       ctx.save();
       if(b.tip==='kose'){
-        // A hollow 1:2 post stays readable at low zoom; its long side is
-        // perpendicular to the truss direction, including a local override.
+        // Opaque plan symbol; the hollow steel section remains in the 3D model.
+        // Never enlarge the footprint over adjoining panels at low zoom.
         var rect=pfKoseRect(b.nid,parseFloat(b.k)||10),center=toCv(rect.x+rect.w/2,rect.y+rect.h/2);
-        var scale=Math.max(s,8/Math.max(rect.w,rect.h)),pw=rect.w*scale,ph=rect.h*scale;
-        ctx.fillStyle=TH.opening;ctx.strokeStyle=TH.wall;ctx.lineWidth=1.2;
-        ctx.fillRect(center.x-pw/2,center.y-ph/2,pw,ph);
-        ctx.strokeRect(center.x-pw/2,center.y-ph/2,pw,ph);
+        var pw=rect.w*s,ph=rect.h*s,lw=Math.min(1.2,pw/3,ph/3);
+        ctx.fillStyle=TH.export?'#c4cfda':'#9eb2c4';ctx.strokeStyle=TH.export?'#687c8e':'#536b80';ctx.lineWidth=lw;
+        // CAD recorder needs one exact contour, not fill plus inset outlines.
+        if(typeof ctx.setLayer==='function')ctx.strokeRect(center.x-pw/2,center.y-ph/2,pw,ph);
+        else{
+          ctx.fillRect(center.x-pw/2,center.y-ph/2,pw,ph);
+          ctx.strokeRect(center.x-pw/2+lw/2,center.y-ph/2+lw/2,pw-lw,ph-lw);
+        }
       }
       else if(b.tip==='uc'){ctx.fillStyle=col;ctx.beginPath();ctx.arc(c.x,c.y,R*0.45,0,Math.PI*2);ctx.fill();}
       else{

@@ -15,6 +15,29 @@ html=html.replace(/<script src="(src\/[^"<>]+)"><\/script>/g,(_,file)=>{let s=fs
   s=replaceOnce(s,"['s','e','r','roofs','annotations','fixtures','counters'].some", "['s','e','r','roofs','annotations','fixtures','counters','referenceImages'].some");
  }
  if(file==='src/project.js')s=replaceOnce(s,'safeTree(input);','safeTree(input);\n    ReferenceImageData.validate(input.referenceImages);');
+ // Plan symbol only: keep the engine's post footprint and panel contact geometry.
+ if(file==='src/engine.js'){
+ const newline=s.includes('\r\n')?'\r\n':'\n';
+ s=replaceOnce(s,
+ `        // A hollow 1:2 post stays readable at low zoom; its long side is
+        // perpendicular to the truss direction, including a local override.
+        var rect=pfKoseRect(b.nid,parseFloat(b.k)||10),center=toCv(rect.x+rect.w/2,rect.y+rect.h/2);
+        var scale=Math.max(s,8/Math.max(rect.w,rect.h)),pw=rect.w*scale,ph=rect.h*scale;
+        ctx.fillStyle=TH.opening;ctx.strokeStyle=TH.wall;ctx.lineWidth=1.2;
+        ctx.fillRect(center.x-pw/2,center.y-ph/2,pw,ph);
+        ctx.strokeRect(center.x-pw/2,center.y-ph/2,pw,ph);`.replaceAll('\n',newline),
+ `        // Opaque plan symbol; the hollow steel section remains in the 3D model.
+        // Never enlarge the footprint over adjoining panels at low zoom.
+        var rect=pfKoseRect(b.nid,parseFloat(b.k)||10),center=toCv(rect.x+rect.w/2,rect.y+rect.h/2);
+        var pw=rect.w*s,ph=rect.h*s,lw=Math.min(1.2,pw/3,ph/3);
+        ctx.fillStyle=TH.export?'#c4cfda':'#9eb2c4';ctx.strokeStyle=TH.export?'#687c8e':'#536b80';ctx.lineWidth=lw;
+        // CAD recorder needs one exact contour, not fill plus inset outlines.
+        if(typeof ctx.setLayer==='function')ctx.strokeRect(center.x-pw/2,center.y-ph/2,pw,ph);
+        else{
+          ctx.fillRect(center.x-pw/2,center.y-ph/2,pw,ph);
+          ctx.strokeRect(center.x-pw/2+lw/2,center.y-ph/2+lw/2,pw-lw,ph-lw);
+        }`.replaceAll('\n',newline));
+ }
  if(file==='src/plan-clipboard-ui.js')s=replaceOnce(s,"['a','c','x','v'].includes(k)","['a','c','x','v'].includes(k)&&!(k==='v'&&window.ReferenceImages)");
  js.push('// '+file+'\n'+s);return '';});
 html=html.replace('<title>Plan Studio · Prefabrikten</title>','<title>Plan Studio · Tek katlı prefabrik taslağı</title>');
@@ -25,5 +48,5 @@ fs.writeFileSync(path.join(__dirname,'single-engine.css'),css.join('\n'));
 fs.writeFileSync(path.join(__dirname,'single-engine.js'),js.join('\n'));
 fs.writeFileSync(path.join(__dirname,'single-example.js'),'const SINGLE_EXAMPLE = '+JSON.stringify(JSON.parse(example))+';\n');
 fs.writeFileSync(path.join(__dirname,'index.html'),html.trimEnd()+'\n');
-fs.writeFileSync(path.join(__dirname,'single-engine-manifest.json'),JSON.stringify({task:'DEV-154',engineRevision:'5.9.137',storage:'prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*',prototypeExtensions:['referenceImages: project, history, recovery and native paste'],sources},null,2)+'\n');
+fs.writeFileSync(path.join(__dirname,'single-engine-manifest.json'),JSON.stringify({task:'DEV-155',engineRevision:'5.9.137',storage:'prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*',prototypeExtensions:['referenceImages: project, history, recovery and native paste','corner post plan symbol: opaque fill and true model footprint'],sources},null,2)+'\n');
 console.log('Built independent single-storey draft; '+Object.keys(sources).length+' source hashes recorded.');

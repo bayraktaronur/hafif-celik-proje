@@ -1,6 +1,12 @@
 # Odak Atölyesi — tek katlı prefabrik çizimi
 
-25 Ekim 2026 · DEV-154. `index.html` çalışan tek kat çizim taslağıdır; referans pencere ve ölçülü görsel altlığı eklendi. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+25 Ekim 2026 · DEV-155. `index.html` çalışan tek kat çizim taslağıdır; köşe direğinin planda boşluk gibi görünmesi düzeltildi. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+
+## Köşe direği ve panel teması
+
+Köşe direği açık metal dolgu ve kendi sınırı içinde ince konturla gösterilir. Uzaklaşınca sembol büyütülmez; panel uçlarının üzerine taşmaz. Dolgu yalnız plan gösterimidir: 3D boşluklu çelik profil, makas yönü, yerel köşe yönü, köşe payları ve panel kesim ölçüleri mevcut motorla aynıdır. Kâğıt çıktıda aynı dolgu, CAD çıktısında gerçek ölçüde tek kapalı sınır kullanılır.
+
+Kontrol: `corner-contact-check.cjs` — 6/10/15 cm duvar, iki makas yönü, yerel köşe çevirme, dış/iç L köşelerde panel teması, beş görünüm filtresi, %15–300 yakınlaştırma, kâğıt ve CAD. Rapor: `../../analizler/2026-10-25-taslak-kose-temasi.txt`.
 
 ## Referans plan üzerinden çizim
 

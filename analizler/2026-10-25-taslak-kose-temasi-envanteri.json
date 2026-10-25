@@ -1,0 +1,16 @@
+{
+  "task": "DEV-155",
+  "mainRevision": "5.9.137",
+  "sourceImage": {
+    "path": "C:\\Users\\ONUR\\AppData\\Local\\Temp\\codex-clipboard-1e188940-ed96-423a-a7ba-b58a74bcc81d.png",
+    "sha256": "994caaf5dda8581ce1983f56d90fc37d8a4c54879488f5d5977bb80d6506538f"
+  },
+  "artifacts": {
+    "taslaklar/odak-atolyesi/build-single-storey.cjs": "5cdab9e25bffd8cf7fc1a8187fc30d17130ec6cafdcdc8e14ccce1480e6672a5",
+    "taslaklar/odak-atolyesi/single-engine.js": "6579611e732cd1a65cde4d81c9ecad2832ef07cbbf9afd180b33dae5b8a551df",
+    "taslaklar/odak-atolyesi/single-engine-manifest.json": "f1800e83cca6f958ecd3017b6519c48cf984b2c6566d17907654e1b54019d7f4",
+    "taslaklar/odak-atolyesi/single-storey.js": "860e082c4667fcae60104fcf4b918ef9e059f4222f4e903b1bb6d0a1d6d3390c",
+    "taslaklar/odak-atolyesi/corner-contact-check.cjs": "b9acaf23fc1e1cd97a0c7ac965670ba2471376c3b488b62ec6f27f9226281e81",
+    "taslaklar/odak-atolyesi/README.md": "bf8db6df6e8c20f7fc2c624640f4a88f742e1b16c1fef645b91496c31effaa98"
+  }
+}
