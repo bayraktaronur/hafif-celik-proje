@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Güncel Plan Studio çalışması: 25 Ekim 2026, DEV-149 alternatif ara kat şase referansı incelendi. [Rapor](analizler/2026-10-25-arakat-alternatif-inceleme.md). Ana uygulama 5.9.137 ve bağımsız arayüz taslağı değişmedi; uygulama aktarımı açık.
+Güncel Plan Studio çalışması: 25 Ekim 2026, DEV-150 ayrı taslakta prefabrik duvarlar ve ara kat döşeme şaseleri tamamlandı. [Rapor](analizler/2026-10-25-taslak-arakat.md). Ana uygulama 5.9.137 ve kullanıcı çizimleri korunur.
 
 Son güncelleme: 14 Ekim 2026, ev bilgisayarından iş bilgisayarına devir. Kullanıcı sonraki iş PC oturumunda devam edecek; ayrı Meta formuna geçiş onaylanmadı. Güncel CRM durumu ve sıradaki adımlar: [İş PC devir kaydı](analizler/2026-10-14-kommo-is-pc-devir.txt). Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
@@ -108,6 +108,7 @@ Ev veya iş fark etmez:git kontrolü/fetch ve güvenli güncelleme,bu dosya,CALI
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
+| DEV-150 | Taslakta prefabrik ara kat döşeme şasesi | TASLAK TAMAM: 125 cm dış en / 20 cm şase alt kat duvar üstünde; şase planı, iki kat ve ayrıştırma, prefabrik H/panel/köşe gösterimi. [Rapor](analizler/2026-10-25-taslak-arakat.md). Ana uygulama 5.9.137 değişmedi; üretim/mesnet/kaplama ve kalıcı kat modeli açık. |
 | DEV-149 | Alternatif ara kat şase montajı | İNCELEME TAMAM: üç ayrı düzen, 7 standart + dar kenar şasesi; iki şasenin 100 cm uzaması veya 250 cm kayması ayrıştırıldı. [Rapor](analizler/2026-10-25-arakat-alternatif-inceleme.md). Kaynak STL ve ölçü/görseller korundu; uygulama aktarımı, mesnet ve özel parça kuralları açık. |
 | DEV-148 | Ara kat şasesi ve montaj STL örnekleri | İNCELEME TAMAM: [rapor](analizler/2026-10-25-arakat-sasesi-inceleme.md). Son dosyada8şase125cm adımlı. Dış125 cm, yükseklik20 cm, projeye göre boy ve alt duvar üstüne oturma kullanıcı kararı. Üretim bağlantı/mesnet/kayıt aralığı ayrıntıları ve uygulama aktarımı açık. |
 | DEV-147 | Revit ve Rayon incelemesi ve program yapısı | ARAŞTIRMA TAMAM: [rapor](analizler/2026-10-25-revit-rayon-program-yapisi.md). Uygulama ve taslak değişmedi. Önerilerin değerlendirilmesi bekliyor; DEV-138-B ve önceki açık işler sürer. |
@@ -944,3 +945,7 @@ Resmi Autodesk/Rayon belgeleri ve yerel kaynaklar incelendi. [Araştırma ve uyg
 
 ## 25 Ekim 2026 — DEV-149 — Alternatif ara kat şasesi
 Kullanıcının arakat şasesi montaj-1.stl dosyası üç ayrı montaj içeriyor. Her montajda 7 standart + 1 dar kenar parçası; düz düzen, iki orta şasenin 100 cm uzatıldığı ve aynı boydaki iki şasenin 250 cm kaydırıldığı düzenler. Dar parça dış eni yaklaşık 57,21 cm, genel yarım modül standardı değildir. 19 standart şasenin önceki tek şaseyle bütün üçgenleri eşleşti; normal şasede 13, uzatılmış şasede 15 ara kayıt. Kullanıcının dış 125 cm, yükseklik 20 cm, projeye göre boy ve alt duvar üstüne oturma kuralı korunur. [Rapor](analizler/2026-10-25-arakat-alternatif-inceleme.md), [envanter](analizler/2026-10-25-arakat-alternatif-envanteri.json), [ölçüler](analizler/2026-10-25-arakat-alternatif-geometri.json). Kaynak değişmeden kopyalandı, hash eşitliği ve üçgen/parça sayıları doğrulandı; üst ve izometrik görseller incelendi. Alternatif referans kaydı tamam, parametrik uygulama aktarımı ve mesnet/bağlantı/özel kenar kuralları açık. Ana uygulama 5.9.137, bağımsız taslak ve çizimler değişmedi. Önceki açık işler ve ilgisiz yerel kayıtlar korunur.
+
+
+## 25 Ekim 2026 — DEV-150 — Taslakta prefabrik ve ara kat döşeme şasesi
+Kullanıcı yalnız taslağa ekleme istedi; ana program değişmeyecek. Gönderdiği kesitle ara katın iki kat arasındaki galvaniz döşeme şasesi olduğu kesinleşti. Yarım kotta oda demosu kaldırıldı; şase altı duvar üstü, üstü +20 cm. 125 cm standart dış en, plan sınırına göre boy/özel kenarlar; üst kat aynı planın örnek kopyası. Şase planı, seçim, yön, üç görünüm önayarı, 3D orbit ve ayrıştırma eklendi. Tuna kaynağı zaten prefabrik; eski çizici H/panel/köşe göstermiyordu. Mevcut motordan izole alınan 49 panel ve birleşim geometrisi taslağa bağlandı. [Rapor](analizler/2026-10-25-taslak-arakat.md), [kontrol](analizler/2026-10-25-taslak-arakat-kontrol.txt), [envanter](analizler/2026-10-25-taslak-arakat-envanteri.json). 250/280/300 kot, duvar üstü geometrik oturma, seçim/yön/undo, eski oda/bölme, kamera, dar ekranlar, yedek çizici ve ağ/depolama izolasyonu geçti. Görseller incelendi. Ana HTML/src/dist/çizim hashleri korunur; sürüm 5.9.137. Açık: tam kat modeli, taban/yalıtım/tavan katmanları, bağlantı/mesnet ve özel en/kayıt üretim kuralları. Fiyat yok; taslak ana programa aktarılmadı. Önceki açık işler ve ilgisiz yerel kayıtlar korunur.
