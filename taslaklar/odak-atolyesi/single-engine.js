@@ -96,14 +96,16 @@
   }
   // The three drawn sides describe supports; the closing side is a host opening.
   function connectChild(input,parent){
-    const fail=()=>{throw Error('Yavru çatı bağlanamadı. Dört köşeli açık U uçlarını aynı ana çatı kenarına yakalayın; kot/eğim ana yüzeyle kesişmeli.');};
-    if(!parent)fail();const z=clone(input),ps=z.childJoin.points;
-    if(!Array.isArray(ps)||ps.length!==4||ps.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))fail();
+    const fail=(code,message,details={})=>{const e=new Error(message);e.code='roof-child-'+code;e.details=details;throw e;};
+    const cm=n=>n.toLocaleString('tr-TR',{maximumFractionDigits:1})+' cm';
+    if(!parent)fail('parent','Bağlanacağı çatı bulunamadı. Ana çatıyı listeden seçin.');const z=clone(input),ps=z.childJoin.points;
+    if(!Array.isArray(ps)||ps.length!==4||ps.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))fail('points','U sınırı için dört köşe seçin; ilk ve son köşe aynı ana çatı kenarında olmalı.');
     const [a,b,c,d]=ps,mid={x:(a.x+d.x)/2,y:(a.y+d.y)/2},front={x:(b.x+c.x)/2,y:(b.y+c.y)/2},depth=Math.hypot(mid.x-front.x,mid.y-front.y),width=Math.hypot(a.x-d.x,a.y-d.y);
-    if(depth<10||width<10)fail();const angle=(Math.round(Math.atan2(mid.y-front.y,mid.x-front.x)*180/Math.PI)+360)%360;if(angle%90)fail();
+    if(depth<10||width<10)fail('size','Yavru çatı eni ve dışarı uzanımı en az 10 cm olmalı.');const angle=(Math.round(Math.atan2(mid.y-front.y,mid.x-front.x)*180/Math.PI)+360)%360;if(angle%90)fail('direction','U sınırını yatay/dikey kenarlar boyunca çizin.');
     const frame={x:front.x,y:front.y,angle},loc=ps.map(p=>untransform(frame,p));
-    if(Math.abs(loc[0].x-depth)>.01||Math.abs(loc[3].x-depth)>.01||Math.abs(loc[1].x)>.01||Math.abs(loc[2].x)>.01||Math.abs(loc[0].y-loc[1].y)>.01||Math.abs(loc[2].y-loc[3].y)>.01)fail();
+    if(Math.abs(loc[0].x-depth)>.01||Math.abs(loc[3].x-depth)>.01||Math.abs(loc[1].x)>.01||Math.abs(loc[2].x)>.01||Math.abs(loc[0].y-loc[1].y)>.01||Math.abs(loc[2].y-loc[3].y)>.01)fail('rectangle','U sınırının karşılıklı kenarları hizalı değil. Son köşeyi silip duvar hizasına yakalayın.');
     const host=zoneFaces(parent),outline=footprint(parent).map(p=>transform(parent,p));
+    const parentPeak=Math.max(...host.flatMap(f=>f.poly.map(p=>height(f,p))));
     const on=(p,u,v)=>Math.abs(cross(u,v,p))<.01&&((p.x-u.x)*(p.x-v.x)+(p.y-u.y)*(p.y-v.y))<=.01;
     const edgeIndex=outline.findIndex((u,i)=>on(a,u,outline[(i+1)%outline.length])&&on(d,u,outline[(i+1)%outline.length]));
     if(edgeIndex<0)throw Error('U çiziminin ilk ve son noktasını aynı ana çatı kenarına yakalayın.');
@@ -132,7 +134,7 @@
       const sorted=[...new Set(cuts.filter(y=>y>=-z.eaves[2]&&y<=width+z.eaves[3]))].sort((a,b)=>a-b),panels=[];
       for(let i=1;i<sorted.length;i++){
         const lo=sorted[i-1],hi=sorted[i];if(hi-lo<EPS)continue;
-        const mid=transform(z,{x:depth+.0001,y:(lo+hi)/2}),hf=host.filter(f=>contains(f.poly,mid)).sort((a,b)=>height(b,mid)-height(a,mid))[0];if(!hf)fail();
+        const mid=transform(z,{x:depth+.0001,y:(lo+hi)/2}),hf=host.filter(f=>contains(f.poly,mid)).sort((a,b)=>height(b,mid)-height(a,mid))[0];if(!hf)fail('gable-extent','Yavru çatının yan saçağı ana çatı alın sınırının dışında kalıyor. U sınırını veya yan saçağı kontrol edin.');
         const cf=planes.reduce((a,b)=>height(a,mid)<height(b,mid)?a:b),p=transform(z,{x:depth,y:lo}),q=transform(z,{x:depth,y:hi}),dp=height(hf,p)-height(cf,p),dq=height(hf,q)-height(cf,q);
         const ts=dp*dq<0?[0,dp/(dp-dq),1]:[0,1];
         for(let j=1;j<ts.length;j++){const a={x:p.x+(q.x-p.x)*ts[j-1],y:p.y+(q.y-p.y)*ts[j-1]},b={x:p.x+(q.x-p.x)*ts[j],y:p.y+(q.y-p.y)*ts[j]};if(Math.max(Math.abs(height(hf,a)-height(cf,a)),Math.abs(height(hf,b)-height(cf,b)))<.001)continue;panels.push([{...a,z:height(cf,a)},{...b,z:height(cf,b)},{...b,z:height(hf,b)},{...a,z:height(hf,a)}]);}
@@ -140,11 +142,14 @@
       z.childJoin.mode='gable';z.childJoin.cladding=panels;z.childJoin.support=ps.map(p=>({...p}));return z;
     }
     z.childJoin.mode='valley';delete z.childJoin.cladding;
-    for(const y of ys){const p=transform(z,{x:depth+.0001,y}),roof=Math.min(...planes.map(f=>height(f,p))),here=host.filter(f=>contains(f.poly,p));if(!here.length||Math.max(...here.map(f=>height(f,p)))>roof+.01)fail();
-      const candidates=[];for(const f of host){const slope=f.a*dir.x+f.b*dir.y;if(slope<=EPS)continue;const t=(roof-height(f,p))/slope,q={x:p.x+dir.x*t,y:p.y+dir.y*t};if(t>=-.01&&contains(f.poly,q))candidates.push(depth+Math.max(0,t));}if(!candidates.length)fail();roots.push(Math.min(...candidates));}
+    for(const y of ys){const p=transform(z,{x:depth+.0001,y}),roof=Math.min(...planes.map(f=>height(f,p))),here=host.filter(f=>contains(f.poly,p));if(!here.length||Math.max(...here.map(f=>height(f,p)))>roof+.01)fail('mouth','U uçları bağlı, fakat saçak kotları birleşmiyor. Yavru yüzey bağlantıda ana çatıdan aşağıda veya ana yüzeyin dışında kalıyor. Saçak/eğim ve sınırı kontrol edin.');
+      const candidates=[];for(const f of host){const slope=f.a*dir.x+f.b*dir.y;if(slope<=EPS)continue;const t=(roof-height(f,p))/slope,q={x:p.x+dir.x*t,y:p.y+dir.y*t};if(t>=-.01&&contains(f.poly,q))candidates.push(depth+Math.max(0,t));}if(!candidates.length)fail('intersection',roof>parentPeak+.01
+      ?'U uçları bağlı. Yavru çatı yüksekliği '+cm(roof)+', ana çatının en yüksek kotu '+cm(parentPeak)+'. Yavru yüzey ana çatının üstünde kalıyor; yavru eğimini azaltın veya U açıklığını daraltın.'
+      :'U uçları bağlı, fakat yavru yüzey bu doğrultuda ana çatıyla kesişmiyor. Yavru eğimini, U açıklığını veya bağlantı kenarını kontrol edin.',
+      {childHeight:roof,parentPeak,opening:width,pitch:z.pitch});roots.push(Math.min(...candidates));}
     z.w=Math.max(depth,...roots)+.01;
     // No high terminal edge may emerge past the host or leave a vertical gap.
-    for(const y of ys){const p=transform(z,{x:z.w,y}),hs=host.filter(f=>contains(f.poly,p));if(!hs.length||Math.max(...hs.map(f=>height(f,p)))+.02<Math.min(...planes.map(f=>height(f,p))))fail();}
+    for(const y of ys){const p=transform(z,{x:z.w,y}),hs=host.filter(f=>contains(f.poly,p));if(!hs.length||Math.max(...hs.map(f=>height(f,p)))+.02<Math.min(...planes.map(f=>height(f,p))))fail('terminal','Yavru çatı birleşimi ana çatının karşı sınırını aşıyor veya yüzeyden dışarı çıkıyor. Eğim ve U açıklığını kontrol edin.');}
     z.childJoin.support=ps.map(p=>({...p}));return z;
   }
   function defaults(overrides={}){return Object.assign({id:'roof',name:'Ana çatı',type:'besik',group:'ana',x:0,y:0,w:1000,d:800,h:280,angle:0,pitch:33,ridge:50,eaves:[30,30,30,30],material:'trapez',width:100,packageArea:2.52,fire:5,allowance:0,maxLength:0,lap:20,parapet:0,gutters:true},overrides);}
@@ -7434,6 +7439,7 @@ window.Wall3D={build,panelColor};
  }
  function hint(mode){
   $('roofBoundaryFinish').hidden=$('roofBoundaryBack').hidden=!draft;$('roofBoundaryFinish').disabled=!draft||(draft.openU?draft.points.length!==4:draft.points.length<4);$('roofBoundaryBack').disabled=!draft?.points.length;$('roofBoundaryBack').textContent='Son çizim noktasını sil';$('roofBoundaryBack').title='Yalnızca devam eden çizimin son noktasını siler. Mevcut çatıları değiştirmez.';$('roofBoundaryFinish').textContent=draft?.openU?'Çatıyı oluştur · Enter':'Sınırı kapat · Enter';
+  if(window.SingleRoofFeedback?.refresh(mode))return;
   if(draft?.openU&&mode==='plan'){$('roofHint').textContent=['1/4: Bağlanacağınız ana veya yavru çatının kenarına tıklayın.','2/4: Dışarıdaki ilk duvar köşesine tıklayın.','3/4: Dışarıdaki ikinci duvar köşesine tıklayın.','4/4: Aynı ana çatı kenarına dönerek son noktaya tıklayın.','Dört nokta hazır. Çatıyı oluştur düğmesine veya Enter’a basın.'][Math.min(4,draft.points.length)]+' · Backspace: son noktayı sil · Esc: iptal';return;}
   if(draft&&mode==='plan')$('roofHint').textContent='Mesnet sınırı: '+draft.points.length+' köşe · saçak '+draft.eave+' cm · '+(draft.openU?'U uçları ana kenarda · Enter: bağla':(draft.points.length>=4?'Köşeler hazır · Enter veya Sınırı kapat ile oluştur':'ilk köşeye tıkla / Enter: kapat'))+' · Backspace: son köşe · Esc: iptal';
  }
@@ -7509,8 +7515,8 @@ window.Wall3D={build,panelColor};
    const ok=R.commit(()=>{G.roofs[G.roofs.findIndex(r=>r.id===z.id)]=next;synchronize(previous);});draw();return ok;
   }catch(e){R.notice(e.message,true);return false;}
  }
- const cv=$('roofCanvas');cv.addEventListener('pointerdown',e=>{if(!draft||e.button!==0)return;e.stopImmediatePropagation();e.preventDefault();if(draft.openU&&draft.points.length>=4){R.notice('Dört nokta hazır. Çatıyı oluştur düğmesine basın; düzeltmek için son çizim noktasını silin.');return;}const raw=R.world(e),q=snap(raw),first=draft.points[0];if(q.invalid){R.notice('Gösterilen ana çatı bağlantı noktasına yaklaşın.',true);return;}R.notice('');if(draft.openU&&!draft.points.length&&q.hostId){draft.parentId=q.hostId;$('roofDrawParent').value=q.hostId;}if(draft.openU&&draft.points.length===1){const a=draft.points[0],horizontal=a.hostNormal==='y';a[horizontal?'x':'y']=q[horizontal?'x':'y'];}if(!draft.openU&&first&&draft.points.length>=3&&Math.hypot(R.canvasPoint(first).x-R.canvasPoint(raw).x,R.canvasPoint(first).y-R.canvasPoint(raw).y)<14){finish();return;}if(!draft.points.length||Math.hypot(q.x-draft.points.at(-1).x,q.y-draft.points.at(-1).y)>.01)draft.points.push(q);hover=null;hint('plan');R.repaint();},true);
- cv.addEventListener('pointermove',e=>{if(!draft)return;hover=snap(R.world(e));R.repaint();},true);
+ const cv=$('roofCanvas');cv.addEventListener('pointerdown',e=>{if(!draft||e.button!==0)return;e.stopImmediatePropagation();e.preventDefault();if(draft.openU&&draft.points.length>=4){hint('plan');R.repaint();return;}const raw=R.world(e),q=snap(raw),first=draft.points[0];if(q.invalid){R.notice('Gösterilen ana çatı bağlantı noktasına yaklaşın.',true);return;}R.notice('');if(draft.openU&&!draft.points.length&&q.hostId){draft.parentId=q.hostId;$('roofDrawParent').value=q.hostId;}if(draft.openU&&draft.points.length===1){const a=draft.points[0],horizontal=a.hostNormal==='y';a[horizontal?'x':'y']=q[horizontal?'x':'y'];}if(!draft.openU&&first&&draft.points.length>=3&&Math.hypot(R.canvasPoint(first).x-R.canvasPoint(raw).x,R.canvasPoint(first).y-R.canvasPoint(raw).y)<14){finish();return;}if(!draft.points.length||Math.hypot(q.x-draft.points.at(-1).x,q.y-draft.points.at(-1).y)>.01)draft.points.push(q);hover=null;hint('plan');R.repaint();},true);
+ cv.addEventListener('pointermove',e=>{if(!draft)return;if(draft.openU&&draft.points.length===4){hover=null;return;}hover=snap(R.world(e));R.repaint();},true);
  window.addEventListener('keydown',e=>{if(!draft||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(['Enter','Escape','Backspace'].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();if(e.key==='Enter')finish();else if(e.key==='Escape'){draft=null;hover=null;R.render();}else{draft.points.pop();hover=null;hint('plan');R.repaint();}}},true);
  // The roof dialog's older capture listener predates this module. Handle the
  // drawing shortcuts there via a hook, before it consumes the event.

@@ -1,0 +1,33 @@
+DEV-158 — Yavru çatı bağlantı nedeni ve canlı çizim ayarları
+26 Ekim 2026 | Taslak 158 | Ana uygulama 5.9.137 korunur
+
+Kaynak
+Kullanıcı ekran görüntüsü: C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-18c71524-7878-4857-93ca-88135c653457.png
+SHA-256 ve değişen dosyalar: 2026-10-26-taslak-yavru-cati-envanteri.json.
+Görsel: dört nokta hazır, ilk/son nokta ana kenarda; ayrıca kırmızı yakalama etiketi ve genel bağlantı hatası. Ana çatı etiketi 1892,5 × 753,5 cm, eğim %33, kot250; metraj165,89m², mahya19,37m,40levha.
+
+Bulgular
+1. connectChild aynı hata mesajını nokta/hiza, asgari ölçü, yüzey kotu, kesişim ve sonlanma hatalarında kullanıyordu. Dört nokta doğru yakalansa da geometrik bağlantı reddedildiğinde mesaj yeniden yakalama öneriyordu.
+2. Dört nokta sonrasında pointermove hâlâ dördüncü köşe yakalama imlecini hesaplıyordu; fare uzaklaşınca bitmiş U sınırında kırmızı "hedefi yakalayın" uyarısı görünüyordu. Beşinci nokta eklenmiyordu fakat görüntü yanıltıcıydı.
+3. Çizim başında alınan eğim/tip/saçak değerleri draft'ta sabitti. Başarısız bağlantı sonrasında soldan eğim değiştirildiğinde mevcut dört nokta bu yeni değeri kullanmıyordu.
+
+Yeniden üretme ve kesinlik sınırı
+Görselde okunabilen ana çatı ölçüleriyle sentetik test: 1892,5×753,5, %33, duvar250, alın22/yan30 cm; ana metraj165,89m²/19,37m/40levha ekranla eşleşti. U açıklığı1014cm, dışarı uzanım105cm yaklaşık örnek olarak alındı; kullanıcı JSON'u değildir. %33 yavru yüzey439,21cm, ana maksimum396,2275cm; kesişim yok. Aynı dört nokta %24 ile birleşti. %24 yalnız regresyon testidir, kullanıcı projesi için atanmış değer/üretim önerisi değildir.
+Bu görüntüde olası engel, geniş yavrunun ana mahyadan yüksek kalmasıdır. Kullanıcının canlı U noktaları/JSON'u okunmadığı için kesin koordinatlı teşhis yapıldığı iddia edilmez. Yeni açıklama kullanıcının kendi çiziminde hesaplanan gerçek hata ve kotları gösterecek.
+Önceki 2026-10-07 bağlantı incelemesindeki gerçek JSON datum uyuşmazlığı farklı olaydır; mevcut R.seat tüm bağımsız çatıları trim/12 kuralına oturtur. Bu eski teşhis mevcut görsele otomatik uygulanmadı.
+
+Uygulama — yalnız taslak
+- roof-feedback-build.cjs kaynak kopyasına açıklayıcı hata kodları/verileri ekler; geometrik koşullar, eşikler, yüzey denklemleri ve kabul/red sonuçları değişmez. Yapılandırılmış nedenler: parent/points/size/direction/rectangle/gable-extent/mouth/intersection/terminal.
+- single-roof-feedback.js/css: dört köşeden sonra bağlantı kontrol kartı. Geçerli sınır yeşil "Bağlantı hazır", geçersiz bağlantı gerçek neden/kotlarla gösterilir; başarısızken oluştur düğmesi pasif, Enter da mevcut doğrulamadan geçer.
+- Çizim devam ederken sol eğim/tip/alın/yan saçak değerleri dört noktayı silmeden önizlemeye uygulanır. Mevcut ana/yavru çatılar değişmez. Otomatik eğim/ölçü/kot atama yok.
+- Dört noktadan sonra yakalama imleci durur. Backspace ile nokta geri alındığında yakalama tekrar çalışır; Esc iptal eder.
+- Derleme yalnız taslak single-engine.js/index/manifest üretir. src/roof-core.js ve src/roof-workflow.js değiştirilmedi. Ana HTML/dist, arakat ve kullanıcı çizimleri korunur.
+
+Kontroller
+taslaklar/odak-atolyesi/roof-feedback-check.cjs: 4 yön×2 gezinme yönü×4 geçerli U=32 durum ve4alın bağlantısı ana kaynakla aynı geometri;8imkânsızyükseklik durumu reddedilir ve doğru neden verir; bozuk dikdörtgen ayrı hata verir. Gerçek fare ile4köşe, yanlış4.tık reddi, oluşumdan önce gerekçe, beşinci yakalama etiketinin olmaması, boş eğim reddi, dört noktayı koruyarak33→24, geçerli dere/3D, anaçatının değişmemesi, undo/redo/JSON veEsc geçti.
+single-check.cjs: prefabrik çizim/panel/joint/metraj eşitliği, oda/metin/ölçü, çatı/malzeme/yükseklik, tavan, JSON/yenileme/PDF,980/1280/1920 veana kaynak/depolama izolasyonu geçti.
+command-ui-check.cjs: gruplar/arama/bağlamsal ayarlar/seçim, dört ekran boyutu veçatı/3D geçti.
+Yerel test görüntüleri incelendi: artifacts/roof-feedback-blocked.png, roof-feedback-ready.png, roof-feedback-3d.png. Testler bağımsız Edge oturumunda; açık kullanıcı tarayıcısı yenilenmedi, çizimi düzenlenmedi.
+
+Devir
+Taslak158; ana5.9.137. Fiyat/imalat/taşıyıcı hesabı veya çatı modeli değiştirilmedi. Kullanıcı taslağını kaydederek yeniler; dört köşeyi yeniden seçtiğinde kendi bağlantısının gerçek sonucu gösterilir. Devam eden tamamlanmamış U çizimi proje JSON'unda yer almaz. DEV-153 kullanıcı değerlendirmesi ve önceki açık işler korunur.

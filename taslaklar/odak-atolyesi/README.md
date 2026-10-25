@@ -103,3 +103,8 @@ Rapor ve kanıtlar: `../../analizler/2026-10-25-taslak-arakat.md`; kaynak/artifa
 DEV-151: `../../analizler/2026-10-25-taslak-arakat-katman.txt`, `-katman-kontrol.txt`, `-katman-envanteri.json`. Yeni kontroller: iki şase yönü × üç yükseklik, kaplama kot sırası, taban alanının şase alanına eşitliği, tavanın duvarlarla çakışmaması, yalıtım boşluk sınırları, alt yüzler, ayrıştırmada yalnız Z dönüşümü, katman gizle/geri al ve önayarlar arasında tercihlerin korunması.
 
 DEV-152: `ceiling-check.cjs` tam/kesilmiş/dar/L biçimli alanlar, 60×120 modül, yalnız ortak kenarlarda mini H, iki doğrultu × üç yükseklik, önceki tavan alanının korunması, üç parçalı H kesiti, levha seçimi, alttan/üstten görünüm, yön/undo, kamera/kat görünürlüğü dönüşü, dar ekran/yedek çizici/izolasyonu doğrular. Rapor: `../../analizler/2026-10-25-taslak-standart-tavan.txt`; yeni kontrol ve eski akış regresyon çıktıları aynı tarihli `-kontrol.txt` / `-regresyon.txt`, dosya hashleri `-envanteri.json`.
+# Taslak 158 — Yavru çatı bağlantısı
+
+Yavru çatı için dört U noktası seçilince bağlantı nedeni sol tarafta görünür. Geçerli bağlantıda **Bağlantı hazır** yazısı ve **Çatıyı oluştur** düğmesi etkinleşir. Kot/kesişim engelinde eğim, çatı tipi veya saçak değerlerini dört noktayı silmeden değiştirebilirsiniz. Değerler kendiliğinden değiştirilmez; ana çatı korunur. Son noktayı düzeltmek için Backspace, iptal için Esc kullanın. Dört nokta tamamlandıktan sonra yakalama imleci durur.
+
+[Teşhis, testler ve kapsam sınırı](../../analizler/2026-10-26-taslak-yavru-cati-baglanti.txt). Çizilmiş kullanıcı projesini kaydedip sayfayı yenileyin; henüz oluşturulmamış U taslağı kayıt dosyasına dahil değildir.

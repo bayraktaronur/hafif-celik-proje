@@ -1,0 +1,8 @@
+#singleRoofFeedback{margin:10px 0;padding:10px;border:1px solid #405764;border-radius:6px;background:#1b2b34;line-height:1.55;overflow-wrap:anywhere}
+#singleRoofFeedback[hidden]{display:none}
+#singleRoofFeedback strong{font-size:11px;color:#c5d6e0}
+#singleRoofFeedback p{margin:6px 0 0;color:#a8beca;font-size:11px!important}
+#singleRoofFeedback[data-state=blocked]{border-color:#ad7850;background:#322b25}
+#singleRoofFeedback[data-state=blocked] strong{color:#efbd7d}
+#singleRoofFeedback[data-state=ready]{border-color:#5b9b83;background:#203930}
+#singleRoofFeedback[data-state=ready] strong{color:#97ddbe}
