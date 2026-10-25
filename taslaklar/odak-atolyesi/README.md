@@ -1,6 +1,17 @@
 # Odak Atölyesi — tek katlı prefabrik çizimi
 
-25 Ekim 2026 · DEV-155. `index.html` çalışan tek kat çizim taslağıdır; köşe direğinin planda boşluk gibi görünmesi düzeltildi. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+25 Ekim 2026 · DEV-156. `index.html` çalışan tek kat çizim taslağıdır; Seç altında panel/duvar ayrımı ve seçili duvarı tam ölçüyle taşıma eklendi. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+
+## Duvar seçimi ve ölçülü taşıma
+
+**Seç → Panel seç / Duvar seç** açılır menüsünden seçim türünü belirle. Duvar seç modunda duvara tıklayınca sağda **Duvar taşıma** görünür.
+
+- **Ölçüyle taşı:** çizimde vurgulanan otomatik ölçülerden birine tıkla, yeni değeri cm olarak gir ve **Uygula**. Örneğin mevcut 198,25 cm ölçüsünü 150 cm yapmak seçili duvarı 48,25 cm taşır; diğer ölçü ucu sabit kalır. Önizleme, Uygula öncesinde modeli değiştirmez.
+- **Mesafe kadar taşı:** yönü seç ve taşıma miktarını gir. Kesirli cm kabul edilir; bu komut H, panel ortası veya ızgaraya yuvarlamaz. Genel çizim/yakalama ayarları korunur.
+- Bağlı duvar uçları mevcut motorun bağlantı kurallarıyla güncellenir. Seçili doğrultudaki birden fazla duvar parçası birlikte taşınabilir. **Esc / Vazgeç**, geri al ve ileri al çalışır.
+- Duvar ters dönüyorsa, açıklık duvar ucuna sıkışıyorsa veya özel panel dizilimi sığmıyorsa işlem uygulanmaz. Karmaşık birleşim nedeniyle seçilen ölçü tam karşılanamıyorsa işlem geri alınır; yön ve mesafe komutu kullanılabilir. Özel uzunlukların üretim uyarıları Plan kontrolünde kalır.
+
+Bu komut kullanıcı çizimini kendiliğinden değiştirmez. Kontrol: `wall-move-check.cjs` — gerçek menü/ölçü tıklaması, 198,25→150, iç/dış ve yatay/dikey duvar, kesirli taşıma, T birleşimleri, açıklıklar, çoklu parçalar, önizleme/geri al/JSON ve üç ekran genişliği. Rapor: `../../analizler/2026-10-25-taslak-duvar-secim-tasima.txt`.
 
 ## Köşe direği ve panel teması
 

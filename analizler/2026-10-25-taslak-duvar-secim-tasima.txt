@@ -1,0 +1,33 @@
+25 Ekim 2026 — DEV-156 — Taslakta genel duvar seçimi ve ölçülü taşıma
+
+İstek ve kaynak
+Kullanıcı Seç altında Panel seç / Duvar seç istedi; işaretlediği duvarın panel ortası veya sonuyla sınırlanmadan taşınmasını istedi. Açıklaması: “Mevcut 198,25 cm ölçüsü 150 cm olsun”. Son karar: bu işlem istediği zaman istediği duvara uygulanabilen genel bir komut olacak. Yalnız bağımsız taslak değiştirilecek.
+Kaynak görsel: C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-4a22b7de-4770-4d83-89aa-5a454715a6e7.png
+Kaynak ve değişen dosyaların SHA-256 değerleri: 2026-10-25-taslak-duvar-secim-tasima-envanteri.json.
+
+Uygulama
+taslaklar/odak-atolyesi/single-selection.js: Seç altında Panel seç / Duvar seç, mevcut seçim motoruna bağlı, klavyeyle kullanılabilir açılır menü. Eski seçim listesi saklanır; ikinci görünür kontrol oluşturulmaz.
+single-wall-move.js ve single-wall-move.css: sağ seçili eleman alanında Duvar taşıma. Ölçüyle taşı, gerçek otomatik ölçünün model uçlarını kullanır. Sabit uç korunur, seçili duvar yeni ölçüye taşınır. Mesafe kadar taşı yön ve cm miktarıyla çalışır. Önizleme modeli değiştirmez; Uygula tek geri alınabilir işlem oluşturur. Esc/Vazgeç ve proje değişimi bekleyen işlemi kapatır.
+H/ızgara/panel adımına yuvarlama yalnız bu açık komutta atlanır; global yakalama ve modül ayarları değişmez. Mevcut motorun applyWallOffset bağlantı/açıklık davranışı ve oda tespiti kullanılır. Normalleştirme sonrası seçilen gerçek ölçü yeniden doğrulanır; karşılanmıyorsa bütün işlem geri alınır. Açıklığın duvar ucunda sessizce sıkışması önlenir. Özel panel dizilimi hataları işlem öncesine göre denetlenir. Standart dışı panel uzunlukları için Plan kontrolü uyarıları korunur.
+Taslak 156; build-single-storey.cjs yalnız taslak çıktılarını üretir. Ana motor sürümü 5.9.137 kalır.
+
+Kontroller
+wall-move-check.cjs, ayrı ve kullanıcıdan bağımsız headless Edge bağlamında geçti:
+- Gerçek fareyle Seç menüsü, panel/duvar seçimi ve otomatik ölçüye tıklama.
+- Örnek planda dış 198,25→150 cm; 48,25 cm taşıma; bağlı uçlar, oda ve değişmeyen önizleme durumu.
+- Yatay duvar/dikey ölçü; karşı uçtan taşıma; iç bölücü duvar ve iki odanın T birleşimleri.
+- 13,7 cm iki yön, 0,25 cm hassas taşıma; virgül girişi; geçersiz mesafede değişmeme; Esc.
+- Geri al/ileri al; panel modu ve yakalama tercihlerinin korunması.
+- Duvara bağlı pencerenin hareketi; kısalan komşu duvarda sıkışan açıklığın işlemi tamamen geri aldırması.
+- Birden fazla aynı doğrultudaki seçili duvar parçasının birlikte hareketi.
+- Proje değişiminde bekleyen komutun iptali; JSON/yenileme; 980/1280/1920 ekranlarda menü; çalışma zamanı hatası yok.
+single-check.cjs: gerçek panel çizimi ve sayısal giriş, kapanış/geri al, ana motorla panel/birleşim/metraj eşitliği, oda/metin/ölçü, çatı/kaplama/yükseklik, tavan, JSON, PDF ve ana kaynak/depolama izolasyonu geçti.
+reference-check.cjs: PNG/JPG/pano, kalibrasyon, taşıma/geri al, kilitli altlık üzerinde çizim, JSON/sekme/yenileme, metraj/çıktı ve kaynak izolasyonu geçti.
+corner-contact-check.cjs: 12 üretim karşılaştırması, 40 temas, beş filtre ve %15–300 zoom/kâğıt/CAD kontrolleri geçti.
+Menü ve taşıma önizleme ekran görüntüleri görsel olarak incelendi. Geçici görseller artifacts/ altında; Git'e eklenmedi.
+
+Sınırlar ve korunanlar
+Canlı kullanıcının açık planı bu işlemde okunmadı veya taşınmadı. 198,25→150 örneği ayrı test çizimidir; kullanıcı komutu kendi çiziminde uygular. Ana plan_cizim.html, src, dist, önceki arakat taslağı ve müşteri çizimleri değiştirilmedi. Önceki açık işler korunur.
+Ölçüyle taşı, seçili duvara bağlı ve o duvara dik doğrultudaki görünür otomatik ölçüler içindir. Elle eklenmiş ölçü notları yeniden bağlanmaz. Karmaşık birleşim topolojisi seçilen ölçünün tam korunmasını engellerse işlem iptal edilir; yön/miktar alternatifi vardır. Çoklu duvar taşıma paralel parçalarla sınırlıdır. En küçük taşıma 0,01 cm; giriş üst sınırı 100.000 cm. Normal serbest sürüklemenin H/ızgara davranışı değiştirilmedi.
+Kaynak kullanıcı görseli geçici klasörde; hash kaydı tutuldu, ham görsel depoya kopyalanmadı. Müşteri planı aktarılmadı. Yalnız görev kodu, rapor ve kayıtları aktarılır; ilgisiz yerel dosya/notlar dışarıda tutulur.
+Sıradaki adım: kullanıcı taslak 156'da kendi duvarını seçip ölçüyle taşıma akışını değerlendirecek. Ana uygulamaya aktarım yapılmadı.

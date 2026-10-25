@@ -1,0 +1,19 @@
+{
+  "task": "DEV-156",
+  "mainRevision": "5.9.137",
+  "sourceImage": {
+    "path": "C:\\Users\\ONUR\\AppData\\Local\\Temp\\codex-clipboard-4a22b7de-4770-4d83-89aa-5a454715a6e7.png",
+    "sha256": "18cffbc54b3f2be626e76256065ebd6730d638c315ae5f2cf1fe982f882b6411"
+  },
+  "artifacts": {
+    "taslaklar/odak-atolyesi/build-single-storey.cjs": "de11f6261dc1019c4fbebfa13b9fd04c234ea35e235b62356135a6f88ad22be7",
+    "taslaklar/odak-atolyesi/index.html": "78cbee44a73425446dabeb93284861e3b009832e9fed1a2c672b1985dcccbf13",
+    "taslaklar/odak-atolyesi/single-engine-manifest.json": "ca9dec2128c55835e660827303297adacd5d340ad2ab77e88be414633f36fdec",
+    "taslaklar/odak-atolyesi/single-storey.js": "153e5e73ec0eabefd3b3ad6eaee8a4b25d145d064893e69aaa572bda706c04f5",
+    "taslaklar/odak-atolyesi/single-selection.js": "2a3656a5f20c64a778ca582f87a95f37eb93a97c4afce93492ddc83ebfdc9586",
+    "taslaklar/odak-atolyesi/single-wall-move.js": "9a958035efa42868fa959ce63a601bca211bc0798f9373e99babc57fdf1ca3fd",
+    "taslaklar/odak-atolyesi/single-wall-move.css": "bfb54d1010036bcfa52047247141f30c52b2ad5e549d89029c7160f6efa4e2ad",
+    "taslaklar/odak-atolyesi/wall-move-check.cjs": "96f5d3f103f67c9a1d0a86e36244c8896819df9aed8c454b77fa6a18eaf0424b",
+    "taslaklar/odak-atolyesi/README.md": "cecd706f5614a6e8749ebe630f3de38698b18062b759f6d7f87b1ce107face98"
+  }
+}
