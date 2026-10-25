@@ -987,3 +987,7 @@ Kesik çizgi alt alan etiketlerine seçim kutusu ve ayrı hit alanı eklendi; s�
 
 ## 23 Ekim 2026 — DEV-143 / 5.9.135 — Ortak oda etiketi çizimi
 Tamamlandı: fiziksel oda ve çizgi alt alan etiketleri ortak drawRoomLabel kullanır. Zoom fontu, dar alana sığma, özel ad/tür satırı, tek ondalık m², renk, satır aralığı, hit kutusu ve seçim çerçevesi eşlendi. Mevcut ad/konumlar korunur. area-regions taşıma/düzenleme/JSON ile %22/50/86 ve çıktı tipografi eşitliği, ana31/31 geçti; görsel incelendi. Önceki açık işler ve DEV-138-B metraj entegrasyonu korunur. Kullanıcının açık çizimi değiştirilmedi.
+
+
+## 25 Ekim 2026 — DEV-144 / 5.9.136 — Modern ana çizim arayüzü
+Tamamlandı: açık gri/mint arayüz, dikey sol araç şeridi, açılır proje ayarları, ince üst şeritler ve sağ özellik paneli. Mevcut DOM kontrolleri taşınır; motor ve hesap modeli değiştirilmedi. Modern/klasik tercih yerelde saklanır; ilk açılış klasik, üstte Modern görünüm düğmesi. workflow-shell testi: 1280/1920 taşma ve çizim genişliği, panel aç/kapa, mevcut komutlar/çatı/görünürlük, iki sistemde tekrarlı geçiş ve model eşitliği; ana31/31 geçti. Görsel artifacts/workflow-shell.png incelendi. Açık: çatı/3D iç ekranlarının aynı tasarım diliyle yenilenmesi, açık/koyu çizim zemini seçimi ve daha ayrıntılı komut bazlı panel sadeleştirmesi. Önceki açık işler korunur; kullanıcı çizimi değiştirilmedi.
