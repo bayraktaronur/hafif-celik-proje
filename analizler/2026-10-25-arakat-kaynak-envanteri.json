@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-25",
+  "task": "DEV-148",
+  "files": [
+    {
+      "original": "C:/Users/ONUR/Desktop/arakat.stl",
+      "copy": "referanslar/2026-10-25-arakat/arakat.stl",
+      "bytes": 78984,
+      "sha256": "5a78093de5040bde638285462b395dc549cadecd7e26e5ef00dc939b6c1c8b68",
+      "originalLastModified": "2026-10-25T19:14:11.107Z",
+      "assistantModifiedOriginal": false
+    },
+    {
+      "original": "C:/Users/ONUR/Desktop/arakat şasesi montaj.stl",
+      "copy": "referanslar/2026-10-25-arakat/arakat-montaj.stl",
+      "bytes": 631284,
+      "sha256": "eebc156f3795e8d97facdd22a732173ef39b17394b49b76cec57ff5fb4848442",
+      "originalLastModified": "2026-10-25T19:14:39.074Z",
+      "assistantModifiedOriginal": false
+    }
+  ],
+  "earlierFiles": [
+    {
+      "copy": "referanslar/2026-10-25-arakat/ilk-ornek/arakat.stl",
+      "bytes": 78984,
+      "sha256": "56cc678bc427eed03d5c46b3e55f03ba5f254fff97f54fffd6d6cc1a80762372",
+      "status": "superseded example, preserved"
+    },
+    {
+      "copy": "referanslar/2026-10-25-arakat/ilk-ornek/arakat-montaj.stl",
+      "bytes": 473484,
+      "sha256": "436114585ba93904b91dcded1ee0d00d56ace913ec1108e4f33f6b4b2ac82ed8",
+      "status": "superseded example, preserved"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "analizler/2026-10-25-arakat-geometri.json",
+      "bytes": 96477,
+      "sha256": "7401779ff6b2184f6006ad13c2f1f89a59168e9109490c10ba383ebf61604d98"
+    },
+    {
+      "path": "analizler/2026-10-25-arakat-ilk-ornek-geometri.json",
+      "bytes": 82004,
+      "sha256": "9d3480a237722fbf2a4b7a7784e797e6802ebb69c6693f2ab830da338a0acbad"
+    },
+    {
+      "path": "analizler/2026-10-25-arakat-tek-gorunus.png",
+      "bytes": 84267,
+      "sha256": "bef7c9e7544ce2618d65d951f97c0b06a3f6d28cbabb48bb026f9b07031cfcec"
+    },
+    {
+      "path": "analizler/2026-10-25-arakat-montaj-gorunus.png",
+      "bytes": 130017,
+      "sha256": "05634ffc86146c9f20df66051b9ac09c80c65180c634154db3d0114f4fbec550"
+    },
+    {
+      "path": "analizler/2026-10-25-arakat-kesitler.png",
+      "bytes": 30455,
+      "sha256": "dc712bca23428c8115c5cda7a01f16f6b579241e7a0773705e9c8758ccf9b0ec"
+    },
+    {
+      "path": "tools/inspect-arakat-stl.py",
+      "bytes": 11488,
+      "sha256": "c5782ea4709d2b70d08b90f7547bb2a1973a07e48ebf12ce1cecbe390d94a355"
+    }
+  ],
+  "userConfirmed": {
+    "unit": "cm",
+    "outsideWidth": 125,
+    "height": 20,
+    "length": "proje boyuna göre",
+    "support": "alt kat duvarlarının üstü"
+  },
+  "sourceGeometryResizedByAssistant": false
+}
