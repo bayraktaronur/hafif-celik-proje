@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-25",
+  "scope": "DEV-147 Revit ve Rayon resmi belge incelemesi ve Plan Studio mimari önerisi",
+  "sourceCommit": "bc46c88350177843953c6c19d1190d2cfa72e376",
+  "applicationVersion": "5.9.137",
+  "files": [
+    {
+      "path": "src/project.js",
+      "bytes": 15367,
+      "sha256": "4105bc7d02bafc561b893a848dfc98be78ec4d6c0811ae822dacafc048e4217c"
+    },
+    {
+      "path": "src/project-specs.js",
+      "bytes": 8229,
+      "sha256": "0e7c7a626360a00ae2915cfffc839d4fd0936395ef0586324952f6e0ebf9f628"
+    },
+    {
+      "path": "src/plan-dimensions.js",
+      "bytes": 5290,
+      "sha256": "be43f43b99c36792818c7bf23096cb2a7843ff82023f5582e4cf20cc9b1091b4"
+    },
+    {
+      "path": "src/area-regions.js",
+      "bytes": 7764,
+      "sha256": "0fda7205dfedc42c6b51161efd4b4679b618e3d0cda59f34bfd05ff3e6b0e6f1"
+    },
+    {
+      "path": "src/prefab.js",
+      "bytes": 52738,
+      "sha256": "e8ba7b0954d82c3940642c9edc1ea6f3ab6e5fd754baa482743aa4d4fd4975f4"
+    },
+    {
+      "path": "analizler/2026-10-07-makas-kose-uyumu.md",
+      "bytes": 5943,
+      "sha256": "464d5d415987dda45d83ab561af44f9f375a32cacadb930caaec875f612dd1cc"
+    },
+    {
+      "path": "taslaklar/odak-atolyesi/README.md",
+      "bytes": 2686,
+      "sha256": "781c79fc31abbaa292cebc7d60259bf59c83459f8012603b1d62f825975fe0dc"
+    }
+  ]
+}

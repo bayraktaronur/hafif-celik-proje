@@ -106,6 +106,7 @@ Ev veya iş fark etmez:git kontrolü/fetch ve güvenli güncelleme,bu dosya,CALI
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
+| DEV-147 | Revit ve Rayon incelemesi ve program yapısı | ARAŞTIRMA TAMAM: [rapor](analizler/2026-10-25-revit-rayon-program-yapisi.md). Uygulama ve taslak değişmedi. Önerilerin değerlendirilmesi bekliyor; DEV-138-B ve önceki açık işler sürer. |
 | DEV-001 | İş bilgisayarındaki AutoCAD dosyası ve analizini alma | Tamamlandı: iki DWG, Excel ve PDF kopyaları ve önceki bulgular ortak depoda; aşağıdaki rapor/envanter. |
 | DEV-002 | Güncel müşteri planını belirleme | Kullanıcı bu karşılaştırma için iş JSON'unu açıkça seçti. Sonuç ayrı tuna84-dwg-esleme-taslak.json dosyasıdır; canlı tarayıcı çizimi değiştirilmedi ve son canlı çizim olduğu iddia edilmiyor. |
 | DEV-003 | İki bilgisayarda ortak devam kurallarının kullanılması | İlk karşılıklı devir tamamlandı: iş bilgisayarı kuralları aldı; ev bilgisayarı 4c2f1c4 teslimini aldı, kayıtları okudu ve beş dosyanın boyut/SHA-256 değerlerini doğruladı. Her yeni çalışmada devir kontrolü sürer. |
@@ -927,3 +928,7 @@ Kullanıcı DEV-144 tasarımını reddetti ve eskiye dönüş istedi. workflow-s
 
 ## 25 Ekim 2026 — DEV-146 — Bağımsız kat odaklı arayüz taslağı
 Kullanıcı mevcut programa dokunmadan ayrı taslak istedi; zemin/1.kat/ara kat/3D geçişlerini özellikle istedi. taslaklar/odak-atolyesi/index.html: koyu arayüz, kat ağacı/sekmeler, şematik SVG3D ve kat ayrıştırma, duvar seçimi/mesafeli bölme önizlemesi, oda adı ve geri alma. Kaynak Tuna84 kayıtlı örneği; canlı kullanıcı çizimi değildir, hash envanteri yanında. check.cjs geçti: seçim/isim/undo, geçerli-geçersiz bölme, kat kopyalama/3D/görünürlük, yükseklik, 980/1280/1920 taşma, veri izolasyonu. Görseller incelendi. Ana HTML/src/dist/cizimler değişmedi, sürüm5.9.137korundu. Taslak ağ/depolama kullanmaz. Serbest çizim/üretim/çıktı motoru bağlı değil; 3D üretim modeli değildir. Açık: kullanıcının taslak değerlendirmesi; kabul olmadan ana programa taşınmayacak. Önceki açık işler korunur.
+
+
+## 25 Ekim 2026 — DEV-147 — Revit ve Rayon araştırması
+Resmi Autodesk/Rayon belgeleri ve yerel kaynaklar incelendi. [Araştırma ve uygulama sırası](analizler/2026-10-25-revit-rayon-program-yapisi.md), [kaynak SHA-256 envanteri](analizler/2026-10-25-revit-rayon-kaynak-envanteri.json). Öneri: gerçek kat/kot modeline bağlı görünüm sekmeleri, tek bağlamsal özellik paneli, ortak modelden plan/3B/metraj/antet, ayrı prefabrik ve hafif çelik üretim kuralları, ilişkisel ölçüler ve revizyon takibi. Kullanıcının ana programa dokunmama kararı korunur; 5.9.137 ve bağımsız taslak değişmedi. Canlı Revit/Rayon kullanım testi yapılmadı. Kodda çok kat şeması, ilişkisel ölçü ve DEV-138-B alt alan metrajı açık. Yalnız araştırma tamamlandı; taslakta sonraki uygulama kullanıcı değerlendirmesi bekler. Önceki açık işler ve ilgisiz yerel çizim/raporlar korunur. Kontrol: yerel kaynak hashleri, rapor bağlantıları, yalnız araştırma dosyalarının commit kapsamı.
