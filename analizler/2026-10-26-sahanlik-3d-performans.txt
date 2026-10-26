@@ -1,0 +1,76 @@
+DEV-165 — Taslak165: beton sonrası 3D akıcılığı ve kapıdan sahanlık önerileri
+26 Ekim 2026 / iş bilgisayarı
+
+İstek ve kapsam
+Kullanıcının beton planı ekranındaki kapılar için otomatik ve elle düzenlenebilir
+sahanlık isteği çalışılırken, beton eklendikten sonra 3D'nin çok yavaşladığı bildirildi.
+Performans önceliklendirildi, iki iş yalnız taslaklar/odak-atolyesi içinde tamamlandı.
+Kaynak iki ekranın yol/kopya/SHA bilgileri envanter JSON'undadır. Kullanıcının canlı
+çizimi okunmadı veya yenilenmedi; aynı uygulamada ayrı test projeleri kullanıldı.
+
+Performans bulgusu ve çözüm
+Kamera her hareket ettiğinde duvar/STL/çatı/tavan geometrisi yeniden oluşturuluyor,
+FoundationData.compose bütün yüzeyleri beton kotuna yeniden taşıyordu. GPU sunumu
+da her karede sabit yüzey normallerini, renkleri ve fiziksel kenar haritasını kuruyordu.
+Betonun birkaç yüzeyi tek başına yavaşlığın nedeni değil; mevcut tekrar hesaplarını
+ve bellek ayırmayı artırıyordu.
+- scene-performance-build.cjs yalnız kopya motoru dönüştürür. Geometri, beton kotuna
+  taşıma, boya ve fiziksel kenarlar sahne değişene kadar saklanır. Kamera değişimi
+  yalnız projeksiyon ve görüntü çizimi yapar. En son sahne tutulur; sınırsız önbellek yok.
+- Anahtar duvarlar, açıklıklar, odalar, yapı sistemi, ortak seçenekler, makas yönü,
+  çatı bölümleri/malzemeleri, beton, boyalar ve görünüm katmanlarını içerir. Aynı
+  nesnenin içindeki değer değişiklikleri de yakalanır; yalnız nesne kimliği izlenmez.
+- Fare döndürme/kaydırma, tekerlek ve açı sürgüsü olayları requestAnimationFrame
+  ile birleştirilir. 50 tekerlek olayı aynı çevrimde 1 kare üretir.
+- H/birleşim/köşe, STL kapılar, trapez formu, tavan, çözünürlük, kenarlar, saydam cam
+  ve PNG çıktısı azaltılmadı. WebGL olmayan cihazdaki mevcut yazılım çizicisi korunur.
+
+Ölçüm (sentetik 49 panelli örnek + çatı + 30 cm beton)
+Edge headless, 1800×1100 pencere, WebGL 1914×1146 render hedefi; 10 kamera karesi.
+Önce ortalama 60,34 ms, sonra 20,75 ms: bu testte 2,91 kat hızlanma (%65,6 azalma).
+Her iki durumda 18.534 üçgen ve 9.572 çizgi. 10 kamera karesinde Wall3D.build ve
+FoundationData.compose çağrıları 10'dan 0'a indi. İlk sahne kurma işi devam eder;
+iyileştirme özellikle art arda kamera hareketleri içindir. Bunlar müşterinin açık
+planında ölçülen FPS değerleri değildir; donanım/model büyüklüğüne göre değişir.
+Ham önce/sonra kayıtları: 2026-10-26-3d-performans-once.json ve -sonra.json.
+Tekrar ölçüm: taslaklar/odak-atolyesi/scene-profile.cjs (repo kökünden Node ile).
+
+Sahanlık akışı
+Zemin betonu > Girişler > Kapılardan sahanlık öner. Beton referansında kapılar ve
+K1/K2 işaretleri görünür. Kapı merkezinden dış beton kenarına izdüşüm alınır;
+ortak/kenara özel beton payı hesaba katılır. Öneri ölçüleri: yan pay, derinlik,
+rıht adedi ve basamak. Derinlik betonun dış kenarından ölçülür. Tek tek veya uygun
+önerilerin tümü taslağa eklenir; her girişin ölçüsü/kenarı/konumu elle düzenlenir.
+Uygula'ya kadar ana proje değişmez; undo/redo, JSON, otomatik kayıt ve yeniden açma
+çalışır. Kapıya bağlı eklenmiş veya elle yerleştirilmiş aynı giriş tekrar eklenmez.
+Verandaya açılan kapıya otomatik merdiven konmaz; veranda girişinin elle seçilmesi
+istenir. İç kapı/pencereler önerilmez. Belirsiz dış yön, kapıya paralel olmayan kenar,
+geniş beton/veranda önü, köşeye sığmama ve çakışma açıklayıcı durumla elle düzenlenir.
+
+Sınırlar
+Kapı değiştiğinde var olan sahanlık kendiliğinden taşınmaz; düzenlenebilir bir
+öneriden oluşturulmuştur. Yeniden öneri almak mevcut elle ayarlanmış girişi ezmez.
+Veranda giriş yeri otomatik kararlaştırılmaz. Tek kotlu beton ve düz kollu dolu
+basamak kapsamı korunur; fiyat/taşıyıcı hesap veya ana uygulama entegrasyonu yoktur.
+
+Kontroller
+- foundation-performance-check: 20 kamerada aynı yüzey kimliği/üçgen/çizgi sayısı;
+  beton +20cm, boya, duvar yüksekliği, kapı konumu ve çatı değişiminde yenileme;
+  gizle/göster, tema, kenarlar, PNG; 50 tekerlek olayı 1 kare. PASS.
+- foundation-entrances-check: altı yön/poligon sırası, iç kapı/pencere ayrımı,
+  uzun kimlik, köşe, açık/kapalı veranda, çakışma/önceden eklenmiş giriş;
+  gerçek tek/toplu ekleme, elle düzenleme, geri al/ileri al, Apply/JSON/aç/yenile/3D. PASS.
+- foundation-check: sınır/pay/merdiven/metraj, bütün yapının ortak kotu,
+  proje ayrımı ve korunmuş kaynaklar. PASS.
+- foundation-snap-check: dış direk/T dönüş/kesirli yakalama, iki makas yönü,
+  açık veranda ve gerçek fare. PASS.
+- single-check: ana motorla aynı 49 panel/metraj, çizim/ölçü/metin/çatı/tavan,
+  JSON/PDF, 980/1280/1920 arayüz, ana depolama ve kaynak hashleri. PASS.
+Plan ve 3D sahanlık görüntüleri gözle incelendi; tarayıcı hatası görülmedi.
+
+Devir
+Taslak165; ana5.9.137/src/dist/arakat ve kullanıcının açık çizimi değişmedi.
+Önceki açık işler ve ilgisiz özel kayıtlar korundu; bu commit'e dahil edilmez.
+Çizimi Kaydet ile yedekledikten sonra aynı taslak sayfasını yenilemek gerekir.
+Güncel müşteri JSON aktarımı doğrulanmadı. Kod, rapor, ilgili ekranlar ve testler
+bu görevin teslimidir; push ve uzak commit eşitliği son adımda doğrulanır.

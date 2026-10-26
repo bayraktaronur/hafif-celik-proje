@@ -1,8 +1,9 @@
 {
-  "task": "DEV-164",
+  "task": "DEV-165",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
+    "editable door-guided landing suggestions; cached full-detail 3D geometry and feature edges, coalesced camera frames",
     "foundation snap: exposed panel/post perimeter, concave returns, corner priority and exact orthogonal face intersections",
     "ground concrete: flexible outline, per-edge setbacks, attached landings/stairs, shared Z origin, persisted bill and history",
     "referenceImages: project, history, recovery and native paste",

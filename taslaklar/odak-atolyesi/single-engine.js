@@ -6734,6 +6734,7 @@ window.Wall3D={build,panelColor};
 (function(){
  'use strict';
  const canvas=document.createElement('canvas');let gl,program,buffer,lost=false;
+ let prepared=null;
  const state={theme:'light',outlines:true,grid:true},stats={backend:'uninitialized'};
  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true;stats.backend='fallback';});
  canvas.addEventListener('webglcontextrestored',()=>{gl=null;lost=false;window.RoofStudio?.repaint();});
@@ -6748,6 +6749,18 @@ window.Wall3D={build,panelColor};
  }
  const rgb=hex=>[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255);
  function normal(poly){const a=poly[0];for(let i=1;i<poly.length-1;i++){const b=poly[i],c=poly[i+1],u=[b.x-a.x,b.y-a.y,b.z-a.z],v=[c.x-a.x,c.y-a.y,c.z-a.z],n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],l=Math.hypot(...n);if(l>1e-8)return n.map(x=>x/l);}return [0,0,1];}
+
+ function prepare(items){
+  if(prepared?.items===items&&prepared.outlines===state.outlines)return prepared;
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;const edgeMap=new Map();
+  const entries=items.map(item=>{const n=normal(item.poly),base=rgb(item.color);for(const p of item.poly){x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y);}
+   // Roof seams are supplied explicitly; panel patch boundaries are not physical joints.
+   if(state.outlines&&!item.roof&&item.material!=='panel'&&item.material!=='glass'&&!['openingMark','wallPanel','ridgeCap','vergeTrim','vergeBottom','soffit','cladding'].includes(item.kind)){
+    item.poly.forEach((a,i)=>{const b=item.poly[(i+1)%item.poly.length],keyPoint=p=>[p.x,p.y,p.z].map(v=>Math.round(v*1000)).join(','),ka=keyPoint(a),kb=keyPoint(b);if(ka===kb)return;const key=ka<kb?ka+'|'+kb:kb+'|'+ka,old=edgeMap.get(key);if(old){old.count++;if(Math.abs(old.n.reduce((s,v,j)=>s+v*n[j],0))<.94||old.color!==item.color)old.feature=true;}else edgeMap.set(key,{a,b,n,color:item.color,edgeColor:item.edgeColor,count:1,feature:false});});
+   }
+   return {item,n,base};});
+  prepared={items,outlines:state.outlines,entries,edges:[...edgeMap.values()].filter(e=>e.count===1||e.feature),x0,y0,x1,y1};return prepared;
+ }
  function render(ctx,w,h,items,edges,project){
   try{if(!init())return false;}catch(e){stats.error=e.message;return false;}
   const start=performance.now(),ratio=Math.min(2,Math.max(1.5,devicePixelRatio||1)),cw=Math.min(4096,Math.ceil(w*ratio)),ch=Math.min(4096,Math.ceil(h*ratio));
@@ -6755,23 +6768,20 @@ window.Wall3D={build,panelColor};
   gl.viewport(0,0,cw,ch);gl.useProgram(program);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
   for(const [name,size,offset] of [['p',3,0],['c',4,12]]){const a=gl.getAttribLocation(program,name);gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,size,gl.FLOAT,false,28,offset);}
   const light=state.theme==='light',bg=light?[.965,.972,.98]:[.051,.09,.133];gl.clearColor(...bg,1);gl.clearDepth(1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);
-  let near=-Infinity,far=Infinity,x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
-  const projected=items.map(item=>{const pts=item.poly.map(p=>{x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y);const q=project(p);near=Math.max(near,q.depth);far=Math.min(far,q.depth);return q;});return {item,pts,n:normal(item.poly)};});
+  let near=-Infinity,far=Infinity;const preparedScene=prepare(items),{x0,y0,x1,y1}=preparedScene;
+  const projected=preparedScene.entries.map(({item,n,base})=>{const pts=item.poly.map(p=>{const q=project(p);near=Math.max(near,q.depth);far=Math.min(far,q.depth);return q;});return {item,pts,n,base};});
   if(!items.length){ctx.drawImage(canvas,0,0,w,h);return true;}
   const span=Math.max(1,near-far),pad=span*2,range=span+2*pad;
   const vertex=(arr,p,color,bias=0)=>arr.push(p.x/w*2-1,1-p.y/h*2,1-2*(p.depth-far+pad)/range-bias,...color);
   const batch=(arr,mode)=>{if(!arr.length)return;gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(arr),gl.DYNAMIC_DRAW);gl.drawArrays(mode,0,arr.length/7);};
-  const opaque=[],glass=[],edgeMap=new Map(),lineData=[];
-  for(const {item,pts,n} of projected){
-   const base=rgb(item.color),diff=Math.abs(n[0]*.36+n[1]*-.48+n[2]*.8),shade=.60+.35*diff+.05*Math.abs(n[2]);
+  const opaque=[],glass=[],lineData=[];
+  for(const {item,pts,n,base} of projected){
+   const diff=Math.abs(n[0]*.36+n[1]*-.48+n[2]*.8),shade=.60+.35*diff+.05*Math.abs(n[2]);
    const metallic=!item.painted&&(item.kind==='wallJoint'||item.kind==='gableOmega'),highlight=metallic?.07*Math.pow(diff,12):0;
    let color=[...base.map(v=>Math.min(1,v*shade+highlight)),item.alpha??1];
    if(color[3]<1){const yaw=Camera3D.state.yaw*Math.PI/180,pitch=Camera3D.state.pitch*Math.PI/180,view=[Math.sin(yaw)*Math.cos(pitch),Math.cos(yaw)*Math.cos(pitch),Math.sin(pitch)],facing=Math.abs(n.reduce((sum,v,i)=>sum+v*view[i],0)),reflection=.08+.35*Math.pow(1-facing,5);color=[...base.map(v=>v*(1-reflection)+reflection),Math.min(.7,color[3]+reflection*.4)];}
    for(let j=1;j<pts.length-1;j++){const tri=[pts[0],pts[j],pts[j+1]];if(color[3]<1)glass.push({tri,color,depth:tri.reduce((s,p)=>s+p.depth,0)/3});else tri.forEach(p=>vertex(opaque,p,color));}
-   // Roof seams are supplied explicitly; panel patch boundaries are not physical joints.
-   if(state.outlines&&!item.roof&&item.material!=='panel'&&item.material!=='glass'&&!['openingMark','wallPanel','ridgeCap','vergeTrim','vergeBottom','soffit','cladding'].includes(item.kind)){
-    item.poly.forEach((a,i)=>{const b=item.poly[(i+1)%item.poly.length],keyPoint=p=>[p.x,p.y,p.z].map(v=>Math.round(v*1000)).join(','),ka=keyPoint(a),kb=keyPoint(b);if(ka===kb)return;const key=ka<kb?ka+'|'+kb:kb+'|'+ka,old=edgeMap.get(key);if(old){old.count++;if(Math.abs(old.n.reduce((s,v,j)=>s+v*n[j],0))<.94||old.color!==item.color)old.feature=true;}else edgeMap.set(key,{a:pts[i],b:pts[(i+1)%pts.length],n,color:item.color,edgeColor:item.edgeColor,count:1,feature:false});});
-   }
+
   }
   if(state.grid&&Number.isFinite(x0)){
    const grid=[],margin=300,step=100,gcolor=light?[.83,.86,.89,1]:[.16,.22,.29,1];
@@ -6781,7 +6791,7 @@ window.Wall3D={build,panelColor};
   }
   gl.enable(gl.POLYGON_OFFSET_FILL);gl.polygonOffset(1,1);batch(opaque,gl.TRIANGLES);gl.disable(gl.POLYGON_OFFSET_FILL);
   const ink=light?[.19,.23,.27,1]:[.10,.14,.18,1];
-  for(const e of edgeMap.values())if(e.count===1||e.feature){const stroke=e.edgeColor?[...rgb(e.edgeColor),1]:ink;vertex(lineData,e.a,stroke,1e-6);vertex(lineData,e.b,stroke,1e-6);}
+  for(const e of preparedScene.edges){const stroke=e.edgeColor?[...rgb(e.edgeColor),1]:ink;vertex(lineData,project(e.a),stroke,1e-6);vertex(lineData,project(e.b),stroke,1e-6);}
   // Explicit roof seams use the same depth test as the solid model.
   for(const e of edges){const color=[...rgb(e.color||'#73838c'),1];vertex(lineData,project(e.p),color,1e-6);vertex(lineData,project(e.q),color,1e-6);}
   gl.lineWidth(1);batch(lineData,gl.LINES);
@@ -6829,6 +6839,8 @@ window.Wall3D={build,panelColor};
   const TYPES={besik:'Beşik',kirma:'Kırma',tek:'Tek eğim / sundurma',bay:'Çokgen çıkma çatısı'};
   const EDGE={ridge:'Mahya',hip:'Eğik mahya',valley:'Dere',eave:'Saçak',verge:'Alın V',high:'Üst kenar',step:'Kot farkı birleşimi',fold:'Eğim değişimi'};
   const COLORS={ridge:'#ffcd76',hip:'#ffdca1',valley:'#66d7f1',eave:'#d2e0e9',verge:'#a0b2c3',high:'#c39ce4',step:'#e79bdb',fold:'#bb9fe9'};
+  let sceneCache=null,sceneKeyCache="",paintFrame=0;const sceneStats={builds:0,hits:0};
+  function cameraPaint(){if(!paintFrame)paintFrame=requestAnimationFrame(()=>{paintFrame=0;paint();});}
   let selected=null,mode='plan',action=null,view={scale:1,x:100,y:100},cache=null,cacheKey='',drag=null,hover=null,angle=35,lastPropertyId=null,showStrips=false,showWallDetails=true,hideRoof=false,cutaway=false;
   G.roofs=G.roofs||[];G.roofMaterials=G.roofMaterials||[];
   const dialog=document.createElement('dialog');dialog.id='roofDialog';dialog.innerHTML=`
@@ -7124,7 +7136,7 @@ window.Wall3D={build,panelColor};
   }
   function projected3D(m,w,h){const points=[...m.faces.flatMap(f=>f.poly.map(p=>({...p,z:C.height(f,p)}))),...planStructure().flatMap(i=>i.poly)];Camera3D.state.yaw=angle;return Camera3D.project(points,w,h);}
   function renderScene3D(ctx,w,h,items,edges,project){
-    if(window.Paint3D)items=Paint3D.decorate(items);
+    if(window.Paint3D&&items!==sceneCache?.items)items=Paint3D.decorate(items);
     if(window.Scene3D&&Scene3D.render(ctx,w,h,items,edges,project))return;
     raster3D(ctx,w,h,items,edges,project);
   }
@@ -7163,13 +7175,19 @@ window.Wall3D={build,panelColor};
     const drawEdge=(e,project)=>{const p=project(e.p),q=project(e.q);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=COLORS[e.type];ctx.lineWidth=['ridge','valley'].includes(e.type)?2:1;ctx.stroke();};
     if(mode==='3d'){
 
+      const sceneKey=JSON.stringify([G.sistem,G.nodes,G.segs,G.elemanlar,G.rooms,G.opt,G.catiYon,G.roofs,G.roofMaterials,G.foundation,G.paint3D,showWallDetails,hideRoof,cutaway,showStrips,selected,$('roofLayoutLayer').value]);
+      let scene;if(sceneCache&&sceneKey===sceneKeyCache){scene=sceneCache;sceneStats.hits++;}else{
       const wallModel=(showWallDetails||!isPref())?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&['cladding','gableOmega'].includes(s.kind))]:planStructure();if(wallModel)$('roofHint').textContent='Sol sürükle: döndür · Tekerlek: yakınlaş · Shift/orta tuş: kaydır · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId){items.push(...verandaStructure(z));return;}
         if(z.parapet){const poly=C.footprint(z).map(p=>C.transform(z,p)),top=Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))))+z.parapet;poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];items.push({poly:[{...p,z:z.h},{...q,z:z.h},{...q,z:top},{...p,z:top}],color:'#77818b',zone:z.id});});}
       });
       const ceiling=CeilingPanels.build();if(!hideRoof)items.push(...ceiling.surfaces);
       if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),view=C.roofLayerView(f,z,cutaway,!!G.opt.osb);items.push(...view.surfaces);if(!view.top)return;f=view.top;if(z.material==='trapez')items.push(...C.trapezSurfaces(f).map(item=>({...item,color:roofColor(z.id),shade:roofShade(f)*(item.profileShade||1)})));else items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:roofColor(z.id),zone:z.id,shade:roofShade(f),roof:true});});
       if(!hideRoof&&!cutaway)items.push(...fasciaSurfaces(m),...soffitSurfaces(m),...trimSurfaces(m));if(cutaway&&!hideRoof)$('roofHint').textContent='3B kesit · Üst örtü → nem bariyeri / membran → OSB (yalnız seçilen katmanlar) · Kalınlıklar temsili; metraj değişmez.';
-      Camera3D.state.yaw=angle;const scene=FoundationData.compose(items,[...(!hideRoof&&!cutaway&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof||cutaway?[]:edges3D(m)),...(hideRoof?[]:ceiling.lines)],G.foundation),project=Camera3D.project(scene.items.flatMap(i=>i.poly),w,h);
+      scene=FoundationData.compose(items,[...(!hideRoof&&!cutaway&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof||cutaway?[]:edges3D(m)),...(hideRoof?[]:ceiling.lines)],G.foundation);
+
+       if(window.Paint3D)scene.items=Paint3D.decorate(scene.items);scene.points=scene.items.flatMap(i=>i.poly);scene.hint=$('roofHint').textContent;sceneCache=scene;sceneKeyCache=sceneKey;sceneStats.builds++;
+      }
+      $('roofHint').textContent=scene.hint;Camera3D.state.yaw=angle;const project=Camera3D.project(scene.points,w,h);
       renderScene3D(ctx,w,h,scene.items,scene.edges,project);
     }else{
       const step=100*view.scale;ctx.strokeStyle='#182737';ctx.lineWidth=1;if(step>12){for(let x=view.x%step;x<w;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}for(let y=view.y%step;y<h;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}}
@@ -7248,10 +7266,10 @@ window.Wall3D={build,panelColor};
   const canvas=$('roofCanvas');canvas.addEventListener('contextmenu',e=>{if(mode==='3d')e.preventDefault();});canvas.addEventListener('pointerdown',e=>{if(mode==='3d'){drag={camera:true,pan:e.button!==0||e.shiftKey,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);e.preventDefault();return;}if(mode!=='plan')return;const p=world(e);hover=p;if(e.button===1){drag={pan:true,start:{x:e.clientX,y:e.clientY},view:{...view}};canvas.setPointerCapture(e.pointerId);e.preventDefault();return;}if(e.button!==0)return;
     if(action){const p2={x:Math.round(p.x),y:Math.round(p.y)};if(!action.start){action.start=p2;render();return;}const a=action.start,w=Math.abs(p2.x-a.x),d=Math.abs(p2.y-a.y);if(w<10||d<10){notice('Bölüm eni ve uzunluğu en az 10 cm olmalı.',true);return;}add(make({...action.defaults,name:(action.join?'Birleşen çatı ':'Çatı ')+(G.roofs.length+1),type:$('roofNewType').value,x:Math.min(a.x,p2.x),y:Math.min(a.y,p2.y),w,d,h:action.h,group:action.join||undefined}));return;}
     const visible=model().faces.filter(f=>C.contains(f.poly,p)).sort((a,b)=>C.height(b,p)-C.height(a,p));const hit=visible.length?G.roofs.find(z=>z.id===visible[0].zoneId):[...G.roofs].reverse().find(z=>C.contains(C.footprint(z),C.untransform(z,p))); if(hit){selected=hit.id;drag=hit.attachment||hit.production?null:{zone:clone(hit),start:p};canvas.setPointerCapture(e.pointerId);render();}
-  });canvas.addEventListener('pointermove',e=>{if(drag?.camera){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.x=e.clientX;drag.y=e.clientY;if(drag.pan){Camera3D.state.panX+=dx;Camera3D.state.panY+=dy;}else{angle=(angle+dx*.5+360)%360;Camera3D.state.pitch=Math.max(-89,Math.min(90,Camera3D.state.pitch+dy*.4));$('roofCamera').value=angle;}paint();return;}hover=world(e);if(drag?.pan){view.x=drag.view.x+e.clientX-drag.start.x;view.y=drag.view.y+e.clientY-drag.start.y;}if(action||drag)paint();});
+  });canvas.addEventListener('pointermove',e=>{if(drag?.camera){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.x=e.clientX;drag.y=e.clientY;if(drag.pan){Camera3D.state.panX+=dx;Camera3D.state.panY+=dy;}else{angle=(angle+dx*.5+360)%360;Camera3D.state.pitch=Math.max(-89,Math.min(90,Camera3D.state.pitch+dy*.4));$('roofCamera').value=angle;}cameraPaint();return;}hover=world(e);if(drag?.pan){view.x=drag.view.x+e.clientX-drag.start.x;view.y=drag.view.y+e.clientY-drag.start.y;}if(action||drag)paint();});
   canvas.addEventListener('pointerup',e=>{if(drag?.zone){const p=world(e),dx=p.x-drag.start.x,dy=p.y-drag.start.y,z=drag.zone;drag=null;if(Math.hypot(dx,dy)>2/view.scale)commit(()=>{const target=G.roofs.find(r=>r.id===z.id);target.x=Math.round(z.x+dx);target.y=Math.round(z.y+dy);});}drag=null;paint();});canvas.addEventListener('pointercancel',()=>{drag=null;paint();});
-  canvas.addEventListener('wheel',e=>{if(mode==='3d'){e.preventDefault();Camera3D.state.zoom=Math.max(.15,Math.min(12,Camera3D.state.zoom*Math.exp(-e.deltaY*.001)));paint();return;}if(mode!=='plan')return;e.preventDefault();const p=world(e),old=at(p);view.scale=Math.max(.01,Math.min(8,view.scale*Math.exp(-e.deltaY*.001)));view.x=old.x-p.x*view.scale;view.y=old.y-p.y*view.scale;paint();},{passive:false});
-  dialog.querySelectorAll('[data-roof-view]').forEach(b=>b.onclick=()=>setView(b.dataset.roofView));$('roofClose').onclick=close;$('roofCutaway').onclick=()=>{cutaway=!cutaway;hideRoof=false;$('roofHide').textContent='Çatıyı gizle';$('roofCutaway').setAttribute('aria-pressed',String(cutaway));$('roofCutaway').classList.toggle('active',cutaway);setView('3d');};$('roofLayoutLayer').onchange=()=>{showStrips=true;if(mode!=='3d')mode='plan';render();};$('roofFromPlan').onclick=fromPlan;$('roofFromVeranda').onclick=fromVeranda;$('roofDraw').onclick=()=>startDraw(false);$('roofJoin').onclick=()=>startDraw(true);$('roofWallDetails').onclick=()=>{showWallDetails=!showWallDetails;setView('3d');};$('roofHide').onclick=()=>{hideRoof=!hideRoof;$('roofHide').textContent=hideRoof?'Çatıyı göster':'Çatıyı gizle';setView('3d');};$('roofProjection').onchange=e=>{Camera3D.state.projection=e.target.value;setView('3d');};$('roofViewpoint').onchange=e=>{Camera3D.preset(e.target.value);angle=Camera3D.state.yaw;$('roofCamera').value=angle;setView('3d');};$('roofZoomIn').onclick=()=>{Camera3D.state.zoom=Math.min(12,Camera3D.state.zoom*1.2);setView('3d');};$('roofZoomOut').onclick=()=>{Camera3D.state.zoom=Math.max(.15,Camera3D.state.zoom/1.2);setView('3d');};$('roofFit').onclick=()=>{if(mode==='3d'){Camera3D.reset();paint();}else fit();};$('roofStrips').onclick=()=>{showStrips=!showStrips;$('roofStrips').classList.toggle('active',showStrips);if(showStrips&&mode!=='3d')mode='plan';render();};$('roofUndo').onclick=()=>{geriAl();render();};$('roofRedo').onclick=()=>{ileriAl();render();};$('roofCamera').oninput=e=>{angle=+e.target.value;paint();};
+  canvas.addEventListener('wheel',e=>{if(mode==='3d'){e.preventDefault();Camera3D.state.zoom=Math.max(.15,Math.min(12,Camera3D.state.zoom*Math.exp(-e.deltaY*.001)));cameraPaint();return;}if(mode!=='plan')return;e.preventDefault();const p=world(e),old=at(p);view.scale=Math.max(.01,Math.min(8,view.scale*Math.exp(-e.deltaY*.001)));view.x=old.x-p.x*view.scale;view.y=old.y-p.y*view.scale;paint();},{passive:false});
+  dialog.querySelectorAll('[data-roof-view]').forEach(b=>b.onclick=()=>setView(b.dataset.roofView));$('roofClose').onclick=close;$('roofCutaway').onclick=()=>{cutaway=!cutaway;hideRoof=false;$('roofHide').textContent='Çatıyı gizle';$('roofCutaway').setAttribute('aria-pressed',String(cutaway));$('roofCutaway').classList.toggle('active',cutaway);setView('3d');};$('roofLayoutLayer').onchange=()=>{showStrips=true;if(mode!=='3d')mode='plan';render();};$('roofFromPlan').onclick=fromPlan;$('roofFromVeranda').onclick=fromVeranda;$('roofDraw').onclick=()=>startDraw(false);$('roofJoin').onclick=()=>startDraw(true);$('roofWallDetails').onclick=()=>{showWallDetails=!showWallDetails;setView('3d');};$('roofHide').onclick=()=>{hideRoof=!hideRoof;$('roofHide').textContent=hideRoof?'Çatıyı göster':'Çatıyı gizle';setView('3d');};$('roofProjection').onchange=e=>{Camera3D.state.projection=e.target.value;setView('3d');};$('roofViewpoint').onchange=e=>{Camera3D.preset(e.target.value);angle=Camera3D.state.yaw;$('roofCamera').value=angle;setView('3d');};$('roofZoomIn').onclick=()=>{Camera3D.state.zoom=Math.min(12,Camera3D.state.zoom*1.2);setView('3d');};$('roofZoomOut').onclick=()=>{Camera3D.state.zoom=Math.max(.15,Camera3D.state.zoom/1.2);setView('3d');};$('roofFit').onclick=()=>{if(mode==='3d'){Camera3D.reset();paint();}else fit();};$('roofStrips').onclick=()=>{showStrips=!showStrips;$('roofStrips').classList.toggle('active',showStrips);if(showStrips&&mode!=='3d')mode='plan';render();};$('roofUndo').onclick=()=>{geriAl();render();};$('roofRedo').onclick=()=>{ileriAl();render();};$('roofCamera').oninput=e=>{angle=+e.target.value;cameraPaint();};
   window.addEventListener('keydown',e=>{if(!dialog.open||document.getElementById('roofLevelDialog')?.open)return;e.stopImmediatePropagation();if(window.RoofWorkflow?.key(e))return;if(e.key==='Escape'){e.preventDefault();if(action||drag){action=null;drag=null;render();}else close();}if((e.ctrlKey||e.metaKey)&&!['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)&&['z','y'].includes(e.key.toLowerCase())){e.preventDefault();if(e.key.toLowerCase()==='y'||e.shiftKey)ileriAl();else geriAl();render();}},true);
   dialog.addEventListener('cancel',e=>{e.preventDefault();close();});new ResizeObserver(()=>paint()).observe($('roofStage'));
   function save(data,name,type){const url=URL.createObjectURL(new Blob([data],{type})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);}
@@ -7262,7 +7280,7 @@ window.Wall3D={build,panelColor};
   const baseDraw=window.draw;window.draw=function(){baseDraw();if(dialog.open)render();};
   $('roofTheme').onclick=()=>{Scene3D.state.theme=Scene3D.state.theme==='light'?'dark':'light';$('roofTheme').textContent=Scene3D.state.theme==='light'?'Koyu zemin':'Açık zemin';paint();};
   $('roofContours').onclick=()=>{Scene3D.state.outlines=!Scene3D.state.outlines;$('roofContours').setAttribute('aria-pressed',String(Scene3D.state.outlines));paint();};
-  window.RoofStudio={verandaBase,seat,raster3D,vergeEdges,edges3D,trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,soffitSurfaces,model,render,fit,setView,verandaMembers,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
+  window.RoofStudio={sceneStats,verandaBase,seat,raster3D,vergeEdges,edges3D,trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,soffitSurfaces,model,render,fit,setView,verandaMembers,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
 })();
 
 

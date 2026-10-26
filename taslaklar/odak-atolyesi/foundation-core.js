@@ -42,6 +42,7 @@
   const ids=new Set();for(const l of f.landings){
    if(!l||typeof l.id!=='string'||l.id.length>80||ids.has(l.id))throw Error('Geçersiz sahanlık kimliği.');ids.add(l.id);
    if(!Number.isInteger(l.edge)||l.edge<0||l.edge>=f.outline.length)throw Error('Sahanlık kenarını seçin.');
+   if(l.doorId!==undefined&&(typeof l.doorId!=='string'||l.doorId.length>80))throw Error('Geçersiz kapı bağlantısı.');
    const r=frame(f,l.edge);number(l.offset,0,r.len,'Kenar başlangıcından mesafe (cm)');number(l.width,10,10000,'Sahanlık eni (cm)');number(l.depth,10,10000,'Sahanlık derinliği (cm)');number(l.tread,10,100,'Basamak derinliği (cm)');
    if(!Number.isInteger(l.risers)||l.risers<1||l.risers>40)throw Error('Rıht adedi 1–40 arasında tam sayı olmalı.');
    if(l.offset+l.width>r.len+.001)throw Error('Sahanlık bu kenara sığmıyor; eni veya başlangıç mesafesini azaltın.');
