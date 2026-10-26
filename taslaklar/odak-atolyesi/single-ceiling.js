@@ -10,7 +10,7 @@
    let h=+G.opt.h;const roof=G.roofs.find(z=>z.sourceRoomId===room.id);if(roof?.attachment){const members=RoofStudio.verandaMembers(roof);if(members.length)h=Math.min(...members.map(m=>m.kind==='post'?m.top:m.bottom));}
    const green=room.tip==='veranda'||!!ALCI.ISLAK[room.tip],data={nodes:[],segs:[],rooms:[{id:room.id,name:room.ozelAd||room.ad||room.name||ODA_TIPLER[room.tip]||'Oda',tip:green?'banyo':'oda',points:poly}]};
    const mesh=DraftCeiling.mesh(data,catiYatay()?'x':'y',h-1.25-DraftCeiling.profile.skin,h-DraftCeiling.profile.skin,chosen);surfaces.push(...mesh.surfaces);boards.push(...mesh.boards);area+=mesh.area;miniH+=mesh.miniH;
-  }return {surfaces,boards,area,miniH,unsupported};
+  }return {surfaces:G.foundation?surfaces.map(s=>({...s,poly:s.poly.map(p=>({...p,z:p.z+G.foundation.height}))})):surfaces,boards,area,miniH,unsupported};
  }
  function paint(){if(!dialog.open)return;const rect=canvas.parentElement.getBoundingClientRect(),w=rect.width,h=rect.height,dpr=Math.min(devicePixelRatio||1,2);canvas.width=w*dpr;canvas.height=h*dpr;const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);project=Camera3D.project(scene.surfaces.flatMap(s=>s.poly),w,h);const grid=Scene3D.state.grid;Scene3D.state.grid=false;const ok=Scene3D.render(ctx,w,h,scene.surfaces,[],project);Scene3D.state.grid=grid;
   if(!ok){ctx.fillStyle='#f4f6f8';ctx.fillRect(0,0,w,h);const faces=scene.surfaces.map(s=>({...s,p:s.poly.map(project)})).sort((a,b)=>a.p.reduce((n,p)=>n+p.depth,0)/a.p.length-b.p.reduce((n,p)=>n+p.depth,0)/b.p.length);for(const f of faces){ctx.beginPath();f.p.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();}}

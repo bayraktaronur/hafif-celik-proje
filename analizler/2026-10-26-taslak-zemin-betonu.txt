@@ -1,0 +1,93 @@
+DEV-163 — Zemin betonu, açık veranda, sahanlık ve merdiven
+26 Ekim 2026 · İş bilgisayarı · Bağımsız taslak 163
+
+İSTEK VE KAPSAM
+Kullanıcı yapı altında görünen beton, çatı sınırı gibi elle çizilen kapalı çevre,
+beton yüksekliği, giriş sahanlığı ve basamakları istedi. Ek kararları: kapalı veya
+açık veranda gözden kaçmayacak; çevre bina hattına zorlanmayacak; saçak gibi
+mesafe girilecek. Yalnız taslaklar/odak-atolyesi üzerinde çalışıldı.
+Ana plan_cizim.html, src, dist, arakat.html ve açık müşteri çizimi değiştirilmedi.
+Kullanıcının canlı projesine otomatik beton eklenmedi, tarayıcısı yenilenmedi.
+
+KULLANIM
+1. Çizimi Kaydet ile JSON'a kaydedip taslağı yenile. Zemin betonu sekmesini aç.
+2. Sınır çiz: köşeleri tıkla; ilk köşeye tıkla veya Enter ile kapat.
+   Dik çizim açıkken yatay/dikey; Alt ile serbest açı. X/Y veya kenar boyu/açı
+   girişi de vardır. Duvar dış yüz köşeleri, uçlar ve veranda hatları yakalanır.
+3. Beton yüksekliğini ve Çevreye beton taşması değerini cm gir. Bu pay çizilen
+   referans sınırından dışarı uygulanır. Kenara özel beton payı ayrı değişir.
+   Ortak pay tekrar değiştirilirse kenara özel paylar ortak değere döner.
+4. Köşeyi sürükle veya Köşeler bölümünde X/Y değiştir. Kenara köşe eklenebilir,
+   seçili köşe silinebilir. Giriş bağlı kenarı bölmeden/silmeden önce girişin
+   başka kenara bağlanması veya kaldırılması gerekir.
+5. Sahanlık + merdiven komutuyla beton kenarına tıkla. Her giriş için kenar,
+   kenar başından mesafe, en, derinlik, rıht adedi ve basamak derinliği girilir.
+   Sahanlık beton üst kotundadır. N rıht için N-1 basamak ve sahanlık oluşur.
+   Örnek: 45 cm / 3 rıht = 15 cm; basamak üstleri 15 ve 30, sahanlık 45 cm.
+6. Uygula projeye işler; 3D'de gör aynı işlemi kaydedip modeli açar.
+   Vazgeç önizlemeyi atar. Taslak işlemlerinde ayrı geri/ileri al vardır;
+   projeye uygulanan beton normal proje geri al/ileri al geçmişindedir.
+
+VERİ / KOT / HESAP
+foundation kaydı version, outline, height, margin, edgeMargins ve landings
+alanlarını taşır. Eski projede alan yoksa beton yoktur ve yapı kotu değişmez.
+Çizilen sınır, duvar/veranda modelini değiştirmez. Açık veranda tek bir kapalı
+oda olmak zorunda değildir; referans hatları çizimde gösterilir.
+Beton altı Z=0, üstü Z=height. Bütün bina yüzeyleri ve 3D çizgi uçları tek sahne
+birleştirme adımında bu kadar yükseltilir: duvar, H/köşe, kapı/pencere, çatı,
+saçak, veranda taşıyıcıları, alt katmanlar ve tavan. Ayrı tavan incelemesi de
+aynı kotu kullanır. Panel boyu, duvar yüksekliği, çatı eğimi/kilitleri ve üretim
+hesapları değiştirilmez. Çatı girişleri beton üstüne göre yerel kotlardır;
+arayüz bunu ve zeminden mahya kotunu açıkça belirtir.
+Metrajda beton sınır alanı, sahanlık alanı ve gövde + sahanlık + dolu basamak
+net hacmi vardır. Çakışan hacimler kabul edilmez. Fiyat eklenmedi.
+JSON, proje sekmeleri, otomatik kurtarma ve undo/redo aynı kaydı taşır.
+Başka projeye geçildiyse eski beton önizlemesi yeni projeye uygulanamaz.
+
+GEOMETRİ KURALLARI VE SINIRLAR
+3–80 köşeli tek basit kapalı sınır; çapraz kenar desteklenir. Kendiyle kesişme,
+geri dönen kenar, sıfır boy, geçersiz yükseklik/pay reddedilir. Saat yönü iki
+yönde de geçerli; sahanlık daima dışa doğru oluşturulur. Pay sonucu kesişen
+sınır reddedilir. Aynı doğrultudaki komşu kenarlarda farklı pay reddedilir.
+Beton yüksekliği 1–1000 cm, dışa pay 0–500 cm aralığındadır; bunlar veri giriş
+sınırlarıdır, mühendislik tasarım onayı değildir.
+Sahanlık kenara sığmalı; basamak/diğer giriş/gövde ile alan çakışmamalıdır.
+Girişler düz kollu ve dolu basamaktır; dönüşlü merdiven, rampa, korkuluk,
+farklı kotlu beton bölgeleri ve beton içindeki delikler bu sürümde yoktur.
+Duvar/veranda hattı beton dışında kalırsa uyarı gösterilir; bu kontrol yaklaşık
+10 cm aralıklı yüz/eksen örneklemesidir, taşıma kapasitesi hesabı değildir.
+Beton sınırı elle çizilmiş bağımsız geometridir; duvar taşındığında otomatik
+yeniden çizilmez. Sınır ve destek uyarısı yeniden incelenmelidir.
+2D beton düzenleme ayrı çalışma alanındadır. Mevcut kat planı PDF/DXF'sine
+beton planı eklenmedi; beton 3D PNG çıktısında bulunur.
+Donatı, don derinliği, zemin etüdü, taşıyıcı temel hesabı yapılmaz.
+
+DOĞRULAMA
+foundation-check.cjs geçti:
+- Dikdörtgen, L, eğik üçgen; iki çizim yönü; ortak/kenara özel mesafe ve alan.
+- Sekiz yön/sıra durumunda sahanlık/merdiven; analitik hacim ve rıht kotları.
+- Kendiyle kesişme, kenara sığmama, giriş/giriş ve girintide beton çakışması.
+- Fareyle altı köşe + açık veranda, Enter kapanış, gerçek dış köşe yakalama.
+- X/Y, boy/açı, köşe ekle/sürükle/sil, sayısal pay/yükseklik/giriş düzenleme.
+- Geçersiz değişikliğin geri alınması; önizleme/uygula/geri/ileri/proje koruması.
+- Gerçek sahne yüzey ve çizgilerinin hepsinde +45 cm; temel/basamaklar Z=0.
+- Geometri ve çatı ayarları değişmez; gerçek prefabrik örnek ve mini H tavan kotu.
+- Metraj ekranı ve gerçek 3D PNG, JSON indirme/açma, yenileme/kurtarma.
+- 980 / 1280 / 1920 genişlik, hata ve ağ isteği yok; korunan kaynak hashleri aynı.
+single-check.cjs geçti: 49 panel, ana kaynakla aynı metraj/odalar/birleşimler,
+gerçek duvar/kapı/metin/ölçü, çatı/malzeme/tavan, JSON, PDF ve ekran boyutları.
+roof-level-check.cjs geçti: sabit alt kot, mahya/açı kilitleri, ana/yavru rol
+değişimi, dört yön ve bağlantı geometrisi, undo/JSON/3D ve dar ekran.
+Beton planı, merdivenli 3D ve gerçek prefabrik örnek ekranları görsel incelendi.
+
+DOSYALAR VE AKTARIM
+foundation-core.js: geometri/mesafe/giriş/hacim/sahne kotu.
+foundation-build.cjs: yalnız kopya motor için proje, metraj ve 3D bağlantıları.
+single-foundation.js/css: beton çalışma alanı.
+single-ceiling.js / single-roof-level.js: ortak kot ve referans açıklaması.
+build-single-storey.cjs, index.html, single-engine.js, manifest: tekrar üretim.
+Kaynak ekran görüntüleri referanslar/2026-10-26-zemin-betonu/ altına kopyalandı;
+orijinaller korunur. Kaynak ve kopya SHA-256 bilgisi envanter JSON'undadır.
+Test görüntüleri analizler/2026-10-26-zemin-betonu-*.png altındadır.
+Müşterinin güncel çizimi okunmadı; otomatik yedek/JSON aktarımı doğrulanmadı.
+Önceki açık işler ve ilgisiz yerel dosyalar korunur.

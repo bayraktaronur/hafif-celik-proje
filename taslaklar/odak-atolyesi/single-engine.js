@@ -610,6 +610,7 @@
     if(!input||typeof input!=='object'||Array.isArray(input))fail('Geçerli bir proje nesnesi bulunamadı.');
     safeTree(input);
     ReferenceImageData.validate(input.referenceImages);
+    FoundationData.validate(input.foundation);
     if(!['5','5.1'].includes(String(input.v)))fail('Desteklenen dosya sürümleri: v5 ve v5.1.');
     const d=JSON.parse(JSON.stringify(input));
     d.loading=(typeof LoadingCore!=='undefined'?LoadingCore:require('./loading-core.js')).validate(d.loading);
@@ -1893,6 +1894,7 @@ function metrajKalemleri(){
       }
     });
   }
+  FoundationData.billRows(G.foundation).forEach(function(r){ekle(r.grup,r.kalem,r.olcu,r.birim,r.miktar);});
   if(window.ProjectSpecs)ProjectSpecs.billRows().forEach(function(r){ekle(r.grup,r.kalem,r.olcu,r.birim,r.miktar);});
   if(window.RoofStudio&&G.roofs&&G.roofs.length)RoofStudio.billRows().forEach(function(r){ekle(r.grup,r.kalem,r.olcu,r.birim,r.miktar);});
   // Oda özeti (önce odalar, sonra verandalar)
@@ -5018,7 +5020,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.137',projectName,...(G.referenceImages?.length?{referenceImages:clone(G.referenceImages)}:{}),paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.137',projectName,...(G.foundation?{foundation:clone(G.foundation)}:{}),...(G.referenceImages?.length?{referenceImages:clone(G.referenceImages)}:{}),paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5082,7 +5084,7 @@ updateStatus();
     restoring=true;
     try{
       resetInteraction();
-      G.referenceImages=clone(d.referenceImages||[]);G.paint3D=clone(d.paint3D||{});G.loading=clone(d.loading||{adjustments:[],manual:[]});G.sheetInfo=clone(d.sheetInfo||{});G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
+      G.foundation=clone(d.foundation||null);G.referenceImages=clone(d.referenceImages||[]);G.paint3D=clone(d.paint3D||{});G.loading=clone(d.loading||{adjustments:[],manual:[]});G.sheetInfo=clone(d.sheetInfo||{});G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
@@ -5108,7 +5110,7 @@ updateStatus();
     if(restoring)return;clearTimeout(autoTimer);autoTimer=setTimeout(persist,650);
     clearTimeout(analysisTimer);analysisTimer=setTimeout(()=>{if(activeTab==='analysis')analyze();else refreshIssueCount();},850);
   }
-  function hasWork(d=state()){return ['s','e','r','roofs','annotations','fixtures','counters','referenceImages'].some(k=>d[k]?.length);}
+  function hasWork(d=state()){return !!d.foundation||['s','e','r','roofs','annotations','fixtures','counters','referenceImages'].some(k=>d[k]?.length);}
   function backupList(){
     let list=[];try{list=JSON.parse(localStorage.getItem(BACKUPS)||'[]');}catch{}
     if(!Array.isArray(list))return [];
@@ -7167,8 +7169,8 @@ window.Wall3D={build,panelColor};
       const ceiling=CeilingPanels.build();if(!hideRoof)items.push(...ceiling.surfaces);
       if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),view=C.roofLayerView(f,z,cutaway,!!G.opt.osb);items.push(...view.surfaces);if(!view.top)return;f=view.top;if(z.material==='trapez')items.push(...C.trapezSurfaces(f).map(item=>({...item,color:roofColor(z.id),shade:roofShade(f)*(item.profileShade||1)})));else items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:roofColor(z.id),zone:z.id,shade:roofShade(f),roof:true});});
       if(!hideRoof&&!cutaway)items.push(...fasciaSurfaces(m),...soffitSurfaces(m),...trimSurfaces(m));if(cutaway&&!hideRoof)$('roofHint').textContent='3B kesit · Üst örtü → nem bariyeri / membran → OSB (yalnız seçilen katmanlar) · Kalınlıklar temsili; metraj değişmez.';
-      Camera3D.state.yaw=angle;const project=Camera3D.project(items.flatMap(i=>i.poly),w,h);
-      renderScene3D(ctx,w,h,items,[...(!hideRoof&&!cutaway&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof||cutaway?[]:edges3D(m)),...(hideRoof?[]:ceiling.lines)],project);
+      Camera3D.state.yaw=angle;const scene=FoundationData.compose(items,[...(!hideRoof&&!cutaway&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof||cutaway?[]:edges3D(m)),...(hideRoof?[]:ceiling.lines)],G.foundation),project=Camera3D.project(scene.items.flatMap(i=>i.poly),w,h);
+      renderScene3D(ctx,w,h,scene.items,scene.edges,project);
     }else{
       const step=100*view.scale;ctx.strokeStyle='#182737';ctx.lineWidth=1;if(step>12){for(let x=view.x%step;x<w;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}for(let y=view.y%step;y<h;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}}
       G.segs.forEach(s=>{const a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)return;ctx.save();ctx.beginPath();const p=at(a),q=at(b);ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='#697f92';ctx.lineWidth=Math.max(1,s.k*view.scale);if(s.tip==='veranda'){const dash=Math.max(6,ctx.lineWidth*1.2);ctx.lineCap='butt';ctx.setLineDash([dash,dash*.75]);}ctx.stroke();ctx.restore();});

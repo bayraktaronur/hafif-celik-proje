@@ -1,8 +1,9 @@
 {
-  "task": "DEV-162",
+  "task": "DEV-163",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
+    "ground concrete: flexible outline, per-edge setbacks, attached landings/stairs, shared Z origin, persisted bill and history",
     "referenceImages: project, history, recovery and native paste",
     "corner post plan symbol: opaque fill and true model footprint",
     "selection menu and exact wall move from displayed dimensions or offset",

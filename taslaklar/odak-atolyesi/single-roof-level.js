@@ -61,7 +61,7 @@
   for(const id of ['roofLevelHeight','roofLevelRise','roofLevelAngle','roofLevelPitch'])$(id).disabled=c.peakLocked||c.pitchLocked;
  }
  function diagram(){
-  const current=raw(session.target);$('roofLevelBasis').textContent='Duvar üstü: '+fmt(current.wallTop)+' cm · Saçak altı: '+fmt(current.h)+' cm. Mahya/açı düzenlemesi alt kotu değiştirmez.';
+  const current=raw(session.target);$('roofLevelBasis').textContent=(G.foundation?'Beton üstü +'+fmt(G.foundation.height)+' cm; aşağıdaki kotlar beton üstüne göredir. Zeminden mahya: '+fmt(G.foundation.height+peak(current))+' cm. ':'')+'Duvar üstü: '+fmt(current.wallTop)+' cm · Saçak altı: '+fmt(current.h)+' cm. Mahya/açı düzenlemesi alt kotu değiştirmez.';
   const keys=session.draft?[session.draft.parentId,'draft']:session.keys,rows=keys.map(key=>({key,name:key==='draft'?'Çizilen çatı':session.roofs.find(z=>z.id===key).name,z:raw(key)}));
   const role=key=>preview?.zones.find(r=>r.id===(key==='draft'?preview.created?.id:key))?.production?.role;
   const roleName=key=>role(key)==='main'?'Ana':role(key)==='child'?'Yavru':'Çatı';

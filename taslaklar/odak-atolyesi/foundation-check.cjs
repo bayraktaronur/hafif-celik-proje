@@ -1,0 +1,71 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),{pathToFileURL}=require('node:url');
+global.RoofCore=require('../../src/roof-core.js');require('./foundation-core.js');const D=global.FoundationData;
+const rectangle=[{x:0,y:0},{x:500,y:0},{x:500,y:400},{x:0,y:400}],base={version:1,height:30,margin:0,outline:rectangle,landings:[]};
+const approx=(a,b)=>assert.ok(Math.abs(a-b)<1e-5,`${a} != ${b}`);
+for(const outline of [rectangle,rectangle.slice().reverse()]){const f={...base,outline,margin:10};D.validate(f);approx(D.totals(f).area,21.84);approx(D.totals(f).volume,6.552);assert.equal(D.boundary(f).length,4);}
+const lshape={...base,outline:[{x:0,y:0},{x:500,y:0},{x:500,y:200},{x:300,y:200},{x:300,y:400},{x:0,y:400}],margin:10};D.validate(lshape);approx(D.totals(lshape).area,17.84);
+const separate={...base,margin:10,edgeMargins:[20,null,50,null]};D.validate(separate);approx(D.totals(separate).area,24.44);
+const triangle={...base,outline:[{x:0,y:0},{x:500,y:0},{x:200,y:300}],margin:5};D.validate(triangle);assert.ok(D.totals(triangle).area>7.5);
+for(let edge=0;edge<4;edge++)for(const reverse of [false,true]){const f={...base,outline:reverse?rectangle.slice().reverse():rectangle,landings:[{id:'l',edge,offset:50,width:150,depth:100,risers:3,tread:30}]};D.validate(f);approx(D.totals(f).volume,6+.45+.09+.045);assert.deepEqual(D.parts(f).map(p=>p.height),[30,30,20,10]);assert.ok(D.parts(f).slice(1).every(p=>!RoofCore.pointIn(rectangle,p.poly.reduce((s,p)=>({x:s.x+p.x/4,y:s.y+p.y/4}),{x:0,y:0}))));}
+assert.throws(()=>D.validate({...base,height:-1}));assert.throws(()=>D.validate({...base,outline:[rectangle[0],rectangle[2],rectangle[1],rectangle[3]]}));
+assert.throws(()=>D.validate({...base,landings:[{id:'bad',edge:0,offset:490,width:150,depth:100,risers:3,tread:30}]}));
+const entry={id:'a',edge:0,offset:100,width:150,depth:100,risers:2,tread:30};assert.throws(()=>D.validate({...base,landings:[entry,{...entry,id:'b',offset:120}]}));
+assert.throws(()=>D.validate({...base,outline:[[0,0],[600,0],[600,500],[400,500],[400,200],[200,200],[200,500],[0,500]].map(([x,y])=>({x,y})),landings:[{...entry,edge:5,offset:50,width:100,depth:250}]}));
+const items=[{kind:'wallJoint',poly:[{x:0,y:0,z:0},{x:0,y:10,z:250},{x:10,y:0,z:250}]}],edges=[{p:{x:0,y:0,z:250},q:{x:10,y:0,z:300}}],before=JSON.stringify({items,edges});const composed=D.compose(items,edges,base);assert.equal(composed.items[0].poly[0].z,30);assert.equal(composed.edges[0].q.z,330);assert.equal(JSON.stringify({items,edges}),before);assert.equal(D.compose(items,edges,null).items,items);
+console.log('PASS concrete geometry: CW/CCW, L/diagonal boundaries, common/per-edge margins, 8 oriented stairs, volumes, invalid outlines/overlaps, immutable Z translation');
+if(process.argv.includes('--core'))process.exit(0);
+const {chromium}=require(path.resolve(path.dirname(process.execPath),'../node_modules/playwright'));
+const root=path.resolve(__dirname,'../..'),manifest=JSON.parse(fs.readFileSync(path.join(__dirname,'single-engine-manifest.json'))),protectedNames=[...Object.keys(manifest.sources),'dist/plan_studio.html','taslaklar/odak-atolyesi/arakat.html'],hash=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex'),protectedBefore=Object.fromEntries(protectedNames.map(p=>[p,hash(p)]));
+(async()=>{const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{
+ const p=await browser.newPage({viewport:{width:1600,height:1000},acceptDownloads:true}),errors=[],requests=[];p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url()))requests.push(r.url());});p.on('dialog',d=>d.accept());p.setDefaultTimeout(8000);
+ await p.addInitScript(()=>{window.showSaveFilePicker=undefined;});await p.goto(pathToFileURL(path.join(__dirname,'index.html')).href);assert.deepEqual(errors,[]);
+ const start=await p.evaluate(()=>{yeniPlan();return Studio.state();});
+ const fixture={...start,n:[{id:'a',x:0,y:0},{id:'b',x:500,y:0},{id:'c',x:500,y:400},{id:'d',x:0,y:400},{id:'v1',x:650,y:0},{id:'v2',x:650,y:200}],s:[['a','b'],['b','c'],['c','d'],['d','a'],['b','v1'],['v1','v2']].map(([n1,n2],i)=>({id:'w'+i,n1,n2,k:10,dis:true,kSabit:true,...(i>=4?{tip:'veranda'}:{})})),e:[],r:[],sistem:'celik',opt:{...start.opt,h:250,dis:10,ic:10},ky:250,projectName:'Beton ve açık veranda kontrolü'};
+ await p.evaluate(d=>{Studio.loadProject(d);Studio.fit();},fixture);await p.click('#single-roof');await p.click('#roofFromPlan');await p.click('#single-plan');
+ const plan=await p.evaluate(()=>({n:JSON.stringify(G.nodes),s:JSON.stringify(G.segs),roofs:JSON.stringify(G.roofs),bill:JSON.stringify(metrajKalemleri())}));
+ await p.click('#single-foundation');assert.ok(await p.locator('#foundationWorkspace').isVisible());
+ // Actual mouse polygon surrounding walls AND an open veranda, including a return corner.
+ const points=[[-10,-10],[660,-10],[660,210],[510,210],[510,410],[-10,410]];
+ const pos=async a=>p.evaluate(a=>{const s=FoundationUI.canvasPoint({x:a[0],y:a[1]}),r=document.getElementById('foundationCanvas').getBoundingClientRect();return{x:r.left+s.x,y:r.top+s.y};},a);
+ await p.uncheck('#fdSnap');for(const a of points){const q=await pos(a);await p.mouse.click(q.x,q.y);}await p.keyboard.press('Enter');assert.equal(await p.evaluate(()=>FoundationUI.getDraft().outline.length),6);assert.equal(await p.evaluate(()=>G.foundation),null);
+ await p.fill('#fdMargin','10');await p.locator('#fdMargin').press('Tab');
+ await p.locator('#fdMargins').evaluate(el=>el.closest('details').open=true);await p.getByLabel('Kenar 5 beton payı',{exact:true}).fill('30');await p.getByLabel('Kenar 5 beton payı',{exact:true}).press('Tab');
+ await p.click('#fdLanding');let q=await pos([250,-20]);await p.mouse.click(q.x,q.y);assert.equal(await p.evaluate(()=>FoundationUI.getDraft().landings.length),1);
+ await p.fill('#fdWidth','180');await p.locator('#fdWidth').press('Tab');await p.fill('#fdDepth','120');await p.locator('#fdDepth').press('Tab');await p.fill('#fdRisers','3');await p.locator('#fdRisers').press('Tab');await p.fill('#fdHeight','45');await p.locator('#fdHeight').press('Tab');
+ assert.match(await p.locator('#fdStairInfo').innerText(),/3 rıht × 15/);assert.equal(await p.locator('#fdSupport').innerText(),'');
+ const draft=await p.evaluate(()=>FoundationUI.getDraft());assert.equal(draft.margin,10);assert.equal(draft.edgeMargins[4],30);assert.equal(draft.height,45);
+ await p.fill('#fdWidth','9000');await p.locator('#fdWidth').press('Tab');assert.match(await p.locator('#fdValidation').innerText(),/sığmıyor/);assert.equal(await p.locator('#fdWidth').inputValue(),'180');
+ await p.click('#fdUndo');assert.equal(await p.locator('#fdHeight').inputValue(),'30');await p.click('#fdRedo');assert.equal(await p.locator('#fdHeight').inputValue(),'45');
+ await p.click('#fdApply');assert.deepEqual(await p.evaluate(()=>G.foundation),draft);assert.deepEqual(await p.evaluate(()=>({n:JSON.stringify(G.nodes),s:JSON.stringify(G.segs),roofs:JSON.stringify(G.roofs)})),{n:plan.n,s:plan.s,roofs:plan.roofs});assert.equal(await p.evaluate(()=>FoundationData.billRows(G.foundation).length),3);
+ await p.click('#fdFit');await p.screenshot({path:path.join(root,'artifacts/foundation-plan.png')});
+ console.log('PASS real outline clicks, open veranda, live cm dimensions, per-edge margins, landing/stair numeric edits, rejection/undo/redo/apply, plan/roof preservation');
+ // Capture the actual rendered scene: every building surface/edge lifts, grid remains Z=0.
+ await p.evaluate(()=>{window.fdScenes=[];const render=Scene3D.render;Scene3D.render=function(ctx,w,h,items,edges,project){window.fdScenes.push({items:structuredClone(items),edges:structuredClone(edges)});if(window.fdScenes.length>2)window.fdScenes.shift();return render.apply(this,arguments);};});
+ await p.click('#fd3D');await p.waitForTimeout(250);const actual=await p.evaluate(()=>fdScenes.at(-1));assert.ok(actual.items.some(i=>i.kind==='foundation'));assert.ok(actual.items.some(i=>i.kind==='foundationStep'));
+ await p.evaluate(()=>{const f=G.foundation;G.foundation=null;RoofStudio.repaint();G.foundation=f;});const zero=await p.evaluate(()=>fdScenes.at(-1));
+ const lifted=actual.items.filter(i=>!i.kind?.startsWith('foundation'));assert.equal(lifted.length,zero.items.length);for(let i=0;i<lifted.length;i++){assert.equal(lifted[i].poly.length,zero.items[i].poly.length);for(let j=0;j<lifted[i].poly.length;j++){approx(lifted[i].poly[j].z-zero.items[i].poly[j].z,45);approx(lifted[i].poly[j].x,zero.items[i].poly[j].x);}}
+ for(let i=0;i<actual.edges.length;i++){approx(actual.edges[i].p.z-zero.edges[i].p.z,45);approx(actual.edges[i].q.z-zero.edges[i].q.z,45);}
+ await p.evaluate(()=>{const e=document.getElementById('roofCamera');e.value=225;e.dispatchEvent(new Event('input'));});await p.locator('#roofCanvas').screenshot({path:path.join(root,'artifacts/foundation-model.png')});assert.match(await p.locator('#foundationRoofDatum').innerText(),/45 cm/);
+ console.log('PASS actual 3D scene uses shared +45 cm origin for all surfaces/edges and concrete/steps from Z=0');
+ const pngdl=p.waitForEvent('download');await p.click('#roofPNG');const png=await pngdl;assert.equal(fs.readFileSync(await png.path()).subarray(1,4).toString(),'PNG');
+ await p.click('#single-plan');await p.click('#single-bill');assert.match(await p.locator('#metrajIc').innerText(),/Zemin betonu/);await p.click('#mbgMet .mcancel');await p.evaluate(()=>geriAl());assert.equal(await p.evaluate(()=>G.foundation),null);await p.evaluate(()=>ileriAl());assert.equal(await p.evaluate(()=>G.foundation.height),45);
+ const saved=await p.evaluate(()=>{Studio.flush();return Studio.state();});await p.reload();assert.deepEqual(await p.evaluate(()=>Studio.state()),saved);
+ const dl=p.waitForEvent('download');await p.click('.header-actions [onclick="planKaydet()"]');const download=await dl,json=JSON.parse(fs.readFileSync(await download.path(),'utf8'));assert.deepEqual(json.foundation,draft);
+ await p.setInputFiles('#fi',{name:'beton-test.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(json))});await p.waitForTimeout(100);assert.deepEqual(await p.evaluate(()=>G.foundation),draft);
+ await p.evaluate(d=>Studio.openDocument(d),fixture);assert.equal(await p.evaluate(()=>G.foundation),null);assert.equal(await p.locator('.single-level small').innerText(),'±0,00 m');await p.evaluate(d=>Studio.loadProject(d),saved);
+ console.log('PASS project undo/redo, recovery, downloaded JSON/reopen, independent project/old-project zero datum');
+ for(const width of [980,1280,1920]){await p.setViewportSize({width,height:960});await p.click('#single-foundation');assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));const r=await p.locator('#foundationCanvas').boundingBox();assert.ok(r.width>500&&r.height>550,JSON.stringify(r));await p.click('#fdCancel');}console.log('PASS responsive foundation workspace');
+ // A drawing draft must never be applied into a different project tab.
+ await p.click('#single-foundation');await p.fill('#fdHeight','60');await p.locator('#fdHeight').press('Tab');await p.evaluate(d=>Studio.openDocument(d),fixture);assert.equal(await p.evaluate(()=>FoundationUI.apply()),false);assert.equal(await p.evaluate(()=>G.foundation),null);await p.click('#single-foundation');assert.equal(await p.evaluate(()=>FoundationUI.getDraft()),null);await p.click('#fdCancel');
+ // Numeric start and lengths, freely angled edge, closure button, insert/drag/delete a corner.
+ await p.click('#single-foundation');await p.uncheck('#fdSnap');await p.fill('#fdX','-50');await p.fill('#fdY','-50');await p.click('#fdPoint');for(const [len,angle]of [[800,0],[600,90],[800,180]]){await p.fill('#fdLength',String(len));await p.fill('#fdAngle',String(angle));await p.click('#fdMeasured');}await p.click('#fdClose');assert.equal(await p.locator('#fdApply').isEnabled(),true);
+ await p.click('#fdInsert');q=await pos([350,-50]);await p.mouse.click(q.x,q.y);assert.equal(await p.evaluate(()=>FoundationUI.getDraft().outline.length),5);
+ q=await pos([350,-50]);await p.mouse.move(q.x,q.y);await p.mouse.down();const to=await pos([350,-100]);await p.mouse.move(to.x,to.y,{steps:6});await p.mouse.up();approx(await p.evaluate(()=>FoundationUI.getDraft().outline[1].y),-100);await p.click('#fdDeletePoint');assert.equal(await p.evaluate(()=>FoundationUI.getDraft().outline.length),4);await p.click('#fdCancel');
+ console.log('PASS project-switch guard, numeric boundary/lengths, inserted/dragged/deleted corners');
+ await p.click('#single-foundation');await p.check('#fdSnap');const outer=await p.evaluate(()=>RoofWorkflow.exteriorCorners()[0]);q=await pos([outer.x,outer.y]);await p.mouse.click(q.x,q.y);assert.deepEqual(await p.evaluate(()=>FoundationUI.getDraft().outline[0]),{x:outer.x,y:outer.y});await p.click('#fdCancel');
+ // Real prefabricated example, existing openings and all joints above the slab.
+ await p.evaluate(()=>{SingleStorey.loadExample(false);const xs=G.nodes.map(n=>n.x),ys=G.nodes.map(n=>n.y),x=Math.min(...xs)-5,y=Math.min(...ys)-5,w=Math.max(...xs)-x+5,h=Math.max(...ys)-y+5;G.foundation={version:1,height:30,margin:15,outline:[{x,y},{x:x+w,y},{x:x+w,y:y+h},{x,y:y+h}],landings:[{id:'front',edge:2,offset:w*.45,width:150,depth:90,risers:2,tread:30}]};FoundationData.validate(G.foundation);});
+ await p.click('#single-roof');await p.click('#roofFromPlan');await p.click('#single-model');await p.waitForTimeout(150);await p.locator('#roofCanvas').screenshot({path:path.join(root,'artifacts/foundation-prefab.png')});
+ const raisedCeiling=await p.evaluate(()=>{const z=G.foundation.height,m=SingleCeiling.build(),f=G.foundation;G.foundation=null;const n=SingleCeiling.build();G.foundation=f;return m.surfaces.every((s,i)=>s.poly.every((p,j)=>Math.abs(p.z-n.surfaces[i].poly[j].z-z)<1e-6));});assert.ok(raisedCeiling);
+ assert.deepEqual(errors,[]);assert.deepEqual(requests,[]);for(const [f,h]of Object.entries(protectedBefore))assert.equal(hash(f),h,f);console.log('PASS no runtime/network errors, protected main/src/dist/arakat/source hashes unchanged');
+ }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
