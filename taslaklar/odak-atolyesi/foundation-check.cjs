@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),{pathToFileURL}=require('node:url');
-global.RoofCore=require('../../src/roof-core.js');require('./foundation-core.js');const D=global.FoundationData;
+global.RoofCore=require('../../src/roof-core.js');require('./foundation-solid.js');require('./foundation-core.js');const D=global.FoundationData;
 const rectangle=[{x:0,y:0},{x:500,y:0},{x:500,y:400},{x:0,y:400}],base={version:1,height:30,margin:0,outline:rectangle,landings:[]};
 const approx=(a,b)=>assert.ok(Math.abs(a-b)<1e-5,`${a} != ${b}`);
 for(const outline of [rectangle,rectangle.slice().reverse()]){const f={...base,outline,margin:10};D.validate(f);approx(D.totals(f).area,21.84);approx(D.totals(f).volume,6.552);assert.equal(D.boundary(f).length,4);}
@@ -9,10 +9,10 @@ const triangle={...base,outline:[{x:0,y:0},{x:500,y:0},{x:200,y:300}],margin:5};
 for(let edge=0;edge<4;edge++)for(const reverse of [false,true]){const f={...base,outline:reverse?rectangle.slice().reverse():rectangle,landings:[{id:'l',edge,offset:50,width:150,depth:100,risers:3,tread:30}]};D.validate(f);approx(D.totals(f).volume,6+.45+.09+.045);assert.deepEqual(D.parts(f).map(p=>p.height),[30,30,20,10]);assert.ok(D.parts(f).slice(1).every(p=>!RoofCore.pointIn(rectangle,p.poly.reduce((s,p)=>({x:s.x+p.x/4,y:s.y+p.y/4}),{x:0,y:0}))));}
 assert.throws(()=>D.validate({...base,height:-1}));assert.throws(()=>D.validate({...base,outline:[rectangle[0],rectangle[2],rectangle[1],rectangle[3]]}));
 assert.throws(()=>D.validate({...base,landings:[{id:'bad',edge:0,offset:490,width:150,depth:100,risers:3,tread:30}]}));
-const entry={id:'a',edge:0,offset:100,width:150,depth:100,risers:2,tread:30};assert.throws(()=>D.validate({...base,landings:[entry,{...entry,id:'b',offset:120}]}));
-assert.throws(()=>D.validate({...base,outline:[[0,0],[600,0],[600,500],[400,500],[400,200],[200,200],[200,500],[0,500]].map(([x,y])=>({x,y})),landings:[{...entry,edge:5,offset:50,width:100,depth:250}]}));
+const entry={id:'a',edge:0,offset:100,width:150,depth:100,risers:2,tread:30};D.validate({...base,landings:[entry,{...entry,id:'b',offset:120}]});approx(D.totals({...base,landings:[entry,{...entry,id:'b',offset:120}]}).volume,6+.51+.0765);
+D.validate({...base,outline:[[0,0],[600,0],[600,500],[400,500],[400,200],[200,200],[200,500],[0,500]].map(([x,y])=>({x,y})),landings:[{...entry,edge:5,offset:50,width:100,depth:250}]});
 const items=[{kind:'wallJoint',poly:[{x:0,y:0,z:0},{x:0,y:10,z:250},{x:10,y:0,z:250}]}],edges=[{p:{x:0,y:0,z:250},q:{x:10,y:0,z:300}}],before=JSON.stringify({items,edges});const composed=D.compose(items,edges,base);assert.equal(composed.items[0].poly[0].z,30);assert.equal(composed.edges[0].q.z,330);assert.equal(JSON.stringify({items,edges}),before);assert.equal(D.compose(items,edges,null).items,items);
-console.log('PASS concrete geometry: CW/CCW, L/diagonal boundaries, common/per-edge margins, 8 oriented stairs, volumes, invalid outlines/overlaps, immutable Z translation');
+console.log('PASS concrete geometry: CW/CCW, L/diagonal boundaries, common/per-edge margins, 8 oriented stairs, volumes, invalid outlines and unique overlap volumes, immutable Z translation');
 if(process.argv.includes('--core'))process.exit(0);
 const {chromium}=require(path.resolve(path.dirname(process.execPath),'../node_modules/playwright'));
 const root=path.resolve(__dirname,'../..'),manifest=JSON.parse(fs.readFileSync(path.join(__dirname,'single-engine-manifest.json'))),protectedNames=[...Object.keys(manifest.sources),'dist/plan_studio.html','taslaklar/odak-atolyesi/arakat.html'],hash=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex'),protectedBefore=Object.fromEntries(protectedNames.map(p=>[p,hash(p)]));
@@ -44,7 +44,7 @@ const root=path.resolve(__dirname,'../..'),manifest=JSON.parse(fs.readFileSync(p
  await p.click('#fd3D');await p.waitForTimeout(250);const actual=await p.evaluate(()=>fdScenes.at(-1));assert.ok(actual.items.some(i=>i.kind==='foundation'));assert.ok(actual.items.some(i=>i.kind==='foundationStep'));
  await p.evaluate(()=>{const f=G.foundation;G.foundation=null;RoofStudio.repaint();G.foundation=f;});const zero=await p.evaluate(()=>fdScenes.at(-1));
  const lifted=actual.items.filter(i=>!i.kind?.startsWith('foundation'));assert.equal(lifted.length,zero.items.length);for(let i=0;i<lifted.length;i++){assert.equal(lifted[i].poly.length,zero.items[i].poly.length);for(let j=0;j<lifted[i].poly.length;j++){approx(lifted[i].poly[j].z-zero.items[i].poly[j].z,45);approx(lifted[i].poly[j].x,zero.items[i].poly[j].x);}}
- for(let i=0;i<actual.edges.length;i++){approx(actual.edges[i].p.z-zero.edges[i].p.z,45);approx(actual.edges[i].q.z-zero.edges[i].q.z,45);}
+ for(let i=0;i<zero.edges.length;i++){approx(actual.edges[i].p.z-zero.edges[i].p.z,45);approx(actual.edges[i].q.z-zero.edges[i].q.z,45);}
  await p.evaluate(()=>{const e=document.getElementById('roofCamera');e.value=225;e.dispatchEvent(new Event('input'));});await p.locator('#roofCanvas').screenshot({path:path.join(root,'artifacts/foundation-model.png')});assert.match(await p.locator('#foundationRoofDatum').innerText(),/45 cm/);
  console.log('PASS actual 3D scene uses shared +45 cm origin for all surfaces/edges and concrete/steps from Z=0');
  const pngdl=p.waitForEvent('download');await p.click('#roofPNG');const png=await pngdl;assert.equal(fs.readFileSync(await png.path()).subarray(1,4).toString(),'PNG');

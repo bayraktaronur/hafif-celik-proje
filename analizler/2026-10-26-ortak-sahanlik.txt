@@ -1,0 +1,25 @@
+DEV-167 — Ortak sahanlık ve yan beton birleşimi
+26 Ekim 2026, iş bilgisayarı. Bağımsız taslak 167; ana uygulama 5.9.137.
+
+İstek ve kaynak
+Kullanıcı K1/K2 kapılarına iki giriş genişliğinde tek ortak sahanlık, K3 için yan betonla birleşen sahanlık istedi. Kaynak ekranın orijinal yolu, referans kopyası ve SHA-256 envanterde. Canlı müşteri JSON'u okunmadı; test modeli ekranın yerleşim mantığını izleyen sentetik L planıdır.
+
+Neden
+Önceki doğrulama sahanlık/basamakların ana betonla veya birbirleriyle her alan çakışmasını reddediyordu. Kenar başlangıcını aşan sahanlık da yan beton üzerinde olsa bile reddediliyordu. Yalnız bu retleri kaldırmak yeterli değildi: önceki geometri ve metraj her prizmayı ayrı üreterek kesişimleri iki kez sayıyordu.
+
+Uygulanan davranış
+1. Aynı beton kenarında, eşit derinlik/rıht/basamak ölçüleriyle birbirine değen veya örtüşen sahanlıklar tek düzenlenebilir giriş olur. Kapı kimlikleri doorIds listesinde korunur; eski doorId kayıtları okunur. Arada boşluk varsa kendiliğinden köprü kurulmaz. Farklı merdiven/derinlik ayarları ayrı düzenlenebilir giriş olarak kalır; geometrik ortak hacim yine bir kez sayılır.
+2. Kapılardan öneride K2 için Ortak sahanlık yap düğmesi çıkar; toplu öneri de aynı birleştirme kuralını kullanır. Önceden elle çizilmiş uyumlu girişler Bitişik sahanlıkları birleştir ile birleştirilebilir. Seçilen ortak girişin en, derinlik, konum ve merdiven bilgileri elle değiştirilebilir.
+3. İç köşede kenar başını/sonunu geçen sahanlığın aşan bölümü tamamen ana beton üzerindeyse kabul edilir. Yan betonla birleşir açıklaması verilir. Ana betona en az 10 cm kenar bağlantısı gerekir; bu bir çizim doğrulamasıdır, taşıyıcı/statik kontrol değildir. Yan beton dışında kalan desteksiz kenar aşımı kabul edilmez.
+4. FoundationSolid bütün beton prizmalarının Z=0'dan başlayan birleşimini üretir. Her XY noktasında en yüksek yüzey kullanılır. Üst üste gelen beton, sahanlık ve basamak alanları/hacimleri tek sayılır. Beton içinde kalan basamaklar ve iç yüzeyler görünmez; yalnız gerçek dış kenarlar çizilir. Üçgenleme çizgileri gösterilmez.
+5. Metrajda ilave sahanlık alanı yalnız ana beton dışındaki ortak alanı gösterir; merdiven hacmi de yüksek beton altında kalan parçaları içermez. Sentetik model: 167,25 m² ana beton + 4,25 m² ilave sahanlık; 51,64125 m³ net beton; bunun 0,19125 m³'ü ilave basamak hacmi. Bu değerler müşteri planına ait değildir.
+6. Mevcut kayıt yüklenirken giriş konumları/ölçüleri kendiliğinden değiştirilmez. Öneri/birleştirme önizlemede yapılır; Uygula projeye işler. Geri al/yeniden yap, iptal, JSON ve yeniden açma korunur. Verandaya otomatik giriş eklememe ve belirsiz dış yön kontrolleri devam eder.
+7. Birleşik beton geometrisi model değişene kadar saklanır. Önceki 3D kamera önbelleği ve kare birleştirme korunur. Bu görevde yeni donanım FPS iddiası yoktur.
+
+Kontroller
+foundation-union-check: dört dönüş (0, 90, 180 derece ve 0,37 radyan), iki sınır yönü; ortak sahanlık, yan beton aşımı, farklı merdiven yükseklikleri, tek hacim, yüzey çakışmaması, kapalı mesh hacmi, geçersiz dış köşe ve önbellek. Gerçek tarayıcı düğmeleri, tek/toplu ekleme, elle birleştirme, geri/ileri/iptal/uygula, JSON indir-aç, yenileme ve 3D geçti.
+foundation-check, foundation-entrances-check, foundation-performance-check ve single-check geçti. Önceki 49 panelli prefabrik planın ölçüleri, birleşimleri, metrajı, çizim/çatı/tavan/PDF ve proje ayrımı korundu. Tarayıcı hatası yok. Plan, ortak giriş ve iç köşe 3D ekranları görsel incelendi.
+
+Kapsam ve devir
+Yalnız taslak kaynakları/üretilen motoru değişti. 54 ana kaynak, dist/plan_studio.html ve arakat.html hashleri önceki teslimle aynı. H/U/köşe kuralları, fiyatlandırma ve ana program değişmedi. Açık kullanıcı sekmesi yenilenmedi; müşteri çizimi değiştirilmedi. Geometrik beton modelidir; donatı/taşıyıcı hesabı eklenmedi. Önceki açık işler ve ilgisiz yerel notlar korunur. Güncel müşteri JSON'unun iki bilgisayar arasındaki aktarımı doğrulanmadı.
+Kullanım: çizimi Kaydet; taslağı yenile; Zemin betonu > Kapılardan sahanlık öner > Ortak sahanlık yap/Ekle > Uygula. Var olan girişler için seçili girişin Bitişik sahanlıkları birleştir düğmesi de kullanılabilir.

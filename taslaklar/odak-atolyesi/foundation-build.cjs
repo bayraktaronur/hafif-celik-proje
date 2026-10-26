@@ -1,5 +1,9 @@
 // All hooks are applied only to the independent engine copy.
 module.exports=function(file,s,once){
+ if(file==='src/scene-3d.js'){
+  s=once(s,'if(state.outlines&&!item.roof', 'if(state.outlines&&!item.foundationSurface&&!item.roof');
+  s=once(s,'for(const e of edges){const color=', 'for(const e of edges){if(e.foundationEdge&&!state.outlines)continue;const color=');
+ }
  if(file==='src/studio.js'){
   s=once(s,'projectName,...(G.referenceImages', 'projectName,...(G.foundation?{foundation:clone(G.foundation)}:{}),...(G.referenceImages');
   s=once(s,'G.referenceImages=clone(d.referenceImages||[]);','G.foundation=clone(d.foundation||null);G.referenceImages=clone(d.referenceImages||[]);');

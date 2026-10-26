@@ -6755,7 +6755,7 @@ window.Wall3D={build,panelColor};
   let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;const edgeMap=new Map();
   const entries=items.map(item=>{const n=normal(item.poly),base=rgb(item.color);for(const p of item.poly){x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y);}
    // Roof seams are supplied explicitly; panel patch boundaries are not physical joints.
-   if(state.outlines&&!item.roof&&item.material!=='panel'&&item.material!=='glass'&&!['openingMark','wallPanel','ridgeCap','vergeTrim','vergeBottom','soffit','cladding'].includes(item.kind)){
+   if(state.outlines&&!item.foundationSurface&&!item.roof&&item.material!=='panel'&&item.material!=='glass'&&!['openingMark','wallPanel','ridgeCap','vergeTrim','vergeBottom','soffit','cladding'].includes(item.kind)){
     item.poly.forEach((a,i)=>{const b=item.poly[(i+1)%item.poly.length],keyPoint=p=>[p.x,p.y,p.z].map(v=>Math.round(v*1000)).join(','),ka=keyPoint(a),kb=keyPoint(b);if(ka===kb)return;const key=ka<kb?ka+'|'+kb:kb+'|'+ka,old=edgeMap.get(key);if(old){old.count++;if(Math.abs(old.n.reduce((s,v,j)=>s+v*n[j],0))<.94||old.color!==item.color)old.feature=true;}else edgeMap.set(key,{a,b,n,color:item.color,edgeColor:item.edgeColor,count:1,feature:false});});
    }
    return {item,n,base};});
@@ -6793,7 +6793,7 @@ window.Wall3D={build,panelColor};
   const ink=light?[.19,.23,.27,1]:[.10,.14,.18,1];
   for(const e of preparedScene.edges){const stroke=e.edgeColor?[...rgb(e.edgeColor),1]:ink;vertex(lineData,project(e.a),stroke,1e-6);vertex(lineData,project(e.b),stroke,1e-6);}
   // Explicit roof seams use the same depth test as the solid model.
-  for(const e of edges){const color=[...rgb(e.color||'#73838c'),1];vertex(lineData,project(e.p),color,1e-6);vertex(lineData,project(e.q),color,1e-6);}
+  for(const e of edges){if(e.foundationEdge&&!state.outlines)continue;const color=[...rgb(e.color||'#73838c'),1];vertex(lineData,project(e.p),color,1e-6);vertex(lineData,project(e.q),color,1e-6);}
   gl.lineWidth(1);batch(lineData,gl.LINES);
   glass.sort((a,b)=>a.depth-b.depth);const transparent=[];for(const g of glass)g.tri.forEach(p=>vertex(transparent,p,g.color));
   gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);batch(transparent,gl.TRIANGLES);gl.depthMask(true);gl.disable(gl.BLEND);

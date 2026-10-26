@@ -13,7 +13,7 @@
   D.validate(f);if(!f)throw Error('Önce beton sınırını çizin.');const lookup=new Map(nodes.map(n=>[n.id,n])),verandas=rooms.filter(r=>r.tip==='veranda').map(r=>r.nodeIds.map(id=>lookup.get(id))).filter(p=>p.length>2&&p.every(Boolean)),boundary=D.boundary(f),frames=f.outline.map((_,i)=>D.frame(f,i));
   return doorList.filter(d=>d.exterior||d.uncertain).map(d=>{
    const result={door:d,status:'blocked',message:'',landing:null,existing:null};
-   const linked=f.landings.find(l=>l.doorId===d.id);if(linked)return {...result,status:'existing',message:'Ekli · ölçülerini elle düzenleyebilirsin',existing:linked.id};
+   const linked=f.landings.find(l=>D.doorIds(l).includes(d.id));if(linked)return {...result,status:'existing',message:(D.doorIds(linked).length>1?'Ortak sahanlık':'Ekli')+' · ölçülerini elle düzenleyebilirsin',existing:linked.id};
    if(d.uncertain)return {...result,message:'Dış yön belirsiz · girişi elle yerleştir'};
    if(!D.inside(d.p,boundary))return {...result,message:'Kapı beton sınırı dışında'};
    const hits=frames.map((r,edge)=>({r,edge,t:ray(d.p,d.n,r.a,r.b)})).filter(h=>h.t!==null).sort((a,b)=>a.t-b.t),hit=hits[0];if(!hit)return {...result,message:'Kapı karşısında beton kenarı bulunamadı'};
@@ -22,12 +22,12 @@
    if(t-d.thickness/2>(f.edgeMargins?.[edge]??f.margin??0)+50)return {...result,message:'Kapı önünde geniş beton alanı var · girişi elle yerleştir'};
    if(r.n.x*d.n.x+r.n.y*d.n.y<.999)return {...result,message:'Beton kenarı kapıya paralel değil · elle düzenle'};
    const center=(d.p.x-r.a.x)*r.u.x+(d.p.y-r.a.y)*r.u.y,manual=f.landings.find(l=>l.edge===edge&&center-d.width/2>=l.offset-.01&&center+d.width/2<=l.offset+l.width+.01);
-   if(manual)return {...result,status:'existing',message:'Bu kapının önünde giriş var',existing:manual.id};
+   if(manual)return {...result,status:'existing',message:'Bu kapının önünde ortak kullanılabilen giriş var',existing:manual.id};
    const width=d.width+2*side,offset=center-width/2;
-   if(offset<-.001||offset+width>r.len+.001)return {...result,message:'Yan pay bu kenara sığmıyor · payı azalt veya elle yerleştir'};
-   const baseId='door-'+d.id.slice(0,60),landing={id:baseId,doorId:d.id,edge,offset:Math.max(0,offset),width,depth,risers,tread};let suffix=1;while(f.landings.some(l=>l.id===landing.id))landing.id=baseId+'-'+suffix++;
-   try{D.validate({...f,landings:[...f.landings,landing]});}catch(e){return {...result,message:e.message};}
-   return {...result,status:'ready',message:width+' × '+depth+' cm · '+risers+' rıht',landing};
+   const baseId='door-'+d.id.slice(0,60),landing={id:baseId,doorId:d.id,edge,offset,width,depth,risers,tread};let suffix=1;while(f.landings.some(l=>l.id===landing.id))landing.id=baseId+'-'+suffix++;
+   let added;try{added=D.addLanding(f,landing);}catch(e){return {...result,message:e.message};}
+   const joinsBase=D.parts({...f,landings:[landing]}).some(p=>p.kind==='foundationLanding'&&p.poly.some(v=>D.inside({x:v.x+d.n.x*.001,y:v.y+d.n.y*.001},boundary)));
+   return {...result,status:'ready',message:(added.mergedIds.length?'Mevcut girişle ortak sahanlık · ':joinsBase?'Yan betonla birleşir · ':'')+added.landing.width+' × '+depth+' cm · '+risers+' rıht',landing,merges:added.mergedIds};
   });
  }
  root.FoundationEntrances={doors,suggest};
