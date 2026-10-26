@@ -1,8 +1,9 @@
 {
-  "task": "DEV-168",
+  "task": "DEV-169",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
+    "supplied rainwater gutter/downpipe STL, eave-bound runs, editable outlets and shared bill/3D/PNG",
     "native 4K 3D PNG with framing/preview and shared smoked-glass presentation",
     "shared multi-door landings and concrete prism union: exposed geometry and unique quantities",
     "PDF/PNG fit-to-page, physical margins, compact/full title block and persisted per-project layout",
