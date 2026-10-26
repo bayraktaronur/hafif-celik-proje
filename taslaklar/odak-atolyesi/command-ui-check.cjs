@@ -1,3 +1,4 @@
+const roofNav=require('./roof-test-navigation.cjs');
 const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs'),{pathToFileURL}=require('node:url');
 const {chromium}=require(path.resolve(path.dirname(process.execPath),'../node_modules/playwright'));
 const root=path.resolve(__dirname,'../..'),url=pathToFileURL(path.join(__dirname,'index.html')).href;
@@ -25,7 +26,7 @@ const root=path.resolve(__dirname,'../..'),url=pathToFileURL(path.join(__dirname
   await p.click('#command-tab-build');await p.evaluate(()=>Studio.fit());await p.waitForTimeout(200);assert.equal(await p.locator('#command-tab-build').getAttribute('aria-selected'),'true');await p.screenshot({path:path.join(root,'artifacts/commands-'+w+'.png')});widths.push({w,canvas:await p.locator('#cwrap').boundingBox()});}
  console.log('PASS four command groups at 980/1280/1600/1920 without horizontal overflow',JSON.stringify(widths));
  const narrow=await b.newPage({viewport:{width:980,height:860}});await narrow.goto(url);assert.equal(await narrow.locator('#projectSidebar').isVisible(),false);assert.ok((await narrow.locator('#cwrap').boundingBox()).width>=700);await narrow.click('#commandProjectToggle');assert.equal(await narrow.locator('#projectSidebar').isVisible(),true);await narrow.close();console.log('PASS fresh narrow workspace gives canvas priority and project panel stays reachable');
- await p.setViewportSize({width:1600,height:1000});await p.click('#single-roof');assert.equal(await p.locator('#roofDialog').isVisible(),true);await p.click('#single-model');assert.equal(await p.locator('#paint3DOpen').isVisible(),true);await p.screenshot({path:path.join(root,'artifacts/commands-3d.png')});await p.click('#single-plan');
+ await p.setViewportSize({width:1600,height:1000});await p.click('#single-roof');assert.equal(await p.locator('#roofDialog').isVisible(),true);await p.click('#single-model');await roofNav.task(p,'material');assert.equal(await p.locator('#paint3DOpen').isVisible(),true);await p.screenshot({path:path.join(root,'artifacts/commands-3d.png')});await p.click('#single-plan');
  await p.click('#commandFind');await p.fill('#commandQuery','duvar');await p.screenshot({path:path.join(root,'artifacts/commands-search.png')});await p.keyboard.press('Escape');
  assert.deepEqual(errors,[]);console.log('PASS roof/3D navigation and grouped controls; no JavaScript errors');
 }finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

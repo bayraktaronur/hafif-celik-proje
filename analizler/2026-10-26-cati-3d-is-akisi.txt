@@ -1,0 +1,76 @@
+DEV-172 — Çatı / 3D iş akışı ve kayıtlı kamera bakışları
+Tarih: 26 Ekim 2026 · İş bilgisayarı · Bağımsız taslak 172
+
+Kapsam
+Kullanıcının sadeleştirme ve sonraki geliştirme adımları için verdiği onay uygulandı.
+Değişiklikler yalnız taslaklar/odak-atolyesi içindedir. Ana uygulama 5.9.137,
+src/, dist/ ve önceki arakat çalışmasının korunan dosyaları değiştirilmedi.
+Açık kullanıcı çizimi yeniden yüklenmedi, sıfırlanmadı veya üzerine yazılmadı.
+
+Kullanım
+Çatı ve 3D üst araçları tek satır: Model / Malzeme / Işık / Kamera / Çıktı.
+Seçilen başlık sağ paneli değiştirir. Sığdır her zaman üstte kalır.
+Model: seçili çatı geometrisi, kot/eğim ve katman görünürlüğü.
+Malzeme: seçili çatının üst/alt kaplamaları, Boyacı, Dere / iniş.
+Işık: Çalışma/Sunum görünümü, %0–100 kenar çizgileri, ışık, gölge, yüzey dokusu.
+Kamera: izdüşüm, hazır bakış, yatay dönüş, yakınlaşma ve proje bakışları.
+Çıktı: 3D PNG, çatı CSV, kat planı PDF/PNG, tam metraj ve kesit/çatı raporu.
+Yeni çatı çizme araçları sol panelde Yeni çatı oluştur altında toplanır.
+Görev sekmeleri arasında geçiş, Uygula denmemiş form değerlerini korur.
+Klavye: sekmelerde sağ/sol ok, Home/End; mevcut çizim ve geri alma komutları sürer.
+
+Kayıtlı bakışlar
+Kamera > Bakış adı > Bu bakışı kaydet; listedeki ada tıklayarak geri dönülür.
+Her projede en fazla 24 bakış; silme, geri alma/ileri alma, JSON kaydet/aç ve
+otomatik yedek üzerinden geri yükleme desteklenir. Yeni proje boş listeyle başlar.
+Bakış, renk veya model kopyası değildir: güncel geometri ve malzemeyi gösterir.
+Kaydırma ekran boyutunun oranı olarak saklanır; 980/1280/1920 genişlikte doğrulandı.
+Hatalı kamera değerleri ve yinelenen kimlikler proje yüklenmeden reddedilir.
+
+Üretim ve veri tutarlılığı
+Yeni hesap veya fiyat eklenmedi. 80/100 cm trapez örtme eni, sandviç panel ve
+250/280/300 cm duvar yüksekliği ortak proje/çatı verisi üzerinden doğrulandı.
+Kamera, ışık ve görev başlığı değişikliği plan/metraj verisini değiştirmiyor.
+Üç sürümlü planın panel genişlikleri, birleşimleri, oda alanları ve tam metrajı
+taslak171 (26bd0bcc5188fae0a215c0cae884651e66301fca) ile birebir aynı:
+  cizimler/2026-10-07-yavru-baglanti/orijinal.json — 32 panel, 1 oda, 23 metraj satırı
+  cizimler/2026-10-08-panel-kapanis/orijinal.json — 43 panel, 0 oda, 7 metraj satırı
+  cizimler/gulsum-84m2/veranda-kirisli-ornek-5.9.98.json — 51 panel, 7 oda, 69 satır
+Ana uygulama ile ortak panel/birleşim/oda/üretim hesapları da single-check ve
+steel-outline-check tarafından karşılaştırıldı. Tam taslak metrajı için önceki
+taslak kullanıldı; ana uygulama bağımsız taslağın dere/iniş uzantısını içermiyor.
+Fiyatlandırma kullanıcı fiyat listesi gelene kadar eklenmeyecek.
+
+Doğrulama
+Node ile taslaklar/odak-atolyesi/ altındaki aşağıdaki kontroller geçti:
+  roof-workspace-check.cjs — gerçek menü etkileşimleri, bekleyen form, ortak veri,
+    kamera kaydetme/geri çağırma/JSON/undo/redo, geçersiz veri, 3 ekran genişliği,
+    gerçek 3840×2160 PNG indirme, CSV/PDF ve üç eski plan eşitliği.
+  single-check.cjs — çizim, panel/oda/metraj, yükseklik ve malzeme, kayıt/çıktı.
+  presentation-check.cjs — ortak geometri, ışık, gölge, malzeme, GPU önbelleği,
+    PNG, sunum hatasında geri dönüş, kayıt ve ekran boyutları.
+  scene-output-check.cjs — doğal 4K/özel boyut, kadraj, önizleme, cam, JSON.
+  foundation-performance-check.cjs — kamera hareketinde geometri önbelleği,
+    model değişiminde yenileme ve birleştirilen çizim kareleri.
+  command-ui-check.cjs — komut arama, klavye, paneller, 980–1920 ekranlar.
+  foundation-check.cjs — beton sınırı/payları, Z kotu, merdiven, kayıt ve 3D.
+  foundation-entrances-check.cjs — kapı önerileri, elle giriş, kayıt/geri alma.
+  drainage-browser-check.cjs — dere/iniş, serbest konum, undo, JSON, CSV ve 4K.
+  steel-outline-check.cjs — 48 köşe, T/X, açıklık/metraj korunması, kenar ayarı/4K.
+Eski tarayıcı testlerinin yalnız taşınan komutlara erişim adımları güncellendi.
+Çalışan güncel kontrollerde JavaScript hatası veya harici ağ isteği yok.
+Üretilen dosyalar için tekrar derleme ve ana kaynak SHA kontrolü envanterde.
+
+Kanıtlar
+2026-10-26-cati-3d-is-akisi-isik.png — sağ Işık paneli ve tek satırlı araçlar.
+2026-10-26-cati-3d-is-akisi-kamera.png — proje içinde kayıtlı kamera bakışı.
+2026-10-26-cati-3d-is-akisi-4k.png — gerçek indirilen 3840×2160 PNG.
+2026-10-26-cati-3d-is-akisi-envanteri.json — dosya SHA, kontroller ve korunan kaynaklar.
+
+Sınırlar ve devam
+Testler örnek ve depodaki sürümlü planlarla, izole Edge oturumunda yapıldı.
+Kullanıcının en son açık müşteri çizimine bu oturumdan erişim yoktu; güncel JSON
+aktarımı doğrulanmadı. Tarayıcı çizimleri Git ile taşınmaz; Kaydet ile JSON alınır.
+Önceki açık işler ve ilgisiz yerel belgeler bu görevde tamamlanmış sayılmadı.
+Sonraki adım: mevcut çizimi Kaydet, taslağı yenile; gerçek projede yeni komut
+gruplarını ve aynı bakıştan müşteri çıktısını kullanarak değerlendirme yap.

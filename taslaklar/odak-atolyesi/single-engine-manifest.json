@@ -1,8 +1,9 @@
 {
-  "task": "DEV-171",
+  "task": "DEV-172",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
+    "contextual roof and 3D tasks; validated per-project camera bookmarks",
     "light-steel mitred corners and exterior solid faces; persisted 0-100 presentation outlines with live GPU preview and 4K output",
     "offline presentation renderer: exact shared geometry/camera, static GPU buffers, receiver-plane shadows, procedural materials and native 4K",
     "supplied rainwater gutter/downpipe STL, eave-bound runs, editable outlets and shared bill/3D/PNG",

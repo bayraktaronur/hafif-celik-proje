@@ -1,3 +1,4 @@
+const roofNav=require('./roof-test-navigation.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),{pathToFileURL}=require('node:url');
 global.RoofCore=require('../../src/roof-core.js');require('./foundation-solid.js');require('./foundation-core.js');const D=global.FoundationData;
 const rectangle=[{x:0,y:0},{x:500,y:0},{x:500,y:400},{x:0,y:400}],base={version:1,height:30,margin:0,outline:rectangle,landings:[]};
@@ -21,7 +22,7 @@ const root=path.resolve(__dirname,'../..'),manifest=JSON.parse(fs.readFileSync(p
  await p.addInitScript(()=>{window.showSaveFilePicker=undefined;});await p.goto(pathToFileURL(path.join(__dirname,'index.html')).href);assert.deepEqual(errors,[]);
  const start=await p.evaluate(()=>{yeniPlan();return Studio.state();});
  const fixture={...start,n:[{id:'a',x:0,y:0},{id:'b',x:500,y:0},{id:'c',x:500,y:400},{id:'d',x:0,y:400},{id:'v1',x:650,y:0},{id:'v2',x:650,y:200}],s:[['a','b'],['b','c'],['c','d'],['d','a'],['b','v1'],['v1','v2']].map(([n1,n2],i)=>({id:'w'+i,n1,n2,k:10,dis:true,kSabit:true,...(i>=4?{tip:'veranda'}:{})})),e:[],r:[],sistem:'celik',opt:{...start.opt,h:250,dis:10,ic:10},ky:250,projectName:'Beton ve açık veranda kontrolü'};
- await p.evaluate(d=>{Studio.loadProject(d);Studio.fit();},fixture);await p.click('#single-roof');await p.click('#roofFromPlan');await p.click('#single-plan');
+ await p.evaluate(d=>{Studio.loadProject(d);Studio.fit();},fixture);await p.click('#single-roof');await roofNav.create(p);await p.click('#single-plan');
  const plan=await p.evaluate(()=>({n:JSON.stringify(G.nodes),s:JSON.stringify(G.segs),roofs:JSON.stringify(G.roofs),bill:JSON.stringify(metrajKalemleri())}));
  await p.click('#single-foundation');assert.ok(await p.locator('#foundationWorkspace').isVisible());
  // Actual mouse polygon surrounding walls AND an open veranda, including a return corner.
@@ -47,7 +48,7 @@ const root=path.resolve(__dirname,'../..'),manifest=JSON.parse(fs.readFileSync(p
  for(let i=0;i<zero.edges.length;i++){approx(actual.edges[i].p.z-zero.edges[i].p.z,45);approx(actual.edges[i].q.z-zero.edges[i].q.z,45);}
  await p.evaluate(()=>{const e=document.getElementById('roofCamera');e.value=225;e.dispatchEvent(new Event('input'));});await p.locator('#roofCanvas').screenshot({path:path.join(root,'artifacts/foundation-model.png')});assert.match(await p.locator('#foundationRoofDatum').innerText(),/45 cm/);
  console.log('PASS actual 3D scene uses shared +45 cm origin for all surfaces/edges and concrete/steps from Z=0');
- const pngdl=p.waitForEvent('download');await p.click('#roofPNG');await p.waitForFunction(()=>!document.getElementById('image3DDownload').disabled);await p.click('#image3DDownload');const png=await pngdl;assert.equal(fs.readFileSync(await png.path()).subarray(1,4).toString(),'PNG');await p.waitForFunction(()=>!document.getElementById('image3DDialog').hasAttribute('aria-busy'));await p.click('#image3DCancel');
+ const pngdl=p.waitForEvent('download');await roofNav.task(p,'output');await p.click('#roofPNG');await p.waitForFunction(()=>!document.getElementById('image3DDownload').disabled);await p.click('#image3DDownload');const png=await pngdl;assert.equal(fs.readFileSync(await png.path()).subarray(1,4).toString(),'PNG');await p.waitForFunction(()=>!document.getElementById('image3DDialog').hasAttribute('aria-busy'));await p.click('#image3DCancel');
  await p.click('#single-plan');await p.click('#single-bill');assert.match(await p.locator('#metrajIc').innerText(),/Zemin betonu/);await p.click('#mbgMet .mcancel');await p.evaluate(()=>geriAl());assert.equal(await p.evaluate(()=>G.image3DLayout),null);assert.equal(await p.evaluate(()=>G.foundation.height),45);await p.evaluate(()=>geriAl());assert.equal(await p.evaluate(()=>G.foundation),null);await p.evaluate(()=>ileriAl());assert.equal(await p.evaluate(()=>G.foundation.height),45);await p.evaluate(()=>ileriAl());assert.equal(await p.evaluate(()=>G.image3DLayout.width),3840);
  const saved=await p.evaluate(()=>{Studio.flush();return Studio.state();});await p.reload();assert.deepEqual(await p.evaluate(()=>Studio.state()),saved);
  const dl=p.waitForEvent('download');await p.click('.header-actions [onclick="planKaydet()"]');const download=await dl,json=JSON.parse(fs.readFileSync(await download.path(),'utf8'));assert.deepEqual(json.foundation,draft);
@@ -65,7 +66,7 @@ const root=path.resolve(__dirname,'../..'),manifest=JSON.parse(fs.readFileSync(p
  await p.click('#single-foundation');await p.check('#fdSnap');const outer=await p.evaluate(()=>RoofWorkflow.exteriorCorners()[0]);q=await pos([outer.x,outer.y]);await p.mouse.click(q.x,q.y);assert.deepEqual(await p.evaluate(()=>FoundationUI.getDraft().outline[0]),{x:outer.x,y:outer.y});await p.click('#fdCancel');
  // Real prefabricated example, existing openings and all joints above the slab.
  await p.evaluate(()=>{SingleStorey.loadExample(false);const xs=G.nodes.map(n=>n.x),ys=G.nodes.map(n=>n.y),x=Math.min(...xs)-5,y=Math.min(...ys)-5,w=Math.max(...xs)-x+5,h=Math.max(...ys)-y+5;G.foundation={version:1,height:30,margin:15,outline:[{x,y},{x:x+w,y},{x:x+w,y:y+h},{x,y:y+h}],landings:[{id:'front',edge:2,offset:w*.45,width:150,depth:90,risers:2,tread:30}]};FoundationData.validate(G.foundation);});
- await p.click('#single-roof');await p.click('#roofFromPlan');await p.click('#single-model');await p.waitForTimeout(150);await p.locator('#roofCanvas').screenshot({path:path.join(root,'artifacts/foundation-prefab.png')});
+ await p.click('#single-roof');await roofNav.create(p);await p.click('#single-model');await p.waitForTimeout(150);await p.locator('#roofCanvas').screenshot({path:path.join(root,'artifacts/foundation-prefab.png')});
  const raisedCeiling=await p.evaluate(()=>{const z=G.foundation.height,m=SingleCeiling.build(),f=G.foundation;G.foundation=null;const n=SingleCeiling.build();G.foundation=f;return m.surfaces.every((s,i)=>s.poly.every((p,j)=>Math.abs(p.z-n.surfaces[i].poly[j].z-z)<1e-6));});assert.ok(raisedCeiling);
  assert.deepEqual(errors,[]);assert.deepEqual(requests,[]);for(const [f,h]of Object.entries(protectedBefore))assert.equal(hash(f),h,f);console.log('PASS no runtime/network errors, protected main/src/dist/arakat/source hashes unchanged');
  }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

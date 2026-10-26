@@ -17,10 +17,12 @@
   <label class="presentation-check"><input type="checkbox" id="presentationTextures">Betopan ve beton yüzey dokusu</label>
   <p class="presentation-note">Kenar çizgileri yalnız görünüşü değiştirir. Panel, H ve köşe birleşimleri modelde korunur.</p><p id="presentationStatus" role="status"></p>
  </div><footer><button type="button" id="presentationDone">Tamam</button></footer>`;document.body.append(dialog);
+ const body=dialog.querySelector('.presentation-body');let inlineHost=null;
  function set(patch){Studio.edit(()=>{G.scenePresentation={...Presentation3D.current(),...patch};});RoofStudio.repaint();sync();}
  function commitOutline(){if(pending===null)return;const value=pending;pending=null;cancelAnimationFrame(frame);frame=0;Presentation3D.previewOutline(null);set({outlines:value});}
  function sync(){const v=Presentation3D.current(),visible=document.body.dataset.singleView==='model';controls.hidden=!visible;$('presentationMode').value=v.mode;$('presentationSettings').hidden=v.mode!=='presentation';$('presentationLight').value=v.light;$('presentationShadows').checked=v.shadows;$('presentationTextures').checked=v.textures;
-  $('presentationOutlines').value=v.outlines;$('presentationOutlineValue').textContent='%'+v.outlines;$('presentationOutlines').setAttribute('aria-valuetext','Yüzde '+v.outlines);dialog.querySelectorAll('[data-outline]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.outline)===v.outlines)));
+  $('presentationOutlines').value=v.outlines;$('presentationOutlineValue').textContent='%'+v.outlines;$('presentationOutlines').setAttribute('aria-valuetext','Yüzde '+v.outlines);body.querySelectorAll('[data-outline]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.outline)===v.outlines)));
+  if(inlineHost){inlineHost.dataset.working=String(v.mode!=='presentation');body.querySelectorAll('input,select,button').forEach(el=>el.disabled=v.mode!=='presentation');}
   if(v.outlines>0)lastOutline=v.outlines;
   $('roofContours').setAttribute('aria-pressed',String(v.mode==='presentation'?v.outlines>0:Scene3D.state.outlines));$('roofContours').title=v.mode==='presentation'?'Kenar çizgileri · %'+v.outlines+' · Görsel ayarlardan düzenle':'Kenarları göster / gizle';
   const error=v.mode==='presentation'?Presentation3D.stats.error:null;$('presentationStatus').textContent=error?'Sunum kullanılamıyor: '+error+' Çalışma görünümü gösteriliyor.':'';controls.title=error||'Aynı kamera ve modelle çalışma / sunum karşılaştırması';controls.dataset.error=error?'true':'false';
@@ -31,9 +33,10 @@
  dialog.querySelectorAll('[data-outline]').forEach(b=>b.onclick=()=>{commitOutline();set({outlines:Number(b.dataset.outline)});});
  $('presentationMode').onchange=e=>{commitOutline();set({mode:e.target.value});};$('presentationLight').onchange=e=>set({light:e.target.value});$('presentationShadows').onchange=e=>set({shadows:e.target.checked});$('presentationTextures').onchange=e=>set({textures:e.target.checked});
  const toggle=$('roofContours').onclick;$('roofContours').onclick=e=>{if(Presentation3D.active())set({outlines:Presentation3D.current().outlines?0:lastOutline});else toggle(e);sync();};
- $('presentationSettings').onclick=()=>{sync();dialog.showModal();};$('presentationClose').onclick=$('presentationDone').onclick=()=>dialog.close();dialog.addEventListener('close',commitOutline);
+ $('presentationSettings').onclick=()=>{dialog.querySelector('footer').before(body);sync();dialog.showModal();};$('presentationClose').onclick=$('presentationDone').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{commitOutline();if(inlineHost)inlineHost.append(body);});
  dialog.addEventListener('keydown',e=>{if(e.key==='Escape')e.stopPropagation();});
  new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['data-single-view']});
  const repaint=RoofStudio.repaint;RoofStudio.repaint=function(...a){const out=repaint.apply(this,a);sync();return out;};
- const draw=window.draw;window.draw=function(...a){const out=draw.apply(this,a);sync();return out;};sync();
+ const draw=window.draw;window.draw=function(...a){const out=draw.apply(this,a);sync();return out;};
+ window.PresentationUI={mount(host){inlineHost=host;host.append(body);sync();},commit:commitOutline};sync();
 })();

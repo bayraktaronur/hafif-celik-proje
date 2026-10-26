@@ -1,0 +1,36 @@
+/* One task row; tools and the selected roof share a contextual inspector. */
+.single-storey #roofDialog.roof-workspace{--roof-ink:#d3e1e7;--roof-dim:#91a8b4}
+.single-storey .roof-workspace .roof-task-bar{flex-wrap:nowrap;padding:0 12px;height:44px;min-height:44px;background:#17252e;border-bottom:1px solid #31434c;gap:10px;overflow-x:auto;scrollbar-width:thin}
+.roof-task-tabs{display:flex;gap:5px;align-items:stretch;min-width:0}
+.roof-workspace [hidden]{display:none!important}
+.roof-workspace #roofLayerTools:not([open])>*:not(summary){display:none}
+.roof-workspace #roofLayerTools summary{cursor:pointer;color:#bbdaca;font-weight:600;list-style:disclosure-closed}
+.roof-workspace #roofLayerTools[open] summary{list-style:disclosure-open;margin-bottom:8px}
+.roof-workspace #roofLayerTools>button{margin:4px 0}
+.roof-workspace #roofCamera{position:static;display:block;width:100%;accent-color:#9bd7bf}
+.roof-open-3d{margin-top:12px}
+.single-storey #roofDialog .roof-task-tabs button{background:transparent;border:0;border-radius:0;border-bottom:2px solid transparent;color:#9cb2bd;padding:12px 12px;white-space:nowrap;font-size:12px}
+.single-storey #roofDialog .roof-task-tabs button[aria-selected=true]{color:#c4ebda;border-bottom-color:#9bd7bf;background:#233a34}
+.single-storey .roof-task-bar #roofFit{margin-left:auto;background:transparent;white-space:nowrap;color:#b7cbd4;border:1px solid #3a505a}
+.single-storey .roof-workspace .roof-right{padding:0 0 15px;overflow-y:auto;scrollbar-width:thin;background:#18262f}
+.roof-task-panel header{padding:18px 16px 13px;border-bottom:1px solid #30414c}.roof-task-panel header small{font-size:9px;letter-spacing:1.3px;color:#8bbda7}
+.single-storey .roof-task-panel header h3{font-size:18px;margin:7px 0;color:#d8e9e5;text-transform:none;letter-spacing:0}.roof-task-panel header p{color:#91a8b4;margin:0;line-height:1.6}
+.roof-task-section{padding:14px 16px;border-bottom:1px solid #30414c;display:flex;flex-direction:column;gap:8px}.roof-task-section h4{font-size:11px;font-weight:600;color:#a7c9bd;margin:0 0 5px}
+.single-storey #roofDialog .roof-task-section>button{width:100%;min-height:33px;text-align:left;background:#22333e;border:1px solid #354a56;padding:8px 10px;color:#c3d5df}
+.single-storey #roofDialog .roof-task-section button:hover{background:#2b443f;border-color:#709889}.single-storey #roofDialog .roof-task-section button.active,.single-storey #roofDialog .roof-task-section button[aria-pressed=true]{background:#2b473d;border-color:#58816e;color:#cfebdf}
+.single-storey #roofDialog .roof-task-section label{display:flex;flex-direction:column;gap:7px;font-size:11px;color:#a6bdc7;margin:0}.single-storey #roofDialog .roof-task-section input,.single-storey #roofDialog .roof-task-section select{width:100%;background:#121f28;border:1px solid #3a515d;min-height:33px;padding:8px;color:#d8e7ed;box-sizing:border-box}
+.roof-task-actions{display:flex;gap:8px}.roof-task-actions button{flex:1}.roof-task-note,#roofViewStatus{font-size:10px;line-height:1.6;color:#8fa9b5;margin:4px 0}.roof-saved-view{display:flex;gap:4px;margin-bottom:5px}.roof-saved-view button:first-child{flex:1;min-width:0;text-align:left;overflow-wrap:anywhere}.roof-saved-view button:last-child{width:30px}
+.single-storey .roof-workspace #roofProperties{padding:14px 16px}.single-storey .roof-workspace #roofProperties>h3{font-size:9px;letter-spacing:1px;color:#8bbda7;margin-top:0}
+.roof-workspace[data-roof-task=model] [data-roof-task=material],.roof-workspace[data-roof-task=material] [data-roof-task=model]{display:none!important}
+.roof-workspace[data-roof-task=material] #roofProperties>div:has(#roofDuplicate){display:none}
+.single-storey .roof-workspace #roofForm>.roof-grid:empty{display:none}.single-storey .roof-workspace #roofApply{margin-top:14px;position:sticky;bottom:0;box-shadow:0 -7px 16px #18262f}
+.roof-workspace .roof-task-section [data-roof-view]{display:block!important}.roof-create-group{border-top:1px solid #354a56;margin-top:18px;padding-top:12px}.roof-create-group>summary{cursor:pointer;color:#bbdaca;font-weight:600;margin-bottom:10px}.roof-create-group>.single-roof-group{margin-bottom:10px}
+.single-storey #roofDialog .roof-task-section #presentationControls{display:block;padding:0;border:0}.roof-workspace #presentationControls>button{display:none}.roof-workspace #presentationControls label{display:flex}
+#roofInlinePresentation .presentation-body{padding:0;display:flex;flex-direction:column;gap:12px}#roofInlinePresentation .presentation-body>p:first-child{display:none}#roofInlinePresentation .presentation-edges{padding:0;border:0}#roofInlinePresentation .presentation-range-labels{display:flex;justify-content:space-between;font-size:9px;color:#829da9}#roofInlinePresentation .presentation-presets{display:flex;gap:3px}#roofInlinePresentation .presentation-presets button{flex:1;font-size:9px;padding:6px 2px}#roofInlinePresentation .presentation-edges>label{display:flex;flex-direction:row;justify-content:space-between}#roofInlinePresentation .presentation-check{display:flex!important;flex-direction:row!important;align-items:center}#roofInlinePresentation input[type=checkbox]{width:15px!important;min-height:15px!important;accent-color:#9bd7bf}#roofInlinePresentation input[type=range]{min-height:24px!important;padding:0!important;accent-color:#9bd7bf}#roofInlinePresentation .presentation-note{line-height:1.6;color:#8fa9b5}#roofInlinePresentation[data-working=true]{opacity:.55}
+.roof-task-tabs button:focus-visible,.roof-task-section button:focus-visible{outline:2px solid #addac7;outline-offset:-3px}
+@media(max-width:1100px){.single-storey #roofDialog .roof-task-tabs button{padding:12px 8px;font-size:11px}.single-storey .roof-workspace .roof-task-bar{padding:0 6px;gap:4px}.roof-task-tabs{gap:1px}}
+
+/* Keep contextual controls readable without adding another toolbar row. */
+.single-storey #roofDialog .roof-task-section button,.single-storey #roofDialog .roof-task-section label,.single-storey #roofDialog .roof-task-section input,.single-storey #roofDialog .roof-task-section select{font-size:12px}
+.roof-task-note,#roofViewStatus,.roof-task-panel header p{font-size:11px}
+.single-storey #roofDialog #roofInlinePresentation .presentation-presets button{font-size:11px}
