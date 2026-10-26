@@ -1,6 +1,16 @@
 # Odak Atölyesi — tek katlı prefabrik çizimi
 
-26 Ekim 2026 · DEV-157. `index.html` çalışan tek kat çizim taslağıdır; komutlar işlerine göre gruplandı, bağlamsal sağ panel ve komut araması eklendi. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+26 Ekim 2026 · DEV-161. `index.html` çalışan tek kat çizim taslağıdır; gerçek çelik kapı STL modelleri eklendi. Komut düzeni ve DEV-160 çatı kotu/kilit/ana-yavru rol değişimi korunur. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+
+## Gerçek çelik kapı — taslak 161
+
+**Yapı → Kapı → Sol çelik kapı / Sağ çelik kapı · 90 × 205 cm** seçip yerleştir. **3D** görünümünde kullanıcı STL'sindeki kasa, kanat, dekor, kol ve kilitler gösterilir. Duvar yüksekliğini 250/280/300 cm seçmek ilgili özgün pano modelini kullanır; kapı boyu esnetilmez. Planın menteşe yönü, ters çizilmiş duvarlar ve bina dışına bakan yüz korunur. Kapı çevresindeki pano iç/dış cephe boyasını takip eder.
+
+Kaynak pano 125 cm genişliğinde, 10 cm nominal duvar içindir (STL gövdesi 9,6 cm). Kaynak kasa dışı 91,29 × 205 cm; katalogdaki 90 × 205 nominal seçim ve plan/metraj aynı kalır. Duvar sonunda yalnız panonun duvar dışına taşan kenarı kesilir, kapı geometrisi değişmez. Uyumsuz yükseklik, özel kapı ölçüsü, kalınlık veya açıklık çakışmasında neden belirtilerek mevcut şematik çizim kullanılır. Diğer kapı türleri ve eski genel “Dış kapı” kayıtları kendiliğinden bu ürüne dönüştürülmez.
+
+STL malzeme/renk verisi taşımaz; kapı için kahverengi tonları ve metal aksesuar rengi sunum tercihidir. Yeni fiyat, sipariş veya imalat kesiti kuralı eklenmedi. Kaynak, ölçüler ve sınırlar: `../../analizler/2026-10-26-taslak-celik-kapi.txt`. Kontrol: `steel-door-check.cjs`; tüm ham üçgen koordinatları, gerçek komutla yerleştirme, üç yükseklik, yönler, boya, kayıt ve ana kaynakların korunması.
+
+`node build-single-storey.cjs` kapı verisini de yerel STL'den yeniden üretir. Dosyalar bağımsız taslakta bulunur; çevrimdışı `file://` açılışında ek sunucu veya STL yükleme işlemi gerekmez.
 
 ## Komut düzeni
 

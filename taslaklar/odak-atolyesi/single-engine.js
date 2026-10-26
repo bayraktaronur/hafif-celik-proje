@@ -6635,6 +6635,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
 
  function openings(r){return r.items.flatMap(it=>G.elemanlar.filter(e=>e.segId===it.seg.id).map(e=>{const a=it.rev?it.off+it.L-e.t*it.L-e.en:it.off+e.t*it.L,z=e.tip_==='kapi'?0:210-e.yuk;return {e,a,b:a+e.en,z,top:z+e.yuk};}));}
  for(const r of A.runs){const holes=openings(r),models=[];
+  SteelDoor3D.append({r,holes,models,height,prefab,surfaces,parts,warnings,panelColor});
   for(const o of holes){if(!prefab||o.e.tip_!=='pencere')continue;
    const label=Number(o.e.en)+'×'+Number(o.e.yuk)+' cm';
    const mesh=(window.WindowSTLModels||[]).find(m=>m.key===Number(o.e.en)+'x'+Number(o.e.yuk));
@@ -6644,7 +6645,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    if(![250,280,300].includes(height))reasons.push('duvar yüksekliği '+height+' cm; gerçek pano modeli 250/280/300 cm için hazır');
    if(r.slots.some(p=>p.b>a&&p.a<b&&Number(p.k)!==10))reasons.push('model 10’luk duvar içindir');
    if(!r.slots.length||a<Math.min(...r.slots.map(p=>p.a))-.5||b>Math.max(...r.slots.map(p=>p.b))+.5)reasons.push(mesh.width+' cm pano duvar sınırına sığmıyor');
-   if(holes.some(q=>q!==o&&q.b>a&&q.a<b))reasons.push(mesh.width+' cm pano başka açıklıkla çakışıyor');
+   if(holes.some(q=>q!==o&&q.b>a&&q.a<b)||models.some(m=>m.o.e.tip_==='kapi'&&m.b>a&&m.a<b))reasons.push(mesh.width+' cm pano başka açıklıkla çakışıyor');
    if(reasons.length){warnings.add(label+': '+reasons.join('; ')+'. Şematik gösteriliyor.');continue;}
    const center=(o.a+o.b)/2,mid={x:r.ax+r.ux*center,y:r.ay+r.uy*center};
    const rooms=(G.rooms||[]).filter(q=>q.tip!=='veranda').map(q=>(q.nodeIds||[]).map(getNode)).filter(q=>q.length>=3&&q.every(Boolean));

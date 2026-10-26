@@ -1,0 +1,32 @@
+DEV-161 — Çelik kapı STL entegrasyonu — 26 Ekim 2026
+
+İstek ve kapsam
+Kullanıcı üç pano yüksekliğini içeren çelik kapının gerçek 3B görünümde kullanılmasını istedi. Yalnız taslaklar/odak-atolyesi/index.html ve onun bağımsız motoruna eklendi; taslak161. Ana Plan Studio5.9.137, src, dist, arakat, kullanıcı planları ve açık tarayıcı değiştirilmedi.
+
+Kaynak
+Orijinal: H:/Diğer bilgisayarlar/Bilgisayarım/Aİ TASARIMLAR/onurcad modeller/250cm-280cm-300cm Çelik Kapı.stl
+Orijinali korunarak kopyalanan ortak dosya: referanslar/2026-10-26-celik-kapi/250cm-280cm-300cm-celik-kapi.stl
+SHA-256 (orijinal ve kopya aynı): fd5cdbcbb14800b0950c5c443e5b00c715d8bd2c73ea5c8106752b693ac8472b
+1.416.834 bayt, ikili STL; SketchUp STL başlığı. 28.335 üçgen. STL birim/renk/malzeme içermiyor; verilen dosya adları, önceki cm kuralı ve tam250/280/300 boyları ile koordinatlar cm kullanıldı.
+
+Ölçüm ve ayrım
+X=[0,125], [250,375], [500,625] konumlarında üç pano; her birinde9.445 üçgen/15 bağlı parça. Boyları sırasıyla250,280,300cm; pano genişliği125cm. Panonun Y2..11,6 gövdesi9,6cm, ekseni6,8cm. Aynı duvarın standart10cm nominal kalınlığına yerleşir.
+Kasa dışı yaklaşık91,29×205cm, kanat gövdesi75,804×196,41cm. Üst pano boyu değişir; kapı ve donanım yüksekliği sabittir. NegatifY yüzünde kol/dekor bulunur; kaynak menteşe+X tarafında kabul edilerek plan menteşe bilgisine göre aynalanır. Kaynak üçgenler aynen saklanır; malzemeler yalnız bağlı parçaların geometrisinden panel/kasa/kanat/dekor/donanım olarak ayrılır. Kaynakta bazı açık ve manifold olmayan kenarlar vardır; otomatik mesh tamiri/eksik arka donanım üretimi yapılmadı.
+
+Entegrasyon
+build-steel-door.cjs özgün SHA'yı doğrular, üç varyantı ayrı olarak dönüştürür. Üçgenleri sadeleştirmez; aynı float koordinatlarını little-endian veri olarak saklar. Üretim konumundaki X250/500 ötelemesi sıfırlanır; ölçekleme yok. steel-door-models.js çevrimdışı yüklenir.
+steel-door-3d.js yalnız prefabrik, çelik kapı katalog seçimi90×205, pano yüksekliği250/280/300 ve nominal10cm duvar için çalışır. Pano duvar eksenine, altıZ0'a oturur. Planın menteşe bilgisi ve duvar parçasının ters oluşu dikkate alınır; dekoratif yüz kapalı oda sınırının dışına bakar. Oda henüz kapanmamışsa plandaki açılma yönünden dış taraf tahmin edilir.
+Kaynakta kasa dışı91,29cm, mevcut katalog/plan nominal açıklığı90cm'dir. Kaynak kasa esnetilmedi; plan ve katalog ölçüleri otomatik değiştirilmedi. Bu fark kullanıcıya ait imalat detayı doğrulaması yerine geçmez.
+Pano tüm yüksekliğiyle çizilir; aynı yerde eski şematik kapı ve duvar dolgusu tekrar çizilmez. Duvar sonunda125cm panonun yalnız taşan yan kısmı sınırda kesilir; kasa/kanat/donanım değiştirilmez. Kasayı sığdırmayan sınırda veya başka açıklıkla çakışmada mevcut şematik görünüm ve gerekçe kullanılır. H ve köşe birleşimleri mevcut motorla korunur; gizlenmez.
+Pano, Boyacı iç/dış cephe seçimini izler. Kasa/kanat için kahverengi, donanım için metal gri kullanıldı; bunlar STL'den alınan renkler değildir. Diğer kapı türleri, eski katalogsuz dış kapılar ve özel ölçüler otomatik çelik kapıya çevrilmez. Ana motor, plan, metraj, fiyat, üretim hesabı ve proje veri şeması değişmedi.
+
+Kullanım
+Taslak161 → Yapı → Kapı → Sol çelik kapı / Sağ çelik kapı90×205 → duvara yerleştir →3D. Sol duvar yükseklik seçimi250/280/300 kendi modelini getirir. Projeyi Kaydet ile JSON olarak koruyup sayfayı yenileyin; açık müşteri projesine bu çalışma sırasında müdahale edilmedi. Önceden var olan genel “Dış kapı” öğeleri için çelik kapı ürünü ayrıca seçilmelidir.
+
+Kontroller
+steel-door-check.cjs geçti: kaynak SHA ve28.335 üçgenin tüm koordinatları birebir; her varyantta205cm kasa, doğru pano boyu. Gerçek ekran tıklaması ve katalogdan kapı yerleştirme. Dört duvar yönü×ters/düz segment×iki menteşe, dış yön, sonlu koordinatlar. Gerçek yükseklik seçicisinde250/280/300, tekrar çizilen açıklık yok; plan/metraj değişmedi. Pano boyası kapı/donanımı etkilemiyor. Özel ölçü, diğer ürün,270cm,6cm duvar, açıklık çakışması şematik geri dönüşleri. Örnek planda uç pano kesimi ve kapının korunması. Yenileme/JSON, STL verisinin proje JSON'una gömülmemesi. Ağ isteği/JS hatası yok; ana kaynakların54SHA kaydı ve dist korunuyor.
+single-check.cjs geçti: ana motorla49panel/oda/metraj eşitliği, gerçek duvar çizimi/oda kapatma, geri al/ileri al, metin/ölçü, çatı-malzemeler-duvar yüksekliği, standart tavan/miniH, kayıt/açma/yenileme, PDF,980/1280/1920 ekranları ve ana depolama verilerinin korunması.
+Görsel kontrol:250/280/300 ön cephe ve izometrik görünüş incelendi. Kanat/kol/kilit/pano görünümü kaynakla tutarlı. Paylaşılan örnek kanıtlar:2026-10-26-celik-kapi-250.png ve2026-10-26-celik-kapi-300.png. Testler ayrı görünmez Edge oturumunda yapıldı.
+
+Devam
+DEV-161 tamam. Son kullanıcı kendi projesinde çelik kapı ürününü seçerek inceleyebilir. Mevcut müşterinin son JSON'u paylaşılmadı/doğrulanmadı; Git ile tarayıcıdaki açık plan taşınmaz. Önceki açık işler DEVAM.md içinde korunur.

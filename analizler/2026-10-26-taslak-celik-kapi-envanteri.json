@@ -1,0 +1,34 @@
+{
+  "task": "DEV-161",
+  "prototypeRevision": "161",
+  "mainRevision": "5.9.137",
+  "source": {
+    "originalPath": "H:/Diğer bilgisayarlar/Bilgisayarım/Aİ TASARIMLAR/onurcad modeller/250cm-280cm-300cm Çelik Kapı.stl",
+    "sharedPath": "referanslar/2026-10-26-celik-kapi/250cm-280cm-300cm-celik-kapi.stl",
+    "sha256": "fd5cdbcbb14800b0950c5c443e5b00c715d8bd2c73ea5c8106752b693ac8472b",
+    "bytes": 1416834,
+    "triangles": 28335
+  },
+  "artifacts": {
+    "taslaklar/odak-atolyesi/build-single-storey.cjs": "d3e792287ff55df103aefc447dc5d1ddbc3d404b8e4cca6125d4711d0d175e87",
+    "taslaklar/odak-atolyesi/build-steel-door.cjs": "01a65b08efbd4de4ca2b24565b8b6c15854b35cdaa9b73d40dcf8d8a4df54144",
+    "taslaklar/odak-atolyesi/steel-door-models.js": "583407c40c24615e6e63df4b49f91a05e6dd5783bade5956d4bee0f808793d32",
+    "taslaklar/odak-atolyesi/steel-door-3d.js": "b9c42fbcda0913c11675f451a1edcefba8efa2709a95dc8bf93c78563369c063",
+    "taslaklar/odak-atolyesi/steel-door-build.cjs": "26f7906e5612c473de99d4a6114881952616803f4488e0f423a3945019119172",
+    "taslaklar/odak-atolyesi/steel-door-check.cjs": "8bd26c6efd5258aa7753e580a8c2bb4ca77deae11c848b7355863cf6e0fff950",
+    "taslaklar/odak-atolyesi/single-storey.js": "7ee19fdb973ff1a2b6cab6c96b9e3b08f1f0b39a5a94672e398a965fe958d097",
+    "taslaklar/odak-atolyesi/index.html": "b94073abb550a1cc943d523d02b271010bb29150a4203f94fcf9316918460e79",
+    "taslaklar/odak-atolyesi/single-engine.js": "ea9eb5618c2502f546343b940819d422b07d5cae1a3be527babbaffc4e588673",
+    "taslaklar/odak-atolyesi/single-engine-manifest.json": "a5868c5283b4d560e1292546d8a70ef1c16a829b4e40b909e1efd1412cf3ab18",
+    "taslaklar/odak-atolyesi/README.md": "7dc8176b14282fd099b5547851d1bd1b4564152473c129d5fe0b93b39c01dc42"
+  },
+  "protectedSources": "taslaklar/odak-atolyesi/single-engine-manifest.json",
+  "visualChecks": {
+    "analizler/2026-10-26-celik-kapi-250.png": "9de1f772238d5a2df020e08b0b4c171f79a67681dbc43bb5807cd0749319ba3e",
+    "analizler/2026-10-26-celik-kapi-300.png": "a9d1936bd333868317c3788b215d0a46d3f09d03a19da0d2bda759d40190e4e7"
+  },
+  "tests": [
+    "steel-door-check.cjs: passed",
+    "single-check.cjs: passed"
+  ]
+}
