@@ -21,3 +21,11 @@
 #presentationStatus{color:#e2b875;margin-top:14px}
 #presentationDialog footer{display:flex;justify-content:flex-end;padding:12px 24px 20px}
 #presentationDone{background:#9ed8be!important;color:#142a22!important;border-color:#9ed8be!important}
+.presentation-edges{margin:0 0 22px;padding:16px;background:#15222a;border:1px solid #3c525d;border-radius:10px}
+.presentation-edges>label{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:600}
+.presentation-edges output{font-variant-numeric:tabular-nums;color:#a6dec6}
+#presentationOutlines{display:block;width:100%;margin:18px 0 10px;accent-color:#9ed8be;cursor:pointer}
+.presentation-range-labels{display:flex;justify-content:space-between;color:#9bb0bc;font-size:11px}
+.presentation-presets{display:flex;gap:6px;margin-top:16px}
+#presentationDialog .presentation-presets button{flex:1;padding:8px 4px;font-size:11px;white-space:nowrap;background:transparent}
+#presentationDialog .presentation-presets button[aria-pressed=true]{border-color:#9ed8be;color:#c3efdc;background:#2d4941}

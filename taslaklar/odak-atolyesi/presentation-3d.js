@@ -1,13 +1,13 @@
 /* Local GPU presentation renderer. Reuses exact scene polygons; no model edits or external assets. */
 (function(){
  'use strict';
- const defaults={mode:'working',light:'day',shadows:true,textures:true};
+ const defaults={mode:'working',light:'day',shadows:true,textures:true,outlines:35};let outlinePreview=null;
  const presets={day:{sun:[-.5,.65,.85],key:1.02,ambient:.52,warm:[1.02,1,.96]},soft:{sun:[-.3,.4,.9],key:.65,ambient:.76,warm:[1,1,1]},evening:{sun:[-.8,.4,.4],key:.9,ambient:.55,warm:[1.12,.96,.78]}};
- const canvas=document.createElement('canvas');let gl,program,depthProgram,shadow,cache,lost=false,shadowKey='',initError='';
+ const canvas=document.createElement('canvas');let gl,program,depthProgram,outlineProgram,shadow,cache,lost=false,shadowKey='',initError='';
  const stats={backend:'webgl',view:'presentation',uploads:0,shadowBuilds:0};
  // G is a script lexical binding rather than window.G in the existing engine.
- const current=()=>({...defaults,...(typeof G!=='undefined'?G.scenePresentation:null)});
- function validate(v){if(v==null)return;if(!v||typeof v!=='object'||!['working','presentation'].includes(v.mode)||!presets[v.light]||typeof v.shadows!=='boolean'||typeof v.textures!=='boolean')throw Error('Geçersiz 3D sunum ayarı.');}
+ const current=()=>({...defaults,...(typeof G!=='undefined'?G.scenePresentation:null),...(outlinePreview===null?{}:{outlines:outlinePreview})});
+ function validate(v){if(v==null)return;if(!v||typeof v!=='object'||!['working','presentation'].includes(v.mode)||!presets[v.light]||typeof v.shadows!=='boolean'||typeof v.textures!=='boolean'||(v.outlines!==undefined&&(!Number.isFinite(v.outlines)||v.outlines<0||v.outlines>100)))throw Error('Geçersiz 3D sunum ayarı.');}
  const active=()=>current().mode==='presentation';
  const unit=v=>{const n=Math.hypot(...v)||1;return v.map(x=>x/n);},dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
  const rgb=hex=>[1,3,5].map(i=>parseInt((hex||'#a0a0a0').slice(i,i+2),16)/255);
@@ -59,10 +59,15 @@
  }`;
  const depthVertex='attribute vec3 position;uniform mat4 lightMatrix;void main(){gl_Position=lightMatrix*vec4(position,1.0);}';
  const depthFragment=`precision highp float;void main(){vec4 v=fract(gl_FragCoord.z*vec4(1.0,255.0,65025.0,16581375.0));v-=v.yzww*vec4(1.0/255.0,1.0/255.0,1.0/255.0,0.0);gl_FragColor=v;}`;
+ // Screen-space strips, not gl.lineWidth (which is limited to one pixel on many GPUs).
+ const outlineVertex=`attribute vec3 start;attribute vec3 end;attribute vec2 corner;uniform mat4 camera;uniform vec2 viewport;uniform float width;varying float side;
+ void main(){vec4 a=camera*vec4(start,1.0),b=camera*vec4(end,1.0);vec2 delta=(b.xy/max(b.w,.0001)-a.xy/max(a.w,.0001))*viewport;float len=length(delta);vec2 n=vec2(-delta.y,delta.x)/max(len,.0001);vec4 p=mix(a,b,corner.x);p.xy+=n*corner.y*width/viewport*p.w;p.z-=.00001*p.w;if(a.w<=0.0||b.w<=0.0||len<.01)p=vec4(2.0,2.0,2.0,1.0);side=corner.y;gl_Position=p;}`;
+ const outlineFragment=`precision highp float;varying float side;uniform float strength;uniform float width;
+ void main(){float aa=1.0-smoothstep(max(0.0,1.0-1.5/width),1.0,abs(side));gl_FragColor=vec4(.055,.065,.07,aa*(.25+.75*strength));}`;
  function makeProgram(v,f){const p=gl.createProgram();for(const [type,src]of [[gl.VERTEX_SHADER,v],[gl.FRAGMENT_SHADER,f]]){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));gl.attachShader(p,s);gl.deleteShader(s);}gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(p));return p;}
  function init(){if(lost)return false;if(initError)throw Error(initError);if(program&&shadow)return true;gl=canvas.getContext('webgl',{antialias:true,alpha:false,preserveDrawingBuffer:true});if(!gl)throw Error('Sunum için WebGL kullanılamıyor. Çalışma görünümü açık.');
   try{const derivatives=gl.getExtension('OES_standard_derivatives');
-  program=makeProgram(vertexShader,(derivatives?'#extension GL_OES_standard_derivatives : enable\n#define RECEIVER_GRADIENT\n':'')+fragmentShader);depthProgram=makeProgram(depthVertex,depthFragment);
+  program=makeProgram(vertexShader,(derivatives?'#extension GL_OES_standard_derivatives : enable\n#define RECEIVER_GRADIENT\n':'')+fragmentShader);depthProgram=makeProgram(depthVertex,depthFragment);outlineProgram=makeProgram(outlineVertex,outlineFragment);
   const size=Math.min(2048,gl.getParameter(gl.MAX_TEXTURE_SIZE),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE)),texture=gl.createTexture(),frame=gl.createFramebuffer(),depth=gl.createRenderbuffer();
   gl.bindTexture(gl.TEXTURE_2D,texture);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,size,size,0,gl.RGBA,gl.UNSIGNED_BYTE,null);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
   gl.bindFramebuffer(gl.FRAMEBUFFER,frame);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,texture,0);gl.bindRenderbuffer(gl.RENDERBUFFER,depth);gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT16,size,size);gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,depth);
@@ -72,25 +77,29 @@
  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true;stats.error='3D grafik bağlantısı kesildi.';});
  canvas.addEventListener('webglcontextrestored',()=>{gl=null;program=null;shadow=null;cache=null;shadowKey='';initError='';lost=false;window.RoofStudio?.repaint();});
  const upload=data=>{const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.STATIC_DRAW);return {buffer:b,count:data.length/12};};
- function release(){if(!cache)return;for(const name of ['opaque','glass','ground','lines','grid'])gl.deleteBuffer(cache[name].buffer);cache=null;}
+ function release(){if(!cache)return;for(const name of ['opaque','glass','ground','lines','grid','outlines'])gl.deleteBuffer(cache[name].buffer);cache=null;}
  function prepare(items,edges){if(cache?.items===items&&cache?.edges===edges)return cache;release();const opaque=[],glass=[],edgeMap=new Map(),lines=[],bounds={x0:Infinity,y0:Infinity,z0:Infinity,x1:-Infinity,y1:-Infinity,z1:-Infinity};
   const vertex=(arr,p,n,c,m)=>arr.push(p.x,p.y,p.z,...n,...c,...m),key=p=>[p.x,p.y,p.z].map(v=>Math.round(v*1000)).join(',');
-  const groups=[];
+  const groups=[],faceMap=new Map(),outlines=[];
   for(const item of items){const n=normal(item.poly),c=rgb(item.color),m=material(item),arr=m[0]===4?glass:opaque,start=arr.length/12;
    for(const p of item.poly)for(const k of ['x','y','z']){bounds[k+'0']=Math.min(bounds[k+'0'],p[k]);bounds[k+'1']=Math.max(bounds[k+'1'],p[k]);}
    for(let j=1;j<item.poly.length-1;j++)for(const p of [item.poly[0],item.poly[j],item.poly[j+1]])vertex(arr,p,n,c,m);
    if(m[0]===4)groups.push({start,count:arr.length/12-start,center:item.poly.reduce((s,p)=>s.map((v,i)=>v+[p.x,p.y,p.z][i]/item.poly.length),[0,0,0])});
    // All physical profiles remain as surfaces. Only redundant tessellation edges are omitted.
-   if(!item.roof&&!item.drainage&&item.material!=='glass'&&item.material!=='panel'&&!['openingMark','wallPanel','ridgeCap','vergeTrim','vergeBottom','soffit','cladding'].includes(item.kind))for(let i=0;i<item.poly.length;i++){const a=item.poly[i],b=item.poly[(i+1)%item.poly.length],ka=key(a),kb=key(b);if(ka===kb)continue;const k=ka<kb?ka+'|'+kb:kb+'|'+ka,old=edgeMap.get(k);if(old){old.count++;if(Math.abs(dot(old.n,n))<.94||old.color!==item.color)old.feature=true;}else edgeMap.set(k,{a,b,n,color:item.color,count:1});}
+   if(m[0]!==4&&item.kind!=='openingMark'){const k=item.poly.map(key).sort().join('|'),old=faceMap.get(k);if(old)old.count++;else faceMap.set(k,{item,n,count:1});}
   }
-  for(const e of edgeMap.values())if(e.count===1||e.feature){const color=rgb(e.color).map(v=>v*.58);for(const p of [e.a,e.b])vertex(lines,p,[0,0,1],color,[0,1,0]);}
-  for(const e of edges)for(const p of [e.p,e.q])vertex(lines,p,[0,0,1],rgb(e.color||'#8e979c').map(v=>v*.85),[0,1,0]);
+  // Remove paired internal faces before finding edges. Coplanar STL triangles stay invisible.
+  for(const {item,n,count} of faceMap.values()){if(count%2===0)continue;for(let i=0;i<item.poly.length;i++){const a=item.poly[i],b=item.poly[(i+1)%item.poly.length],ka=key(a),kb=key(b);if(ka===kb)continue;const k=ka<kb?ka+'|'+kb:kb+'|'+ka,old=edgeMap.get(k);if(old){old.count++;if(Math.abs(dot(old.n,n))<.94)old.feature=true;}else edgeMap.set(k,{a,b,n,count:1});}}
+  const seen=new Set();function edge(a,b){const ka=key(a),kb=key(b),k=ka<kb?ka+'|'+kb:kb+'|'+ka;if(ka===kb||seen.has(k))return;seen.add(k);for(const [t,side] of [[0,-1],[1,-1],[1,1],[0,-1],[1,1],[0,1]])outlines.push(a.x,a.y,a.z,b.x,b.y,b.z,t,side);}
+  for(const e of edgeMap.values())if(e.count===1||e.feature)edge(e.a,e.b);
+  for(const e of edges)edge(e.p,e.q);
   if(!items.length)Object.assign(bounds,{x0:0,y0:0,z0:0,x1:100,y1:100,z1:100});
   const span=Math.max(500,bounds.x1-bounds.x0,bounds.y1-bounds.y0),ground=[],z=Math.min(0,bounds.z0)-.12,x=bounds.x0-span*3,y=bounds.y0-span*3,X=bounds.x1+span*3,Y=bounds.y1+span*3;
   for(const p of [{x,y,z},{x:X,y,z},{x:X,y:Y,z},{x,y,z},{x:X,y:Y,z},{x,y:Y,z}])vertex(ground,p,[0,0,1],[1,1,1],[5,1,0]);
   const grid=[];for(let x=Math.floor((bounds.x0-300)/100)*100;x<=bounds.x1+300;x+=100)for(const y of [bounds.y0-300,bounds.y1+300])vertex(grid,{x,y,z:z+.03},[0,0,1],[.79,.81,.83],[0,1,0]);
   for(let y=Math.floor((bounds.y0-300)/100)*100;y<=bounds.y1+300;y+=100)for(const x of [bounds.x0-300,bounds.x1+300])vertex(grid,{x,y,z:z+.03},[0,0,1],[.79,.81,.83],[0,1,0]);
-  cache={items,edges,bounds,opaque:upload(opaque),glass:upload(glass),lines:upload(lines),ground:upload(ground),grid:upload(grid),groups};shadowKey='';stats.uploads++;stats.triangles=(opaque.length+glass.length)/36;stats.lines=lines.length/24;return cache;
+  const outlineBuffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,outlineBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(outlines),gl.STATIC_DRAW);
+  cache={items,edges,bounds,opaque:upload(opaque),glass:upload(glass),lines:upload(lines),outlines:{buffer:outlineBuffer,count:outlines.length/8},ground:upload(ground),grid:upload(grid),groups};shadowKey='';stats.uploads++;stats.triangles=(opaque.length+glass.length)/36;stats.lines=seen.size;return cache;
  }
  function lightMatrix(bounds,sun){const z=unit(sun),x=unit(cross([0,0,1],z)),y=cross(z,x),center=[(bounds.x0+bounds.x1)/2,(bounds.y0+bounds.y1)/2,(bounds.z0+bounds.z1)/2];let extent=[0,0,0];
   const ground=Math.min(0,bounds.z0)-.12;
@@ -107,11 +116,12 @@
   const matrix=(name,v)=>gl.uniformMatrix4fv(gl.getUniformLocation(program,name),false,new Float32Array(v)),vec=(name,v)=>gl.uniform3fv(gl.getUniformLocation(program,name),v),num=(name,v)=>gl.uniform1f(gl.getUniformLocation(program,name),v);
   matrix('camera',project.matrix);matrix('lightMatrix',lm);vec('sun',sun);vec('warm',preset.warm);vec('eye',Object.values(project.eye));const yaw=Camera3D.state.yaw*Math.PI/180,pitch=Camera3D.state.pitch*Math.PI/180;vec('viewDirection',[Math.sin(yaw)*Math.cos(pitch),Math.cos(yaw)*Math.cos(pitch),Math.sin(pitch)]);num('perspective',project.perspective?1:0);vec('groundColor',bg);num('darkGround',dark?1:0);num('keyLight',preset.key);num('ambient',preset.ambient);num('useShadow',cfg.shadows?1:0);num('textures',cfg.textures?1:0);num('shadowSize',shadow.size);num('linePass',0);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,shadow.texture);gl.uniform1i(gl.getUniformLocation(program,'shadowMap'),0);
   bind(program,data.ground);gl.drawArrays(gl.TRIANGLES,0,data.ground.count);gl.enable(gl.POLYGON_OFFSET_FILL);gl.polygonOffset(1,1);bind(program,data.opaque);gl.drawArrays(gl.TRIANGLES,0,data.opaque.count);gl.disable(gl.POLYGON_OFFSET_FILL);
-  if(options.display?.outlines){num('linePass',1);bind(program,data.lines);gl.drawArrays(gl.LINES,0,data.lines.count);num('linePass',0);}
+  if(cfg.outlines>0){gl.useProgram(outlineProgram);gl.bindBuffer(gl.ARRAY_BUFFER,data.outlines.buffer);for(let i=0;i<gl.getParameter(gl.MAX_VERTEX_ATTRIBS);i++)gl.disableVertexAttribArray(i);for(const [name,size,off] of [['start',3,0],['end',3,12],['corner',2,24]]){const at=gl.getAttribLocation(outlineProgram,name);gl.enableVertexAttribArray(at);gl.vertexAttribPointer(at,size,gl.FLOAT,false,32,off);}
+   gl.uniformMatrix4fv(gl.getUniformLocation(outlineProgram,'camera'),false,new Float32Array(project.matrix));gl.uniform2f(gl.getUniformLocation(outlineProgram,'viewport'),canvas.width,canvas.height);const strength=cfg.outlines/100;gl.uniform1f(gl.getUniformLocation(outlineProgram,'strength'),strength);gl.uniform1f(gl.getUniformLocation(outlineProgram,'width'),(1+2.2*strength)*(options.lineScale||1)*canvas.width/w);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);gl.drawArrays(gl.TRIANGLES,0,data.outlines.count);gl.depthMask(true);gl.disable(gl.BLEND);for(let i=0;i<gl.getParameter(gl.MAX_VERTEX_ATTRIBS);i++)gl.disableVertexAttribArray(i);gl.useProgram(program);}
   if(options.display?.grid){num('linePass',1);bind(program,data.grid);gl.drawArrays(gl.LINES,0,data.grid.count);num('linePass',0);}
   gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);bind(program,data.glass);const view=[Math.sin(yaw)*Math.cos(pitch),Math.cos(yaw)*Math.cos(pitch),Math.sin(pitch)];for(const g of data.groups.slice().sort((a,b)=>dot(a.center,view)-dot(b.center,view)))gl.drawArrays(gl.TRIANGLES,g.start,g.count);gl.depthMask(true);gl.disable(gl.BLEND);
   ctx.drawImage(canvas,0,0,w,h);Object.assign(stats,{backend:'webgl',view:'presentation',width:canvas.width,height:canvas.height,antialias:gl.getContextAttributes().antialias,ms:performance.now()-t,error:null});return true;
  }catch(e){stats.error=e.message;return false;}}
  function framingPoints(points){if(!active()||!current().shadows||!points.length)return points;const sun=presets[current().light].sun,z=points.reduce((v,p)=>Math.min(v,p.z),0)-.12;return [...points,...points.map(p=>({x:p.x-(p.z-z)*sun[0]/sun[2],y:p.y-(p.z-z)*sun[1]/sun[2],z}))];}
- window.Presentation3D={render,active,current,validate,defaults,presets,stats,framingPoints};
+ window.Presentation3D={render,active,current,validate,defaults,presets,stats,framingPoints,previewOutline(value){outlinePreview=value;}};
 })();

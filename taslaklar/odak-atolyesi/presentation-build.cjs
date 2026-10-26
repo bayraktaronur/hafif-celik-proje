@@ -23,6 +23,7 @@ module.exports=function(file,s,once){
    if(options.exactPixels)throw Error('Sunum görüntüsü oluşturulamadı. Çalışma görünümüne geçin veya grafik desteğini kontrol edin.');
   }`);
  if(file==='src/roof.js'){
+  s=once(s,'{exactPixels:true,background:options.background}','{exactPixels:true,background:options.background,lineScale:scale}');
   s=once(s,"document.getElementById('rainDialog')?.open)return;","document.getElementById('rainDialog')?.open||document.getElementById('presentationDialog')?.open)return;");
   s=once(s,'p=Camera3D.project(sceneCache.points,w,h,fit?','p=Camera3D.project(fit?Presentation3D.framingPoints(sceneCache.points):sceneCache.points,w,h,fit?');
   s=once(s,"    const ctx=out.getContext('2d');if(!ctx)",`    if(p.matrix){project.matrix=p.matrix.map((v,i)=>i%4===0?v*w*scale/out.width:i%4===1?v*h*scale/out.height:v);project.eye=p.eye;project.perspective=p.perspective;}

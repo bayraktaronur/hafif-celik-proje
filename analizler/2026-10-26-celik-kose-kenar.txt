@@ -1,0 +1,61 @@
+DEV-171 — Hafif çelik köşe kapanışı ve 3D kenar belirginliği
+26 Ekim 2026 / iş bilgisayarı / bağımsız taslak 171
+
+İstek ve kapsam
+Kullanıcı, hafif çelik yapının 3D köşesindeki dikey açıklığın kapanmasını ve
+Enscape ekranlarında gösterdiği %0 / %35 / %65 Outlines davranışını istedi.
+Değişiklik yalnız taslaklar/odak-atolyesi içindedir. Ana uygulama 5.9.137,
+src kaynakları, dist ve arakat korunur. Mevcut kullanıcı çizimi açılmadı,
+yenilenmedi veya değiştirilmedi. Güncel müşteri JSON aktarımı doğrulanmadı.
+
+Köşe birleşimi
+- Hafif çelik duvarların düz eksen ucu yerine, bağlı iki duvarın gerçek
+  kalınlıklarından ortak gönye kesim yüzü oluşturulur. İç/dış dönüşler,
+  farklı kalınlıklar ve açılı birleşimler aynı uç noktalarını paylaşır.
+- Çok dar açı/kısa dönüşte uzun sivrilme yerine ortak pah kullanılır.
+  Serbest uç uzatılmaz. T/X birleşimleri mevcut örtüşmesini korur.
+- Kapı/pencere boşlukları aynı konum ve yüksekliklerde oyulur. Hücrelerin
+  içte kalan ortak yüzleri elenir; açıklık hizaları cephede sahte panel
+  çizgisi üretmez. Alt yüzler kapatılır.
+- Bu bir 3D duvar gövdesi düzeltmesidir. Akslar, duvar kalınlıkları,
+  açıklık ölçüleri ve mevcut imalat/metraj verileri değiştirilmez.
+  Prefabrik panel/H/köşe kesim kurallarına dokunulmaz.
+
+Kullanım
+3D > Görünüm: Sunum > Görsel ayarlar > Kenar çizgileri.
+%0 vurguyu kapatır, %100 en belirgin çizgiyi verir. Kapalı, Hafif (%35)
+ve Belirgin (%65) hazır seçimleri vardır; başlangıç %35'tir.
+Kaydırıcı canlı önizleme yapar. Bırakıldığında tek geri alma adımıyla
+kaydedilir. Kenarlar düğmesi kapatır/son pozitif değeri geri getirir.
+JSON, otomatik yedek ve geri al/yinele bu ayarı taşır. Eski dosyalarda
+eksik değer %35 olarak tamamlanır. Geçersiz aralık/tip reddedilir.
+
+Çizgi vurgusu fiziksel H, U, köşe, dere ve iniş parçalarını kaldırmaz.
+Sadece görünür gerçek sınırlar vurgulanır; eş düzlem üçgen kenarları ve
+duvar hücrelerinin iç yüzleri kontura dönüşmez. Ekran pikseline göre
+çizilen şeritler, donanımın tek piksel çizgi kalınlığı sınırlamasına
+bağlı kalmadan belirginlik sağlar. 4K PNG aynı ayarı ve orantılı çizgi
+kalınlığını kullanır. Bu özellik yerel Sunum motorundadır; Enscape
+entegrasyonu veya tüm Enscape ayarlarının uygulanması değildir.
+
+Doğrulama
+steel-outline-check.cjs: 48 açı/yön/kalınlık senaryosu; T/X ve veranda
+ayrımı; iç dönüşlü gerçek çelik modelde kapı/pencere ve parça/metrajın
+ana uygulamayla eşitliği; dört farklı kontur çıktısı; canlı önizlemede
+projenin değişmemesi, tek undo; toggle; eski JSON ve geri yükleme;
+3840 x 2160 PNG. Kontur değişimlerinde GPU yükleme ve gölge üretimi
+artışı sıfır. JavaScript hatası yok.
+presentation-check.cjs: 24 kamera birleşimi, üç ışık, gölge/doku,
+kayıt/açma, 4K/dikey/kadraj, hata temizliği, çevrimdışı çalışma geçti.
+single-check.cjs: prefabrik panel/birleşim/metraj eşitliği, çizim,
+geri al/yinele, tavan, kayıt, PDF, üç ekran genişliği geçti.
+scene-output-check.cjs ve foundation-performance-check.cjs geçti.
+Köşe, %0/%65 görünüş ve ayar penceresi görsel olarak incelendi.
+Kaynak/korunan dosya/kanıt SHA-256 değerleri aynı adlı envanterdedir.
+
+Teslim ve devam
+Kod, bu rapor, ilgili referans ekranları ve kanıtlar DEV-171 commit'ine
+alınır. İlgisiz yerel notlar ve özel SKP dosyası hariç tutulur. Push
+sonrasında uzak main SHA eşitliği teslimde doğrulanır. Önceki açık işler
+korunur. Kullanıcı çizimini Kaydet'ten sonra taslağı yenileyip Sunum >
+Görsel ayarlar yolundan kendi projesinde %0–100 karşılaştırabilir.

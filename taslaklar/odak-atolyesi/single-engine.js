@@ -6632,9 +6632,10 @@ function build(){
  if(meta.kind==='wallJoint'&&!meta.clipped){const center=poly.reduce((a,p)=>({x:a.x+p.x/poly.length,y:a.y+p.y/poly.length}),{x:0,y:0});let ranges=[[z0,z1]];
  for(const e of G.elemanlar){const seg=getSeg(e.segId),a=seg&&getNode(seg.n1),b=seg&&getNode(seg.n2);if(!a||!b)continue;const L=Math.hypot(b.x-a.x,b.y-a.y),ux=(b.x-a.x)/L,uy=(b.y-a.y)/L,t=(center.x-a.x)*ux+(center.y-a.y)*uy,n=-(center.x-a.x)*uy+(center.y-a.y)*ux;if(t<=e.t*L||t>=e.t*L+e.en||Math.abs(n)>seg.k/2+.2)continue;const lo=e.tip_==='kapi'?0:210-e.yuk,hi=lo+e.yuk;ranges=ranges.flatMap(([x,y])=>[[x,Math.min(y,lo)],[Math.max(x,hi),y]].filter(([x,y])=>y>x));warnings.add('Açıklıkla çakışan birleşim yalnız açıklık dışında gösterilir; plan mesnetlerini kontrol edin.');}
  for(const [a,b] of ranges)box(poly,a,b,color,{...meta,clipped:true});return;}
-surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];surfaces.push({...meta,poly:[{...p,z:z0},{...q,z:z0},{...q,z:z1},{...p,z:z1}],color,shade:.78+.18*Math.abs(q.x-p.x)/Math.max(.001,Math.hypot(q.x-p.x,q.y-p.y))});});}
+if(meta.steelSolid)surfaces.push({...meta,poly:poly.slice().reverse().map(p=>({...p,z:z0})),color,shade:.78});surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forEach((p,i)=>{const q=poly[(i+1)%poly.length];surfaces.push({...meta,poly:[{...p,z:z0},{...q,z:z0},{...q,z:z1},{...p,z:z1}],color,shade:.78+.18*Math.abs(q.x-p.x)/Math.max(.001,Math.hypot(q.x-p.x,q.y-p.y))});});}
  function rect(r,a,b,c,d,z0,z1,color,meta){const P=(x,y)=>({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y});box([P(a,c),P(b,c),P(b,d),P(a,d)],z0,z1,color,meta);}
 
+ const steelJoins=prefab?null:SteelWallJoins.build(G.nodes,G.segs);
  function openings(r){return r.items.flatMap(it=>G.elemanlar.filter(e=>e.segId===it.seg.id).map(e=>{const a=it.rev?it.off+it.L-e.t*it.L-e.en:it.off+e.t*it.L,z=e.tip_==='kapi'?0:210-e.yuk;return {e,a,b:a+e.en,z,top:z+e.yuk};}));}
  for(const r of A.runs){const holes=openings(r),models=[];
   SteelDoor3D.append({r,holes,models,height,prefab,surfaces,parts,warnings,panelColor});
@@ -6673,7 +6674,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    const xs=[a,b],zs=[0,height];for(const m of models){if(m.b>a&&m.a<b)xs.push(Math.max(a,m.a),Math.min(b,m.b));}for(const o of holes){if(o.b<=a||o.a>=b)continue;xs.push(Math.max(a,o.a),Math.min(b,o.b));zs.push(Math.max(0,Math.min(height,o.z)),Math.max(0,Math.min(height,o.top)));}
    xs.sort((a,b)=>a-b);zs.sort((a,b)=>a-b);
    for(let i=1;i<xs.length;i++)for(let j=1;j<zs.length;j++){const l=xs[i-1],u=xs[i],lo=zs[j-1],hi=zs[j];if(u-l<.001||hi-lo<.001||models.some(m=>(l+u)/2>m.a&&(l+u)/2<m.b)||holes.some(o=>(l+u)/2>o.a&&(l+u)/2<o.b&&(lo+hi)/2>o.z&&(lo+hi)/2<o.top))continue;
-    if(core==null)rect(r,l,u,-t/2,t/2,lo,hi,panelColor,meta);else{rect(r,l,u,-core/2,core/2,lo,hi,'#d8d4bd',{...meta,layer:'eps'});rect(r,l,u,-t/2,-core/2,lo,hi,panelColor,{...meta,layer:'betopan'});rect(r,l,u,core/2,t/2,lo,hi,panelColor,{...meta,layer:'betopan'});}
+    if(!prefab){const footprint=SteelWallJoins.cell(steelJoins.get(r.owner.id),r,l,u,p.b);if(footprint.length>=3)box(footprint,lo,hi,panelColor,{...meta,steelSolid:true});}else if(core==null)rect(r,l,u,-t/2,t/2,lo,hi,panelColor,meta);else{rect(r,l,u,-core/2,core/2,lo,hi,'#d8d4bd',{...meta,layer:'eps'});rect(r,l,u,-t/2,-core/2,lo,hi,panelColor,{...meta,layer:'betopan'});rect(r,l,u,core/2,t/2,lo,hi,panelColor,{...meta,layer:'betopan'});}
    }
   }
   for(const o of holes){if(models.some(m=>m.o===o))continue;const e=o.e,door=e.tip_==='kapi',cat=OpeningCatalog.find(c=>c.id===e.catalogId),style=cat?.style||e.kapiTip,cols=cat?.cols||(['surme','cift-kanat'].includes(e.penTip)||['cift','double','double-glass','sliding'].includes(style)?2:1),meta={kind:'opening',partId:'opening:'+e.id,openingId:e.id,schematic:true};
@@ -6710,7 +6711,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
   }else warnings.add('Üçlü H, U ve diğer kalınlıkların profil geometrisi henüz detaylandırılmadı.');
  }
  if(window.ProjectSpecs)for(const cover of ProjectSpecs.covers()){box(cover.poly,0,height,panelColor,{kind:'hCover',partId:cover.id});parts.push({kind:'hCover',partId:cover.id,widthMm:60,depthMm:20,heightMm:height*10});}
- return {surfaces:window.ProjectSpecs?ProjectSpecs.facade(surfaces):surfaces,parts,warnings:[...warnings]};
+ const visible=prefab?surfaces:SteelWallJoins.exterior(surfaces);return {surfaces:window.ProjectSpecs?ProjectSpecs.facade(visible):visible,parts,warnings:[...warnings]};
 }
 window.Wall3D={build,panelColor};
 })();
@@ -7305,7 +7306,7 @@ window.Wall3D={build,panelColor};
     const scale=Math.min(out.width/w,out.height/h),dx=(out.width-w*scale)/2,dy=(out.height-h*scale)/2,p=Camera3D.project(fit?Presentation3D.framingPoints(sceneCache.points):sceneCache.points,w,h,fit?{padding:[64,64],fill:.96}:{}),project=v=>{const q=p(v);return {...q,x:dx+q.x*scale,y:dy+q.y*scale};};
     if(p.matrix){project.matrix=p.matrix.map((v,i)=>i%4===0?v*w*scale/out.width:i%4===1?v*h*scale/out.height:v);project.eye=p.eye;project.perspective=p.perspective;}
     const ctx=out.getContext('2d');if(!ctx)throw Error('PNG tuvali oluşturulamadı.');
-    if(!Scene3D.render(ctx,out.width,out.height,sceneCache.items,sceneCache.edges,project,{exactPixels:true,background:options.background}))throw Error('Yüksek çözünürlüklü çıktı için 3D grafik desteği kullanılamıyor.');
+    if(!Scene3D.render(ctx,out.width,out.height,sceneCache.items,sceneCache.edges,project,{exactPixels:true,background:options.background,lineScale:scale}))throw Error('Yüksek çözünürlüklü çıktı için 3D grafik desteği kullanılamıyor.');
     let x=Infinity,y=Infinity,X=-Infinity,Y=-Infinity;for(const v of sceneCache.points){const q=project(v);x=Math.min(x,q.x);y=Math.min(y,q.y);X=Math.max(X,q.x);Y=Math.max(Y,q.y);}
     return {width:out.width,height:out.height,bounds:{x,y,X,Y},triangles:Scene3D.stats.triangles,presentation:Presentation3D.active()};
    }finally{Object.assign(Camera3D.state,camera);Object.assign(Scene3D.state,display);}
