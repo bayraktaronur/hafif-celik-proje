@@ -1,0 +1,60 @@
+DEV-164 — Taslak164, beton sınırında dış köşe ve iç dönüş yakalama
+26 Ekim 2026 / iş bilgisayarı
+
+Kaynak ve talep
+Kullanıcının codex-clipboard-c9f96664-cc56-41ba-9a91-d0b74bf36daf.png ekranı:
+beton çiziminde köşe direğinin en dış köşesi ve işaretli iç dönüş yakalanmıyor.
+Orijinal yol, depodaki kopya ve SHA-256: aynı adlı envanter JSON dosyası.
+Açık müşteri çizimi okunmadı, yenilenmedi veya değiştirilmedi. Ekranın çizim
+JSON'u verilmediği için aynı duvar ilişkilerini içeren L/T planı ile doğrulandı.
+
+Bulgu
+Eski beton ekranı panel ve direkleri ayrı fiziksel sınırlar olarak kullanmıyordu.
+Merkez aksları ve yüz izdüşümleri köşelerle aynı öncelikle yarışıyordu.
+Merkez/yanlış yüz seçilince sonraki dik kenar gerçek dış köşeye hizalanmıyordu.
+Basit uç-köşe adayları T birleşimindeki iç dönüş noktasını üretmiyordu.
+
+Değişiklik (yalnız taslaklar/odak-atolyesi)
+- foundation-reference.js: mevcut pfAnaliz hat uç payları ve panel kalınlıkları,
+  pfKoseRect gerçek direk dikdörtgeni, veranda sınırlarından referans üretir.
+  Yapı ölçüleri, panel dizilimi, makas yönü veya müşteri projesi değiştirilmez.
+- Referans geometrisinin birleşik dış konturunu çıkarır; iç dönüş ve T kesişimi
+  artık düğümün kendisinden bağımsız gerçek yüz kesişimidir. İç oda konturları
+  bina dış köşesi olarak sunulmaz. Açık veranda uçları da kullanılabilir.
+- Köşeler, yüz yakalamasından önceliklidir; tolerans ekranda 12 pikseldir.
+  Dış yüz üzerinde ara nokta toleransı 10 pikseldir. Kesirli cm korunur.
+- Dik çizimde referans yüz ile kilitli yatay/dikey hattın tam kesişimi alınır;
+  yakın köşeyi yakalamak için dik kilit bozulmaz. Alt ile serbest çizim sürer.
+- Beton ekranında paneller/direkler aynı referans geometrisinden gösterilir;
+  H ve diğer birleşim işaretleri korunur. Yakalama etiketi dış direk köşesi,
+  iç dönüş veya dış yüz olduğunu söyler. Eski proje etiketi temizlenir.
+- Betonun ortak/kenara özel taşması bu dış sınırdan hesaplanmaya devam eder.
+  Önceden çizilmiş beton sınırları otomatik yer değiştirmez; köşe sürükleyerek
+  veya sayısal girişle düzenlenebilir. Var olan sahanlık/merdiven korunur.
+
+Doğrulama
+foundation-snap-check.cjs PASS:
+  ters yönlü poligonlar, iç dönüş, halka/iç boşluk, ayrık ve eğik kontur;
+  5 yakınlaştırma ölçeğinde köşe önceliği, kesirli ölçü, dik yüz kesişimi;
+  gerçek tarayıcıda L/T prefabrik plan, iki makas yönü ve yerel köşe tersleme;
+  gerçek fare ile altı dış köşe ve kapanış, panel metrajı/geometri değişmezliği;
+  yüz ortasından başlayan kenar, fare tekerleği, açık veranda ucu, gerçek
+  49 panelli örnek plan ve kayıtlı proje değişmezliği. Tarayıcı hatası yok.
+foundation-check.cjs PASS:
+  beton geometri/taşma/veranda/sahanlık/merdiven/hacim, 3D ortak kot,
+  JSON kaydet/aç, undo/redo, proje ayrımı, responsive görünüm, korunan kaynaklar.
+single-check.cjs PASS:
+  ana motorla aynı 49 panel/metraj, çizim/ölçü/metin/çatı/tavan/JSON/PDF ve
+  980/1280/1920 yerleşim. Ana programın kaynak/dağıtım hashleri değişmedi.
+Plan, yakın köşe ve gerçek örnek görüntüleri gözle incelendi.
+
+Kapsam ve devir
+Ana5.9.137, src, dist, arakat ve kullanıcı çizimleri korunmuştur.
+Çatı çalışma alanının yakalama/bağlanma kuralları bu görevde değiştirilmedi.
+Beton konturu nominal plan kalınlıkları ve gerçek köşe direği ayak izini
+esas alır; donatı veya statik tasarım hesabı değildir. Yeni bir fiyat yoktur.
+Önceki açık işler DEVAM'da korunur. İlgisiz yerel not/dosyalar commit dışıdır.
+Kullanıcı planını Kaydet ile yedekledikten sonra taslak sayfasını yenileyip
+Zemin betonu sekmesinde çizime devam edebilir. Müşteri JSON aktarımı ayrıca
+doğrulanmadı. Kod/rapor/referans teslimi Git commit/push ve uzak SHA eşitliği
+ile son adımda doğrulanır; otomatik arka plan dosya eşitlemesi yoktur.

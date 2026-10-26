@@ -1,8 +1,9 @@
 {
-  "task": "DEV-163",
+  "task": "DEV-164",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
+    "foundation snap: exposed panel/post perimeter, concave returns, corner priority and exact orthogonal face intersections",
     "ground concrete: flexible outline, per-edge setbacks, attached landings/stairs, shared Z origin, persisted bill and history",
     "referenceImages: project, history, recovery and native paste",
     "corner post plan symbol: opaque fill and true model footprint",
