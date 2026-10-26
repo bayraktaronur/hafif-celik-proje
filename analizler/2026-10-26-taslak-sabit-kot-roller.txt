@@ -1,0 +1,72 @@
+DEV-160 — Taslak160: sabit alt kot, mahya/açı kilitleri ve ana/yavru rol değişimi
+26 Ekim 2026 · İş bilgisayarı · Ana uygulama5.9.137 korunur
+
+Kaynak ve kullanıcı kararı
+Kullanıcı159 ekranında mahyayı330cm yapınca saçak altının183,77cm'ye düşmesini
+gösterdi. İstenen: duvar üstünden otomatik veya elle girilmiş alt kot korunurken
+mahya/açı birbirinden hesaplansın; kot ve açı kilitlenebilsin. Yeşil yavru ana
+mahyanın üstüne çıkarsa rollerin gerçek anlamda yer değiştirmesini açıkça istedi.
+Sohbet görselleri: codex-clipboard-01a591af-7631-467b-8d31-9372f0c5f887.png,
+codex-clipboard-33842a57-88b2-43bc-82a7-ef5b3488a26c.png,
+codex-clipboard-847076ba-93bf-4774-bbdb-c687240ba4b9.png.
+Yerel kaynak yolları/SHA-256 ve uygulama hashleri aynı adlı -envanteri.json'da.
+Görseller yerel Temp kaynağıdır; başka bilgisayara aktarıldığı doğrulanmadı.
+
+Değişiklik
+- Yalnız taslaklar/odak-atolyesi; üretim src/plan_cizim.html/dist değişmedi.
+- Üç ayrı grup: oturma seviyesi, mahya yüksekliği, çatı eğimi. Alt kot varsayılan
+  olarak duvar üstünden gelir. Elle gir seçimi yalnız çatı alt kotunu değiştirir;
+  duvarları kendiliğinden uzatmaz/kısaltmaz. Bu komut duvar yüksekliği ataması değildir.
+- Mahya mutlak kotu veya alt kottan yükselme gerçek çatı düzlemlerinden eğime
+  çevrilir; açı girilince mahya hesaplanır. Alt kot her iki durumda korunur.
+- Alt kot kilidi otomatik kaynaktan gelen mevcut değeri de sabitler. Mahya kilidi
+  mutlak mahyayı, açı kilidi eğimi korur. Mahya ve açı aynı anda kilitlenmez;
+  kilitli değer doğrudan değiştirilemez. %1–200 eğim dışındaki sonuç uygulanmaz.
+- Önceki159'da roofElevation ile aşağı taşınmış çatı, yeni pencereye alındığında
+  duvar üstüne dönüş ve mahyayı koruyan yeni eğim önizlenir. Kayıt yüklenirken
+  kendiliğinden düzeltilmez; Uygula gerekir. İptalde eski durum değişmez.
+- Daha yüksek yavru, ana role geçer. Eski ana, yeni ananın yavrusu olur. Yeni
+  ana yüzey aynı doğrultuda eski ana çatının karşı sınırına kadar devam eder;
+  örtüşme ortak üst yüzey hesabında kesilir. Bina plan alanına ilave yapılmaz.
+  Mahya, dere, levha alanı ve3B aynı modeldendir. Alt kotlar, duvarlar, plan
+  düğümleri ve global prefabrik panel/makas referans yönü değiştirilmez.
+- Eski ana yeniden daha yüksek yapılırsa ilk U bağlantısı geri kurulur.
+  roleSwap geçmişi orijinal bağlantı sınırını/rolleri taşır; JSON ve undo ile saklanır.
+  Bölüm adları korunur; listede, sağ panelde ve önizlemede güncel görev ayrıca görünür.
+- Bağlantılı çiftin yön/plan sınırı alanları kilitlidir; kot/açı düzenlenebilir.
+  Kopya bağımsız oluşturulur. Ana/yavru silme bağlantı geçmişini temizler; geri
+  alma çifti geri kurar. Diğer bağımlı çatı varsa standart bütünlük kontrolü sürer.
+- Önizleme ayrı kopyadadır; gerçek projenin değişmiş olduğu fark edilirse eski
+  önizleme uygulanmaz. Yeni U noktaları korunur, başarılı uygulama tek undo adımıdır.
+
+Kontroller (tamamı geçti)
+roof-level-check.cjs; roof-role-swap-check.cjs; roof-constraints-check.cjs:
+- Eski kabul/red geometri kuralı, 16 manuel kot birleşimi, dört yön/ters U sırası.
+- 3çatı tipi ×4yön ×3mahya yeri: yükseklik/eğim dönüşümü ve üç kilidin etkisi.
+- 4yön ×2U sırası ×dikdörtgen/çizilmiş sınır: rol değişimi, kesişim, dere, net
+  plan alanının aynı kalması, tekrar çözümde eşitlik, eski rollere geri dönüş.
+- Gerçek fareyle dört U noktası; 330/380cm örneğinde her iki alt kot250cm.
+  Uygula öncesi model değişmiyor; sonra önizleme ile kayıt aynı. Kilit/otomatik/
+  manuel girişler, boş/aşırı/negatif sonuç reddi, önceki159 dönüşü, undo/redo,
+  JSON ve yenileme, rollerin yeniden değişmesi ve çiftin iki yönden silinmesi.
+- Sentetik prefabrik duvarlar üzerinde3B inceleme; kot değişiminde duvar/düğüm
+  verileri birebir aynı. 900×700 dialog sınırları, masaüstü görünümü, JS hatası yok.
+roof-feedback-check.cjs:32geçerli dere+4alın bağlantısı,8yüksek yavru uyarısı;
+4gerçek tık/canlı eğim/iptal/undo/JSON/3B ve kaynak koruması.
+single-check.cjs:49panel örneği; ana motorla panel/joint/oda/metraj eşitliği,
+gerçek duvar+sayısal çizim, oda/metin/ölçü, malzeme/yükseklik, standart tavan/miniH,
+JSON/kurtarma/PDF,980/1280/1920 ve HTML/src/dist/ana kayıt izolasyonu.
+command-ui-check.cjs:seçim/komut grupları/arama/980–1920/görünürlük/3B.
+İzole, geçici Edge oturumları kullanıldı. Kullanıcının açık sekmesine erişilmedi.
+Kanıt görüntüleri artifacts/roof-constraints-*.png; yerel test çıktılarıdır.
+
+Kapsam sınırı / sonraki adım
+Rol değişimi tek dikdörtgen ana ve ona dik U bağlantılı beşik/tek eğimli çiftte
+desteklenir. Kırma/karmaşık çokgen ana, iç içe çoklu ana/yavru rol zinciri veya
+aynı ana için birden çok rol değişimi otomatik çözümlenmez, açıklayıcı hata verir.
+Geometrik yüzey/kaplama çözümüdür; yeni statik hesap, taşıyıcı bağlantı hesabı,
+köşe panel imalat kuralı, ayrı düşey kapama kesim/maliyet hesabı eklenmedi.
+Canlı müşteri JSON'u incelenmedi; test modeli kullanıldı. Tarayıcıdaki plan Git
+ile taşınmaz. Kullanıcı Kaydet sonrası taslağı yenileyerek160'ı açabilir.
+DEV-160 tamam; DEV-153 kullanıcı değerlendirmesi ve geçmiş açık işler korunur.
+Ana programa aktarım yetkilendirilmedi ve yapılmadı.

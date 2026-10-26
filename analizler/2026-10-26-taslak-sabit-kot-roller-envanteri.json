@@ -1,0 +1,47 @@
+{
+  "task": "DEV-160",
+  "prototypeRevision": "160",
+  "mainRevision": "5.9.137",
+  "sourceImages": [
+    {
+      "path": "C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-01a591af-7631-467b-8d31-9372f0c5f887.png",
+      "sha256": "dbad9eeb329e07c2ca96c08184a5b28bf5fbd3b32fc6f1f90d93fde31ee8a808",
+      "shared": false
+    },
+    {
+      "path": "C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-33842a57-88b2-43bc-82a7-ef5b3488a26c.png",
+      "sha256": "dac48c27ebc519a8c04000706e911c709293c4cf8dc0728ecf8ee0492f2b0ca3",
+      "shared": false
+    },
+    {
+      "path": "C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-847076ba-93bf-4774-bbdb-c687240ba4b9.png",
+      "sha256": "2da217ac2954fc3a160c6178124c211c4e5619018602a486a26a1b26320557ce",
+      "shared": false
+    }
+  ],
+  "artifacts": {
+    "taslaklar/odak-atolyesi/build-single-storey.cjs": "b4f0ab0bcee5d9ddb0c3da9baa4c824893bf396320e14b0fac54555058a1bc82",
+    "taslaklar/odak-atolyesi/index.html": "c6d473bfcc8c143d42bb0632fc8a3823f3f986068d90892c17a2d99c59a0c51e",
+    "taslaklar/odak-atolyesi/single-engine.js": "32f625e595e159325ce3318c9baac458fcdd54e57bf479a4fa854b5e31e0b5ab",
+    "taslaklar/odak-atolyesi/single-engine-manifest.json": "9f7f02d6f80e7b07cc8ef6809987f16da34001ce86bb178f8dbefcdedebf33a0",
+    "taslaklar/odak-atolyesi/single-storey.js": "46d9ab250befdb63bd3c236989b76208835fd362d60e515dfb1c2d5456bee08a",
+    "taslaklar/odak-atolyesi/roof-level-build.cjs": "b1fd5f018ea06824e2b6aae9f0e0b57b304e1861a852e0ece80f7b1baca8a0ca",
+    "taslaklar/odak-atolyesi/single-roof-level.js": "58836460096852d1c469ce0c75a16d9801680c1a10a1c8deb67044695cf61a55",
+    "taslaklar/odak-atolyesi/single-roof-level.css": "0b14c07eb90a7b4f2773d8ba04da8254d5062c95339180ce2e67e9390a7fdfdd",
+    "taslaklar/odak-atolyesi/roof-level-math.js": "4f3e3814522b42e721a1d3fb4eec7da69e5060d936b90336477e76a60feb0229",
+    "taslaklar/odak-atolyesi/roof-role-swap.js": "e9d69d1fc4c0edf4e3443b87605d0cb55dac3971c9a189c0f995ef2c4ca33eca",
+    "taslaklar/odak-atolyesi/roof-level-check.cjs": "2a7bf357a7e3caa9cc30b882a44d5769a6d39b8007f0b0a489d9f3a551a505e1",
+    "taslaklar/odak-atolyesi/roof-constraints-check.cjs": "3c870d0e6611fb54ccc37a20529ad0d66b4e2e2dd602bb226908cfcc6200d6b8",
+    "taslaklar/odak-atolyesi/roof-role-swap-check.cjs": "0244b55491e7501802ea37c00ac46a8b0ae2f8bae0733d48c59cebc3c37be1c9",
+    "taslaklar/odak-atolyesi/README.md": "dacab5a06485fd737a51aa7b3f77b37bcfaa2b1f7fb22e95417c484b58796e15"
+  },
+  "protectedSources": "taslaklar/odak-atolyesi/single-engine-manifest.json",
+  "localVisualChecks": {
+    "artifacts/roof-constraints-3d.png": "716a21a647c53c94677c6080edac78b2fab508fe062edf1f546c2e162c689169",
+    "artifacts/roof-constraints-child.png": "ee47e0e027bc61b000a196dd2d5dbbad954495d9519accd18f797f3dd546eb6b",
+    "artifacts/roof-constraints-compact.png": "e1398c2a98e95a59595c4922b06dec097c1dd36d5119059b2e9cfc26aba7b1d8",
+    "artifacts/roof-constraints-repair.png": "62df50a10ab6d4935d29b6a577b34431f34ae4c367251e734fbf2b7f0e23b75d",
+    "artifacts/roof-constraints-role-preview.png": "41d080687f0694168aabdf09c63209f7e0188264e3f010196cc381f39e4e4e6d",
+    "artifacts/roof-constraints-walls.png": "9e2c379266257aa79985d463a26fc077e31873ff5dec41e746dcf3f41d513f01"
+  }
+}

@@ -111,8 +111,20 @@ Yavru çatı için dört U noktası seçilince bağlantı nedeni sol tarafta gö
 
 ## Taslak 159 — Kot ve açı
 
+Bu tarihsel sürümün kot referansı davranışı taslak160 ile düzeltildi; güncel kullanım aşağıdadır.
+
 Dört U noktası sonrası **Yavru çatıyı alçalt / Ana çatıyı yükselt** düğmeleri Kot ve eğim penceresini açar. Mevcut çatıda sağdaki **Kot ve açı · önizle** düğmesini kullanın. Açı (°), eğim (%) ve kot (cm) girebilirsiniz; mahya ile saçak alt kotu ayrı referanslardır. Grafik ve bağlantı kontrolü değişikliği önizler. **Uygula** tüm bağlı çatıları doğrulayarak kaydeder, **Vazgeç** dört noktayı ve projeyi korur. Duvar yüksekliği değişmez. **Duvar üstüne otomatik otur** önceki otomatik davranışa döner.
 
 Özel kot JSON ve geri alma içinde korunur. Yeni sayfayı açmadan/yenilemeden önce planınızı kaydedin; oluşturulmamış U çizimi JSON'a dahil değildir. Ana program değişmedi. Kot farkı dikey kapamaları görsel olarak kapanır; ayrı kesim/maliyet veya taşıyıcı hesabı bu eklemenin kapsamında değildir.
 
 [Uygulama, kontroller ve sınırlar](../../analizler/2026-10-26-taslak-cati-kot-aci.txt). Test: `roof-level-check.cjs`.
+
+## Taslak 160 — Sabit oturma kotu, mahya/açı ve çatı rolü
+
+Çatıyı seçip **Kot ve açı · önizle** açın. **Alt kot** duvar üstünden otomatik alınır; **Elle gir** ile ayrı bir değer verebilir, **Alt kotu kilitle** ile sabitleyebilirsiniz. Manuel alt kot duvarları değiştirmez. **Mahya kotu** veya **Alt kottan yükselme** yazıldığında açı/eğim hesaplanır; açı yazıldığında mahya hesaplanır. Bu işlemler alt kotu taşımaz. Mahya kilidi mutlak kotu, açı kilidi eğimi korur; birbirlerinin yerine kullanılırlar.
+
+Yavru mahyası ana mahyanın üstüne çıkarsa önizlemede roller değişir: yüksek yavru ana olur, eski ana ona bağlanan yavru olur. Yeni ana yüzey eski ana çatı sınırına kadar uzatılır, örtüşen yüzeyler ortak modelde kesilir. Kotlar, dere/mahya ve kaplama metrajı aynı modelden hesaplanır. Önceki çatı tekrar daha yüksek olursa ilk bağlantı geri kurulur. Bölüm adları korunur; güncel **Ana / Yavru** görevi ayrıca gösterilir.
+
+**Uygula** tek geri alma adımıdır; **Vazgeç** çizimi değiştirmez. Kotlar/kilitler/roller JSON ve otomatik yedekte saklanır. Eski159 sürümünde alt kotu taşınmış çatı açıldığında duvar üstüne dönüş önizlenir; uygulamadan kayda geçmez. Ana program ve açık müşteri çizimi değiştirilmedi.
+
+Rol değişimi dikdörtgen ana çatıya dik U bağlantılı beşik/tek eğimli çatı çifti içindir. Kırma/karmaşık çokgen veya aynı ana üzerinde birden çok rol değişimi açıklayıcı hatayla durur. [Kontroller ve sınırlar](../../analizler/2026-10-26-taslak-sabit-kot-roller.txt). Test: `roof-level-check.cjs` (geometri + kilitler + roller + tarayıcı).
