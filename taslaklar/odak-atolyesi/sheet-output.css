@@ -1,0 +1,29 @@
+#planExportDialog.sheet-workspace{width:min(1280px,96vw)!important;max-width:96vw!important;height:min(900px,94vh);max-height:94vh!important;padding:0!important;overflow:hidden!important;background:#17232d!important;border-color:#41565e!important;border-radius:14px!important}
+#planExportDialog.sheet-workspace::backdrop{background:#070f18b8}
+#planExportDialog.sheet-workspace form{display:flex;flex-direction:column;height:100%;margin:0;min-height:0}
+#planExportDialog.sheet-workspace h3{margin:0;padding:18px 24px;border-bottom:1px solid #34464f;font-size:19px}
+.sheet-body{display:grid;grid-template-columns:340px minmax(0,1fr);flex:1;min-height:0}
+.sheet-controls{overflow:auto;padding:18px 22px;border-right:1px solid #34464f;min-width:0}
+#planExportDialog #exportPdfOptions{display:grid!important;grid-template-columns:1fr 1fr;gap:10px 12px!important}
+#exportPdfOptions label:nth-child(3){grid-column:1/-1}
+#planExportDialog.sheet-workspace label{font-size:12px;line-height:1.6;color:#b9ced5}
+#planExportDialog.sheet-workspace select,#planExportDialog.sheet-workspace input:not([type=checkbox]):not([type=file]){width:100%;box-sizing:border-box;padding:9px 10px!important;margin:4px 0!important;border:1px solid #415963!important;border-radius:6px!important;color:#e2edf0!important;background:#111d26!important;font:13px 'Segoe UI',sans-serif}
+#planExportDialog.sheet-workspace input[type=checkbox]{accent-color:#85cbb3}
+#planExportDialog.sheet-workspace #sheetFields{padding:10px 0;border:0;border-top:1px solid #34464f;border-bottom:1px solid #34464f;border-radius:0}
+#planExportDialog.sheet-workspace .sheet-inputs{grid-template-columns:1fr;gap:6px}
+#planExportDialog.sheet-workspace .orientation-previews{gap:8px}
+#planExportDialog.sheet-workspace .orientation-card{display:flex;flex-direction:column;gap:5px;padding:7px;font-size:11px;min-width:0}
+#planExportDialog.sheet-workspace .orientation-card img{width:80px;height:64px}
+#planExportDialog.sheet-workspace p{font-size:12px;color:#9fb7c2}
+.sheet-preview{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;min-height:0;padding:22px;background:#0e1721;gap:12px}
+#planExportDialog.sheet-workspace #exportPreview{min-height:0;width:100%!important;max-height:calc(100% - 62px)!important;object-fit:contain;background:transparent!important;flex:1}
+#planExportDialog.sheet-workspace #exportStatus{flex:none;max-width:100%;padding:9px 14px;border:1px solid #344e58;border-radius:6px;color:#bde1d6;text-align:center;margin:0;font-variant-numeric:tabular-nums}
+.sheet-footer{display:flex;align-items:center;gap:10px;padding:12px 20px;border-top:1px solid #34464f;background:#1c2c35}
+.sheet-footer span{flex:1;min-width:0;font-size:11px;color:#a2bdc6}
+#planExportDialog.sheet-workspace .sheet-footer button.sib{width:auto;flex:none;min-width:105px;margin:0}
+#planExportDialog.sheet-workspace button.sib{padding:9px 14px;border-radius:6px;border:1px solid #4b6470;background:#253b47;color:#d8e9ee;font-size:12px}
+#planExportDialog.sheet-workspace #exportSubmit{background:#8ad1b7;border-color:#8ad1b7;color:#17372c;font-weight:600}
+#planExportDialog.sheet-workspace button:disabled{opacity:.5;cursor:default}
+#planExportDialog[data-format=dxf] #exportPdfOptions,#planExportDialog[data-format=dxf] #sheetOptions{display:none!important}
+#planExportDialog.sheet-workspace [hidden]{display:none!important}
+@media(max-width:760px){#planExportDialog.sheet-workspace{height:96vh;max-height:96vh!important}.sheet-body{grid-template-columns:minmax(240px,44%) minmax(0,1fr)}.sheet-controls{padding:12px}.sheet-preview{padding:10px}.sheet-footer{padding:10px}.sheet-footer span{display:none}.sheet-footer #exportCancel{margin-left:auto}}

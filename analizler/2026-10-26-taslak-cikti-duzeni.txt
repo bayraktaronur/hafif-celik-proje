@@ -1,0 +1,34 @@
+26 Ekim 2026 — DEV-166 — Kat planı PDF / PNG sayfa düzeni
+
+Kaynak ve kapsam
+Kullanıcının codex-clipboard-eb605f05-2b9a-4d65-8aa1-5478d01d2896.png ekranında plan, antetin üzerindeki alanda çok küçük kalıyordu. Yalnız taslaklar/odak-atolyesi bağımsız uygulaması değiştirildi. Ana Plan Studio 5.9.137, src, dist, önceki arakat taslağı ve açık müşteri çizimi korunur. Canlı çizim okunmadı; testler geçici Edge profili ve sentetik planla yapıldı.
+
+Neden
+Eski otomatik çıktı yalnız hazır ölçekleri deniyordu. Örneğin 1:50 az farkla sığmayan uzun plan 1:100'e düşüyor, kullanılabilir alan boş kalıyordu. Antet yüksekliği ve kenar boşluğu sabitti.
+
+Taslak 166
+- Varsayılan Sayfaya sığdır, çizim ve ölçülerin gerçek sınırlarından kullanılabilir alana sığan en büyük oranı hesaplar. Antette gerçek 1:n ölçeği yazılır; sabit ölçek etiketiyle gizli küçültme yapılmaz.
+- A4–A0, otomatik / dikey / yatay yön; standart ölçek önerisi, sabit 1:20–1:200 seçenekleri ve özel 1:n girişi.
+- 5–30 mm kenar boşluğu. Kompakt 64 mm, ayrıntılı 94 mm veya antetsiz çıktı; çizim ile antet arası 6 mm.
+- Sol bölümde ayarlar, sağda tam sayfa önizlemesi; dikey ve yatay karşılaştırma. Taşan sabit ölçekte indirme kapatılır ve sığdır / büyük kâğıt önerilir.
+- Kompakt antet müşteri, proje yeri/no, tarih, çizen/kontrol, revizyon, yapı/yükseklik/duvar, kapalı/veranda alanları ve ortak malzeme seçimlerini taşır. Eski ayrıntılı antet seçilebilir.
+- Sayfa tercihleri, çıktı indirilince sheetLayout olarak projeye kaydedilir; JSON, otomatik yedek ve proje geçişinde geri gelir. Vazgeç proje durumunu değiştirmez.
+- PDF ve PNG aynı sayfa yerleşimini kullanır. PDF kâğıt boyutu, PNG yoğunluk bilgisi korunur. PDF teknik ölçek için %100 / Gerçek boyut basılmalı; PNG yazdırıcısında seçili fiziksel kâğıt boyutu kullanılmalıdır.
+- DXF 1:1 model uzayında kalır. Bu görev kat planı çıktısıdır; 3D veya beton planı için yeni PDF çıktısı eklemez.
+
+Doğrulama
+sheet-output-check.cjs: 40 kâğıt/yön/antet kombinasyonu; fiziksel kenar boşluğu, sınır taşmaması ve sınırlayan yönde en az %98,5 kullanım. Geçersiz ayarlar reddedildi.
+Gerçek uygulamada 900 × 1900 cm sentetik uzun plan: A3 dikey 1:100 yerine 1:61,7. Çizim doğrusal olarak yaklaşık %62 büyüdü, çizim alanının yüksekliğini %99 üzerinde kullandı. Bu sonuç kullanıcının canlı projesine ait ölçüm değildir.
+Gerçek komutlarla PDF ve PNG indirme, özel 1:80, taşan 1:20, ayrıntılı antet, 15 mm boşluk, iptal, proje kaydı / yeniden açma, DXF ve 980/1280/1920 ekran genişlikleri geçti; tarayıcı hatası yok.
+single-check.cjs geçti: 49 panelli örneğin panel/birleşim/metrajı, çizim/ölçü/metin, çatı/tavan, JSON/kurtarma/PDF ve korunan kaynak hashleri.
+Oluşan gerçek tek sayfalık A3 PDF, Poppler ile tekrar resme çevrilip incelendi; etiketler, ölçüler, kenar boşluğu ve antet yerleşimi görünür. Yeni pencere görseli de incelendi.
+
+Dosyalar
+sheet-output.js: yerleşim, ayarlar ve kompakt antet.
+sheet-output.css: ayar/önizleme arayüzü.
+sheet-output-build.cjs: yalnız bağımsız motora entegrasyon.
+sheet-output-check.cjs: ölçü ve gerçek tarayıcı kontrolleri.
+Kaynak ekran ve görsel kanıt yolları / SHA-256 değerleri: 2026-10-26-taslak-cikti-duzeni-envanteri.json.
+
+Sonraki adım
+Kullanıcı açık çizimini Kaydet ile koruduktan sonra taslağı yenileyip Çıktı → PDF veya PNG içinde Sayfaya sığdır seçimini değerlendirebilir. Diğer bilgisayarda güncel kod için Git güncellemesi; müşteri çizimi için ayrıca JSON aktarımı gerekir. Güncel müşteri JSON aktarımı doğrulanmadı. Önceki açık işler korunur.
