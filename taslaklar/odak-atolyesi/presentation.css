@@ -1,0 +1,23 @@
+#presentationControls{display:inline-flex;align-items:center;gap:6px;margin-right:5px;padding-right:8px;border-right:1px solid #3b4a52}
+#presentationControls[hidden],#presentationSettings[hidden]{display:none}
+.presentation-mode{display:flex;align-items:center;gap:6px;font-size:12px;color:#9aafb9}
+.presentation-mode select{min-width:110px;border-color:#6c9e8e!important}
+#presentationControls[data-error=true]{border-bottom:2px solid #d9ae62}
+#presentationDialog{position:fixed;inset:0;margin:auto;width:min(420px,calc(100vw - 36px));max-height:calc(100vh - 40px);padding:0;border:1px solid #465b65;border-radius:14px;color:#dce6eb;background:#1c2931;box-shadow:0 24px 80px #0006}
+#presentationDialog::backdrop{background:#08101770}
+#presentationDialog header{display:flex;align-items:center;justify-content:space-between;padding:22px 24px 16px;border-bottom:1px solid #364852}
+#presentationDialog small{font-size:10px;letter-spacing:.13em;color:#8bc7b0}
+#presentationDialog h2{font-size:23px;margin:5px 0 0}
+#presentationDialog button{color:#dae6eb;background:#293c47;border:1px solid #48616e;border-radius:7px;padding:10px 16px;cursor:pointer}
+#presentationClose{font-size:20px;padding:6px 12px!important}
+.presentation-body{padding:16px 24px}
+.presentation-body p{font-size:13px;line-height:1.65;color:#aabcc7;margin:0 0 20px}
+.presentation-body>label{display:block;font-size:14px;margin-bottom:18px}
+.presentation-body select{display:block;width:100%;padding:12px;margin-top:8px;background:#14212a;color:#deeaef;border:1px solid #425b68;border-radius:8px}
+.presentation-body .presentation-check{display:flex;gap:10px;align-items:center;font-size:14px}
+.presentation-check input{accent-color:#91d1b8;width:17px;height:17px}
+.presentation-body .presentation-note{font-size:12px;margin:6px 0;color:#94acb8}
+#presentationStatus:empty{display:none}
+#presentationStatus{color:#e2b875;margin-top:14px}
+#presentationDialog footer{display:flex;justify-content:flex-end;padding:12px 24px 20px}
+#presentationDone{background:#9ed8be!important;color:#142a22!important;border-color:#9ed8be!important}

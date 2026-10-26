@@ -1,8 +1,9 @@
 {
-  "task": "DEV-169",
+  "task": "DEV-170",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
+    "offline presentation renderer: exact shared geometry/camera, static GPU buffers, receiver-plane shadows, procedural materials and native 4K",
     "supplied rainwater gutter/downpipe STL, eave-bound runs, editable outlets and shared bill/3D/PNG",
     "native 4K 3D PNG with framing/preview and shared smoked-glass presentation",
     "shared multi-door landings and concrete prism union: exposed geometry and unique quantities",

@@ -1,0 +1,65 @@
+DEV-170 — Aynı yapı modeliyle 3D Sunum görünümü
+Tarih: 26 Ekim 2026 · İş bilgisayarı · Bağımsız taslak 170
+
+İstek ve kapsam
+Kullanıcı, mevcut 3D modelin daha kaliteli sunulmasını onayladı. Yalnız
+taslaklar/odak-atolyesi/index.html akışı geliştirildi. Ana uygulama 5.9.137,
+src/, dist/plan_studio.html, kök plan_cizim.html ve eski arakat taslağı korunur.
+Açık müşteri çizimiyle işlem yapılmadı. Testler ayrı tarayıcı profilindedir.
+
+Kullanım
+3D > Görünüm > Sunum. Çalışma / Sunum arasında aynı kamera korunarak geçilir.
+Işık / malzeme: Gündüz, Yumuşak, Akşam; gölge ve yüzey dokusu aç/kapat.
+PNG: mevcut çıktı ayarlarında 4K 3840 × 2160, kadraj, arka plan ve ızgara.
+Sunum ayarları proje JSON'una, geri alma/ileri alma ve otomatik yedeğe dahildir.
+Eski projeler Çalışma görünümünde açılır. Ayar penceresinde Esc yalnız bu
+pencereyi kapatır; alttaki 3D çalışma alanı açık kalır.
+
+Uygulama
+presentation-3d.js, mevcut RoofStudio sahnesinin tam poligonlarını ve kenarlarını
+okur. Boya, duvar, panel, H, köşe, çektirme U, kapı/pencere, çatı, beton ve
+yağmur suyu geometrileri değiştirilmez. Metraj ayrı bir modele aktarılmaz.
+Camera3D'nin aynı dönüşümü GPU'ya matris olarak verilir. Statik GPU tamponları
+kamerada yeniden yüklenmez; geometri veya boya değişince yenilenir. Gölge
+haritası kamera hareketinden bağımsız önbellektedir, ışık/geometriyle yenilenir.
+Betopan/beton için ince işlemsel doku, füme cam için bakışa bağlı yansıma,
+metal için parlama ve gün ışığı hesabı uygulanır. Yapı ve zeminde 2048 piksel
+gölge haritası ile yumuşatılmış kenarlar vardır. Eğimli yüzeylerde örneklenen
+gölge derinliği alıcı düzleme göre düzeltilir; çizgilenme giderilmiştir.
+PNG gerçek hedef çözünürlükte yeniden çizilir. Sığdır seçeneği gölgeyi de
+kadraj hesabına alır. Çıktı sonrasında kamera ve görünüm ayarları geri gelir.
+WebGL başarısızsa etkileşim Çalışma görünümüne döner; Sunum PNG'si sessizce
+başka görünümde üretilmez, hata açıklanır.
+
+Kontroller
+- presentation-check.cjs: gerçek arayüz, aynı sahne nesnesi/veri/metraj/kamera,
+  24 paralel/perspektif kamera bileşimi, sabit GPU yüklemeleri ve gölge önbelleği,
+  üç ışık, doku/gölge, undo/redo, çatı gizleme/kesit, çıktı hatası temizliği,
+  4K indirme, portre/mevcut kadraj dönüşümü, JSON/açılış/geri yükleme/doğrulama,
+  980/1280/1920 genişlik ve ağsız çalışma geçti. Örnek sahne 42.854 üçgen.
+- scene-output-check.cjs: önceki 4K, önizleme, portre, kamera, dosya kontrolleri geçti.
+- foundation-performance-check.cjs: tam model önbelleği, beton kotu, kamera ve
+  50 tekerlek olayının tek karede işlenmesi geçti.
+- single-check.cjs: gerçek prefabrik çizim, metraj, tavan, PDF/JSON ve ana
+  kaynak/depo dışı çizim koruma kontrolleri geçti.
+- drainage-browser-check.cjs: yerleşim/renk, iptal/uygula, kot, metraj/CSV,
+  JSON ve gerçek 4K çıktı kontrolleri geçti.
+Ana kaynak SHA-256 eşitlikleri ve çıktı kanıtları ilgili envanterdedir.
+
+Görsel kanıt
+2026-10-26-3d-sunum-4k.png: uygulamadan gerçek 3840 × 2160 PNG.
+2026-10-26-3d-sunum-calisma.png / 2026-10-26-3d-sunum-karsilastirma.png:
+aynı kamera ve kadrajda Çalışma / Sunum görüntüleri.
+2026-10-26-3d-sunum-ayarlari.png: uygulama içindeki ışık/malzeme penceresi.
+
+Sınırlar ve devam
+Bu, yerel uygulamanın gerçek zamanlı WebGL sunumudur. Rayon motoru veya AI
+servisi entegre edilmedi. Path tracing, gerçek çevre yansıması, ölçülmüş PBR
+malzeme veya tam fotogerçekçi render iddiası yoktur. Cam yansıması hesaplanmış
+gökyüzü yaklaşımıdır. İki görünümde gerçek model ölçüleri aynıdır. Performans
+kanıtı önbellek davranışıdır; testteki CPU süreleri cihazlar için FPS garantisi
+değildir. İlgisiz yerel SKP kayıtları ve önceki açık görevler bu işe katılmadı.
+Güncel müşteri çiziminin JSON olarak diğer bilgisayara aktarımı doğrulanmadı.
+Kullanıcı Kaydet yaptıktan sonra taslağı yenileyerek Sunum'u kendi projesinde
+inceleyebilir. Kod, karar, kanıtlar görev commit'iyle gönderilir; uzak commit
+eşitliği teslimden önce doğrulanır.
