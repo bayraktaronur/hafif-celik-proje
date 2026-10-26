@@ -1,5 +1,5 @@
 {
-  "task": "DEV-161",
+  "task": "DEV-162",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
@@ -9,7 +9,8 @@
     "task command groups, contextual inspector, command search and collapsible project panels",
     "child roof connection diagnostics and live draft settings; default geometry rules preserved",
     "fixed-base ridge/pitch solver and persistent independent roof locks; preview and dependency validation",
-    "supplied steel-door STL: exact 250/280/300 cm variants, plan hinge and exterior orientation"
+    "supplied steel-door STL: exact 250/280/300 cm variants, plan hinge and exterior orientation",
+    "supplied sheet/aluminium/PVC door assemblies: three panel heights, user-confirmed 205 cm aluminium/PVC adaptation with rigid hardware"
   ],
   "sources": {
     "plan_cizim.html": "133d22e40170396e02297525ec417222714106a61b175c95938a1de8ba184e7a",

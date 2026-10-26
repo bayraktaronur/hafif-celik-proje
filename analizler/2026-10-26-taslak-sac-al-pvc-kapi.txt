@@ -1,0 +1,46 @@
+DEV-162 — Sac ve alüminyum/PVC kapı modelleri — 26 Ekim 2026
+
+İstek ve karar
+Kullanıcı iki STL içindeki 250/280/300 cm panoların 3B taslakta kullanılmasını istedi. Alüminyum/PVC kasası kaynakta yaklaşık215 cm, çevre panonun kapı boşluğu205 cm ölçüldü. Kullanıcı açıkça “Kapı205 cm olsun; modeli buna uyarla” seçimini yaptı. Entegrasyon bağımsız taslak162 içindedir; ana Plan Studio5.9.137, src, dist, arakat ve açık müşteri çizimi değiştirilmedi.
+
+Kaynaklar
+Orijinal klasör: H:/Diğer bilgisayarlar/Bilgisayarım/Aİ TASARIMLAR/onurcad modeller/
+1. 250cm-280cm-300cm Sac Kapı.stl
+   Kopya: referanslar/2026-10-26-sac-al-pvc-kapi/250cm-280cm-300cm-sac-kapi.stl
+   SHA-256: 4c38fbec800cec831fdbf991502989fe40d016bc0439b2935d6f5c883d0e0b35
+   4.038.284 bayt; 80.764 üçgen.
+2. 250cm-280cm-300cm Aluminyum ve PVC Kapı.stl
+   Kopya: referanslar/2026-10-26-sac-al-pvc-kapi/250cm-280cm-300cm-aluminyum-pvc-kapi.stl
+   SHA-256: 55be517f508deb9b7d686855e08d61e0d02e2ec2c0ccfd5b86bef16e1ef95a8d
+   4.319.384 bayt; 86.386 üçgen.
+Orijinaller taşınmadı/değiştirilmedi; kopya hashleri kaynaklarla eşleşti. STL renk/malzeme/birim bilgisi taşımaz. Kullanıcının cm kuralı ve tam250/280/300 pano boyları temel alındı.
+
+Ölçüm ve ayrım
+İki dosyada da üç125 cm genişlikte, 9,6 cm fiziksel kalınlıkta pano vardır; nominal10 cm duvara yerleşir. Panolar X doğrultusunda250 cm aralıkla dizilmiş. Dosyaların sağındaki iki bağımsız referans çalışması, her dosyada35.416 üçgen, panolara ait değildir; bina sahnesine alınmadı, özgün STL içinde korunur.
+Sac: pano başına15.116 üçgen / 9 bağlı parça. Kasa dışı91,8×205 cm; kanat83,64×193,8 cm. Kaynak menteşe-X, kol+X tarafında. 280cm varyantındaki kasa, diğerlerine göre0,51 cm yana kayıktır; kapı kasası plan açıklığının merkezine yerleştirilir, çevre panonun kaynakla ilişkisi korunur.
+Alüminyum/PVC: pano başına16.990 üçgen / 24 bağlı parça. Kaynak kasa dışı90,064×215,094 cm. Kanat84,133×208,663 cm; üstte cam, altta dolgu. Menteşe+X, kol-X tarafında. Kaynak pane boşluğu91,29×205 cm olduğundan farklı kapının çevre panosu kullanılmış görünüyor; bu son ifade geometriden çıkarımdır.
+
+205 cm uyarlaması
+Ham kaynak koordinatları asset içinde değişmeden saklanır. 3B yerleşimde alüminyum/PVC kasa, kanat, cam, çıta ve dolgunun Z koordinatları205/215,09397888183594 oranıyla uyarlanır; en ve derinlik korunur. Böylece kapı kasasının üstü tam205 cm'dir.
+Kol/kilit ve menteşeler kendi boylarında kalır. Yakın yükseklikteki bağlı donanım parçaları ortak merkezlerinden yeni Z konumuna ötelenir; sıkıştırılmaz, birbirinden koparılmaz. Çevre panonun dış125 cm eni ve250/280/300 cm yüksekliği değişmez. Panodaki iç boşluk kenarları alüminyum/PVC kasasına oturtulur; kaynaktaki yaklaşık1,23 cm yan açıklık kapatılır. Sac kapı205 cm olduğu için boy uyarlaması yapılmaz.
+
+Program bağlantısı
+build-other-doors.cjs kaynak SHA'larını doğrular, üçer pano ayırır ve çevrimdışı other-door-models.js üretir. steel-door-3d.js mevcut çelik kapı adaptörünü sac/alüminyum/PVC için de kullanır. Aynı çelik kapı testleri korunmuştur.
+Taslakta Yapı → Kapı → Sol/Sağ sac, alüminyum veya PVC seçimi90×205 cm'dir. Önceki sac90×200 ve PVC80×200 katalog varsayılanları yalnız taslakta yeni seçimler için güncellendi. Eski kayıtlı açıklıklar otomatik değiştirilmez; uygun olmayan ölçüler şematik görünür. Çift kapı veya başka bir ürün bu modele dönüştürülmez.
+250/280/300 duvar seçimi ilgili kaynak panoyu getirir; kapı boyu aynı kalır. Plan menteşesi, ters çizilmiş duvar segmenti ve kapalı odanın dış tarafı dikkate alınır. Alt kotZ0, pano duvar eksenindedir. Duvar sonunda yalnız çevre panonun taşan kısmı kesilir. Kasa sığmıyorsa, pano başka açıklıkla çakışıyorsa veya duvar kalınlığı/yüksekliği kaynakla uyumsuzsa şematik gösterim ve gerekçe kullanılır. H/köşe birleşimleri mevcut motorda korunur.
+Alüminyum/PVC renkleri antetin doğrama rengini izler; sac metal gri, cam saydam mavi, donanım metal gri gösterilir. Pano iç/dış duvar boyasını izler. Bunlar STL'den okunmuş malzemeler değil, geometrik parça ayrımına dayalı görsel atamalardır. Yeni fiyat veya maliyet hesabı eklenmedi; plan geometrisi, açıklık hesabı ve metraj mevcut veriden çalışır.
+
+Kontroller
+other-door-check.cjs geçti:
+- İki kaynak SHA'sı; kullanılan96.318 üçgenin bütün ham koordinatları birebir; altı125 cm pano ve üç standart yükseklik; ayrı referans modellerinin dışarıda kalması.
+- Gerçek Kapı komutu ve katalog yerleştirmesi, üç kapı türü×üç pano boyu. Her durumda kasa205 cm; tekrarlanan şematik kapı yok; plan/metraj korunur.
+- Üç tür için toplam48 yön/menteşe/ters segment durumu. Dış yüz, kol tarafı ve sonlu koordinatlar.
+- Donanım boylarının korunması, alüminyum/PVC kasa-pano teması, cam saydamlığı, üç doğrama rengi, iç/dış pano boyası.
+- JSON/yenileme,80cm en ve200cm yükseklikte eski/özel ölçü geri dönüşü; çelik/sac/alüminyum/PVC aynı projede.
+- JS hatası veya ağ isteği yok; ana54 kaynak ve dist hashleri değişmedi.
+steel-door-check.cjs geçti: eski çelik kapı kaynağı, yükseklik/menteşe/cephe, kayıt, uç pano ve çakışma kontrolleri.
+single-check.cjs geçti: ana motorla49panel/oda/metraj eşitliği; gerçek çizim, geri al/ileri al, metin/ölçü, çatı-malzemeler-yükseklik, standart tavan/miniH, kayıt/açma/yenileme, PDF,980/1280/1920 ekranlar ve ana kayıtların korunması.
+Ayrı headless Edge kullanıldı; kullanıcının açık sayfası yenilenmedi. Sac250, alüminyum250, PVC300 ve birlikte izometrik görünüşler incelendi. Seçili kanıt görselleri aynı tarihli sac-kapi-250, al-pvc-kapi-250 ve pvc-kapi-300 PNG dosyalarıdır.
+
+Teslim
+Taslak162; DEV-162 tamam. İki kaynak STL, dönüştürülen modeller, test ve karar kayıtları ortak depoya dahildir. Güncel müşteri planı JSON'u bu çalışma sırasında alınmadı; tarayıcı çizimi Git ile taşınmaz. Kullanıcı Kaydet sonrası taslağı yenileyip ürününü seçerek inceleyebilir. Önceki açık işler DEVAM.md'de korunur.

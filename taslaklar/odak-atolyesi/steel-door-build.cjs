@@ -1,4 +1,8 @@
 module.exports=function(file,s,replaceOnce){
+ if(file==='src/opening-catalog.js'){
+  s=replaceOnce(s,"name+' sac kapı',90,200,'sheet'","name+' sac kapı',90,205,'sheet'");
+  s=replaceOnce(s,"name+' PVC kapı',80,200,'pvc'","name+' PVC kapı',90,205,'pvc'");
+ }
  if(file==='src/wall-3d.js'){
  s=replaceOnce(s,'for(const r of A.runs){const holes=openings(r),models=[];',
   'for(const r of A.runs){const holes=openings(r),models=[];\n  SteelDoor3D.append({r,holes,models,height,prefab,surfaces,parts,warnings,panelColor});');

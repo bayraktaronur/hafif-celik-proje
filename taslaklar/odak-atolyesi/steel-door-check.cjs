@@ -42,7 +42,7 @@ const manifest=JSON.parse(fs.readFileSync(path.join(__dirname,'single-engine-man
  }
  console.log('PASS actual height selector, no stretched door, no duplicate opening, unchanged bill/plan and retained H/corner joints');
  const paint=await p.evaluate(()=>{G.paint3D={interior:{hex:'#ffffff'},exterior:{hex:'#bbccdd'}};const m=Wall3D.build(),sur=m.surfaces.filter(s=>s.kind==='steelDoorSTL'),painted=Paint3D.decorate(sur);return{panel:painted.filter(s=>s.material==='panel').some(s=>s.color==='#bbccdd'),door:painted.filter(s=>s.material!=='panel').every(s=>!s.painted),before:m.surfaces.find(s=>s.material==='steelLeaf').color,after:painted.find(s=>s.material==='steelLeaf').color};});assert.ok(paint.panel&&paint.door);assert.equal(paint.before,paint.after);
- for(const [field,value]of [['yuk',210],['en',100],['catalogId','al-sol']]){
+ for(const [field,value]of [['yuk',210],['en',100],['catalogId','american-sol']]){
   const check=await p.evaluate(({data,field,value})=>{Studio.loadProject(data);G.elemanlar[0][field]=value;const m=Wall3D.build();return{real:m.parts.some(p=>p.kind==='steelDoorSTL'),fallback:m.parts.some(p=>p.openingId===G.elemanlar[0].id&&p.schematic)};},{data:originalProject,field,value});assert.equal(check.real,false);assert.equal(check.fallback,true);
  }
  await p.evaluate(d=>Studio.loadProject(d),originalProject);const saved=await p.evaluate(()=>{Studio.flush();return Studio.state();});await p.reload();assert.deepEqual(await p.evaluate(()=>Studio.state()),saved);assert.ok(await p.evaluate(()=>Wall3D.build().parts.some(p=>p.kind==='steelDoorSTL')));

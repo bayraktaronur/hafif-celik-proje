@@ -1,6 +1,14 @@
 # Odak Atölyesi — tek katlı prefabrik çizimi
 
-26 Ekim 2026 · DEV-161. `index.html` çalışan tek kat çizim taslağıdır; gerçek çelik kapı STL modelleri eklendi. Komut düzeni ve DEV-160 çatı kotu/kilit/ana-yavru rol değişimi korunur. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+26 Ekim 2026 · DEV-162. `index.html` çalışan tek kat çizim taslağıdır; gerçek çelik, sac ve alüminyum/PVC kapı STL modelleri kullanılır. Komut düzeni ve DEV-160 çatı kotu/kilit/ana-yavru rol değişimi korunur. Ana uygulama 5.9.137 değişmedi. Önceki iki kat / şase / katman incelemesi `arakat.html` sayfasında aynen korunur; üstte Diğer çalışmalar bağlantısından açılır.
+
+## Sac ve alüminyum/PVC kapılar — taslak 162
+
+**Yapı → Kapı → Sol/Sağ sac kapı, alüminyum kapı veya PVC kapı → 3D.** Yeni katalog seçimleri 90×205 cm; duvar yüksekliği 250/280/300 cm olduğunda dosyadaki ilgili pano kullanılır. Alüminyum/PVC modelinin yaklaşık215 cm kasası, kullanıcının kararıyla205 cm'ye uyarlandı. Kol ve menteşe boyları korunur; üst cam saydamdır. Alüminyum/PVC doğrama rengi antetteki doğrama seçimini, çevre pano iç/dış duvar boyasını izler.
+
+Önceden kaydedilmiş 80×200 veya90×200 kapılar kendiliğinden değişmez; uyumsuz ölçüler şematik görünür. Gerçek modeli kullanmak için katalogdan yeni90×205 seçimi yapın. Ana program, fiyatlar ve açık çizim değiştirilmedi. Planınızı Kaydet ile koruduktan sonra taslağı yenileyin.
+
+[Kaynak ölçüleri, 205 cm uyarlaması ve kontroller](../../analizler/2026-10-26-taslak-sac-al-pvc-kapi.txt). Test: `other-door-check.cjs`. İki özgün STL ortak `referanslar/2026-10-26-sac-al-pvc-kapi/` klasöründedir.
 
 ## Gerçek çelik kapı — taslak 161
 

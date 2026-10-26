@@ -1,0 +1,45 @@
+{
+  "task": "DEV-162",
+  "prototypeRevision": "162",
+  "mainRevision": "5.9.137",
+  "decision": "User selected 205 cm for aluminium/PVC; original STL retained, door body adapted at render time, rigid hardware translated",
+  "sources": [
+    {
+      "originalPath": "H:/Diğer bilgisayarlar/Bilgisayarım/Aİ TASARIMLAR/onurcad modeller/250cm-280cm-300cm Sac Kapı.stl",
+      "sharedPath": "referanslar/2026-10-26-sac-al-pvc-kapi/250cm-280cm-300cm-sac-kapi.stl",
+      "sha256": "4c38fbec800cec831fdbf991502989fe40d016bc0439b2935d6f5c883d0e0b35",
+      "bytes": 4038284
+    },
+    {
+      "originalPath": "H:/Diğer bilgisayarlar/Bilgisayarım/Aİ TASARIMLAR/onurcad modeller/250cm-280cm-300cm Aluminyum ve PVC Kapı.stl",
+      "sharedPath": "referanslar/2026-10-26-sac-al-pvc-kapi/250cm-280cm-300cm-aluminyum-pvc-kapi.stl",
+      "sha256": "55be517f508deb9b7d686855e08d61e0d02e2ec2c0ccfd5b86bef16e1ef95a8d",
+      "bytes": 4319384
+    }
+  ],
+  "artifacts": {
+    "taslaklar/odak-atolyesi/build-single-storey.cjs": "74ec646da00296de3c85632c38b4a62570c237bde5878419bfac60cd482dbca9",
+    "taslaklar/odak-atolyesi/build-other-doors.cjs": "a0ac5072f7561504cc5e5947d46df782616f1d0cb3dab0e5e825a94415f6b26a",
+    "taslaklar/odak-atolyesi/other-door-models.js": "223ad165dffad4875606c1ed5394dadf7293266cacfd91f816052bcb1a78c9f3",
+    "taslaklar/odak-atolyesi/other-door-check.cjs": "516dcf814709d632a74118b22fbf90908398f633fd6194cd9b9311b1e4a23e49",
+    "taslaklar/odak-atolyesi/steel-door-3d.js": "42cffd82105a02eb430c4c22126ba048d2f3d160f59c2d423c6302c2fa931400",
+    "taslaklar/odak-atolyesi/steel-door-build.cjs": "8b217ef35875b4a3b2eb6b871acb4e39455debc2b3f6281ef19b40f3fc0d7da8",
+    "taslaklar/odak-atolyesi/steel-door-check.cjs": "9367e5380ad1af52a37777c0d70054af192ce9ab6b41cb787e002c23c80c2035",
+    "taslaklar/odak-atolyesi/single-storey.js": "836fa7030eb554a83ccde42013cd6998da2305443b75caf4fdac54287c4b9fbc",
+    "taslaklar/odak-atolyesi/index.html": "841bd54e94a512dbb70940eeb06076292867979ab7cb63983255c2f285cb5b6b",
+    "taslaklar/odak-atolyesi/single-engine.js": "fa09c6af43057ab5abcdaef61a7c0f9f83ec6a63b95fc3ea25976d29e3de1aa4",
+    "taslaklar/odak-atolyesi/single-engine-manifest.json": "a2e3aed2f6d1dab9b3dfba639d0350769a0d48bf43c66f1e81d048932b3f8bd3",
+    "taslaklar/odak-atolyesi/README.md": "ed4c3e8c1f1cd37c3bf4412589e9bc113879b8199b5f711f2170ab4354723ff0"
+  },
+  "protectedSources": "taslaklar/odak-atolyesi/single-engine-manifest.json",
+  "visualChecks": {
+    "analizler/2026-10-26-sac-kapi-250.png": "85850f0007d420e3a1519de0141e2ef5603b74aa8f1a152dfa1a52e6c9fb9fea",
+    "analizler/2026-10-26-al-pvc-kapi-250.png": "3f4752be31d302448a2336d400af497b1a5bfa35772685a6178e55ee940d66d7",
+    "analizler/2026-10-26-pvc-kapi-300.png": "6c5f29c2d277546ee7159dcc82f69f6da340770a82f828f7110cae7e3ee80711"
+  },
+  "tests": [
+    "other-door-check.cjs: passed",
+    "steel-door-check.cjs: passed",
+    "single-check.cjs: passed"
+  ]
+}
