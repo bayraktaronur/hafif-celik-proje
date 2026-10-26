@@ -108,3 +108,11 @@ DEV-152: `ceiling-check.cjs` tam/kesilmiş/dar/L biçimli alanlar, 60×120 modü
 Yavru çatı için dört U noktası seçilince bağlantı nedeni sol tarafta görünür. Geçerli bağlantıda **Bağlantı hazır** yazısı ve **Çatıyı oluştur** düğmesi etkinleşir. Kot/kesişim engelinde eğim, çatı tipi veya saçak değerlerini dört noktayı silmeden değiştirebilirsiniz. Değerler kendiliğinden değiştirilmez; ana çatı korunur. Son noktayı düzeltmek için Backspace, iptal için Esc kullanın. Dört nokta tamamlandıktan sonra yakalama imleci durur.
 
 [Teşhis, testler ve kapsam sınırı](../../analizler/2026-10-26-taslak-yavru-cati-baglanti.txt). Çizilmiş kullanıcı projesini kaydedip sayfayı yenileyin; henüz oluşturulmamış U taslağı kayıt dosyasına dahil değildir.
+
+## Taslak 159 — Kot ve açı
+
+Dört U noktası sonrası **Yavru çatıyı alçalt / Ana çatıyı yükselt** düğmeleri Kot ve eğim penceresini açar. Mevcut çatıda sağdaki **Kot ve açı · önizle** düğmesini kullanın. Açı (°), eğim (%) ve kot (cm) girebilirsiniz; mahya ile saçak alt kotu ayrı referanslardır. Grafik ve bağlantı kontrolü değişikliği önizler. **Uygula** tüm bağlı çatıları doğrulayarak kaydeder, **Vazgeç** dört noktayı ve projeyi korur. Duvar yüksekliği değişmez. **Duvar üstüne otomatik otur** önceki otomatik davranışa döner.
+
+Özel kot JSON ve geri alma içinde korunur. Yeni sayfayı açmadan/yenilemeden önce planınızı kaydedin; oluşturulmamış U çizimi JSON'a dahil değildir. Ana program değişmedi. Kot farkı dikey kapamaları görsel olarak kapanır; ayrı kesim/maliyet veya taşıyıcı hesabı bu eklemenin kapsamında değildir.
+
+[Uygulama, kontroller ve sınırlar](../../analizler/2026-10-26-taslak-cati-kot-aci.txt). Test: `roof-level-check.cjs`.

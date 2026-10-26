@@ -1,5 +1,5 @@
 {
-  "task": "DEV-158",
+  "task": "DEV-159",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
@@ -7,7 +7,8 @@
     "corner post plan symbol: opaque fill and true model footprint",
     "selection menu and exact wall move from displayed dimensions or offset",
     "task command groups, contextual inspector, command search and collapsible project panels",
-    "child roof connection diagnostics and live draft settings; unchanged geometry rules"
+    "child roof connection diagnostics and live draft settings; default geometry rules preserved",
+    "explicit roof elevation and angle preview; dependency validation and vertical step cladding"
   ],
   "sources": {
     "plan_cizim.html": "133d22e40170396e02297525ec417222714106a61b175c95938a1de8ba184e7a",

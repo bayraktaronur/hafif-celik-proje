@@ -1,0 +1,73 @@
+DEV-159 — Ana / yavru çatı kotu ve açı girişi
+26 Ekim 2026 | Bağımsız taslak 159 | Ana uygulama 5.9.137
+
+İstek ve kapsam
+Kullanıcı önce 27 Ekim'e bıraktığı işi bu oturumda "devam et" diyerek sürdürdü.
+Kot uyuşmazlığını sayılarla açıklamak, yavruyu alçaltma / ana çatıyı yükseltme
+seçeneği sunmak ve açı, eğim, yükseklik girişlerini eklemek tamamlandı.
+Yalnız taslaklar/odak-atolyesi değişti. Ana HTML, src, dist, ara kat taslağı ve
+kullanıcının açık planı değiştirilmedi. Kullanıcı projesine sabit kot atanmadı.
+
+Kullanım
+1. Çatı ekranında yavru çatının dört U noktasını tamamlayın.
+2. Bağlantı kartında gerçek ana / yavru kotu ve aradaki fark görünür.
+3. "Yavru çatıyı alçalt" veya "Ana çatıyı yükselt" ile Kot ve eğim penceresini açın.
+4. Çatıyı seçin. Açı (derece) ile eğim (%) birbirini günceller. Kot (cm) için
+   "Mahya / en yüksek çatı kotu" veya "Saçak kapaması alt kotu" referansını seçin.
+5. Grafik, kotlar ve bağlantı kontrolü önizlemedir. Uygula ve yavruyu oluştur
+   geçerli bağlantıda tek geri alma adımıyla kaydeder. Vazgeç / Escape işlemi
+   projeyi ve çizilmiş dört noktayı olduğu gibi bırakır.
+Mevcut bir çatıda sağdaki "Kot ve açı · önizle" düğmesi aynı pencereyi açar.
+"Duvar üstüne otomatik otur" özel kotu kaldırır; bağlı çatılar uygun değilse
+uygulama yine engellenir. Duvar yüksekliği bu komutla değiştirilmez.
+
+Teknik davranış
+- roof-level-build.cjs yalnız kopyalanan taslak motorunu genişletir. roofElevation
+  açıkça verilen saçak kapaması alt kotudur; R.seat / synchronize bunu geri ezmez.
+  Özel kot yokken önceki duvar üstüne oturma kuralı aynıdır.
+- Mahya değeri gerçek çatı yüzeylerinden hesaplanır. Açı tan(derece) × 100 ile
+  eğime dönüşür. Kot referansı değiştirmek geometrinin kendisini değiştirmez.
+- Dört U noktası değiştirilmez. Önizleme bağımsız kopyalarda ana, yavru ve diğer
+  bağlı çatıları yeniden çözer; döngü, sınır veya yüzey hatasında Uygula pasiftir.
+- Manuel alçaltma/yükseltme ile ana saçağın altında kalan yan birleşimlerde
+  dikey kot farkı kapaması çizilir. Çatı örtüsü mevcut üst yüzey birleşimiyle
+  hesaplanır. Özel kot belirtilmeyen eski bağlantıların kabul/red kuralı korunur.
+- Ana/yavru düzenlemesi tek işlem olarak uygulanır; başarısız değişiklik,
+  değişmiş proje üzerinde eski önizleme, boş/geçersiz sayılar engellenir.
+- Undo/redo, JSON ve otomatik kurtarmada özel kot korunur. Kendi açık çiziminiz
+  yenilenmedi; yenilemeden önce Kaydet kullanın. Henüz oluşturulmamış U çizimi
+  kayda dahil değildir, fakat bu pencerenin açılması/iptali noktaları silmez.
+
+Kontrol kanıtları
+roof-level-check.cjs:
+- Dört yön × iki U sırası: eski geçerli sonuçlar ana motorla aynı, yüksek yavru
+  reddi korunur. 16 manuel kot senaryosu, pozitif dikey kapama, geçerli model,
+  saf fonksiyon ve tekrar çözüldüğünde aynı geometri.
+- Gerçek fareyle dört U noktası; ana 396,2275 / yavru 439,21 cm sentetik örneğinde
+  yaklaşık 43 cm hata; yavru mahyası 390 ve ana mahyası 450 ayrı ayrı denenir.
+  Bunlar test değeridir, kullanıcının gerçek projesine atanmaz.
+- Açı/eğim eşleşmesi, mahya/saçak dönüşümü, boş/negatif/aşırı giriş, Enter/Escape,
+  önizleme sırasında değişmeme, uygulama, geri/ileri alma, JSON, 3D, sayfa
+  yenilemesi, uygun olmayan bağlı yavru ve güncelliğini yitiren önizleme reddi.
+- 900 × 700 pencerede taşmama; masaüstü önizleme ve 3D görüntüleri incelendi.
+roof-feedback-check.cjs: önceki dört nokta / hata / canlı ayarlar regresyonu geçti.
+single-check.cjs: gerçek prefabrik çizimi, ana motorla panel/birleşim/metraj
+eşitliği, tavan, JSON/otomatik kayıt, PDF, 980/1280/1920 ve kaynak izolasyonu geçti.
+command-ui-check.cjs: gruplar, seçim, arama, paneller, dar ekran ve çatı/3D geçti.
+Tarayıcı testleri ayrı geçici Edge oturumlarında yapıldı; açık kullanıcı sekmesi
+ve çizimi kullanılmadı. Sandbox Edge'i başlatamadığı için izinli test süreci kullanıldı.
+
+Dosyalar ve doğrulama sınırı
+Kaynak istek önceki 2026-10-26-cati-kot-aci-sonraki-adim.txt ve bu sohbetin devam
+talimatıdır. Önceki görselin adı/hash'i DEV-158 envanterinde kayıtlıdır.
+Yeni dosya SHA-256 değerleri: 2026-10-26-taslak-cati-kot-aci-envanteri.json.
+Görsel kontroller artifacts/roof-level-*.png yerel test çıktılarıdır; Git'e eklenmez.
+Canlı müşteri JSON'u okunmadı; test modeli kullanıldı. Bu özellik geometrik
+bağlantı ve çatı kaplaması önizlemesidir. Kot farkı kapamalarının ayrı imalat
+kesim/maliyet kalemi, taşıyıcı mesnet değişikliği ve statik hesabı eklenmedi.
+Duvar yüksekliğiyle farklı özel kot kullanıcı kararıdır; otomatik duvar uzatma
+veya kısaltma yapılmaz. Veranda bağlantısı kendi mevcut ayarlarında kalır.
+
+Sonraki adım
+Kullanıcının kendi çiziminde yeni pencereyi değerlendirmesi. DEV-153 ve önceki
+açık işler korunur. Ana uygulamaya aktarım bu teslimin kapsamında değildir.

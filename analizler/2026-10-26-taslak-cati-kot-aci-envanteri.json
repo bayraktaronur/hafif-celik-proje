@@ -1,0 +1,22 @@
+{
+  "task": "DEV-159",
+  "prototypeRevision": "159",
+  "mainRevision": "5.9.137",
+  "previousRequestImage": {
+    "path": "C:\\Users\\ONUR\\AppData\\Local\\Temp\\codex-clipboard-18c71524-7878-4857-93ca-88135c653457.png",
+    "sha256": "a54dde5ad7b707366a9d3382c8885e50c3f3d2a7f62da9e569180a6b139b1d59"
+  },
+  "artifacts": {
+    "taslaklar/odak-atolyesi/build-single-storey.cjs": "9ba9d5ee935d1e76330aba41c91388381a0de367892afdc1b6eefb495cc6dd0a",
+    "taslaklar/odak-atolyesi/index.html": "2718feaf576841a7e94946150a62dd42017a0db15d6bf020be5bf79ba99d2af7",
+    "taslaklar/odak-atolyesi/single-engine.js": "4e478b27bd13a42e49562708b4df35cc156a29acb7e42f81b836006bb554c20d",
+    "taslaklar/odak-atolyesi/single-engine-manifest.json": "fe3a53306ab61db7865071eb0650383f162941c009ebada391745a0aaf235653",
+    "taslaklar/odak-atolyesi/single-storey.js": "3f95380227fd70e10b947e1ee544bfec4670170f2cd236407c0e3dda429255eb",
+    "taslaklar/odak-atolyesi/roof-level-build.cjs": "627756523893800aaf6fe86e88859f75447c013c5a56046a510ab0a27bb465a9",
+    "taslaklar/odak-atolyesi/single-roof-level.js": "1186bddb251677c3a928cf4d11f186db5443e03706a2d14b286817c9932ae953",
+    "taslaklar/odak-atolyesi/single-roof-level.css": "a6e4e61efa2dd646289efca20422b32d487b8de38c08a1802272eaa20ed65858",
+    "taslaklar/odak-atolyesi/roof-level-check.cjs": "7321fa607c0ec0837764373be2acc1d388d8fc75527d6dd367fd7fb760bbb9f3",
+    "taslaklar/odak-atolyesi/README.md": "2ebb829c6353f7f33314c86b5796318b8ca39a99373ab0f3620ce5b925385f14"
+  },
+  "protectedSources": "taslaklar/odak-atolyesi/single-engine-manifest.json"
+}
