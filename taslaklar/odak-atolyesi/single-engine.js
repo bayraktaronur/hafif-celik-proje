@@ -608,7 +608,7 @@
   }
   function validate(input){
     if(!input||typeof input!=='object'||Array.isArray(input))fail('Geçerli bir proje nesnesi bulunamadı.');
-    safeTree(input);SheetOutput.validate(input.sheetLayout);
+    safeTree(input);SceneImageOutput.validate(input.image3DLayout);SheetOutput.validate(input.sheetLayout);
     ReferenceImageData.validate(input.referenceImages);
     FoundationData.validate(input.foundation);
     if(!['5','5.1'].includes(String(input.v)))fail('Desteklenen dosya sürümleri: v5 ve v5.1.');
@@ -5020,7 +5020,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.137',projectName,...(G.foundation?{foundation:clone(G.foundation)}:{}),...(G.referenceImages?.length?{referenceImages:clone(G.referenceImages)}:{}),paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),...(G.sheetLayout?{sheetLayout:clone(G.sheetLayout)}:{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.137',projectName,...(G.image3DLayout?{image3DLayout:clone(G.image3DLayout)}:{}),...(G.foundation?{foundation:clone(G.foundation)}:{}),...(G.referenceImages?.length?{referenceImages:clone(G.referenceImages)}:{}),paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),...(G.sheetLayout?{sheetLayout:clone(G.sheetLayout)}:{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5084,7 +5084,7 @@ updateStatus();
     restoring=true;
     try{
       resetInteraction();
-      G.foundation=clone(d.foundation||null);G.referenceImages=clone(d.referenceImages||[]);G.paint3D=clone(d.paint3D||{});G.loading=clone(d.loading||{adjustments:[],manual:[]});G.sheetInfo=clone(d.sheetInfo||{});G.sheetLayout=clone(d.sheetLayout||null);G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
+      G.image3DLayout=clone(d.image3DLayout||null);G.foundation=clone(d.foundation||null);G.referenceImages=clone(d.referenceImages||[]);G.paint3D=clone(d.paint3D||{});G.loading=clone(d.loading||{adjustments:[],manual:[]});G.sheetInfo=clone(d.sheetInfo||{});G.sheetLayout=clone(d.sheetLayout||null);G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
@@ -6684,7 +6684,7 @@ surfaces.push({...meta,poly:poly.map(p=>({...p,z:z1})),color,shade:1});poly.forE
    rect(r,o.a,o.a+f,-3,3,o.z,o.top,col,meta);rect(r,o.b-f,o.b,-3,3,o.z,o.top,col,meta);rect(r,o.a,o.b,-3,3,o.top-f,o.top,col,meta);if(!door)rect(r,o.a,o.b,-3,3,o.z,o.z+f,col,meta);
    const low=o.z+(door?0:f),top=o.top-f,transom=cat?.transom?top-(top-low)*cat.transom:null;
    function mark(x0,z0,x1,z1){const dx=x1-x0,dz=z1-z0,L=Math.hypot(dx,dz);if(!L)return;for(const side of [-1,1]){const coords=[[x0-dz/L*.25,z0+dx/L*.25],[x1-dz/L*.25,z1+dx/L*.25],[x1+dz/L*.25,z1-dx/L*.25],[x0+dz/L*.25,z0-dx/L*.25]];surfaces.push({...meta,kind:'openingMark',poly:coords.map(([x,z])=>({x:r.ax+r.ux*x-r.uy*side*.5,y:r.ay+r.uy*x+r.ux*side*.5,z})),color:'#dbe6e9',shade:1});}}
-   function pane(a,b,z0,z1,glass){if(b-a<=0||z1-z0<=0)return;rect(r,a,b,-.4,.4,z0,z1,glass?'#6b9da9':'#ae9680',meta);}
+   function pane(a,b,z0,z1,glass){if(b-a<=0||z1-z0<=0)return;rect(r,a,b,-.4,.4,z0,z1,glass?'#728083':'#ae9680',glass?{...meta,material:'glass',alpha:.32}:meta);}
    for(let i=0;i<cols;i++){const a=o.a+f+(e.en-2*f)*i/cols,b=o.a+f+(e.en-2*f)*(i+1)/cols,high=transom||top;pane(a,b,low,high,!door||['pvc','al','double-glass'].includes(style));if(i)rect(r,a-f/2,a+f/2,-3,3,low,top,col,meta);
     if(!door){const active=cat?cat.active===i:e.penTip!=='sabit',tilt=cat?.opening==='tilt'||e.penTip==='vasistas',sliding=e.penTip==='surme';if(active){if(sliding){mark(a+5,(low+high)/2,b-5,(low+high)/2);mark(b-10,(low+high)/2+3,b-5,(low+high)/2);}else if(tilt){mark(a+3,low+3,(a+b)/2,high-3);mark((a+b)/2,high-3,b-3,low+3);}else{mark(a+3,low+3,b-3,(low+high)/2);mark(b-3,(low+high)/2,a+3,high-3);}}}
     if(!door&&((cat&&cat.active===i)||(!cat&&e.penTip!=='sabit'))){const x=b-f;rect(r,x,x+1,-3.6,3.6,(low+high)/2-3,(low+high)/2+3,'#56616b',meta);}
@@ -6720,11 +6720,11 @@ window.Wall3D={build,panelColor};
  const state={yaw:35,pitch:31,zoom:1,panX:0,panY:0,projection:'parallel'};
  function preset(name){const v={front:[0,0],back:[180,0],left:[90,0],right:[270,0],top:[0,90],iso:[35,31]}[name];if(v){state.yaw=v[0];state.pitch=v[1];}reset();}
  function reset(){state.zoom=1;state.panX=state.panY=0;}
- function project(points,w,h){if(!points.length)points=[{x:0,y:0,z:0}];const min={},max={},c={};for(const k of ['x','y','z']){min[k]=Infinity;max[k]=-Infinity;for(const p of points){min[k]=Math.min(min[k],p[k]);max[k]=Math.max(max[k],p[k]);}c[k]=(min[k]+max[k])/2;}
+ function project(points,w,h,options={}){if(!points.length)points=[{x:0,y:0,z:0}];const min={},max={},c={};for(const k of ['x','y','z']){min[k]=Infinity;max[k]=-Infinity;for(const p of points){min[k]=Math.min(min[k],p[k]);max[k]=Math.max(max[k],p[k]);}c[k]=(min[k]+max[k])/2;}
  const radius=Math.max(50,Math.hypot(max.x-min.x,max.y-min.y,max.z-min.z)/2),a=state.yaw*Math.PI/180,b=state.pitch*Math.PI/180,dist=radius*3.5,perspective=state.projection==='perspective';
  let left=Infinity,right=-Infinity,up=Infinity,down=-Infinity;
  for(const p of points){const x=p.x-c.x,y=p.y-c.y,z=p.z-c.z,X=x*Math.cos(a)-y*Math.sin(a),D=x*Math.sin(a)+y*Math.cos(a),Y=D*Math.sin(b)-z*Math.cos(b),Z=D*Math.cos(b)+z*Math.sin(b),f=perspective?dist/(dist-Z):1;left=Math.min(left,X*f);right=Math.max(right,X*f);up=Math.min(up,Y*f);down=Math.max(down,Y*f);}
- const scale=Math.max(.001,Math.min((w-100)/Math.max(100,right-left),(h-160)/Math.max(100,down-up)))*.9*state.zoom,offsetX=(left+right)/2,offsetY=(up+down)/2;
+ const scale=Math.max(.001,Math.min((w-(options.padding?.[0]??100))/Math.max(100,right-left),(h-(options.padding?.[1]??160))/Math.max(100,down-up)))*(options.fill??.9)*state.zoom,offsetX=(left+right)/2,offsetY=(up+down)/2;
  return p=>{const x=p.x-c.x,y=p.y-c.y,z=p.z-c.z,X=x*Math.cos(a)-y*Math.sin(a),D=x*Math.sin(a)+y*Math.cos(a),Y=D*Math.sin(b)-z*Math.cos(b),Z=D*Math.cos(b)+z*Math.sin(b),pers=state.projection==='perspective',f=pers?dist/(dist-Z):1;return{x:w/2+state.panX+(X*f-offsetX)*scale,y:h/2+state.panY+(Y*f-offsetY)*scale,depth:pers?dist*dist/(dist-Z)-dist:Z};};
  }
  window.Camera3D={state,preset,reset,project};
@@ -6743,8 +6743,8 @@ window.Wall3D={build,panelColor};
   gl=canvas.getContext('webgl',{antialias:true,alpha:false,preserveDrawingBuffer:true});if(!gl)return false;
   const shader=(type,source)=>{const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;};
   program=gl.createProgram();
-  gl.attachShader(program,shader(gl.VERTEX_SHADER,'attribute vec3 p; attribute vec4 c; varying vec4 color; void main(){gl_Position=vec4(p,1.0);color=c;}'));
-  gl.attachShader(program,shader(gl.FRAGMENT_SHADER,'precision mediump float; varying vec4 color; void main(){gl_FragColor=color;}'));
+  gl.attachShader(program,shader(gl.VERTEX_SHADER,'attribute vec3 p; attribute vec4 c; attribute vec3 g; varying vec4 color; varying vec3 glaze; void main(){gl_Position=vec4(p,1.0);color=c;glaze=g;}'));
+  gl.attachShader(program,shader(gl.FRAGMENT_SHADER,'precision mediump float; varying vec4 color; varying vec3 glaze; void main(){vec4 col=color;if(glaze.z>0.5){float sky=smoothstep(0.0,1.1,glaze.x);float band=1.0-smoothstep(0.0,0.22,abs(fract(glaze.y)-0.5));col.rgb=mix(col.rgb,vec3(0.86,0.89,0.90),0.10*sky+0.12*band); }gl_FragColor=col;}'));
   gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error('3B program could not link');buffer=gl.createBuffer();return true;
  }
  const rgb=hex=>[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255);
@@ -6761,26 +6761,27 @@ window.Wall3D={build,panelColor};
    return {item,n,base};});
   prepared={items,outlines:state.outlines,entries,edges:[...edgeMap.values()].filter(e=>e.count===1||e.feature),x0,y0,x1,y1};return prepared;
  }
- function render(ctx,w,h,items,edges,project){
+ function render(ctx,w,h,items,edges,project,options={}){
   try{if(!init())return false;}catch(e){stats.error=e.message;return false;}
-  const start=performance.now(),ratio=Math.min(2,Math.max(1.5,devicePixelRatio||1)),cw=Math.min(4096,Math.ceil(w*ratio)),ch=Math.min(4096,Math.ceil(h*ratio));
+  const start=performance.now(),ratio=options.exactPixels?1:Math.min(2,Math.max(1.5,devicePixelRatio||1)),cw=Math.min(4096,Math.ceil(w*ratio)),ch=Math.min(4096,Math.ceil(h*ratio));
+  const limit=Math.min(gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),gl.getParameter(gl.MAX_TEXTURE_SIZE),...gl.getParameter(gl.MAX_VIEWPORT_DIMS));if(options.exactPixels&&(cw!==w||ch!==h||w>limit||h>limit))throw Error('Bu cihaz seçilen PNG boyutunu desteklemiyor. Daha küçük çözünürlük seçin.');
   if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
   gl.viewport(0,0,cw,ch);gl.useProgram(program);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
-  for(const [name,size,offset] of [['p',3,0],['c',4,12]]){const a=gl.getAttribLocation(program,name);gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,size,gl.FLOAT,false,28,offset);}
-  const light=state.theme==='light',bg=light?[.965,.972,.98]:[.051,.09,.133];gl.clearColor(...bg,1);gl.clearDepth(1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);
+  for(const [name,size,offset] of [['p',3,0],['c',4,12],['g',3,28]]){const a=gl.getAttribLocation(program,name);gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,size,gl.FLOAT,false,40,offset);}
+  const light=state.theme==='light',bg=options.background==='white'?[1,1,1]:light?[.965,.972,.98]:[.051,.09,.133];gl.clearColor(...bg,1);gl.clearDepth(1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);
   let near=-Infinity,far=Infinity;const preparedScene=prepare(items),{x0,y0,x1,y1}=preparedScene;
   const projected=preparedScene.entries.map(({item,n,base})=>{const pts=item.poly.map(p=>{const q=project(p);near=Math.max(near,q.depth);far=Math.min(far,q.depth);return q;});return {item,pts,n,base};});
   if(!items.length){ctx.drawImage(canvas,0,0,w,h);return true;}
   const span=Math.max(1,near-far),pad=span*2,range=span+2*pad;
-  const vertex=(arr,p,color,bias=0)=>arr.push(p.x/w*2-1,1-p.y/h*2,1-2*(p.depth-far+pad)/range-bias,...color);
-  const batch=(arr,mode)=>{if(!arr.length)return;gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(arr),gl.DYNAMIC_DRAW);gl.drawArrays(mode,0,arr.length/7);};
+  const vertex=(arr,p,color,bias=0,glaze=[0,0,0])=>arr.push(p.x/w*2-1,1-p.y/h*2,1-2*(p.depth-far+pad)/range-bias,...color,...glaze);
+  const batch=(arr,mode)=>{if(!arr.length)return;gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(arr),gl.DYNAMIC_DRAW);gl.drawArrays(mode,0,arr.length/10);};
   const opaque=[],glass=[],lineData=[];
   for(const {item,pts,n,base} of projected){
    const diff=Math.abs(n[0]*.36+n[1]*-.48+n[2]*.8),shade=.60+.35*diff+.05*Math.abs(n[2]);
    const metallic=!item.painted&&(item.kind==='wallJoint'||item.kind==='gableOmega'),highlight=metallic?.07*Math.pow(diff,12):0;
    let color=[...base.map(v=>Math.min(1,v*shade+highlight)),item.alpha??1];
-   if(color[3]<1){const yaw=Camera3D.state.yaw*Math.PI/180,pitch=Camera3D.state.pitch*Math.PI/180,view=[Math.sin(yaw)*Math.cos(pitch),Math.cos(yaw)*Math.cos(pitch),Math.sin(pitch)],facing=Math.abs(n.reduce((sum,v,i)=>sum+v*view[i],0)),reflection=.08+.35*Math.pow(1-facing,5);color=[...base.map(v=>v*(1-reflection)+reflection),Math.min(.7,color[3]+reflection*.4)];}
-   for(let j=1;j<pts.length-1;j++){const tri=[pts[0],pts[j],pts[j+1]];if(color[3]<1)glass.push({tri,color,depth:tri.reduce((s,p)=>s+p.depth,0)/3});else tri.forEach(p=>vertex(opaque,p,color));}
+   if(color[3]<1){const yaw=Camera3D.state.yaw*Math.PI/180,pitch=Camera3D.state.pitch*Math.PI/180,view=[Math.sin(yaw)*Math.cos(pitch),Math.cos(yaw)*Math.cos(pitch),Math.sin(pitch)],facing=Math.abs(n.reduce((sum,v,i)=>sum+v*view[i],0)),reflection=.10+.30*Math.pow(1-facing,5);color=[...base.map((v,i)=>v*(1-reflection)+[.77,.81,.83][i]*reflection),Math.min(.64,color[3]+reflection*.45)];}
+   for(let j=1;j<pts.length-1;j++){const tri=[pts[0],pts[j],pts[j+1]];if(color[3]<1)glass.push({tri,color,glaze:[item.poly[0],item.poly[j],item.poly[j+1]].map(p=>[p.z/300,(p.x*n[1]-p.y*n[0])/450+p.z/900+Camera3D.state.yaw/720,1]),depth:tri.reduce((s,p)=>s+p.depth,0)/3});else tri.forEach(p=>vertex(opaque,p,color));}
 
   }
   if(state.grid&&Number.isFinite(x0)){
@@ -6795,10 +6796,10 @@ window.Wall3D={build,panelColor};
   // Explicit roof seams use the same depth test as the solid model.
   for(const e of edges){if(e.foundationEdge&&!state.outlines)continue;const color=[...rgb(e.color||'#73838c'),1];vertex(lineData,project(e.p),color,1e-6);vertex(lineData,project(e.q),color,1e-6);}
   gl.lineWidth(1);batch(lineData,gl.LINES);
-  glass.sort((a,b)=>a.depth-b.depth);const transparent=[];for(const g of glass)g.tri.forEach(p=>vertex(transparent,p,g.color));
+  glass.sort((a,b)=>a.depth-b.depth);const transparent=[];for(const g of glass)g.tri.forEach((p,i)=>vertex(transparent,p,g.color,0,g.glaze[i]));
   gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);batch(transparent,gl.TRIANGLES);gl.depthMask(true);gl.disable(gl.BLEND);
   ctx.drawImage(canvas,0,0,w,h);
-  Object.assign(stats,{backend:'webgl',antialias:gl.getContextAttributes().antialias,width:cw,height:ch,triangles:opaque.length/21+glass.length,lines:lineData.length/14,ms:performance.now()-start});return true;
+  Object.assign(stats,{backend:'webgl',antialias:gl.getContextAttributes().antialias,width:cw,height:ch,triangles:opaque.length/30+glass.length,lines:lineData.length/20,ms:performance.now()-start});return true;
  }
  window.Scene3D={render,state,stats};
 })();
@@ -7274,13 +7275,28 @@ window.Wall3D={build,panelColor};
   dialog.addEventListener('cancel',e=>{e.preventDefault();close();});new ResizeObserver(()=>paint()).observe($('roofStage'));
   function save(data,name,type){const url=URL.createObjectURL(new Blob([data],{type})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);}
   function csv(){const m=model(),rows=[['Çatı kaplama metrajı','Birim','Miktar','Net alan m²','Sipariş alanı m²']];m.totals.forEach(t=>rows.push([t.name,t.unit==='sheet'?'levha':t.unit==='package'?'paket':'m²',t.unit==='sheet'?t.pieces:t.unit==='package'?t.packages:t.purchaseArea,t.area,t.unit==='sheet'?t.blankArea:t.unit==='package'?t.packages*t.coverage:t.purchaseArea]));m.layerTotals.forEach(t=>rows.push([t.zoneName+' / '+t.name,t.unit,t.quantity,t.netArea,t.purchaseArea]));rows.push([],['Alt katman bölümü','Katman','No','Net en cm','Kesim boyu cm']);m.layerCuts.forEach(r=>rows.push([r.name,r.material,r.number,r.width,r.length]));rows.push([],['Kenar','Uzunluk m']);Object.entries(m.lengths).forEach(([k,v])=>rows.push([EDGE[k],v]));rows.push([],['No','Bölüm','Yüz','Şerit','Parça','Kaplama','Net en cm','Boy cm','Adet']);m.cutList.forEach(c=>rows.push([c.number,c.name,c.face,c.strip,c.part,materials().find(m=>m.id===c.material).name,c.width,c.length,1]));rows.push([],['Veranda profili','Kesit ve net boy','Birim','Adet']);billRows().filter(r=>r.kalem.includes('Kutu profil')||r.kalem.includes('Üst yatay')).forEach(r=>rows.push([r.kalem,r.olcu,r.birim,r.miktar]));rows.push([],['Kesim taslağı: üçgen artıklarının kullanımı, bağlantılar ve metal kiremit adım modülü dahil değildir.']);return '\uFEFF'+rows.map(row=>row.map(v=>{let s=typeof v==='number'?String(Math.round(v*1000)/1000).replace('.',','):String(v);if(/^[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}).join(';')).join('\r\n');}
-  $('roofCSV').onclick=()=>save(csv(),'cati_metraj_kesim.csv','text/csv;charset=utf-8');$('roofPNG').onclick=()=>{if(mode==='report'){notice('PNG için Plan, 3B veya Kesit görünümünü seçin.');return;}const source=$('roofCanvas'),out=document.createElement('canvas');out.width=source.clientWidth;out.height=source.clientHeight;paint(out);out.toBlob(b=>save(b,'cati_'+mode+'.png','image/png'));};
+  $('roofCSV').onclick=()=>save(csv(),'cati_metraj_kesim.csv','text/csv;charset=utf-8');$('roofPNG').title='PNG çıktı ayarları · 3D için 4K';$('roofPNG').onclick=()=>{if(mode==='3d'){SceneImageOutput.open();return;}if(mode==='report'){notice('PNG için Plan, 3B veya Kesit görünümünü seçin.');return;}const source=$('roofCanvas'),out=document.createElement('canvas');out.width=source.clientWidth;out.height=source.clientHeight;paint(out);out.toBlob(b=>save(b,'cati_'+mode+'.png','image/png'));};
   function billRows(){const m=model(),rows=[],row=(kalem,olcu,birim,miktar)=>rows.push({grup:'Çatı — bölüm modeli',kalem,olcu,birim,miktar});m.totals.forEach(t=>{if(t.unit==='sheet')row(t.name+' · kesim alanı','Net kapatma eni × kesim boyları toplamı · fiyatlandırma alanı','m²',t.blankArea);row(t.name+' · net kaplama','Birleşimler düşülmüş eğimli yüzey','m²',t.area);row(t.name+' · sipariş',t.unit==='sheet'?'Şerit kesim taslağı · ayrıntı Çatı planı / CSV':t.unit==='package'?number(t.coverage)+' m²/paket · fire dahil':'fire dahil',t.unit==='sheet'?'adet':t.unit==='package'?'paket':'m²',t.unit==='sheet'?t.pieces:t.unit==='package'?t.packages:t.purchaseArea);});Object.entries(m.lengths).forEach(([k,v])=>row(EDGE[k],'Gerçek 3B kenar boyu','m',v));const gutter=m.edges.filter(e=>e.type==='eave'&&G.roofs.find(z=>z.id===e.zoneId)?.gutters&&!G.roofs.find(z=>z.id===e.zoneId)?.parapet).reduce((s,e)=>s+e.length,0);row('Yağmur oluğu','Oluk açık ve parapetsiz bölümlerin saçakları','m',gutter);m.layerTotals.forEach(t=>{row(t.name+' · '+t.zoneName+' · net','Seçili alt katman','m²',t.netArea);row(t.name+' · '+t.zoneName+' · sipariş',number(t.width)+' × '+number(t.length)+' cm · fire %'+number(t.fire),t.unit,t.quantity);});G.roofs.filter(z=>z.sourceRoomId).forEach(z=>verandaMembers(z).forEach(p=>row(z.name+' · '+(p.kind==='post'?'Kutu profil dikme':'Üst yatay '+p.label),p.profile.width+' × '+p.profile.depth+' × '+p.profile.thickness+' mm · net boy '+number(p.length,2)+' cm','adet',1)));return rows;}
   function summary(){const m=model();return {productionFrames:window.RoofWorkflow?G.roofs.flatMap(RoofWorkflow.trusses):[],alan:m.area,planAlan:m.planArea,adet:m.cutList.length,mahya:(m.lengths.ridge||0)*100,kirmaMahya:(m.lengths.hip||0)*100,dere:(m.lengths.valley||0)*100,sacak:(m.lengths.eave||0)*100,alin:(m.lengths.verge||0)*100,gruplar:[],sekil:'bolum',bina:G.roofs.length};}
   const baseDraw=window.draw;window.draw=function(){baseDraw();if(dialog.open)render();};
   $('roofTheme').onclick=()=>{Scene3D.state.theme=Scene3D.state.theme==='light'?'dark':'light';$('roofTheme').textContent=Scene3D.state.theme==='light'?'Koyu zemin':'Açık zemin';paint();};
   $('roofContours').onclick=()=>{Scene3D.state.outlines=!Scene3D.state.outlines;$('roofContours').setAttribute('aria-pressed',String(Scene3D.state.outlines));paint();};
-  window.RoofStudio={sceneStats,verandaBase,seat,raster3D,vergeEdges,edges3D,trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,soffitSurfaces,model,render,fit,setView,verandaMembers,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
+  function renderImage(out,options){
+   if(mode!=='3d')throw Error('PNG sunumu için 3D görünümünü açın.');
+   paint();if(!sceneCache?.items.length)throw Error('Çıktı alınacak yapı bulunamadı.');
+   const camera={...Camera3D.state},display={...Scene3D.state};
+   try{
+    const rect=$('roofCanvas').getBoundingClientRect(),fit=options.frame==='fit',w=fit?960*Math.max(1,out.width/out.height):Math.max(1,rect.width),h=fit?960*Math.max(1,out.height/out.width):Math.max(1,rect.height);
+    if(fit){Camera3D.state.zoom=1;Camera3D.state.panX=Camera3D.state.panY=0;}
+    Scene3D.state.theme=options.background==='dark'?'dark':'light';Scene3D.state.grid=options.grid;
+    const scale=Math.min(out.width/w,out.height/h),dx=(out.width-w*scale)/2,dy=(out.height-h*scale)/2,p=Camera3D.project(sceneCache.points,w,h,fit?{padding:[64,64],fill:.96}:{}),project=v=>{const q=p(v);return {...q,x:dx+q.x*scale,y:dy+q.y*scale};};
+    const ctx=out.getContext('2d');if(!ctx)throw Error('PNG tuvali oluşturulamadı.');
+    if(!Scene3D.render(ctx,out.width,out.height,sceneCache.items,sceneCache.edges,project,{exactPixels:true,background:options.background}))throw Error('Yüksek çözünürlüklü çıktı için 3D grafik desteği kullanılamıyor.');
+    let x=Infinity,y=Infinity,X=-Infinity,Y=-Infinity;for(const v of sceneCache.points){const q=project(v);x=Math.min(x,q.x);y=Math.min(y,q.y);X=Math.max(X,q.x);Y=Math.max(Y,q.y);}
+    return {width:out.width,height:out.height,bounds:{x,y,X,Y},triangles:Scene3D.stats.triangles};
+   }finally{Object.assign(Camera3D.state,camera);Object.assign(Scene3D.state,display);}
+  }
+  window.RoofStudio={renderImage,sceneStats,verandaBase,seat,raster3D,vergeEdges,edges3D,trimSurfaces,panelEdges3D,commit,notice,world,repaint:paint,open,close,add,make,fromPlan,fromVeranda,verandaStructure,planStructure,fasciaSurfaces,soffitSurfaces,model,render,fit,setView,verandaMembers,billRows,summary,csv,canvasPoint:at,select(id){selected=id;render();},getSelected:()=>selected};
 })();
 
 
@@ -8505,7 +8521,7 @@ function refresh(){const selected=G.paint3D?.[target];$('paintCurrent').textCont
 $('paintSearch').oninput=refresh;$('paintClose').onclick=()=>panel.close();button.onclick=()=>{if(!visible)return;refresh();panel.showModal();};$('paintReset').onclick=()=>{Studio.edit(()=>{if(G.paint3D)delete G.paint3D[target];});refresh();RoofStudio.repaint();};
 function sync(mode){visible=mode==='3d';button.hidden=!visible;if(!visible&&panel.open)panel.close();}
 function tint(hex,factor){return '#'+[1,3,5].map(i=>Math.round(parseInt(hex.slice(i,i+2),16)*factor).toString(16).padStart(2,'0')).join('');}
-function decorate(items){const rooms=G.rooms.filter(r=>r.tip!=='veranda').map(r=>(r.nodeIds||[]).map(getNode)).filter(r=>r.length>=3&&r.every(Boolean));return items.map(item=>{let hex;const wall=item.kind==='wallPanel'||item.material==='panel'||item.kind==='wall'||(!item.kind&&item.segmentId);if(wall||item.kind==='wallJoint'){const p=item.poly.reduce((s,v)=>({x:s.x+v.x/item.poly.length,y:s.y+v.y/item.poly.length}),{x:0,y:0}),inside=rooms.some(r=>ptInPolygon(p.x,p.y,r));hex=color(inside?'interior':'exterior');if(item.kind==='wallJoint')hex=item.jointType==='kose'?color('corners'):tint(hex,.94);}else if(['cladding','gableCornerClosure','canopyCladding','hCover'].includes(item.kind))hex=color('exterior');return hex?{...item,color:hex,painted:true,edgeColor:item.kind==='wallJoint'?tint(hex,.72):undefined}:item;});}
+function decorate(items){const rooms=G.rooms.filter(r=>r.tip!=='veranda').map(r=>(r.nodeIds||[]).map(getNode)).filter(r=>r.length>=3&&r.every(Boolean));return items.map(item=>{if(item.material==='glass')return {...item,color:'#728083',alpha:.32};let hex;const wall=item.kind==='wallPanel'||item.material==='panel'||item.kind==='wall'||(!item.kind&&item.segmentId);if(wall||item.kind==='wallJoint'){const p=item.poly.reduce((s,v)=>({x:s.x+v.x/item.poly.length,y:s.y+v.y/item.poly.length}),{x:0,y:0}),inside=rooms.some(r=>ptInPolygon(p.x,p.y,r));hex=color(inside?'interior':'exterior');if(item.kind==='wallJoint')hex=item.jointType==='kose'?color('corners'):tint(hex,.94);}else if(['cladding','gableCornerClosure','canopyCladding','hCover'].includes(item.kind))hex=color('exterior');return hex?{...item,color:hex,painted:true,edgeColor:item.kind==='wallJoint'?tint(hex,.72):undefined}:item;});}
 window.Paint3D={decorate,sync,defaults};
 })();
 

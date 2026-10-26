@@ -1,0 +1,20 @@
+DEV-168 — Gerçek 4K PNG ve hafif füme cam
+26 Ekim 2026, iş bilgisayarı. Bağımsız taslak168; ana uygulama5.9.137 korunur.
+
+İstek ve kaynak
+Kullanıcı 3D yapı görünümünü 4K gibi yüksek çözünürlükte PNG almak ve camı hafif füme, daha cam benzeri yapmak istedi. Kaynak ekran referanslar/2026-10-26-4k-cam-istegi.png; orijinal yol ve kaynak/kopya SHA-256 envanterde. Canlı kullanıcı sekmesi veya müşteri JSON'u okunmadı/değiştirilmedi. Kanıt görselleri uygulamanın Tuna84 örneğidir.
+
+Çıktı sistemi
+Önceki roofPNG ekran tuvalinin CSS piksel boyutunu kullanıyordu. 3D > PNG artık çözünürlük ve kadraj önizlemesi açar. Hazırlar: 4K3840×2160, 2K2560×1440, FullHD1920×1080. Özel en/boy256–4096piksel; portre ve kare mümkündür. Ekran görüntüsü büyütülmez: önbellekteki bütün model geometrisi hedef piksel boyutunda WebGL ile yeniden çizilir. Donanım sınırı kontrol edilir; desteklenmeyen boyutta düşük kaliteye sessizce dönülmez, anlaşılır hata verilir. WebGL kullanılamıyorsa yüksek çözünürlüklü çıktı için hata gösterilir; normal görüntüleyicinin önceki yazılım yedeği korunur.
+Kadraj: yapının tamamını sığdır veya ekrandaki zoom/pan/bakışı koru. Sığdır yalnız çıktı kamerasını geçici ayarlar, sahnedeki kamerayı değiştirmez. Ekrandaki kadraj farklı çıktı oranında kesilmeden ortalanır. Önizleme ve indirme aynı kamera hesabını kullanır. Beyaz/açık gri/koyu arka plan, zemin ızgarası seçimi vardır. Çıktıda yalnız model görünümü bulunur; menü, yardım yazısı veya çatı bilgi damgası yoktur. PNG dosya adına proje adı ve piksel boyutları eklenir.
+Ayarlar başarılı çıktıdan sonra proje verisine image3DLayout olarak kaydedilir; iptal projeyi değiştirmez. JSON, kurtarma, projeler arası ayrım ve undo/redo bağlanmıştır. PNG ayarı kendi geri alma adımıdır. Kamera/tema/ızgara hem başarılı hem hatalı render sonunda geri yüklenir. 3D dışındaki çatı planı/kesit PNG düğmesi ve 2D sayfa çıktı sistemi korunur.
+
+Cam
+Malzeme kimliği glass olan gerçek STL pencere, alüminyum/PVC kapı ve şematik açıklıklar ortak nötr füme #728083, taban alfa0,32 kullanır. Çizim ve STL koordinatları değişmez; tonlama Paint3D kopyalarında uygulanır. Şematik camlar da cam etiketi/saydamlığı alır. Bakış açısına göre artan yumuşak yansıma, düşey aydınlık geçişi ve hafif yansıma bandı GPU'da uygulanır. Bu temsilî sunum malzemesidir; gerçek ortam haritası/ışın izleme veya optik cam simülasyonu değildir. Kasa/donatı/duvar/çatı boyası değişmez. Ana kaynak STL ve üretim yüzeyleri korunur.
+
+Doğrulama
+Gerçek tarayıcı indirmesinde PNG başlığı3840×2160. Önizlemenin model sınırları4K'da tam4kat; kesilme yok. 1200×1600özel çıktı, hatalı ölçü, kadraj/perspektif/pan, render hatasında geri yükleme, iptal, JSON indir/aç/yenileme ve980/1280/1920ekran genişlikleri geçti. Yerel kaynaklarda çevrimiçi bağımlılık yok.
+foundation-performance-check:20kamera karesinde aynı geometri/üçgen/çizgi sayısı ve50tekerlek olayında1kare. Bu görevde yeni FPS iddiası yok. single-check:49panel planının ölçü/birleşim/metraj eşitliği, gerçek çizim/çatı/tavan/PDF ve ana uygulama izolasyonu geçti. foundation-check:beton/geometri/merdiven/kot/çıktı ve çıktı ayarı ayrı undo adımı geçti. other-door-check:6kaynak model,48yön/menteşe,250/280/300yükseklik,205kapı, cam ve doğrama rengi geçti. Üç kanıt görseli görsel olarak incelendi.
+
+Sınırlar ve devir
+Yalnız taslakta değişiklik yapıldı. 54ana kaynak ve dist/plan_studio.html ile arakat.html önceki167hashleriyle eşit. H/U/köşe görünümü, imalat, fiyat ve mevcut çizimler değişmedi. Kaynak ekran,4Körnek ve ayar önizlemesi raporla birlikte göreve dahildir. Güncel müşteri JSON aktarımı doğrulanmadı. Önceki açık işler ve ilgisiz yerel notlar korunur. Sonraki adım kullanıcının çizimini Kaydet sonrası taslağı yenilemesi,3D > PNG >4K >PNG indir ile kendi projesini değerlendirmesidir.

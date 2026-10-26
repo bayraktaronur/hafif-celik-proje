@@ -1,8 +1,9 @@
 {
-  "task": "DEV-167",
+  "task": "DEV-168",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
+    "native 4K 3D PNG with framing/preview and shared smoked-glass presentation",
     "shared multi-door landings and concrete prism union: exposed geometry and unique quantities",
     "PDF/PNG fit-to-page, physical margins, compact/full title block and persisted per-project layout",
     "editable door-guided landing suggestions; cached full-detail 3D geometry and feature edges, coalesced camera frames",
