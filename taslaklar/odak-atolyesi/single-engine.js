@@ -608,7 +608,7 @@
   }
   function validate(input){
     if(!input||typeof input!=='object'||Array.isArray(input))fail('Geçerli bir proje nesnesi bulunamadı.');
-    safeTree(input);window.FloorHatch?.validate(input);CameraViews.validate(input.cameraViews);Presentation3D.validate(input.scenePresentation);RainDrainage.validate(input.rainDrainage);SceneImageOutput.validate(input.image3DLayout);SheetOutput.validate(input.sheetLayout);
+    safeTree(input);if(input.dimensionReference!=null&&!['outer','net','axis'].includes(input.dimensionReference))throw Error('Geçersiz ölçü referansı');window.FloorHatch?.validate(input);CameraViews.validate(input.cameraViews);Presentation3D.validate(input.scenePresentation);RainDrainage.validate(input.rainDrainage);SceneImageOutput.validate(input.image3DLayout);SheetOutput.validate(input.sheetLayout);
     ReferenceImageData.validate(input.referenceImages);
     FoundationData.validate(input.foundation);
     if(!['5','5.1'].includes(String(input.v)))fail('Desteklenen dosya sürümleri: v5 ve v5.1.');
@@ -3645,7 +3645,7 @@ function drawDims(){
     if(hasChain){
       _dimRow={row:'zincir',meta:meta,off:off1};
       var cc=dimSel&&G.seciliDimRow==='zincir'?'#58a6ff':baseCol;
-      var cur=0;
+      var cur=FaceDimensions.range(seg,G.nodes,G.segs,FaceDimensions.mode())[0];
       els.forEach(function(e){
         var st=Math.max(0,e.t*L),en=Math.min(L,st+e.en);
         if(st-cur>0.5)_dimLine(a.x,a.y,ux,uy,sx,sy,cur,st,off1,wallPx,fmtCm(st-cur),cc,false);
@@ -3654,16 +3654,17 @@ function drawDims(){
         _dimLine(a.x,a.y,ux,uy,sx,sy,st,en,off1,wallPx,fmtCm(e.en),ec,false);
         cur=Math.max(cur,en);
       });
-      if(L-cur>0.5)_dimLine(a.x,a.y,ux,uy,sx,sy,cur,L,off1,wallPx,fmtCm(L-cur),cc,false);
+      var endFace=FaceDimensions.range(seg,G.nodes,G.segs,FaceDimensions.mode())[1];if(endFace-cur>0.5)_dimLine(a.x,a.y,ux,uy,sx,sy,cur,endFace,off1,wallPx,fmtCm(endFace-cur),cc,false);
     }
     if(!totHidden){
       var offT=hasChain?off1+20:off1;
       _dimRow={row:'toplam',meta:meta,off:offT};
-      _dimLine(a.x,a.y,ux,uy,sx,sy,0,L,offT,wallPx,fmtCm(L),
+      var face=FaceDimensions.range(seg,G.nodes,G.segs,FaceDimensions.mode());_dimLine(a.x,a.y,ux,uy,sx,sy,face[0],face[1],offT,wallPx,fmtCm(face[1]-face[0]),
         dimSel&&G.seciliDimRow==='toplam'?'#58a6ff':baseCol,true);
     }
     _dimRow=null;
   });
+  FaceDimensions.totals();
 }
 function hitDim(px,py){
   var H=G._dimHits||[];
@@ -3728,9 +3729,9 @@ function drawElemanMesafe(e,seg,n1,n2,ux,uy,dLen){
   var siblings=G.elemanlar.filter(function(k){return k.id!==e.id&&k.segId===seg.id;})
     .map(function(k){return{tS:k.t*dLen,tE:k.t*dLen+k.en};})
     .sort(function(a,b){return a.tS-b.tS;});
-  var prevEnd=0;
+  var prevEnd=isPref()?0:FaceDimensions.range(seg,G.nodes,G.segs,FaceDimensions.mode())[0];
   for(var i=siblings.length-1;i>=0;i--){if(siblings[i].tE<tStart-1){prevEnd=siblings[i].tE;break;}}
-  var nextStart=dLen;
+  var nextStart=isPref()?dLen:FaceDimensions.range(seg,G.nodes,G.segs,FaceDimensions.mode())[1];
   for(var i=0;i<siblings.length;i++){if(siblings[i].tS>tEnd+1){nextStart=siblings[i].tS;break;}}
   var pE=toCv(n1.x+ux*tStart,n1.y+uy*tStart);
   var pEEnd=toCv(n1.x+ux*tEnd,n1.y+uy*tEnd);
@@ -5008,7 +5009,7 @@ updateStatus();
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',error?6500:3500);}
   function state(){
     const used=new Set(G.segs.flatMap(s=>[s.n1,s.n2]));
-    return {v:'5',revision:'5.9.137',projectName,...(G.cameraViews?.length?{cameraViews:clone(G.cameraViews)}:{}),...(G.scenePresentation?{scenePresentation:clone(G.scenePresentation)}:{}),...(G.rainDrainage?{rainDrainage:clone(G.rainDrainage)}:{}),...(G.image3DLayout?{image3DLayout:clone(G.image3DLayout)}:{}),...(G.foundation?{foundation:clone(G.foundation)}:{}),...(G.referenceImages?.length?{referenceImages:clone(G.referenceImages)}:{}),paint3D:clone(G.paint3D||{}),sheetInfo:clone(G.sheetInfo||{}),...(G.sheetLayout?{sheetLayout:clone(G.sheetLayout)}:{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
+    return {v:'5',revision:'5.9.137',projectName,...(G.cameraViews?.length?{cameraViews:clone(G.cameraViews)}:{}),...(G.scenePresentation?{scenePresentation:clone(G.scenePresentation)}:{}),...(G.rainDrainage?{rainDrainage:clone(G.rainDrainage)}:{}),...(G.image3DLayout?{image3DLayout:clone(G.image3DLayout)}:{}),...(G.foundation?{foundation:clone(G.foundation)}:{}),...(G.referenceImages?.length?{referenceImages:clone(G.referenceImages)}:{}),paint3D:clone(G.paint3D||{}),dimensionReference:G.dimensionReference||'outer',sheetInfo:clone(G.sheetInfo||{}),...(G.sheetLayout?{sheetLayout:clone(G.sheetLayout)}:{}),loading:clone(G.loading||{adjustments:[],manual:[]}),sistem:G.sistem,catiYon:G.catiYon,opt:clone(G.opt),
       n:clone(G.nodes.filter(n=>used.has(n.id))),s:clone(G.segs),e:clone(G.elemanlar),r:clone(G.rooms),annotations:clone(G.annotations||[]),fixtures:clone(G.fixtures||[]),counters:clone(G.counters||[]),roofs:clone(G.roofs||[]),roofMaterials:clone(G.roofMaterials||[]),
       ky:+$('katYuk').value,dy:+$('disYuk').value,fire:ALCI.FIRE,
       settings:{...(G.viewFilters?{viewFilters:clone(G.viewFilters)}:{}),moduleAxisSnap:G.moduleAxisSnap!==false,panelDrawMode:G.panelDrawMode||'mixed',trussOverrides:clone((G.trussOverrides||[]).filter(e=>used.has(e.nodeId))),snapTargets:clone(G.snapTargets||{}),moveAlign:!!G.moveAlign,moveModule:!!G.moveModule,gridCm:G.gridCm,defaultK:G.defaultK,snapGrid:G.snapGrid,snapWall:G.snapWall,elStep:G.elStep,duvarYakala:G.duvarYakala,pnlEtiket:G.pnlEtiket,catiYon:G.catiYon,makasGoster:G.makasGoster,olcuModu:G.olcuModu,ortho:G.ortho,inputUnit:G.inputUnit,selectionMode:G.selectionMode||'wall',panelSync:G.panelSync!==false,freeSnapStep:G.freeSnapStep||5}};
@@ -5072,7 +5073,7 @@ updateStatus();
     restoring=true;
     try{
       resetInteraction();
-      G.rainDrainage=clone(d.rainDrainage||null);G.cameraViews=clone(d.cameraViews||[]);G.scenePresentation=clone(d.scenePresentation||null);G.image3DLayout=clone(d.image3DLayout||null);G.foundation=clone(d.foundation||null);G.referenceImages=clone(d.referenceImages||[]);G.paint3D=clone(d.paint3D||{});G.loading=clone(d.loading||{adjustments:[],manual:[]});G.sheetInfo=clone(d.sheetInfo||{});G.sheetLayout=clone(d.sheetLayout||null);G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
+      G.rainDrainage=clone(d.rainDrainage||null);G.cameraViews=clone(d.cameraViews||[]);G.scenePresentation=clone(d.scenePresentation||null);G.image3DLayout=clone(d.image3DLayout||null);G.foundation=clone(d.foundation||null);G.referenceImages=clone(d.referenceImages||[]);G.paint3D=clone(d.paint3D||{});G.loading=clone(d.loading||{adjustments:[],manual:[]});G.dimensionReference=d.dimensionReference||'outer';G.sheetInfo=clone(d.sheetInfo||{});G.sheetLayout=clone(d.sheetLayout||null);G.nodes=clone(d.n);G.segs=clone(d.s);G.elemanlar=clone(d.e);G.rooms=clone(d.r);G.annotations=clone(d.annotations||[]);G.fixtures=clone(d.fixtures||[]);G.counters=clone(d.counters||[]);G.roofs=clone(d.roofs||[]);G.roofMaterials=clone(d.roofMaterials||[]);
       G.opt=Object.assign({},PlanProject.DEFAULT_OPTIONS,clone(d.opt||{}));PF.IC=+G.opt.ic;PF.DIS=+G.opt.dis;
       G.catiYon=d.catiYon||'yatay';projectName=d.projectName||'Yeni proje';$('projectName').value=projectName;
       $('katYuk').value=d.ky;$('disYuk').value=d.dy;ALCI.FIRE=d.fire??10;$('fireYuzde').value=ALCI.FIRE;
@@ -8311,8 +8312,8 @@ window.Wall3D={build,panelColor};
  for(const [type,label] of [['pdf','PDF çıktı'],['dxf','DXF çıktı']]){const b=document.createElement('button');b.id='export-'+type;b.className='tb';b.textContent=label;b.onclick=()=>open(type);document.querySelector('.header-actions').append(b);}
  function render(target,s,pan={x:0,y:0},steps=null){
   const save={zoom:G.zoom,pan:G.pan,secili:G.secili,seciliTip:G.seciliTip,selSegs:G.selSegs,selPanels:G.selPanels,wallDrag:G.wallDrag,lblDrag:G.lblDrag,drawing:G.drawing,snapPt:G.snapPt},old={ctx,TH,DIM};
-  try{Object.assign(G,{zoom:s/G.scale,pan,secili:null,seciliTip:null,selSegs:[],selPanels:[],wallDrag:null,lblDrag:null,drawing:false,snapPt:null});ctx=target;TH=TH_PAPER;DIM=DIM_PAPER;
-   for(const [name,fn] of (steps||[['ODA',drawRooms],['MAKAS',drawMakas],['DUVAR',drawSegs],['PANEL_BAGLANTI',drawPanels],['KAPLAMA',drawAlciGorsel],['DONATI_METIN',drawElemanlar],['OLCU',drawDims]])){target.setLayer?.(name);fn();}
+  try{Object.assign(G,{zoom:s/G.scale,pan,secili:null,seciliTip:null,selSegs:[],selPanels:[],wallDrag:null,lblDrag:null,drawing:false,snapPt:null});ctx=target;TH=window.PlanPresentation?.active()?{...TH_PAPER,wall:'#72736b',room:'#e9e5da',wetRoom:'#d9dedb',verandaRoom:'#e3dfd2'}:TH_PAPER;DIM=DIM_PAPER;
+   for(const [name,fn] of (steps||[['ODA',drawRooms],['MAKAS',drawMakas],['DUVAR',drawSegs],['PANEL_BAGLANTI',drawPanels],['KAPLAMA',drawAlciGorsel],['DONATI_METIN',drawElemanlar],['OLCU',drawDims]])){target.setLayer?.(name);if(window.PlanPresentation?.active()&&name==='DUVAR'&&target.canvas){target.save();target.shadowColor='#292d2940';target.shadowBlur=7;target.shadowOffsetX=3;target.shadowOffsetY=4;fn();target.restore();}else fn();}
   }finally{Object.assign(G,save);ctx=old.ctx;TH=old.TH;DIM=old.DIM;draw();}
  }
  function record(s=1){const r=PlanCanvasRecorder();render(r,s);if(!Number.isFinite(r.bounds.minX))throw Error('Önce bir plan veya metin oluşturun.');return r;}
@@ -8359,7 +8360,7 @@ function makeDxf(mode='current',hatch=true){const save={viewFilters:G.viewFilter
  $('sheetLogo').onchange=async e=>{const file=e.target.files[0];if(!file)return;const active=draft;$('exportSubmit').disabled=true;try{const logo=await TitleBlock.importLogo(file);if(active!==draft||!dialog.open)return;draft.logo=logo;dirty=true;await refresh();}catch(err){$('exportStatus').textContent=err.message;}};
  $('sheetLogoRemove').onclick=()=>{delete draft.logo;dirty=true;$('sheetLogo').value='';refresh();};$('exportCancel').onclick=()=>{refreshId++;dialog.close();};
  dialog.querySelector('form').onsubmit=async e=>{e.preventDefault();$('exportSubmit').disabled=true;try{if(format==='dxf')download(makeDxf($('dxfMode').value,$('dxfHatch').checked),'dxf','application/dxf');else{await TitleBlock.ready(readFields());const l=chosen();if(format==='pdf')download(makePdf(l),'pdf','application/pdf');else{const canvas=pageCanvas(l);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('PNG oluşturulamadı.');download(PlanExportCore.pngDensity(new Uint8Array(await blob.arrayBuffer()),l.dpi),'png','image/png');}dirty=true;saveInfo();}refreshId++;dialog.close();Studio.toast(format.toUpperCase()+' çıktısı hazırlandı.');}catch(err){$('exportStatus').textContent=err.message;Studio.toast(err.message,true);$('exportSubmit').disabled=false;}};
- SheetOutput.setup(dialog,()=>{dirty=true;refresh();});
+ SheetOutput.setup(dialog,()=>{dirty=true;refresh();});PlanPresentation.setup(()=>{dirty=true;refresh();});
  window.pngIndir=()=>open('png');
  window.PlanExport={open,record,layout,pageCanvas,makePdf,makeDxf,dxfObjects,recommend};
 })();

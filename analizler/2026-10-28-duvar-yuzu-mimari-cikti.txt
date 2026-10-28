@@ -1,0 +1,14 @@
+DEV-180 / Taslak 180 — 28 Ekim 2026
+Kapsam: yalnız taslaklar/odak-atolyesi. Ana program ve açık müşteri çizimleri değiştirilmedi.
+
+Hafif çelik ölçü referansı: dıştan dışa, iç net, aks. Bölünmüş dış duvarlarda genel dış toplam korunur. Serbest duvar uçları görünen uç yüzünden ölçülür. Prefabrik panel kuralları korunur. Seçim mevcut geometriyi değiştirmez.
+Kullanım: sağ Ayarlar > Ölçü referansı. Duvarı seç > Özellikler > Ölçüyle taşı > çizimde ilgili ölçüyü seç > yeni cm değerini gir > uygula.
+
+Çıktı > PNG > Sunum biçimi > Mimari sunum: sıcak zemin tonları ve hafif duvar gölgesi; mevcut tarama, donatı, ölçü ve birleşimler korunur. Teknik çıktı seçeneği korunur. Yeni fotogerçekçi doku/donatı üretmez.
+
+Kontroller: face-dimensions-check geçti (dış/net/aks, serbest uç, farklı kalınlık, bölünmüş dış toplam, 710->720 taşıma ve geri alma, kaydet/yükle, PNG indirme). sheet-output-check geçti (40 sayfa düzeni, ölçek, PNG/PDF, DXF korunumu). single-check geçti (prefabrik kuralları, canlı çizim, geri alma, proje kurtarma, metraj, responsive). 54 korunan ana kaynak SHA-256 eşleşti.
+
+Sınırlar: oda alanları mevcut hesap sisteminde; net oda alanı dönüşümü bu iş değildir. Keyfi açılı birleşimlerin tüm varyantları doğrulanmadı. Daha geniş AutoCAD ölçme akışı DEV-178 açık kalır.
+Referans: C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-6c849568-89d6-4378-8ff1-69ee5a67683c.png
+Depo kopyası: referanslar/2026-10-28-mimari-plan-sunum.png
+SHA-256: 7fb0f468d80c17cbf1957334f7823adb37e070fa07b67b2e68c68d619f1a4212

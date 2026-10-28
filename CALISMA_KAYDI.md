@@ -1104,3 +1104,7 @@ Taslak177: sağ panel kol/derinlik ölçüleri, uç sürükleme, undo/iptal, ba�
 
 ## 28 Ekim 2026 — DEV-179 — Mutfak yakalama ve U tezgâh
 Taslak179: buzdolabı içeride/dışarıda tezgâh ucu ve duvar yüzü yakalama; tezgâh görünür duvar ucu; Düz/L/U dönüşümü, bağımsız dönüş kolları. Mutfak testleri ve single-check geçti. [Rapor](analizler/2026-10-28-mutfak-yakalama-u.txt). Ana uygulama değişmedi. DEV-178 açık. Müşteri çizimi JSON aktarımı doğrulanmadı.
+
+
+## 28 Ekim 2026 — DEV-180 / Taslak 180
+Hafif çelik için duvar yüzü ölçü referansı ve bölünmüş dış duvar genel toplamı; renkli/gölgeli mimari PNG seçeneği tamamlandı. Taşıma 710→720 ve geri alma, çıktı ve kayıt kontrolleri geçti. Ana program korunur. DEV-178 kapsamındaki daha geniş AutoCAD ölçme akışı açık. [Rapor](analizler/2026-10-28-duvar-yuzu-mimari-cikti.txt).
