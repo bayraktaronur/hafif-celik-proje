@@ -14,9 +14,15 @@ module.exports=function(file,s,once){
  block=block.replace(/\n}\s*$/, '\n  FaceDimensions.totals();\n}\n');s=s.slice(0,start)+block+s.slice(end);
  }
  if(file==='src/plan-export.js'){
- s=once(s,"ctx=target;TH=TH_PAPER;DIM=DIM_PAPER;","ctx=target;TH=window.PlanPresentation?.active()?{...TH_PAPER,wall:'#72736b',room:'#e9e5da',wetRoom:'#d9dedb',verandaRoom:'#e3dfd2'}:TH_PAPER;DIM=DIM_PAPER;");
+ s=once(s,"ctx=target;TH=TH_PAPER;DIM=DIM_PAPER;","ctx=target;TH=window.PlanPresentation?PlanPresentation.theme(TH_PAPER):TH_PAPER;DIM=DIM_PAPER;");
  s=once(s,'target.setLayer?.(name);fn();',"target.setLayer?.(name);if(window.PlanPresentation?.active()&&name==='DUVAR'&&target.canvas){target.save();target.shadowColor='#292d2940';target.shadowBlur=7;target.shadowOffsetX=3;target.shadowOffsetY=4;fn();target.restore();}else fn();");
  s=once(s,"SheetOutput.setup(dialog,()=>{dirty=true;refresh();});","SheetOutput.setup(dialog,()=>{dirty=true;refresh();});PlanPresentation.setup(()=>{dirty=true;refresh();});");
  }
+ if(file==='src/fixtures.js'){
+ s=once(s,'const w=f.w,d=f.d;', 'const w=f.w,d=f.d;if(TH.presentation)PlanPresentation.fixture(c,f,TH.presentation);');
+ s=s.replaceAll('c.closePath();c.stroke();','c.closePath();if(TH.presentation)c.fill();c.stroke();');
+ s=once(s,'rect(0,0,w,back);', 'if(TH.presentation)c.fillRect(0,0,w,back);rect(0,0,w,back);');
+ }
+ if(file==='src/kitchen.js')s=once(s,'ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1.4;', 'ctx.save();if(TH.presentation)PlanPresentation.counter(ctx,c.points,TH.presentation);ctx.strokeStyle=TH.presentation?TH.presentation.ink:color;ctx.lineWidth=1.4;');
  return s;
 };

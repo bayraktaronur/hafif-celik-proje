@@ -1108,3 +1108,7 @@ Taslak179: buzdolabı içeride/dışarıda tezgâh ucu ve duvar yüzü yakalama;
 
 ## 28 Ekim 2026 — DEV-180 / Taslak 180
 Hafif çelik için duvar yüzü ölçü referansı ve bölünmüş dış duvar genel toplamı; renkli/gölgeli mimari PNG seçeneği tamamlandı. Taşıma 710→720 ve geri alma, çıktı ve kayıt kontrolleri geçti. Ana program korunur. DEV-178 kapsamındaki daha geniş AutoCAD ölçme akışı açık. [Rapor](analizler/2026-10-28-duvar-yuzu-mimari-cikti.txt).
+
+
+## 28 Ekim 2026 — DEV-181 / Taslak 181
+Müşteri çıktısına sıcak, gri-ahşap ve siyah-beyaz paletler; taramayı örten opak vitrifiyeler ve ayrı tezgâh/donatı tonları eklendi. Çıktı, kayıt ve geometri korunumu kontrolleri geçti. Ana program korunur. [Rapor](analizler/2026-10-28-sunum-stilleri-opak-donati.txt).

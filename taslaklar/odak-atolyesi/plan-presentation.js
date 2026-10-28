@@ -1,12 +1,11 @@
-/* Native plan output style; never changes model materials or dimensions. */
+/* Output-only palettes: model materials and live drawing stay unchanged. */
 window.PlanPresentation={
- active(){return document.getElementById('exportPlanStyle')?.value==='architectural'&&document.getElementById('planExportDialog')?.dataset.format!=='dxf';},
- setup(change){
-  const host=document.getElementById('exportPdfOptions');
-  host.insertAdjacentHTML('beforeend','<label>Sunum biçimi<select id="exportPlanStyle"><option value="technical">Teknik plan</option><option value="architectural">Mimari sunum · renkli ve gölgeli</option></select></label>');
-  const el=document.getElementById('exportPlanStyle');el.onchange=change;
-  const read=SheetOutput.read,restore=SheetOutput.restore;
-  SheetOutput.read=()=>{const value=read();if(el.value==='architectural')value.presentation=el.value;return value;};
-  SheetOutput.restore=value=>{restore(value);el.value=value?.presentation==='architectural'?'architectural':'technical';};
- }
+ palettes:{architectural:{wall:'#72736b',room:'#e9e5da',wetRoom:'#d9dedb',verandaRoom:'#e3dfd2',counter:'#c8ad89',fixture:'#faf9f5',wood:'#bd9872',fabric:'#eee9df',ink:'#454a48'},graywood:{wall:'#454746',room:'#d2d3d0',wetRoom:'#c3cccd',verandaRoom:'#dcded8',counter:'#ba9272',fixture:'#fafbf8',wood:'#b68764',fabric:'#efede7',ink:'#272e30'},monochrome:{wall:'#505456',room:'#f2f2ef',wetRoom:'#e5e8e8',verandaRoom:'#ededeb',counter:'#c5c9c9',fixture:'#ffffff',wood:'#c9cdcd',fabric:'#e5e7e5',ink:'#20292d'}},
+ active(){return !!this.palettes[document.getElementById('exportPlanStyle')?.value]&&document.getElementById('planExportDialog')?.dataset.format!=='dxf';},
+ theme(base){const p=this.active()?this.palettes[document.getElementById('exportPlanStyle').value]:null;return p?{...base,...p,presentation:p}:base;},
+ fixture(c,f,p){c.strokeStyle=p.ink;c.fillStyle=['wardrobe','coatCabinet','tvUnit','nightstand','coffeeTable','vanity'].includes(f.kind)?p.wood:/^(bed|sofa|armchair)/.test(f.kind)?p.fabric:p.fixture;
+ if(['wc','wallwc','basin'].includes(f.kind))return;
+ c.beginPath();c.roundRect(0,0,f.w,f.d,/^(bed|sofa|armchair)/.test(f.kind)?3:0);c.fill();},
+ counter(c,points,p){c.save();c.fillStyle=p.counter;c.beginPath();points.forEach((v,i)=>{const q=toCv(v.x,v.y);i?c.lineTo(q.x,q.y):c.moveTo(q.x,q.y);});c.closePath();c.fill();c.restore();},
+ setup(change){const host=document.getElementById('exportPdfOptions');host.insertAdjacentHTML('beforeend','<label>Sunum biçimi<select id="exportPlanStyle"><option value="technical">Teknik plan</option><option value="architectural">Mimari sunum · sıcak tonlar</option><option value="graywood">Gri ve ahşap · kontrastlı</option><option value="monochrome">Siyah beyaz · sade</option></select></label>');const el=document.getElementById('exportPlanStyle');el.onchange=change;const read=SheetOutput.read,restore=SheetOutput.restore;SheetOutput.read=()=>{const value=read();if(this.palettes[el.value])value.presentation=el.value;return value;};SheetOutput.restore=value=>{restore(value);el.value=this.palettes[value?.presentation]?value.presentation:'technical';};}
 };

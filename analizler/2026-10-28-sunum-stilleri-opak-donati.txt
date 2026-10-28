@@ -1,0 +1,13 @@
+DEV-181 / Taslak 181 — 28 Ekim 2026
+Yalnız bağımsız taslak değişti. Ana kaynak SHA-256 kontrolleri geçti. Açık müşteri çizimleri değiştirilmedi.
+
+Çıktı > PNG > Sunum biçimi: Teknik plan; Mimari sunum · sıcak tonlar; Gri ve ahşap · kontrastlı; Siyah beyaz · sade.
+Sunum paletleri yalnız çıktıya uygulanır. Vitrifiye siluetleri opak dolgu ile zemin taramasını örter. Tezgâh ve ahşap donatılar ayrı tonlarda, çizgiler kontrastlı gösterilir. Teknik çıktı ve DXF davranışı korunur. Geometri, malzeme metrajı ve prefabrik birleşim kuralları değişmez.
+
+Doğrulama: build-single-storey başarılı; face-dimensions-check başarılı; plan-presentation-check başarılı (3 palet, 7 opak siluet, geometri korunumu, PNG indirme, kayıt/yenileme, tarayıcı hatası yok). Sentetik donatılı gri-ahşap çıktı görsel olarak incelendi.
+Sınır: bunlar mevcut çizimin sunum stilleridir, yeni mobilya geometrisi veya fotogerçekçi render üretmez. DEV-178 geniş ölçme akışı açık kalır.
+
+Referanslar:
+{"original":"C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-719a51a4-d7bd-4b08-b5a7-1aca8735cf1e.png","file":"referanslar/2026-10-28-sunum-alternatif-1.png","sha256":"887301dacc6cf8b892a440129028a51723369b57114ca22fa0269963d18f91ef"}
+{"original":"C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-8cc6aad9-d432-42fd-97fb-2dde3c850de5.png","file":"referanslar/2026-10-28-sunum-alternatif-2.png","sha256":"942d6c97b6084410f01fe41facf393c7489415ca6d9c21f1f1717298704fddd8"}
+{"original":"C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-2d7a4992-de03-409d-a29c-ccff63481953.png","file":"referanslar/2026-10-28-sunum-alternatif-3.png","sha256":"01bc6d439370f97c73173cf83b8792249deb212e9232fc5516a7670d7ed830bf"}
