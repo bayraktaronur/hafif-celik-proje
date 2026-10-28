@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Güncel Plan Studio çalışması: 28 Ekim 2026, DEV-173 tamam; taslak173 oda bazlı parke/seramik taraması. [Rapor](analizler/2026-10-28-zemin-taramasi.txt). Ana5.9.137 korunur.
+Güncel Plan Studio çalışması: 28 Ekim 2026, DEV-174 tamam; taslak174 tarama belirginliği ve baskı kontrastı. [Rapor](analizler/2026-10-28-tarama-belirginligi.txt). Ana5.9.137 korunur.
 
 Son güncelleme: 14 Ekim 2026, ev bilgisayarından iş bilgisayarına devir. Kullanıcı sonraki iş PC oturumunda devam edecek; ayrı Meta formuna geçiş onaylanmadı. Güncel CRM durumu ve sıradaki adımlar: [İş PC devir kaydı](analizler/2026-10-14-kommo-is-pc-devir.txt). Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
@@ -113,6 +113,7 @@ Ev veya iş fark etmez:git kontrolü/fetch ve güvenli güncelleme,bu dosya,CALI
 | DEV-171 | Hafif çelik köşe ve Sunum kenar belirginliği | TAMAM — taslak171; ortak köşe yüzleri, %0–100 canlı ayar, JSON/undo/4K ve değişmeyen metraj. [Rapor](analizler/2026-10-26-celik-kose-kenar.txt), [test](taslaklar/odak-atolyesi/steel-outline-check.cjs). |
 | DEV-172 | Çatı / 3D iş akışı ve kayıtlı bakışlar | TAMAM — taslak172; beş bağlamsal başlık, proje kamera kaydı, ortak veri ve eski metraj eşitliği, 4K/PDF. [Rapor](analizler/2026-10-26-cati-3d-is-akisi.txt), [test](taslaklar/odak-atolyesi/roof-workspace-check.cjs). |
 | DEV-173 | Oda bazlı zemin taraması | TAMAM — taslak173; cm/açı, bölünmüş alanlar, PDF/PNG/DXF ve kayıt testleri. [Rapor](analizler/2026-10-28-zemin-taramasi.txt). |
+| DEV-174 | Tarama çıktı belirginliği | TAMAM — %10–100 ayar, PNG/PDF kontrastı ve kayıt testleri. [Rapor](analizler/2026-10-28-tarama-belirginligi.txt). |
 | DEV-168 | 3D yüksek çözünürlüklü PNG ve hafif füme cam | TAMAM — taslak168; gerçek3840×2160/2K/FullHD/özel PNG, kadraj/zemin/önizleme ve proje kaydı. Ortak saydam füme cam, bakışa bağlı yansıma. [Rapor](analizler/2026-10-26-3d-png-cam.txt), [test](taslaklar/odak-atolyesi/scene-output-check.cjs). |
 | DEV-167 | Ortak sahanlık ve yan betonla birleşim | TAMAM — taslak167; K1/K2 tek düzenlenebilir sahanlık, K3 yan betonla birleşim. Tek geometri/metraj, kapı bağları, elle birleştirme, JSON/undo ve önceki 3D önbelleği doğrulandı. [Rapor](analizler/2026-10-26-ortak-sahanlik.txt), [test](taslaklar/odak-atolyesi/foundation-union-check.cjs). |
 | DEV-166 | Taslakta okunaklı PDF/PNG sayfa düzeni | TAMAM — taslak166; sayfaya sığdır, A4–A0 / yön / sabit ve özel ölçek, 5–30 mm boşluk, kompakt/ayrıntılı antet, tam sayfa önizleme ve proje bazlı kayıt. Sentetik uzun plan 1:100→1:61,7; PDF/PNG ve regresyonlar geçti. [Rapor](analizler/2026-10-26-taslak-cikti-duzeni.txt), [test](taslaklar/odak-atolyesi/sheet-output-check.cjs). |
@@ -1046,3 +1047,6 @@ Kullanıcı kapalı sınırı çatı gibi çizilen beton, yükseklik, veranda/a�
 
 ## 28 Ekim 2026 — DEV-173 — Zemin taraması
 Taslak173: oda/ayrılmış alan için parke, seramik, çapraz, otomatik/yok; fiziksel cm ve açı, önizleme. Plan/PDF/PNG/DXF, JSON/kurtarma/undo ortak. [Rapor](analizler/2026-10-28-zemin-taramasi.txt), [test](taslaklar/odak-atolyesi/floor-hatch-check.cjs). Yeni tarama, single ve sayfa çıktı testleri geçti; ana5.9.137 kaynak hashleri korunur. 3D/metraj/fiyat bu kapsamda yok. Açık kullanıcı çizimi korunur; müşteri JSON aktarımı doğrulanmadı. Sonraki adım Kaydet sonrası taslağı yenileyip Ölçü ve not > Zemin taraması kullanmak. Kod/kanıtlar görev commitindedir; uzak SHA teslimde doğrulanır.
+
+## 28 Ekim 2026 — DEV-174 — Tarama çıktı belirginliği
+Taslak174: %10–100 belirginlik, varsayılan65; daha koyu baskı çizgileri, canlı desen önizlemesi, JSON ve geri alma. PDF/PNG ve tarama testleri geçti; çıktı piksel karşılaştırması doğrulandı. [Rapor](analizler/2026-10-28-tarama-belirginligi.txt). Ana5.9.137 ve kullanıcı çizimi korunur. Sonraki adım Zemin taraması > Belirginlik ile ayarlama. Uzak commit teslimde doğrulanır.

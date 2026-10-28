@@ -1089,3 +1089,6 @@ Kullanıcı kapalı sınırı çatı gibi çizilen beton, yükseklik, veranda/a�
 
 ## 28 Ekim 2026 — DEV-173 — Zemin taraması
 Taslak173: oda/ayrılmış alan için parke, seramik, çapraz, otomatik/yok; fiziksel cm ve açı, önizleme. Plan/PDF/PNG/DXF, JSON/kurtarma/undo ortak. [Rapor](analizler/2026-10-28-zemin-taramasi.txt), [test](taslaklar/odak-atolyesi/floor-hatch-check.cjs). Yeni tarama, single ve sayfa çıktı testleri geçti; ana5.9.137 kaynak hashleri korunur. 3D/metraj/fiyat bu kapsamda yok. Açık kullanıcı çizimi korunur; müşteri JSON aktarımı doğrulanmadı. Sonraki adım Kaydet sonrası taslağı yenileyip Ölçü ve not > Zemin taraması kullanmak. Kod/kanıtlar görev commitindedir; uzak SHA teslimde doğrulanır.
+
+## 28 Ekim 2026 — DEV-174 — Tarama çıktı belirginliği
+Taslak174: %10–100 belirginlik, varsayılan65; daha koyu baskı çizgileri, canlı desen önizlemesi, JSON ve geri alma. PDF/PNG ve tarama testleri geçti; çıktı piksel karşılaştırması doğrulandı. [Rapor](analizler/2026-10-28-tarama-belirginligi.txt). Ana5.9.137 ve kullanıcı çizimi korunur. Sonraki adım Zemin taraması > Belirginlik ile ayarlama. Uzak commit teslimde doğrulanır.
