@@ -1,0 +1,6 @@
+DEV-173 / Taslak 173 — Zemin taraması
+28 Ekim 2026, iş bilgisayarı.
+Parke (yarım boy şaşırtmalı), seramik ve çapraz çizgi; otomatik/yok seçimleri. Oda ve çizgiyle ayrılmış alan ayrı düzenlenir. Ölçüler 5–500 cm, açı 0–180 derece. Mevcut oda/annotation verisinde saklanır; tek undo, JSON ve kurtarma. Duvar/köşe net sınırında kırpılan ortak çizgiler ekran ve PDF/PNG ile DXF içine aktarılır. DXF ayrı ZEMIN_TARAMA katmanında kırpılmış polylinelardır, native HATCH değildir. Banyo otomatik30x30; veranda çapraz. Ana program değişmedi.
+Kontroller: floor-hatch-check (gerçek UI, 454 parke çizgisi, net sınır, zoom, JSON/reload, undo/redo, ayrılmış alan, gerçek PNG ve DXF açık/kapalı), single-check ve sheet-output-check geçti. PNG ve dialog görsel incelendi. 54 ana kaynak hashleri aynı; tekrar derleme deterministik.
+Kapsam: 2D tarama; 3D zemin malzemesi, metraj/fiyat eklenmedi. Büyük patolojik alanlarda 40000 desen hücresi koruma sınırı vardır. Kullanıcının açık çizimine dokunulmadı, güncel müşteri JSON aktarımı doğrulanmadı.
+Kullanım: Ölçü ve not > Zemin taraması veya oda seç > Zemin kaplaması / tarama.

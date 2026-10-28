@@ -608,7 +608,7 @@
   }
   function validate(input){
     if(!input||typeof input!=='object'||Array.isArray(input))fail('Geçerli bir proje nesnesi bulunamadı.');
-    safeTree(input);CameraViews.validate(input.cameraViews);Presentation3D.validate(input.scenePresentation);RainDrainage.validate(input.rainDrainage);SceneImageOutput.validate(input.image3DLayout);SheetOutput.validate(input.sheetLayout);
+    safeTree(input);window.FloorHatch?.validate(input);CameraViews.validate(input.cameraViews);Presentation3D.validate(input.scenePresentation);RainDrainage.validate(input.rainDrainage);SceneImageOutput.validate(input.image3DLayout);SheetOutput.validate(input.sheetLayout);
     ReferenceImageData.validate(input.referenceImages);
     FoundationData.validate(input.foundation);
     if(!['5','5.1'].includes(String(input.v)))fail('Desteklenen dosya sürümleri: v5 ve v5.1.');
@@ -2963,7 +2963,7 @@ function detectRooms(){
       area:r.areaCm/10000,cx:r.cx,cy:r.cy,
       ad:adlar[i],ozelAd:o?o.ozelAd:null,tip:tips[i],
       lblDx:o&&o.lblDx?o.lblDx:0,lblDy:o&&o.lblDy?o.lblDy:0,
-      duvarAlci:o?!!o.duvarAlci:false,
+      floorFinish:o?.floorFinish?{...o.floorFinish}:undefined,duvarAlci:o?!!o.duvarAlci:false,
     };
     var lp=etiketNoktasi(r.pts,r.cx,r.cy);room.lx=lp.x;room.ly=lp.y;
     G.rooms.push(room);
@@ -3245,19 +3245,7 @@ function drawRooms(){
     var isWet=['banyo','ebanyo','wc'].indexOf(room.tip)>=0;
     ctx.fillStyle=isSel?TH.roomSel:(isVer?TH.verandaRoom:(isWet?TH.wetRoom:TH.room));
     ctx.fill();
-    if(isVer){ // hafif çapraz tarama
-      ctx.save();ctx.clip();
-      var bx=Math.min.apply(null,pts.map(function(p){return p.x;})),bX=Math.max.apply(null,pts.map(function(p){return p.x;}));
-      var by=Math.min.apply(null,pts.map(function(p){return p.y;})),bY=Math.max.apply(null,pts.map(function(p){return p.y;}));
-      ctx.strokeStyle=TH.hatch;ctx.lineWidth=1;ctx.beginPath();
-      for(var hx=bx-(bY-by);hx<bX;hx+=12){ctx.moveTo(hx,bY);ctx.lineTo(hx+(bY-by),by);}
-      ctx.stroke();ctx.restore();
-    }
-    if(['banyo','ebanyo','wc'].indexOf(room.tip)>=0){
-      ctx.save();ctx.clip();ctx.strokeStyle=TH.export?'#a8b7bf':'#344753';ctx.globalAlpha=.65;ctx.lineWidth=.6;
-      var tile=30*sc(),left=Math.min.apply(null,pts.map(function(p){return p.x;})),right=Math.max.apply(null,pts.map(function(p){return p.x;})),top=Math.min.apply(null,pts.map(function(p){return p.y;})),bottom=Math.max.apply(null,pts.map(function(p){return p.y;}));
-      if(tile>=4){ctx.beginPath();for(var tx=left;tx<=right;tx+=tile){ctx.moveTo(tx,top);ctx.lineTo(tx,bottom);}for(var ty=top;ty<=bottom;ty+=tile){ctx.moveTo(left,ty);ctx.lineTo(right,ty);}ctx.stroke();}ctx.restore();
-    }
+    if(!window.AreaRegions?.has(room.id))window.FloorHatch?.draw(room);
     if(!planVisible('rooms')||window.AreaRegions?.has(room.id))return;
     // Etiket: oda içi etiket noktası + kullanıcı ofseti (cm)
     var lp=toCv((room.lx!==undefined?room.lx:0)+(room.lblDx||0),(room.ly!==undefined?room.ly:0)+(room.lblDy||0));
@@ -7935,7 +7923,7 @@ window.Wall3D={build,panelColor};
  function edit(f){openOdaModal({id:f.key,region:f,ozelAd:f.name,tip:f.tip});}
  const saveRoom=window.odaKaydet;window.odaKaydet=function(){if(!_editRoom?.region)return saveRoom();const f=_editRoom.region,name=document.getElementById('odaAd').value.trim(),tip=document.getElementById('odaTip').value;Studio.edit(()=>{const a=G.annotations.find(a=>a.id===f.owner);a.regionNames={...a.regionNames,[f.key]:name};a.regionTypes={...a.regionTypes,[f.key]:tip};});document.getElementById('mbgOda').classList.remove('open');_editRoom=null;draw();updateSidebar();};
  const sidebar=window.updateSidebar;window.updateSidebar=function(){sidebar();if(G.seciliTip!=='region')return;const f=build().find(f=>f.key===G.secili?.key);if(!f)return;document.getElementById('sbSel').style.display='block';const box=document.getElementById('sbSelIc');box.innerHTML='<div class="sr">'+esc(f.name||ODA_TIPLER[f.tip]||'Oda')+'</div><div class="sr">'+esc(ODA_TIPLER[f.tip]||'Tür seçilmedi')+'</div><div class="sr">'+f.area.toFixed(2)+' m²</div><button class="sib p" id="editRegion">Ad ve tür düzenle</button>';document.getElementById('editRegion').onclick=()=>edit(f);};
- const base=drawRooms;window.drawRooms=function(){labelHits=[];base();if(!planVisible('rooms'))return;const list=build();for(const [i,f]of list.entries()){ctx.save();if(!TH.export&&selected===f.key){ctx.beginPath();f.poly.forEach((p,j)=>{const c=toCv(p.x,p.y);j?ctx.lineTo(c.x,c.y):ctx.moveTo(c.x,c.y)});ctx.closePath();ctx.fillStyle='#4f9fc333';ctx.fill();}const offset=drag?.key===f.key?drag.offset:f.labelOffset,c=toCv(f.x+offset.x,f.y+offset.y);const name=f.name||ODA_TIPLER[f.tip]||'Oda '+(i+1),hit=drawRoomLabel({ozelAd:f.name,tip:f.tip,area:f.area},f.poly.map(p=>toCv(p.x,p.y)),c.x,c.y,name,G.seciliTip==='region'&&G.secili?.key===f.key);if(!TH.export)labelHits.push(Object.assign({key:f.key},hit));ctx.restore();}};
+ const base=drawRooms;window.drawRooms=function(){labelHits=[];base();if(!planVisible('rooms'))return;const list=build();for(const [i,f]of list.entries()){ctx.save();if(!TH.export&&selected===f.key){ctx.beginPath();f.poly.forEach((p,j)=>{const c=toCv(p.x,p.y);j?ctx.lineTo(c.x,c.y):ctx.moveTo(c.x,c.y)});ctx.closePath();ctx.fillStyle='#4f9fc333';ctx.fill();}window.FloorHatch?.draw(f);const offset=drag?.key===f.key?drag.offset:f.labelOffset,c=toCv(f.x+offset.x,f.y+offset.y);const name=f.name||ODA_TIPLER[f.tip]||'Oda '+(i+1),hit=drawRoomLabel({ozelAd:f.name,tip:f.tip,area:f.area},f.poly.map(p=>toCv(p.x,p.y)),c.x,c.y,name,G.seciliTip==='region'&&G.secili?.key===f.key);if(!TH.export)labelHits.push(Object.assign({key:f.key},hit));ctx.restore();}};
  function labelHit(e){const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;return labelHits.find(h=>x>=h.x&&x<=h.x+h.w&&y>=h.y&&y<=h.y+h.h);}
  function hit(e){const h=labelHit(e);if(h)return build().find(f=>f.key===h.key);const r=cv.getBoundingClientRect(),p=toCm(e.clientX-r.left,e.clientY-r.top);return build().find(f=>ptInPolygon(p.x,p.y,f.poly));}
  window.addEventListener('dblclick',e=>{if(e.target!==cv||G.tool!=='sec')return;const f=hit(e);if(!f)return;e.preventDefault();e.stopImmediatePropagation();edit(f);},true);
@@ -8319,7 +8307,7 @@ window.Wall3D={build,panelColor};
  const $=id=>document.getElementById(id),PX=96/25.4,PAPERS={A4:[210,297],A3:[297,420],A2:[420,594],A1:[594,841],A0:[841,1189]};let format='pdf';
  const dialog=document.createElement('dialog');dialog.id='planExportDialog';dialog.style.cssText='background:#192334;color:#d6e6ef;border:1px solid #40566b;border-radius:12px;padding:24px;width:560px;max-width:90vw;max-height:90vh;overflow:auto';
  dialog.innerHTML='<form><h3 id="exportTitle">Plan çıktısı</h3><div id="exportPdfOptions" style="display:flex;gap:12px"><label>Kâğıt<select id="exportPaper"><option>A4</option><option selected>A3</option><option>A2</option><option>A1</option><option>A0</option></select></label><label>Yön<select id="exportOrientation"><option value="portrait" selected>Dikey</option><option value="landscape">Yatay</option></select></label><label>Ölçek<select id="exportScale"><option value="20">1:20</option><option value="50" selected>1:50</option><option value="100">1:100</option><option value="200">1:200</option></select></label></div><p id="exportDescription"></p><p id="exportStatus" role="status"></p><img id="exportPreview" alt="PDF sayfa önizlemesi" style="width:100%;max-height:310px;object-fit:contain;background:#fff"><p style="font-size:12px">Seçili görünüm filtreleri kullanılır. H, U ve köşe bağlantıları korunur. Kat planı çıktısıdır; 3B model veya imalat onayı değildir.</p><button class="sib" id="exportSubmit" type="submit">İndir</button><button class="sib" id="exportCancel" type="button">Vazgeç</button></form>';
- document.body.append(dialog);$('exportDescription').insertAdjacentHTML('afterend','<div id="dxfOptions" hidden><label>DXF detay düzeyi<select id="dxfMode"><option value="simple">Sade plan</option><option value="panels">Panel detayı</option><option value="current">Ekrandaki detaylar</option></select></label><label><input type="checkbox" id="dxfHatch" checked> Banyo / veranda taramaları</label><p>Ölçüler tek CAD ölçü nesnesi; taramalar tek HATCH nesnesidir. H, U ve köşe direkleri her seçenekte korunur.</p></div>');dialog.style.width='960px';dialog.style.margin='auto';
+ document.body.append(dialog);$('exportDescription').insertAdjacentHTML('afterend','<div id="dxfOptions" hidden><label>DXF detay düzeyi<select id="dxfMode"><option value="simple">Sade plan</option><option value="panels">Panel detayı</option><option value="current">Ekrandaki detaylar</option></select></label><label><input type="checkbox" id="dxfHatch" checked> Zemin taramaları</label><p>Ölçüler tek CAD ölçü nesnesi; taramalar tek HATCH nesnesidir. H, U ve köşe direkleri her seçenekte korunur.</p></div>');dialog.style.width='960px';dialog.style.margin='auto';
  $('exportPdfOptions').insertAdjacentHTML('afterend','<div id="sheetOptions"><label><input id="exportAntet" type="checkbox" checked> Antetli çıktı</label><details id="sheetFields"><summary>Logo, müşteri ve proje bilgileri</summary><div id="sheetInputs" class="sheet-inputs"></div><label>Logo seç (PNG / JPG / WebP)<input id="sheetLogo" type="file" accept="image/png,image/jpeg,image/webp"></label><button id="sheetLogoRemove" type="button" class="sib">Logoyu kaldır</button><p>Logo yoksa firma adı kullanılır. Bilgiler ve logo JSON proje kaydında taşınır.</p><button id="sheetSave" type="button" class="sib">Bilgileri projeye kaydet</button></details><div id="orientationPreviews" class="orientation-previews"></div></div>');
  for(const [key,label] of TitleBlock.fields){const el=document.createElement('label');el.textContent=label;const input=document.createElement('input');input.id='sheet-'+key;input.type=key==='date'?'date':'text';input.maxLength=240;el.append(input);$('sheetInputs').append(el);}
  $('exportOrientation').insertAdjacentHTML('afterbegin','<option value="auto">Otomatik öneri</option>');$('exportOrientation').value='auto';$('exportScale').insertAdjacentHTML('afterbegin','<option value="auto">En uygun ölçek</option>');$('exportScale').value='auto';
@@ -8357,12 +8345,13 @@ window.Wall3D={build,panelColor};
  try{for(const key of Object.keys(saved))G[key]=[];
   for(const [key,name] of [['elemanlar','ACIKLIK'],['fixtures','TEFRIS'],['counters','TEZGAH'],['annotations','METIN']])for(const object of saved[key]||[]){if(key==='elemanlar'&&panelOpenings.has(object.id))continue;G[key]=[object];if(key==='counters')G.fixtures=saved.fixtures;const items=capture('DONATI_METIN',()=>{if(key==='counters'){for(const edge of Kitchen.effective(object).edges){ctx.beginPath();ctx.moveTo(edge.a.x,edge.a.y);ctx.lineTo(edge.b.x,edge.b.y);ctx.stroke();}}else drawElemanlar();});block(name,items);G[key]=[];G.fixtures=[];}
  }finally{Object.assign(G,saved);}
- for(const room of G.rooms){const saved=G.rooms;let labels=[];try{G.rooms=[room];labels=capture('ODA',drawRooms).filter(e=>e.text!==undefined);block('ODA',labels);}finally{G.rooms=saved;}if(['veranda','banyo','ebanyo','wc'].includes(room.tip)){const loops=CadSymbols.hatchLoops(room),points=loops[0];if(points?.length>=3)out.push({hatch:true,grid:room.tip!=='veranda',layer:'TARAMA',points,loops,holes:CadSymbols.labelIsland(labels,points)});}}
+ for(const room of G.rooms){const saved=G.rooms;let labels=[];try{G.rooms=[room];labels=capture('ODA',drawRooms).filter(e=>e.text!==undefined);block('ODA',labels);}finally{G.rooms=saved;}if(false){const loops=CadSymbols.hatchLoops(room),points=loops[0];if(points?.length>=3)out.push({hatch:true,grid:room.tip!=='veranda',layer:'TARAMA',points,loops,holes:CadSymbols.labelIsland(labels,points)});}}
+ for(const e of FloorHatch.exportLines())out.push(e);
  for(const n of G.nodes){const connected=G.segs.filter(s=>s.n1===n.id||s.n2===n.id);if(connected.length&&connected.every(s=>s.tip==='veranda')){const items=[10,8].map(size=>({layer:'KOSE_DIREGI',closed:true,points:[[-1,-1],[1,-1],[1,1],[-1,1]].map(([x,y])=>({x:n.x+x*size/2,y:n.y+y*size/2}))}));block('VERANDA_DIREGI',items,n);}}
  for(const [name,fn] of [['MAKAS',drawMakas],['OLCU',drawDims],['KAPLAMA',drawAlciGorsel]]){const items=capture(name,fn);if(name==='OLCU')out.push(...items);else block(name,items);}
  return out;
 }
-function makeDxf(mode='current',hatch=true){const save={viewFilters:G.viewFilters,pnlEtiket:G.pnlEtiket,makasGoster:G.makasGoster,olcuModu:G.olcuModu};try{if(mode!=='current'){G.viewFilters={...G.viewFilters,rooms:true,outerDims:true,innerDims:true,chains:mode==='panels',architecturalDims:mode==='simple',openings:true};G.pnlEtiket=mode==='panels';G.makasGoster=false;G.olcuModu='panel';}return PlanExportCore.dxf(dxfObjects().filter(e=>hatch||!e.hatch));}finally{Object.assign(G,save);draw();}}
+function makeDxf(mode='current',hatch=true){const save={viewFilters:G.viewFilters,pnlEtiket:G.pnlEtiket,makasGoster:G.makasGoster,olcuModu:G.olcuModu};try{if(mode!=='current'){G.viewFilters={...G.viewFilters,rooms:true,outerDims:true,innerDims:true,chains:mode==='panels',architecturalDims:mode==='simple',openings:true};G.pnlEtiket=mode==='panels';G.makasGoster=false;G.olcuModu='panel';}return PlanExportCore.dxf(dxfObjects().filter(e=>hatch||(!e.hatch&&!e.floorHatch)));}finally{Object.assign(G,save);draw();}}
 
  function download(data,ext,mime){const name=(Studio.state().projectName||'plan').replace(/[<>:"/\\|?*\x00-\x1f]/g,'_'),url=URL.createObjectURL(new Blob([data],{type:mime})),a=document.createElement('a');a.href=url;a.download=name+'.'+ext;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);}
  function recommend(paper,orientation='auto',scale='auto',antet=true,info={},options={}){return SheetOutput.recommend(record,paper,orientation,scale,antet,info,options);}
