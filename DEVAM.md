@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Güncel Plan Studio çalışması: 28 Ekim 2026, DEV-181 tamam; taslak181 alternatif sunum paletleri ve opak donatılar. DEV-178 geniş ölçme akışı açık. [Rapor](analizler/2026-10-28-sunum-stilleri-opak-donati.txt).
+Güncel Plan Studio çalışması: 28 Ekim 2026, DEV-182 tamam; taslak182 canlı opak donatılar ve birleşik duvar gölgesi. DEV-178 geniş ölçme akışı açık. [Rapor](analizler/2026-10-28-canli-donati-birlesik-golge.txt).
 
 Son güncelleme: 14 Ekim 2026, ev bilgisayarından iş bilgisayarına devir. Kullanıcı sonraki iş PC oturumunda devam edecek; ayrı Meta formuna geçiş onaylanmadı. Güncel CRM durumu ve sıradaki adımlar: [İş PC devir kaydı](analizler/2026-10-14-kommo-is-pc-devir.txt). Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
@@ -1076,3 +1076,7 @@ Hafif çelik için duvar yüzü ölçü referansı ve bölünmüş dış duvar g
 
 ## 28 Ekim 2026 — DEV-181 / Taslak 181
 Müşteri çıktısına sıcak, gri-ahşap ve siyah-beyaz paletler; taramayı örten opak vitrifiyeler ve ayrı tezgâh/donatı tonları eklendi. Çıktı, kayıt ve geometri korunumu kontrolleri geçti. Ana program korunur. [Rapor](analizler/2026-10-28-sunum-stilleri-opak-donati.txt).
+
+
+## 28 Ekim 2026 — DEV-182 / Taslak 182
+Canlı planda taramayı örten opak donatılar, birleşim izi oluşturmayan toplu duvar gölgesi ve hafif yüzey tonlaması eklendi. Çıktı ve ölçü regresyon kontrolleri geçti; ana program korundu. [Rapor](analizler/2026-10-28-canli-donati-birlesik-golge.txt).

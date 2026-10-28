@@ -1,0 +1,11 @@
+DEV-182 / Taslak 182 — 28 Ekim 2026
+Yalnız bağımsız taslak değişti. Ana kaynak SHA-256 kontrolleri geçti. Açık müşteri çizimleri değiştirilmedi.
+
+Canlı planda ve çıktıda vitrifiyeler, mobilyalar ve tezgâh opak yüzeylerle taramayı örter. Canlı seçim çizgi renkleri korunur. Duvarlar önbellekli tek şeffaf katmanda çizilip topluca gölgelendirilir; T/L birleşimlerinde parça gölgeleri üst üste binmez. Donatıda hafif ışık tonlaması bulunur. Teknik çıktıda duvar gölgesi kullanılmaz. Geometri ve metraj değişmez.
+
+Kontroller: build-single-storey, plan-presentation-check ve face-dimensions-check başarılı. Yedi canlı opak sembol, üç çıktı paleti, T birleşiminde eşit dolgu, PNG indirme, kayıt/yenileme, geometri korunumu ve tarayıcı hataları kontrol edildi. Gri-ahşap çıktı görsel incelendi. DEV-178 geniş ölçme akışı açık.
+
+Referanslar:
+{"original":"C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-80549759-edde-4d78-85ea-6926cab2b678.png","file":"referanslar/2026-10-28-canli-donati-golge-1.png","sha256":"a2b370aa04d76897c535abeb112173ae811103ce5ef3380b66596fa9bab3b164"}
+{"original":"C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-536d1e3f-e68e-4119-8c75-237d50cf82bf.png","file":"referanslar/2026-10-28-canli-donati-golge-2.png","sha256":"e322b9256560ea5889599d326d60f8a2abe2c79f1196cd4abd5f6e5ea5ab0581"}
+{"original":"C:/Users/ONUR/AppData/Local/Temp/codex-clipboard-cfd9722b-0d04-4913-b4ef-20b1481dbd50.png","file":"referanslar/2026-10-28-canli-donati-golge-3.png","sha256":"add438454edf7ae226580cf54fa0185a0021166db161a52934eb73bf0464a058"}

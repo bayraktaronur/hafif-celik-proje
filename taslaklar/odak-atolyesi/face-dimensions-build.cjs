@@ -5,6 +5,7 @@ module.exports=function(file,s,once){
  }
  if(file==='src/project.js')s=once(s,'safeTree(input);',"safeTree(input);if(input.dimensionReference!=null&&!['outer','net','axis'].includes(input.dimensionReference))throw Error('Geçersiz ölçü referansı');");
  if(file==='src/engine.js'){
+ s=once(s,'  drawSegs();','  PlanPresentation.wallLayer(ctx,drawSegs);');
  s=once(s,'var prevEnd=0;',"var prevEnd=isPref()?0:FaceDimensions.range(seg,G.nodes,G.segs,FaceDimensions.mode())[0];");
  s=once(s,'var nextStart=dLen;',"var nextStart=isPref()?dLen:FaceDimensions.range(seg,G.nodes,G.segs,FaceDimensions.mode())[1];");
  const start=s.indexOf('function drawDims(){'),end=s.indexOf('function hitDim(',start);let block=s.slice(start,end);
@@ -15,14 +16,14 @@ module.exports=function(file,s,once){
  }
  if(file==='src/plan-export.js'){
  s=once(s,"ctx=target;TH=TH_PAPER;DIM=DIM_PAPER;","ctx=target;TH=window.PlanPresentation?PlanPresentation.theme(TH_PAPER):TH_PAPER;DIM=DIM_PAPER;");
- s=once(s,'target.setLayer?.(name);fn();',"target.setLayer?.(name);if(window.PlanPresentation?.active()&&name==='DUVAR'&&target.canvas){target.save();target.shadowColor='#292d2940';target.shadowBlur=7;target.shadowOffsetX=3;target.shadowOffsetY=4;fn();target.restore();}else fn();");
+ s=once(s,'target.setLayer?.(name);fn();',"target.setLayer?.(name);if(window.PlanPresentation?.active()&&name==='DUVAR'&&target.canvas){PlanPresentation.wallLayer(target,fn);}else fn();");
  s=once(s,"SheetOutput.setup(dialog,()=>{dirty=true;refresh();});","SheetOutput.setup(dialog,()=>{dirty=true;refresh();});PlanPresentation.setup(()=>{dirty=true;refresh();});");
  }
  if(file==='src/fixtures.js'){
- s=once(s,'const w=f.w,d=f.d;', 'const w=f.w,d=f.d;if(TH.presentation)PlanPresentation.fixture(c,f,TH.presentation);');
- s=s.replaceAll('c.closePath();c.stroke();','c.closePath();if(TH.presentation)c.fill();c.stroke();');
- s=once(s,'rect(0,0,w,back);', 'if(TH.presentation)c.fillRect(0,0,w,back);rect(0,0,w,back);');
+ s=once(s,'const w=f.w,d=f.d;', 'const w=f.w,d=f.d;PlanPresentation.fixture(c,f,PlanPresentation.surface());');
+ s=s.replaceAll('c.closePath();c.stroke();','c.closePath();c.fill();c.stroke();');
+ s=once(s,'rect(0,0,w,back);', 'c.fillRect(0,0,w,back);rect(0,0,w,back);');
  }
- if(file==='src/kitchen.js')s=once(s,'ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1.4;', 'ctx.save();if(TH.presentation)PlanPresentation.counter(ctx,c.points,TH.presentation);ctx.strokeStyle=TH.presentation?TH.presentation.ink:color;ctx.lineWidth=1.4;');
+ if(file==='src/kitchen.js')s=once(s,'ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1.4;', 'ctx.save();PlanPresentation.counter(ctx,c.points,PlanPresentation.surface());ctx.strokeStyle=TH.presentation?TH.presentation.ink:color;ctx.lineWidth=1.4;');
  return s;
 };
