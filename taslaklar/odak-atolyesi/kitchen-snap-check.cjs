@@ -1,0 +1,26 @@
+const assert=require('node:assert/strict'),path=require('node:path'),{pathToFileURL}=require('node:url'),{chromium}=require(path.resolve(path.dirname(process.execPath),'../node_modules/playwright'));
+(async()=>{const b=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{const p=await b.newPage({viewport:{width:1600,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(pathToFileURL(path.join(__dirname,'index.html')).href);await p.waitForTimeout(700);
+await p.evaluate(()=>{Studio.loadProject({v:'5',sistem:'celik',n:[{id:'a',x:0,y:0},{id:'b',x:700,y:0},{id:'c',x:700,y:500},{id:'d',x:0,y:500}],s:[['a','b'],['b','c'],['c','d'],['d','a']].map(([n1,n2],i)=>({id:'s'+i,n1,n2,k:10,elemanlar:[]})),e:[],r:[],opt:{},ky:280});const w=Kitchen.pick({x:200,y:10}),c=Kitchen.make(w,0,300,'start',180);Studio.edit(()=>G.counters.push(c));G.secili=G.counters[0];G.seciliTip='counter';setTool('sec');updateSidebar();Studio.fit();});
+assert.equal(await p.inputValue('#ceL'),'300');await p.fill('#ceL','250');await p.fill('#ceD','65');await p.click('#counterEdit button');assert.equal(await p.evaluate(()=>CounterEditor.params(G.counters[0]).D),65);
+const coord=async h=>p.evaluate(h=>{const q=toCv(h.x,h.y),r=cv.getBoundingClientRect();return {x:q.x+r.left,y:q.y+r.top};},h);
+let h=await p.evaluate(()=>CounterEditor.handles(G.counters[0])[0]),a=await coord(h),z=await coord({...h,x:h.x+40});await p.mouse.move(a.x,a.y);await p.mouse.down();await p.mouse.move(z.x,z.y,{steps:8});await p.mouse.up();assert.ok(Math.abs(await p.evaluate(()=>G.counters[0].runs[0].length)-290)<1);
+await p.keyboard.press('Control+z');assert.equal(await p.evaluate(()=>G.counters[0].runs[0].length),250);
+await p.evaluate(()=>{G.secili=G.counters[0];G.seciliTip='counter';updateSidebar();draw();});
+h=await p.evaluate(()=>CounterEditor.handles(G.counters[0])[1]);a=await coord(h);z=await coord({...h,y:h.y+20});await p.mouse.move(a.x,a.y);await p.mouse.down();await p.mouse.move(z.x,z.y,{steps:6});await p.mouse.up();assert.ok(Math.abs(await p.evaluate(()=>G.counters[0].runs[1].length)-200)<1);
+h=await p.evaluate(()=>CounterEditor.handles(G.counters[0])[1]);a=await coord(h);z=await coord({...h,y:h.y+30});await p.mouse.move(a.x,a.y);await p.mouse.down();await p.mouse.move(z.x,z.y,{steps:6});await p.keyboard.press('Escape');await p.mouse.up();assert.ok(Math.abs(await p.evaluate(()=>G.counters[0].runs[1].length)-200)<1);
+assert.equal(await p.evaluate(()=>{const before=JSON.stringify(G.counters);Studio.loadProject(JSON.parse(Studio.snapshot()));return JSON.stringify(G.counters)===before;}),true);
+const pure=await p.evaluate(()=>{const c={id:'end',points:[{x:0,y:0},{x:300,y:0},{x:300,y:180},{x:240,y:180},{x:240,y:60},{x:0,y:60}],runs:[{x:150,y:30,angle:0,length:300},{x:270,y:90,angle:90,length:180}]};const n=CounterEditor.make(c,{L:400,R:200,D:70});return {side:CounterEditor.params(c).side,corner:n.points[1],D:CounterEditor.params(n).D};});assert.deepEqual(pure,{side:'end',corner:{x:300,y:0},D:70});
+await p.evaluate(()=>{G.secili=G.segs[1];G.seciliTip='seg';updateSidebar();draw();});await p.selectOption('#wallMoveStep','0.1');assert.equal(await p.evaluate(()=>WallMoveStep.round(2.34)),2.3000000000000003);await p.selectOption('#wallMoveStep','0');assert.equal(await p.evaluate(()=>WallMoveStep.round(2.34)),2.34);
+const snaps=await p.evaluate(()=>{
+const c={id:'snap',points:[{x:5,y:5},{x:305,y:5},{x:305,y:65},{x:65,y:65},{x:65,y:180},{x:5,y:180}],runs:[{x:155,y:35,angle:0,length:300},{x:35,y:92.5,angle:90,length:175}]};G.counters=[c];
+const f={kind:'fridge',w:60,d:70,angle:0};
+const inside=Kitchen.snapFixture(f,{x:274,y:41}),outside=Kitchen.snapFixture(f,{x:334,y:41}),free=Kitchen.snapFixture(f,{x:335,y:150}),wall=Kitchen.snapFixture(f,{x:500,y:41});
+const oldNodes=G.nodes,oldSegs=G.segs;G.nodes=[{id:'a',x:0,y:0},{id:'b',x:0,y:155}];G.segs=[{id:'wall',n1:'a',n2:'b',k:10}];
+const endpoint=KitchenSnap.length(c,'R',154.5);
+G.nodes=oldNodes;G.segs=oldSegs;const u=CounterEditor.make(c,{side:'u',R:175,R2:210});G.counters=[u];G.secili=u;G.seciliTip='counter';updateSidebar();draw();
+return {inside,outside,free,wall,endpoint,points:u.points.length,runs:u.runs.length,handles:CounterEditor.handles(u).length,D:CounterEditor.params(u).D};
+});
+assert.equal(snaps.inside.x,275);assert.equal(snaps.outside.x,335);assert.equal(snaps.free.y,150);assert.equal(snaps.wall.y,40);assert.equal(snaps.endpoint,155);assert.equal(snaps.points,8);assert.equal(snaps.runs,3);assert.equal(snaps.handles,3);assert.equal(snaps.D,60);
+await p.selectOption('#ceSide','u');await p.fill('#ceR2','220');await p.click('#counterEdit button');assert.equal(await p.evaluate(()=>G.counters[0].runs[2].length),220);
+assert.equal(await p.evaluate(()=>{const before=JSON.stringify(G.counters);Studio.loadProject(JSON.parse(Studio.snapshot()));return JSON.stringify(G.counters)===before;}),true);
+assert.deepEqual(errors,[]);console.log('PASS kitchen sidebar, depth, mouse grip, undo, end-L fixed corner, independent move steps');}finally{await b.close();}})().catch(e=>{console.error(e);process.exit(1)});

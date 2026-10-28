@@ -1101,3 +1101,6 @@ Taslak176: Dik90/F8, Shift geçici değişim, ayrı yakalama/uzantı düğmeleri
 
 ## 28 Ekim 2026 — DEV-177 — Mutfak ve taşıma adımı
 Taslak177: sağ panel kol/derinlik ölçüleri, uç sürükleme, undo/iptal, bağımsız duvar taşıma adımı. Mutfak ve single regresyon testleri geçti. [Rapor](analizler/2026-10-28-mutfak-tutamac-tasima.txt). Ana uygulama korunur. DEV-178 ölçülendirme işleri açık; müşteri JSON aktarımı doğrulanmadı.
+
+## 28 Ekim 2026 — DEV-179 — Mutfak yakalama ve U tezgâh
+Taslak179: buzdolabı içeride/dışarıda tezgâh ucu ve duvar yüzü yakalama; tezgâh görünür duvar ucu; Düz/L/U dönüşümü, bağımsız dönüş kolları. Mutfak testleri ve single-check geçti. [Rapor](analizler/2026-10-28-mutfak-yakalama-u.txt). Ana uygulama değişmedi. DEV-178 açık. Müşteri çizimi JSON aktarımı doğrulanmadı.

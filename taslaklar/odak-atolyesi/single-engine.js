@@ -654,8 +654,8 @@
     }
     for(const f of d.fixtures)if(f.locked!==undefined&&typeof f.locked!=='boolean')fail('Tefriş kilidi geçersiz.');
     for(const c of d.counters){
-      if(!Array.isArray(c.points)||![4,6].includes(c.points.length)||c.points.some(p=>!p||!finite(p.x,-1e7,1e7)||!finite(p.y,-1e7,1e7)))fail('Tezgâh sınırı geçersiz.');
-      if(!Array.isArray(c.runs)||c.runs.length!==(c.points.length===4?1:2)||c.runs.some(r=>!r||!finite(r.x,-1e7,1e7)||!finite(r.y,-1e7,1e7)||!finite(r.angle,0,359)||!finite(r.length,60,1e7)))fail('Tezgâh kolları geçersiz.');
+      if(!Array.isArray(c.points)||![4,6,8].includes(c.points.length)||c.points.some(p=>!p||!finite(p.x,-1e7,1e7)||!finite(p.y,-1e7,1e7)))fail('Tezgâh sınırı geçersiz.');
+      if(!Array.isArray(c.runs)||c.runs.length!==(c.points.length===4?1:c.points.length===8?3:2)||c.runs.some(r=>!r||!finite(r.x,-1e7,1e7)||!finite(r.y,-1e7,1e7)||!finite(r.angle,0,359)||!finite(r.length,60,1e7)))fail('Tezgâh kolları geçersiz.');
     }
     for(const r of d.r){
       if(!Array.isArray(r.nodeIds)||r.nodeIds.some(id=>!nodes.has(id)))fail('Oda düğümleri geçersiz.');
