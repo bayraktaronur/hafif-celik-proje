@@ -1095,3 +1095,6 @@ Taslak174: %10–100 belirginlik, varsayılan65; daha koyu baskı çizgileri, ca
 
 ## 28 Ekim 2026 — DEV-175 — Hassas çizgi düzenleme
 Taslak175: A/B tutamaçları, 1mm adımlı X/Y alanları, uç/orta/kesişim/duvar yüzü yakalama; Shift/Alt, iptal, geri alma ve JSON. Üç zoom ve gerçek mouse testleri, alan taraması ve single regresyonları geçti. [Rapor](analizler/2026-10-28-hassas-cizgi.txt), [test](taslaklar/odak-atolyesi/precise-lines-check.cjs). Ana5.9.137 ve açık çizim korunur; önceki açık işler sürer. Güncel müşteriJSON aktarımı doğrulanmadı. Sonraki adım çizgiyi seçip A/B uçlarını sürüklemek. Kod/karar/referans/kanıtlar görev commitindedir; uzak SHA teslimde doğrulanır.
+
+## 28 Ekim 2026 — DEV-176 — Dik çizim ve uç birleştirme
+Taslak176: Dik90/F8, Shift geçici değişim, ayrı yakalama/uzantı düğmeleri, iki uçla ortak köşe. Fare, undo, iptal, serbest mod ve üç regresyon testi geçti. [Rapor](analizler/2026-10-28-dik-cizgi-birlestirme.txt). Ana5.9.137 korunur; diğer açık işler ve müşteri JSON aktarımı sürer. Sonraki adım kullanıcı taslağında iki uç seçerek deneme. Gönderim SHA teslimde doğrulanır.
