@@ -4267,7 +4267,7 @@ function wallDragMove(cm,px,py){
     if(dd<best&&a.off>=W.lo-0.01&&a.off<=W.hi+0.01){best=dd;off=a.off;W.alignNode=a.moduler?null:a.nid;W.moduler=a.moduler||0;}
   });
   // 2) Izgara
-  if(!W.makasEk&&!W.alignNode&&!W.moduler&&G.snapGrid&&!G.altKey)off=Math.round(off/G.gridCm)*G.gridCm;
+  if(!W.makasEk&&!W.alignNode&&!W.moduler&&!G.altKey)off=window.WallMoveStep?WallMoveStep.round(off):off;
   if(Math.abs(raw)*sc()<6){off=0;W.alignNode=null;W.moduler=0;W.makasEk=null;}
   if(off>W.hi)off=W.hi;if(off<W.lo)off=W.lo;
   if(W.hi<W.lo)off=0;
@@ -6555,7 +6555,7 @@ window.OpeningCatalog=(function(){
  function select(c){G.secili=c;G.seciliTip='counter';G.selSegs=[];updateSidebar();draw();}
  function inside(p,points){let yes=false;for(let i=0,j=points.length-1;i<points.length;j=i++){const a=points[i],b=points[j];if((a.y>p.y)!==(b.y>p.y)&&p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x)yes=!yes;}return yes;}
  function stop(e){e.preventDefault();e.stopImmediatePropagation();}
- window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;const r=cv.getBoundingClientRect(),p=toCm(e.clientX-r.left,e.clientY-r.top);if(G.tool==='counter'){stop(e);wall=pick(p);if(!wall){Studio.toast('Yatay veya dikey duvarın oda tarafına yakın tıklayın.',true);return;}setTool('sec');$('counterOffset').value=0;$('counterLength').value=Math.min(300,wall.hi-wall.lo);$('counterReturn').value='none';$('counterReturnLength').value=180;refresh();dialog.showModal();return;}if(G.tool==='sec'&&!Fixtures.hit(p)){const c=(G.counters||[]).slice().reverse().find(c=>effective(c).contains(p));if(c){stop(e);select(c);}}},true);
+ window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;const r=cv.getBoundingClientRect(),p=toCm(e.clientX-r.left,e.clientY-r.top);if(window.CounterEditor?.start(e,p))return;if(G.tool==='counter'){stop(e);wall=pick(p);if(!wall){Studio.toast('Yatay veya dikey duvarın oda tarafına yakın tıklayın.',true);return;}setTool('sec');$('counterOffset').value=0;$('counterLength').value=Math.min(300,wall.hi-wall.lo);$('counterReturn').value='none';$('counterReturnLength').value=180;refresh();dialog.showModal();return;}if(G.tool==='sec'&&!Fixtures.hit(p)){const c=(G.counters||[]).slice().reverse().find(c=>effective(c).contains(p));if(c){stop(e);select(c);}}},true);
  const baseDraw=drawElemanlar;window.drawElemanlar=function(){
    function paint(c,color){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.beginPath();for(const e of effective(c).edges){const a=toCv(e.a.x,e.a.y),b=toCv(e.b.x,e.b.y);ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);}ctx.stroke();ctx.restore();}
    (G.counters||[]).forEach(c=>paint(c,!TH.export&&G.seciliTip==='counter'&&G.secili?.id===c.id?'#ffd469':TH.wall));
@@ -6577,7 +6577,7 @@ window.OpeningCatalog=(function(){
    for(const c of G.counters||[])for(const [index,r] of c.runs.entries()){
      const a=r.angle*Math.PI/180,u={x:Math.cos(a),y:Math.sin(a)},v=inward(c,index),q={x:p.x-r.x,y:p.y-r.y},along=dot(q,u),across=dot(q,v);
      if(r.length<f.w||Math.abs(across)>40||Math.abs(along)>r.length/2+(fridge?f.w/2+15:0))continue;
-     const point=add(add(r,u,Math.max(-(r.length-f.w)/2,Math.min((r.length-f.w)/2,along))),v,fridge?(f.d-60)/2:0);
+     const point=add(add(r,u,Math.max(-(r.length-f.w)/2,Math.min((r.length-f.w)/2,along))),v,fridge?(f.d-(window.CounterEditor?CounterEditor.params(c).D:60))/2:0);
      const angle=fridge?(Math.atan2(-v.x,v.y)*180/Math.PI+360)%360:r.angle;
      // A removed countertop area is not a valid sink/hob placement target.
      if(!fridge){const poly=CounterCut.footprint({...f,...point,angle});if((G.fixtures||[]).some(g=>g.kind==='fridge'&&CounterCut.difference(poly,[CounterCut.footprint(g)]).area<f.w*f.d-.01))continue;}

@@ -1098,3 +1098,6 @@ Taslak175: A/B tutamaçları, 1mm adımlı X/Y alanları, uç/orta/kesişim/duva
 
 ## 28 Ekim 2026 — DEV-176 — Dik çizim ve uç birleştirme
 Taslak176: Dik90/F8, Shift geçici değişim, ayrı yakalama/uzantı düğmeleri, iki uçla ortak köşe. Fare, undo, iptal, serbest mod ve üç regresyon testi geçti. [Rapor](analizler/2026-10-28-dik-cizgi-birlestirme.txt). Ana5.9.137 korunur; diğer açık işler ve müşteri JSON aktarımı sürer. Sonraki adım kullanıcı taslağında iki uç seçerek deneme. Gönderim SHA teslimde doğrulanır.
+
+## 28 Ekim 2026 — DEV-177 — Mutfak ve taşıma adımı
+Taslak177: sağ panel kol/derinlik ölçüleri, uç sürükleme, undo/iptal, bağımsız duvar taşıma adımı. Mutfak ve single regresyon testleri geçti. [Rapor](analizler/2026-10-28-mutfak-tutamac-tasima.txt). Ana uygulama korunur. DEV-178 ölçülendirme işleri açık; müşteri JSON aktarımı doğrulanmadı.

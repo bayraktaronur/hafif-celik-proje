@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Güncel Plan Studio çalışması: 28 Ekim 2026, DEV-176 tamam; taslak176 dik çizim ve uç birleştirme. [Rapor](analizler/2026-10-28-dik-cizgi-birlestirme.txt). Ana5.9.137 korunur.
+Güncel Plan Studio çalışması: 28 Ekim 2026, DEV-177 tamam; taslak177 mutfak uçları ve duvar taşıma adımı. DEV-178 ölçülendirme açık. [Rapor](analizler/2026-10-28-mutfak-tutamac-tasima.txt). Ana5.9.137 korunur.
 
 Son güncelleme: 14 Ekim 2026, ev bilgisayarından iş bilgisayarına devir. Kullanıcı sonraki iş PC oturumunda devam edecek; ayrı Meta formuna geçiş onaylanmadı. Güncel CRM durumu ve sıradaki adımlar: [İş PC devir kaydı](analizler/2026-10-14-kommo-is-pc-devir.txt). Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
@@ -116,6 +116,8 @@ Ev veya iş fark etmez:git kontrolü/fetch ve güvenli güncelleme,bu dosya,CALI
 | DEV-174 | Tarama çıktı belirginliği | TAMAM — %10–100 ayar, PNG/PDF kontrastı ve kayıt testleri. [Rapor](analizler/2026-10-28-tarama-belirginligi.txt). |
 | DEV-175 | Hassas çizgi uçları ve yakalama | TAMAM — A/B sürükleme, 1mm koordinat adımı, ortak yakalama ve kayıt testleri. [Rapor](analizler/2026-10-28-hassas-cizgi.txt). |
 | DEV-176 | Dik çizim, F8 ve uç birleştirme | TAMAM — fare ve regresyon testleri geçti. [Rapor](analizler/2026-10-28-dik-cizgi-birlestirme.txt). |
+| DEV-177 | Mutfak kol/derinlik ve tutamaçlar; duvar taşıma adımı | TAMAM — fare/geri alma/JSON ve regresyon geçti. [Rapor](analizler/2026-10-28-mutfak-tutamac-tasima.txt). |
+| DEV-178 | Duvar yüzü ölçüleri, bölünmüş dış duvarda toplam ölçü, AutoCAD ölçme akışı | AÇIK — önceki kullanıcı istekleri; DEV177 kapsamına dahil edilmedi. |
 | DEV-168 | 3D yüksek çözünürlüklü PNG ve hafif füme cam | TAMAM — taslak168; gerçek3840×2160/2K/FullHD/özel PNG, kadraj/zemin/önizleme ve proje kaydı. Ortak saydam füme cam, bakışa bağlı yansıma. [Rapor](analizler/2026-10-26-3d-png-cam.txt), [test](taslaklar/odak-atolyesi/scene-output-check.cjs). |
 | DEV-167 | Ortak sahanlık ve yan betonla birleşim | TAMAM — taslak167; K1/K2 tek düzenlenebilir sahanlık, K3 yan betonla birleşim. Tek geometri/metraj, kapı bağları, elle birleştirme, JSON/undo ve önceki 3D önbelleği doğrulandı. [Rapor](analizler/2026-10-26-ortak-sahanlik.txt), [test](taslaklar/odak-atolyesi/foundation-union-check.cjs). |
 | DEV-166 | Taslakta okunaklı PDF/PNG sayfa düzeni | TAMAM — taslak166; sayfaya sığdır, A4–A0 / yön / sabit ve özel ölçek, 5–30 mm boşluk, kompakt/ayrıntılı antet, tam sayfa önizleme ve proje bazlı kayıt. Sentetik uzun plan 1:100→1:61,7; PDF/PNG ve regresyonlar geçti. [Rapor](analizler/2026-10-26-taslak-cikti-duzeni.txt), [test](taslaklar/odak-atolyesi/sheet-output-check.cjs). |
@@ -1058,3 +1060,6 @@ Taslak175: A/B tutamaçları, 1mm adımlı X/Y alanları, uç/orta/kesişim/duva
 
 ## 28 Ekim 2026 — DEV-176 — Dik çizim ve uç birleştirme
 Taslak176: Dik90/F8, Shift geçici değişim, ayrı yakalama/uzantı düğmeleri, iki uçla ortak köşe. Fare, undo, iptal, serbest mod ve üç regresyon testi geçti. [Rapor](analizler/2026-10-28-dik-cizgi-birlestirme.txt). Ana5.9.137 korunur; diğer açık işler ve müşteri JSON aktarımı sürer. Sonraki adım kullanıcı taslağında iki uç seçerek deneme. Gönderim SHA teslimde doğrulanır.
+
+## 28 Ekim 2026 — DEV-177 — Mutfak ve taşıma adımı
+Taslak177: sağ panel kol/derinlik ölçüleri, uç sürükleme, undo/iptal, bağımsız duvar taşıma adımı. Mutfak ve single regresyon testleri geçti. [Rapor](analizler/2026-10-28-mutfak-tutamac-tasima.txt). Ana uygulama korunur. DEV-178 ölçülendirme işleri açık; müşteri JSON aktarımı doğrulanmadı.
