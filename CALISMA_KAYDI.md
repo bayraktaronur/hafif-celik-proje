@@ -1092,3 +1092,6 @@ Taslak173: oda/ayrılmış alan için parke, seramik, çapraz, otomatik/yok; fiz
 
 ## 28 Ekim 2026 — DEV-174 — Tarama çıktı belirginliği
 Taslak174: %10–100 belirginlik, varsayılan65; daha koyu baskı çizgileri, canlı desen önizlemesi, JSON ve geri alma. PDF/PNG ve tarama testleri geçti; çıktı piksel karşılaştırması doğrulandı. [Rapor](analizler/2026-10-28-tarama-belirginligi.txt). Ana5.9.137 ve kullanıcı çizimi korunur. Sonraki adım Zemin taraması > Belirginlik ile ayarlama. Uzak commit teslimde doğrulanır.
+
+## 28 Ekim 2026 — DEV-175 — Hassas çizgi düzenleme
+Taslak175: A/B tutamaçları, 1mm adımlı X/Y alanları, uç/orta/kesişim/duvar yüzü yakalama; Shift/Alt, iptal, geri alma ve JSON. Üç zoom ve gerçek mouse testleri, alan taraması ve single regresyonları geçti. [Rapor](analizler/2026-10-28-hassas-cizgi.txt), [test](taslaklar/odak-atolyesi/precise-lines-check.cjs). Ana5.9.137 ve açık çizim korunur; önceki açık işler sürer. Güncel müşteriJSON aktarımı doğrulanmadı. Sonraki adım çizgiyi seçip A/B uçlarını sürüklemek. Kod/karar/referans/kanıtlar görev commitindedir; uzak SHA teslimde doğrulanır.
