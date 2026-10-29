@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Güncel Plan Studio çalışması: 28 Ekim 2026, DEV-182 tamam; taslak182 canlı opak donatılar ve birleşik duvar gölgesi. DEV-178 geniş ölçme akışı açık. [Rapor](analizler/2026-10-28-canli-donati-birlesik-golge.txt).
+Güncel Plan Studio çalışması: 29 Ekim 2026, DEV-183 tamam; taslak183 aramalı 60 sembollü 2B kütüphane ve Sıcak eskiz · koleksiyon çıktısı. DEV-178 geniş ölçme akışı açık. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt).
 
 Son güncelleme: 14 Ekim 2026, ev bilgisayarından iş bilgisayarına devir. Kullanıcı sonraki iş PC oturumunda devam edecek; ayrı Meta formuna geçiş onaylanmadı. Güncel CRM durumu ve sıradaki adımlar: [İş PC devir kaydı](analizler/2026-10-14-kommo-is-pc-devir.txt). Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
@@ -108,6 +108,7 @@ Ev veya iş fark etmez:git kontrolü/fetch ve güvenli güncelleme,bu dosya,CALI
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
+| DEV-183 | Sıcak eskiz sunumu ve ev/iş yeri 2B donatı kütüphanesi | TAMAM — taslak183: 60 sembol, arama/favori/sürükleme, ölçü ve dönüş; dört çıktı paleti ve ana akış kontrolleri geçti. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt). |
 | DEV-169 | Gerçek STL yağmur deresi ve inişler | TAMAM — taslak169; açık saçak boyunca STL dere, yüksekliğe bağlı dirsekli iniş, duvar/veranda köşesi, elle konum/renk/kot, ortak 3D/4K/metraj/JSON. [Rapor](analizler/2026-10-26-dere-inis.txt), [test](taslaklar/odak-atolyesi/drainage-browser-check.cjs). |
 | DEV-170 | Aynı modelle 3D Sunum | TAMAM — taslak170; değişmeyen geometri/metraj/kamera, ışık/gölge/yüzey, önbellek, JSON/undo ve gerçek4K. [Rapor](analizler/2026-10-26-3d-sunum.txt), [test](taslaklar/odak-atolyesi/presentation-check.cjs). |
 | DEV-171 | Hafif çelik köşe ve Sunum kenar belirginliği | TAMAM — taslak171; ortak köşe yüzleri, %0–100 canlı ayar, JSON/undo/4K ve değişmeyen metraj. [Rapor](analizler/2026-10-26-celik-kose-kenar.txt), [test](taslaklar/odak-atolyesi/steel-outline-check.cjs). |
@@ -1080,3 +1081,6 @@ Müşteri çıktısına sıcak, gri-ahşap ve siyah-beyaz paletler; taramayı ö
 
 ## 28 Ekim 2026 — DEV-182 / Taslak 182
 Canlı planda taramayı örten opak donatılar, birleşim izi oluşturmayan toplu duvar gölgesi ve hafif yüzey tonlaması eklendi. Çıktı ve ölçü regresyon kontrolleri geçti; ana program korundu. [Rapor](analizler/2026-10-28-canli-donati-birlesik-golge.txt).
+
+## 29 Ekim 2026 — DEV-183 / Taslak 183
+İş bilgisayarında bağımsız taslağa 60 özgün 2B sembol, 3 mevcut komut kısayolu, kategori/arama/favori ve karttan sürükleyerek yerleştirme eklendi. Eski semboller modernize edildi; Sıcak eskiz · koleksiyon çıktısı opak donatılar ve birleşik duvar gölgesi kullanır. Kütüphane, dört çıktı paleti, yüz ölçüleri ve tek katlı akış kontrolleri geçti; 54 ana kaynak hash'i korundu. Beş kullanıcı referansı kaynak yolu ve SHA-256 ile arşivlendi. DEV-178 ölçme akışı açık; müşteri JSON aktarımı doğrulanmadı. Sonraki adım gerçek plan üzerinden koleksiyon/çıktı değerlendirmesi. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt).

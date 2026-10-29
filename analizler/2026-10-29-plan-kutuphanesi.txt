@@ -1,0 +1,30 @@
+DEV-183 / Taslak 183 — 29 Ekim 2026, iş bilgisayarı
+
+Kapsam: Kullanıcının beş sıcak eskiz plan referansına uygun alternatif çıktı ve özgün, ölçülü 2B donatı kütüphanesi. Yalnız taslaklar/odak-atolyesi geliştirildi. Ana program 5.9.137 korunur; 54 korunan dosyanın SHA-256 değeri değişmedi. Kullanıcının açık çizimleri değiştirilmedi.
+
+Kullanım
+- Donatı > Kütüphane: arama, kategori, favoriler ve son kullanılanlar. 60 yerleştirilebilir sembol ve mevcut kapı/pencere/tezgâh komutlarına 3 kısayol.
+- Kartı seçip ölçü/dönüş/ayna ayarı yapın. Çift tıklama veya Plana yerleştir ile sahneye bırakın; kartı sahneye sürüklemek de desteklenir. Sabit ürün ölçüleri korunur. Yeni semboller mevcut taşıma/seçim, geri al/yinele, proje kaydı ve PNG akışını kullanır.
+- Çıktı > plan tarzı > Sıcak eskiz · koleksiyon: krem zemin, taupe duvarlar, koyu kontur, yumuşak ortak duvar gölgesi ve opak mobilyalar. Diğer çıktı tarzları korunur.
+
+İçerik: Banyo/vitrifiye/musluk, mutfak ve cihazlar, koltuklar, masalar/sandalyeler, yatak/depolama, ofis, aksesuar/perde/bitki ve bahçe. Eski kütüphane nesneleri aynı kimliklerle modern çizime kavuştu. Halılar alt katmanda; tezgâh, vitrifiye ve diğer opak donatılar hatch üstünde çizilir. Duvarların gölgesi birleşik katmandan üretilir. Prefabrik H/U/köşe, duvar geometrisi, metraj ve açıklık ölçüleri korunur.
+
+Kaynak yaklaşımı: Rayon'un kategori ve aramayla 2B blok yerleştirme akışı incelendi: https://www.rayon.design/blog/2d-blocks-cad-library-furnish-floor-plans . Harici CAD blokları indirilmedi; bu paketin sembolleri özgün Canvas vektör çizimleridir. Görsel referanslar kullanıcının sağladığı beş dosyadır; özgün yolları, kopyaları ve SHA-256 envanterde kayıtlıdır.
+
+Doğrulama
+- build-single-storey.cjs: bağımsız taslak üretimi, korunan ana kaynaklar ve STL dönüşüm kontrolleri geçti.
+- plan-library-check.cjs: 63 kayıt/60 çizilebilir sembol; arama, favori, ölçü, 90° dönüş/ayna, gerçek kart sürükleme, geri al/yinele, kayıt/yenileme, Sıcak eskiz PNG indirme; tarayıcı hatası yok.
+- plan-presentation-check.cjs: dört alternatif palet, yedi opak donatı, T birleşiminde eşit dolgu, geometri korunumu, PNG ve ayar kalıcılığı; tarayıcı hatası yok.
+- face-dimensions-check.cjs: yüz ölçüleri, bölünmüş duvarda dış toplam, geometri korunumu, kayıt/yenileme ve mimari PNG geçti.
+- single-check.cjs: ana kaynakla 49 panelli plan karşılaştırması; panel/birleşim/alan/metraj, çizim ve sayısal ölçü, geri al, çatı/kaplama/tavan, JSON kayıt/açma, çıktı, 980/1280/1920 ekran kontrolleri geçti. Ana depolama ve kaynaklar korunur; çalışma zamanı hatası/istenmeyen ağ isteği yok.
+- Kütüphane ekranı, örnek sıcak plan ve indirilen PNG görsel olarak incelendi. Analiz PNG'leri sentetik test planıdır, müşterinin çizimi değildir.
+
+Sınırlar / açık işler
+- Kütüphane 2B plan sembolleridir; yeni 3B mobilya modelleri ve fiyatlandırma içermez.
+- Yeni sembollerin DXF çıktısı teknik çevre dikdörtgeniyle temsil edilir; ayrıntılı sembol DXF çalışması ayrı kapsamdır.
+- DEV-178 geniş AutoCAD ölçme akışı açık kalır. Tarayıcıdaki en güncel müşteri çiziminin JSON aktarımı ayrıca doğrulanmadı.
+- Sonraki adım: kullanıcının gerçek planında koleksiyon ve Sıcak eskiz çıktısı üzerinden görünüm geri bildirimi; yeni ürünler aynı katalog üzerinden eklenebilir.
+
+Dosyalar: plan-library-core.js (katalog/semboller), plan-library-ui.js ve plan-library.css (panel), plan-library-build.cjs (mevcut motora entegrasyon), plan-library-check.cjs (regresyon), plan-presentation.js (alternatif palet), build-single-storey.cjs ve üretilmiş bağımsız single-engine/index dosyaları.
+Envanter: analizler/2026-10-29-plan-kutuphanesi-envanteri.json
+Görsel kanıt: analizler/2026-10-29-library-gallery.png, analizler/2026-10-29-library-warm-plan.png, analizler/2026-10-29-library-warm-download.png

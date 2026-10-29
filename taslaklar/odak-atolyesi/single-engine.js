@@ -447,6 +447,8 @@
  return {items,draw};
 });
 
+PlanLibraryCore.install(FurnitureCatalog);
+
 // src/loading-core.js
 /* Draft loading list: geometric counts and explicit, revision-bound decisions. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.LoadingCore=api;})(globalThis,function(){
@@ -6397,7 +6399,7 @@ window.OpeningCatalog=(function(){
  function open(){$('fixturePlaceAlign').checked=alignment;presets();dialog.querySelector('h3').textContent=FurnitureCatalog.items[$('fixtureKind').value]?'Tefriş yerleştir':'Vitrifiye / cihaz ekle';dialog.showModal();}
  $('fixtureKind').onchange=presets;$('fixturePreset').onchange=dimensions;$('fixtureWidth').oninput=preview;$('fixtureDepth').oninput=preview;$('fixtureCancel').onclick=()=>dialog.close();
  dialog.querySelector('form').onsubmit=e=>{e.preventDefault();const w=+$('fixtureWidth').value,d=+$('fixtureDepth').value;if(!(w>=1&&w<=500&&d>=1&&d<=500))return;draft={kind:$('fixtureKind').value,w,d,...standard[$('fixtureKind').value],angle:0,mirror:false};step=+$('fixtureSnap').value;ghost=null;setTool('fixture');dialog.close();Studio.toast('Ürünü fareyle konumlandırıp tıklayın. R: döndür · M: aynala · Esc: iptal.');};
- function symbol(c,f,x,y,s,color){c.save();c.translate(x,y);c.rotate(f.angle*Math.PI/180);c.scale(f.mirror?-s:s,s);c.translate(-f.w/2,-f.d/2);c.strokeStyle=color;c.lineWidth=1.2/s;c.fillStyle=TH.opening;const w=f.w,d=f.d;PlanPresentation.fixture(c,f,PlanPresentation.surface());
+ function symbol(c,f,x,y,s,color){c.save();c.translate(x,y);c.rotate(f.angle*Math.PI/180);c.scale(f.mirror?-s:s,s);c.translate(-f.w/2,-f.d/2);c.strokeStyle=color;c.lineWidth=1.2/s;c.fillStyle=TH.opening;const w=f.w,d=f.d;if(PlanLibraryCore.draw(c,f,PlanPresentation.surface(),{selected:color==='#ffd469'||color==='#8ee4c6'})){c.restore();return;}PlanPresentation.fixture(c,f,PlanPresentation.surface());
  const rect=(x,y,w,h)=>{c.strokeRect(x,y,w,h);};const line=(x,y,a,b)=>{c.beginPath();c.moveTo(x,y);c.lineTo(a,b);c.stroke();};const ellipse=(x,y,rx,ry)=>{c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.stroke();};
  if(FurnitureCatalog.draw(c,f)){}
  else if(f.kind==='shower'){rect(0,0,w,d);rect(3,3,w-6,d-6);ellipse(w-8,8,2,2);line(w-11,11,w-24,24);line(w-12,8,w-25,8);line(w-8,12,w-8,25);}
@@ -6431,7 +6433,7 @@ window.OpeningCatalog=(function(){
  }
  c.restore();}
  function local(f,p){const a=-f.angle*Math.PI/180,dx=p.x-f.x,dy=p.y-f.y;return {x:dx*Math.cos(a)-dy*Math.sin(a),y:dx*Math.sin(a)+dy*Math.cos(a)};}
- function hit(p){return (G.fixtures||[]).slice().reverse().find(f=>{const q=local(f,p);return Math.abs(q.x)<=f.w/2&&Math.abs(q.y)<=f.d/2;});}
+ function hit(p){return (G.fixtures||[]).slice().reverse().sort((a,b)=>Number(!!PlanLibraryCore.items[a.kind]?.underlay)-Number(!!PlanLibraryCore.items[b.kind]?.underlay)).find(f=>{const q=local(f,p);return Math.abs(q.x)<=f.w/2&&Math.abs(q.y)<=f.d/2;});}
  function point(e){const r=cv.getBoundingClientRect();const p=toCm(e.clientX-r.left,e.clientY-r.top);const q={x:step?Math.round(p.x):p.x,y:step?Math.round(p.y):p.y};return q;}
  // Constrain the preview and the committed position around the original centre.
  function constrainMove(p,shift){
@@ -6469,7 +6471,7 @@ window.OpeningCatalog=(function(){
  function transform(mode){if(!draft&&G.secili?.locked){Studio.toast('Yerini değiştirmek için tefriş kilidini açın.');return;}if(draft){if(mode==='rotate')draft.angle=(draft.angle+90)%360;else draft.mirror=!draft.mirror;draw();}else change(f=>{if(mode==='rotate')f.angle=(f.angle+90)%360;else f.mirror=!f.mirror;});}
  const baseTool=setTool;window.setTool=function(t){if(t!=='fixture'&&t!=='fixture-move'){draft=ghost=moving=null;guides=[];}baseTool(t);button.classList.toggle('on',t==='fixture'||t==='fixture-move');};
  function cancel(){draft=ghost=moving=null;guides=[];}
- const baseDraw=drawElemanlar;window.drawElemanlar=function(){baseDraw();handles=[];(G.fixtures||[]).forEach(f=>{const p=toCv(f.x,f.y),selected=G.seciliTip==='fixture'&&G.secili?.id===f.id;symbol(ctx,f,p.x,p.y,sc(),selected&&!TH.export?'#ffd469':TH.wall);if(selected&&!TH.export){const radius=Math.hypot(f.w,f.d)*sc()/2;['↻','↔'].forEach((label,i)=>{const x=p.x+radius+16,y=p.y-18+i*36;handles.push({x,y,mode:i?'mirror':'rotate'});ctx.save();ctx.fillStyle=TH.opening;ctx.strokeStyle='#ffd469';ctx.beginPath();ctx.arc(x,y,13,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#ffd469';ctx.font='18px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x,y);ctx.restore();});}});if(!TH.export&&ghost&&(draft||moving)){const f={...(draft||moving.f),...ghost};const p=toCv(f.x,f.y);ctx.save();ctx.globalAlpha=.65;symbol(ctx,f,p.x,p.y,sc(),'#8ee4c6');ctx.restore();}if(!TH.export&&ghost){ctx.save();ctx.strokeStyle='#65dec2';ctx.lineWidth=1;ctx.setLineDash([5,4]);for(const g of guides){const a=g.axis==='x'?toCv(g.value,g.from):toCv(g.from,g.value),b=g.axis==='x'?toCv(g.value,g.to):toCv(g.to,g.value);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}ctx.restore();}};
+ const baseDraw=drawElemanlar;window.drawElemanlar=function(){baseDraw();handles=[];(G.fixtures||[]).forEach(f=>{const p=toCv(f.x,f.y),selected=G.seciliTip==='fixture'&&G.secili?.id===f.id;if(!PlanLibraryCore.items[f.kind]?.underlay)symbol(ctx,f,p.x,p.y,sc(),selected&&!TH.export?'#ffd469':TH.wall);if(selected&&!TH.export){const radius=Math.hypot(f.w,f.d)*sc()/2;['↻','↔'].forEach((label,i)=>{const x=p.x+radius+16,y=p.y-18+i*36;handles.push({x,y,mode:i?'mirror':'rotate'});ctx.save();ctx.fillStyle=TH.opening;ctx.strokeStyle='#ffd469';ctx.beginPath();ctx.arc(x,y,13,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#ffd469';ctx.font='18px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x,y);ctx.restore();});}});if(!TH.export&&ghost&&(draft||moving)){const f={...(draft||moving.f),...ghost};const p=toCv(f.x,f.y);ctx.save();ctx.globalAlpha=.65;symbol(ctx,f,p.x,p.y,sc(),'#8ee4c6');ctx.restore();}if(!TH.export&&ghost){ctx.save();ctx.strokeStyle='#65dec2';ctx.lineWidth=1;ctx.setLineDash([5,4]);for(const g of guides){const a=g.axis==='x'?toCv(g.value,g.from):toCv(g.from,g.value),b=g.axis==='x'?toCv(g.value,g.to):toCv(g.to,g.value);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}ctx.restore();}};
  const baseSidebar=updateSidebar;window.updateSidebar=function(){baseSidebar();if(G.seciliTip==='fixture'&&G.secili){const f=G.secili;$('sbSel').style.display='block';$('sbSelIc').innerHTML='<div class="sb-t">'+names[f.kind]+'</div><p>'+(standard[f.kind]?'Standart ürün':fmtCm(f.w)+' × '+fmtCm(f.d)+' cm')+' · '+f.angle+'°</p><button class="sib" onclick="Fixtures.rotate()">↻ 90° döndür</button><button class="sib" onclick="Fixtures.mirror()">↔ Aynala</button><button class="sib" onclick="Fixtures.move()">Taşı</button><button class="sib" onclick="Fixtures.copy()">Kopyala</button><button class="sib" onclick="Fixtures.remove()">Sil</button><p>Alt + sürükle: kopyala. Shift: yatay/dikey kilit · R: döndür · M: aynala.</p>'+(standard[f.kind]?'':'<label>En (cm)<input id="fixtureEditW" type="number" min="1" max="500" step="0.1" value="'+f.w+'"></label><label>Derinlik (cm)<input id="fixtureEditD" type="number" min="1" max="500" step="0.1" value="'+f.d+'"></label><button class="sib" onclick="Fixtures.resize()">Ölçüleri uygula</button>')+'<label><input id="fixtureAlignToggle" type="checkbox" '+(alignment?'checked':'')+' onchange="Fixtures.align(this.checked)"> Kenar / merkez hizalama</label><label>Taşıma yakalaması<select onchange="Fixtures.snap(this.value)"><option value="1" '+(step===1?'selected':'')+'>1 cm</option><option value="0" '+(step===0?'selected':'')+'>Serbest</option></select></label>';}};
  window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;const r=cv.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;const handle=handles.find(h=>Math.hypot(h.x-px,h.y-py)<15);if(handle&&G.tool==='sec'){stop(e);transform(handle.mode);return;}if(G.tool==='fixture'&&draft){stop(e);const f={...draft,...movePoint(e),id:'fixture-'+crypto.randomUUID()};if(Studio.edit(()=>G.fixtures.push(f))){draft=ghost=null;setTool('sec');select(f);}return;}if(G.tool==='fixture-move'&&moving){stop(e);const m=moving,p=movePoint(e);moving=ghost=null;guides=[];finishMove(m,p);setTool('sec');return;}if(G.tool==='sec'){const f=hit(point(e));if(f){stop(e);select(f);if(f.locked&&!e.altKey)return;const p=point(e);moving={f,dx:f.x-p.x,dy:f.y-p.y,copy:!!e.altKey};}}},true);
  window.addEventListener('mousemove',e=>{if(e.target!==cv&& !moving)return;if((G.tool==='fixture'&&draft)||moving){stop(e);ghost=movePoint(e);G.snapPt=null;draw();}},true);
@@ -6477,7 +6479,23 @@ window.OpeningCatalog=(function(){
  window.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||dialog.open)return;if(G.seciliTip!=='fixture'&&!draft&&!moving)return;if(e.key==='Shift'&&moving?.last){ghost=resolve(moving.last,true);draw();}else if(e.key==='Escape'){stop(e);draft=ghost=moving=null;setTool('sec');}else if(e.key.toLowerCase()==='r'||e.key.toLowerCase()==='m'){stop(e);transform(e.key.toLowerCase()==='r'?'rotate':'mirror');}else if(e.key==='Delete'){stop(e);remove();}},true);
  window.addEventListener('keyup',e=>{if(e.key==='Shift'&&moving?.last){ghost=resolve(moving.last,false);draw();}},true);
  function remove(){change(f=>{G.fixtures=G.fixtures.filter(x=>x.id!==f.id);});}
- window.Fixtures={symbol,align:value=>{alignment=!!value;guides=[];draw();},copy:()=>{if(G.seciliTip==='fixture'){moving={f:G.secili,dx:0,dy:0,copy:true};setTool('fixture-move');}},open,openKind:kind=>{$('fixtureKind').value=kind;open();},cancel,snap:value=>{step=+value===1?1:0;},resize:()=>{if(standard[G.secili?.kind]||G.secili?.locked)return;const w=+$('fixtureEditW').value,d=+$('fixtureEditD').value;if(w<1||w>500||d<1||d>500||!Number.isFinite(w+d)){Studio.toast('En ve derinlik 1–500 cm arasında olmalı.',true);return;}change(f=>Object.assign(f,{w,d}));},rotate:()=>transform('rotate'),mirror:()=>transform('mirror'),remove,move:()=>{if(G.seciliTip==='fixture'&&!G.secili?.locked){moving={f:G.secili,dx:0,dy:0};setTool('fixture-move');}},hit};
+ window.Fixtures={symbol,
+ beginLibrary(kind,w,d,angle=0,mirror=false){
+  if(!PlanLibraryCore.items[kind]||PlanLibraryCore.items[kind].command)return false;
+  if(!Number.isFinite(w)||!Number.isFinite(d)||w<1||d<1||w>500||d>500)return false;
+  setTool('fixture');draft={kind,w,d,angle,mirror,x:0,y:0};ghost=null;
+  if(standard[kind])Object.assign(draft,standard[kind]);
+  draw();return true;
+ },
+ placeLibraryAt(p){
+  if(!draft||!Number.isFinite(p.x)||!Number.isFinite(p.y))return false;
+  const point=resolve(p,false),f={...draft,...point,id:'fixture-'+crypto.randomUUID()};
+  if(!Studio.edit(()=>G.fixtures.push(f)))return false;
+  draft=ghost=null;setTool('sec');select(f);return true;
+ },
+ drawUnderlays(){
+  (G.fixtures||[]).filter(f=>PlanLibraryCore.items[f.kind]?.underlay).forEach(f=>{const p=toCv(f.x,f.y);symbol(ctx,f,p.x,p.y,sc(),TH.wall);});
+ },align:value=>{alignment=!!value;guides=[];draw();},copy:()=>{if(G.seciliTip==='fixture'){moving={f:G.secili,dx:0,dy:0,copy:true};setTool('fixture-move');}},open,openKind:kind=>{$('fixtureKind').value=kind;open();},cancel,snap:value=>{step=+value===1?1:0;},resize:()=>{if(standard[G.secili?.kind]||G.secili?.locked)return;const w=+$('fixtureEditW').value,d=+$('fixtureEditD').value;if(w<1||w>500||d<1||d>500||!Number.isFinite(w+d)){Studio.toast('En ve derinlik 1–500 cm arasında olmalı.',true);return;}change(f=>Object.assign(f,{w,d}));},rotate:()=>transform('rotate'),mirror:()=>transform('mirror'),remove,move:()=>{if(G.seciliTip==='fixture'&&!G.secili?.locked){moving={f:G.secili,dx:0,dy:0};setTool('fixture-move');}},hit};
 })();
 
 // src/counter-cut.js
@@ -6557,7 +6575,7 @@ window.OpeningCatalog=(function(){
  function inside(p,points){let yes=false;for(let i=0,j=points.length-1;i<points.length;j=i++){const a=points[i],b=points[j];if((a.y>p.y)!==(b.y>p.y)&&p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x)yes=!yes;}return yes;}
  function stop(e){e.preventDefault();e.stopImmediatePropagation();}
  window.addEventListener('mousedown',e=>{if(e.target!==cv||e.button!==0)return;const r=cv.getBoundingClientRect(),p=toCm(e.clientX-r.left,e.clientY-r.top);if(window.CounterEditor?.start(e,p))return;if(G.tool==='counter'){stop(e);wall=pick(p);if(!wall){Studio.toast('Yatay veya dikey duvarın oda tarafına yakın tıklayın.',true);return;}setTool('sec');$('counterOffset').value=0;$('counterLength').value=Math.min(300,wall.hi-wall.lo);$('counterReturn').value='none';$('counterReturnLength').value=180;refresh();dialog.showModal();return;}if(G.tool==='sec'&&!Fixtures.hit(p)){const c=(G.counters||[]).slice().reverse().find(c=>effective(c).contains(p));if(c){stop(e);select(c);}}},true);
- const baseDraw=drawElemanlar;window.drawElemanlar=function(){
+ const baseDraw=drawElemanlar;window.drawElemanlar=function(){window.Fixtures?.drawUnderlays();
    function paint(c,color){ctx.save();PlanPresentation.counter(ctx,c.points,PlanPresentation.surface());ctx.strokeStyle=TH.presentation?TH.presentation.ink:color;ctx.lineWidth=1.4;ctx.beginPath();for(const e of effective(c).edges){const a=toCv(e.a.x,e.a.y),b=toCv(e.b.x,e.b.y);ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);}ctx.stroke();ctx.restore();}
    (G.counters||[]).forEach(c=>paint(c,!TH.export&&G.seciliTip==='counter'&&G.secili?.id===c.id?'#ffd469':TH.wall));
    if(preview&&!TH.export){paint(preview,'#8ee4c6');const p=toCv(preview.points[0].x,preview.points[0].y);ctx.save();ctx.fillStyle='#8ee4c6';ctx.font='12px sans-serif';ctx.fillText('Başlangıç',p.x+6,p.y-8);ctx.restore();}baseDraw();

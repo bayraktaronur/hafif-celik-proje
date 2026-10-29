@@ -21,7 +21,7 @@
  function button(id,label,run){const b=document.createElement('button');b.type='button';b.id=id;b.textContent=label;b.onclick=run;return b;}
  const groups=[
   {id:'build',name:'Yapı',hint:'Duvarlar ve açıklıklar',tools:[['t-duvar','Duvar','wall','D'],['t-veranda','Veranda','veranda','V'],['t-kapi','Kapı','door','K'],['t-pencere','Pencere','window','P']]},
-  {id:'furnish',name:'Donatı',hint:'İç mekân yerleşimi',tools:[['t-fixture','Vitrifiye','fixture'],['t-kitchen','Mutfak','kitchen'],['t-furniture','Tefriş','furniture']]},
+  {id:'furnish',name:'Donatı',hint:'İç mekân yerleşimi',tools:[['t-library','Kütüphane','furniture'],['t-fixture','Vitrifiye','fixture'],['t-kitchen','Mutfak','kitchen'],['t-furniture','Tefriş','furniture']]},
   {id:'annotate',name:'Ölçü ve not',hint:'Çizimi anlat',tools:[['t-dimension','Ölçülendir','dimension'],['t-text','Metin','text','T'],['t-shape','Çizgi / şekil','line']]},
   {id:'edit',name:'Düzenle',hint:'Seçili elemanlarla çalış',tools:[['t-split-wall','Duvar böl','split'],['panelQuickToggle','Panel düzenle','panel'],['clipArea','Alan seç','area'],['clipAll','Tümünü seç','all'],['clipCopy','Kopyala','copy'],['clipCut','Kes','cut'],['clipPaste','Yapıştır','paste']]}
  ];

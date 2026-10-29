@@ -1116,3 +1116,6 @@ Müşteri çıktısına sıcak, gri-ahşap ve siyah-beyaz paletler; taramayı ö
 
 ## 28 Ekim 2026 — DEV-182 / Taslak 182
 Canlı planda taramayı örten opak donatılar, birleşim izi oluşturmayan toplu duvar gölgesi ve hafif yüzey tonlaması eklendi. Çıktı ve ölçü regresyon kontrolleri geçti; ana program korundu. [Rapor](analizler/2026-10-28-canli-donati-birlesik-golge.txt).
+
+## 29 Ekim 2026 — DEV-183 / Taslak 183
+İş bilgisayarında bağımsız taslağa 60 özgün 2B sembol, 3 mevcut komut kısayolu, kategori/arama/favori ve karttan sürükleyerek yerleştirme eklendi. Eski semboller modernize edildi; Sıcak eskiz · koleksiyon çıktısı opak donatılar ve birleşik duvar gölgesi kullanır. Kütüphane, dört çıktı paleti, yüz ölçüleri ve tek katlı akış kontrolleri geçti; 54 ana kaynak hash'i korundu. Beş kullanıcı referansı kaynak yolu ve SHA-256 ile arşivlendi. DEV-178 ölçme akışı açık; müşteri JSON aktarımı doğrulanmadı. Sonraki adım gerçek plan üzerinden koleksiyon/çıktı değerlendirmesi. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt).
