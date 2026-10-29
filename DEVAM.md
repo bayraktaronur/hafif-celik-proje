@@ -1,6 +1,6 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
-Güncel Plan Studio çalışması: 29 Ekim 2026, DEV-183 tamam; taslak183 aramalı 60 sembollü 2B kütüphane ve Sıcak eskiz · koleksiyon çıktısı. DEV-178 geniş ölçme akışı açık. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt).
+Güncel Plan Studio çalışması: 29 Ekim 2026, DEV-183 tamam; taslak183 aramalı 60 sembollü 2B kütüphane ve Sıcak eskiz · koleksiyon çıktısı. DEV-178 geniş ölçme akışı açık. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt). DEV-184 Rayon erişim/lisans araştırması tamam; uygulamaya toplu katılım izni doğrulanmadı. [Araştırma](analizler/2026-10-29-rayon-kutuphanesi-erisim.txt).
 
 Son güncelleme: 14 Ekim 2026, ev bilgisayarından iş bilgisayarına devir. Kullanıcı sonraki iş PC oturumunda devam edecek; ayrı Meta formuna geçiş onaylanmadı. Güncel CRM durumu ve sıradaki adımlar: [İş PC devir kaydı](analizler/2026-10-14-kommo-is-pc-devir.txt). Önceki uygulama ve SketchUp işleri aşağıda korunur.
 
@@ -108,6 +108,7 @@ Ev veya iş fark etmez:git kontrolü/fetch ve güvenli güncelleme,bu dosya,CALI
 
 | Kimlik | İş | Durum / tamamlanma koşulu |
 | --- | --- | --- |
+| DEV-184 | Rayon orijinal kütüphanesine erişim ve kullanım kapsamı | ARAŞTIRMA TAMAM — resmî DWG/DXF yolu doğrulandı; toplu gömme/dağıtım lisansı ve aktarım hattı henüz yok. [Rapor](analizler/2026-10-29-rayon-kutuphanesi-erisim.txt). |
 | DEV-183 | Sıcak eskiz sunumu ve ev/iş yeri 2B donatı kütüphanesi | TAMAM — taslak183: 60 sembol, arama/favori/sürükleme, ölçü ve dönüş; dört çıktı paleti ve ana akış kontrolleri geçti. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt). |
 | DEV-169 | Gerçek STL yağmur deresi ve inişler | TAMAM — taslak169; açık saçak boyunca STL dere, yüksekliğe bağlı dirsekli iniş, duvar/veranda köşesi, elle konum/renk/kot, ortak 3D/4K/metraj/JSON. [Rapor](analizler/2026-10-26-dere-inis.txt), [test](taslaklar/odak-atolyesi/drainage-browser-check.cjs). |
 | DEV-170 | Aynı modelle 3D Sunum | TAMAM — taslak170; değişmeyen geometri/metraj/kamera, ışık/gölge/yüzey, önbellek, JSON/undo ve gerçek4K. [Rapor](analizler/2026-10-26-3d-sunum.txt), [test](taslaklar/odak-atolyesi/presentation-check.cjs). |
@@ -1084,3 +1085,6 @@ Canlı planda taramayı örten opak donatılar, birleşim izi oluşturmayan topl
 
 ## 29 Ekim 2026 — DEV-183 / Taslak 183
 İş bilgisayarında bağımsız taslağa 60 özgün 2B sembol, 3 mevcut komut kısayolu, kategori/arama/favori ve karttan sürükleyerek yerleştirme eklendi. Eski semboller modernize edildi; Sıcak eskiz · koleksiyon çıktısı opak donatılar ve birleşik duvar gölgesi kullanır. Kütüphane, dört çıktı paleti, yüz ölçüleri ve tek katlı akış kontrolleri geçti; 54 ana kaynak hash'i korundu. Beş kullanıcı referansı kaynak yolu ve SHA-256 ile arşivlendi. DEV-178 ölçme akışı açık; müşteri JSON aktarımı doğrulanmadı. Sonraki adım gerçek plan üzerinden koleksiyon/çıktı değerlendirmesi. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt).
+
+## 29 Ekim 2026 — DEV-184 / Rayon kütüphane erişimi
+Resmî blok erişimi ve DWG/DXF dışa aktarımı araştırıldı. Tam kütüphaneyi uygulamaya gömme/dağıtma için normal abonelik yeterli izin sayılmamalı; kullanım koşullarındaki dağıtım ve koşullu rakip platform hükümleri nedeniyle yazılı lisans önerildi. 60 mevcut sembol özgündür. Kod/sürüm ve açık çizimler değişmedi. İzin, toplu teslim ve içe aktarma hattı henüz doğrulanmadı/uygulanmadı; satın alma veya iletişim yapılmadı. DEV-178 açık kalır. [Araştırma](analizler/2026-10-29-rayon-kutuphanesi-erisim.txt).

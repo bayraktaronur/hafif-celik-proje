@@ -1,0 +1,29 @@
+DEV-184 — Rayon orijinal kütüphanesine erişim araştırması
+Tarih: 29 Ekim 2026. İş bilgisayarı.
+
+Kapsam ve kaynak
+Kullanıcı, Rayon.design kütüphanesinin aynısının nasıl elde edilebileceğini sordu. Bu araştırma satın alma, destek mesajı, toplu indirme veya uygulama değişikliği içermez. Önceki DEV-183 kütüphane çalışması ve bu oturumdaki resmî web belgeleri esas alındı.
+
+Resmî kaynaklar (29 Ekim 2026 tarihinde kontrol edildi)
+1. Kütüphaneler: https://www.rayon.design/assets
+2. Living room kütüphanesi: https://www.rayon.design/assets/libraries/living-room--0b1021e9-3450-4f78-bcf6-0ccbc7449025
+3. Dışa aktarma: https://docs.rayon.design/documentation/import-export/exporting-and-printing
+4. Kullanım koşulları (sayfa güncellemesi 17 Kasım 2025): https://www.rayon.design/terms-of-service
+
+Bulgular
+- Resmî kütüphane sayfasındaki Open in Rayon ile koleksiyon uygulamada açılabilir. İlgili modelden Menu > Export > DWG veya DXF > Download yolu kullanılabilir. Kütüphane sayfası PNG/PDF/DWG/DXF dışa aktarımını da belirtir. Erişim ve dışa aktarımın hesap/plan sınırları ayrıca kontrol edilmelidir.
+- Bir mimari projede blok kullanmak ile kütüphaneyi kendi yazılımımıza gömüp kullanıcılara dağıtmak aynı kapsam değildir. Kullanım koşullarının 6. bölümünde olağan iş akışı, platformda işbirliği ve müşteri/ortaklara türev işleri gösterme dışındaki dağıtım; özellikle büyük ölçekli dağıtım sınırlandırılmıştır.
+- Rakip yazılımda kullanım hükmü koşulludur: diğer platformun şartları hak devri veya yeniden kullanım/ticari değerlendirme lisansı gerektiriyorsa ek kısıt uygulanır. Her haricî CAD kullanımının yasak olduğu sonucu çıkarılmamıştır.
+- Platform kullanım lisansı devredilemez ve alt lisanslanamaz olarak tanımlanır. Normal abonelik, tüm kütüphaneyi başka uygulamaya gömme/dağıtma izni olarak kabul edilmemelidir. Tam koleksiyon için Rayon'dan yazılı ve bu kullanıma özel izin/lisans veya ortaklık anlaşması istenmesi önerilir.
+- Herkese açık resmî bir tam kütüphane ZIP indirmesi bulunamadı. Bunun bulunamaması özel anlaşma/API erişimi olmadığı anlamına gelmez; teyit gerekir.
+
+Bizim programla ilişki
+- DEV-183 kapsamındaki 60 sembol özgün Canvas tabanlı 2B çizimlerdir; Rayon'dan alınmamıştır.
+- İzinli DWG/DXF bloklarını uygulama sembollerine dönüştüren içe aktarma hattı bu çalışmada yapılmadı ve hazır sayılmamalıdır. Birim, yerleştirme noktası, ölçü, çizgi/dolgu, kategori, döndürme/aynalama ve sürükleme davranışları eşlenmelidir.
+- DWG/DXF geometri aktarımı, kaynak uygulamanın gölge/doku/stilinin aynen aktarılacağını garanti etmez. Referans görsellerdeki açık zemin, koyu kontur, opak donatı ve yumuşak gölge bizim görüntüleme sistemimizde ayrıca uygulanmalıdır.
+
+Belirsizlikler ve sonraki adım
+Araştırma tamamlandı. Kütüphanenin tamamını uygulamada kullanma izni, fiyatı, kapsamı ve varsa resmî toplu teslim yöntemi doğrulanmadı. Birebir orijinal koleksiyon istenirse önce gömme, değiştirme ve ticari dağıtım hakları yazılı olarak sorulmalı; izin sonrasında örnek bloklarla teknik aktarım denenmeli. Benzer görsel dil için özgün veya uygun lisanslı sembollerle mevcut koleksiyon geliştirilebilir. Destek mesajı göndermek veya satın almak için kullanıcı talimatı gerekir.
+
+Kontroller
+Kod/sürüm/çizim değiştirilmedi; ana uygulama ve taslak183 korundu. Fetch sonrası HEAD ile origin/main eşitti. İlgisiz yerel raporlar ve eski günlük ekleri bu araştırma commitine dahil edilmedi. Yalnız rapor ve DEV-184 kayıtları gönderilir; uzak SHA eşitliği teslimden önce doğrulanır. DEV-178 açık kalır; güncel müşteri JSON aktarımı bu araştırmada doğrulanmadı.

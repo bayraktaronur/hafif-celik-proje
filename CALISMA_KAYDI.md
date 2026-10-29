@@ -1119,3 +1119,6 @@ Canlı planda taramayı örten opak donatılar, birleşim izi oluşturmayan topl
 
 ## 29 Ekim 2026 — DEV-183 / Taslak 183
 İş bilgisayarında bağımsız taslağa 60 özgün 2B sembol, 3 mevcut komut kısayolu, kategori/arama/favori ve karttan sürükleyerek yerleştirme eklendi. Eski semboller modernize edildi; Sıcak eskiz · koleksiyon çıktısı opak donatılar ve birleşik duvar gölgesi kullanır. Kütüphane, dört çıktı paleti, yüz ölçüleri ve tek katlı akış kontrolleri geçti; 54 ana kaynak hash'i korundu. Beş kullanıcı referansı kaynak yolu ve SHA-256 ile arşivlendi. DEV-178 ölçme akışı açık; müşteri JSON aktarımı doğrulanmadı. Sonraki adım gerçek plan üzerinden koleksiyon/çıktı değerlendirmesi. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt).
+
+## 29 Ekim 2026 — DEV-184 / Rayon kütüphane erişimi
+Resmî blok erişimi ve DWG/DXF dışa aktarımı araştırıldı. Tam kütüphaneyi uygulamaya gömme/dağıtma için normal abonelik yeterli izin sayılmamalı; kullanım koşullarındaki dağıtım ve koşullu rakip platform hükümleri nedeniyle yazılı lisans önerildi. 60 mevcut sembol özgündür. Kod/sürüm ve açık çizimler değişmedi. İzin, toplu teslim ve içe aktarma hattı henüz doğrulanmadı/uygulanmadı; satın alma veya iletişim yapılmadı. DEV-178 açık kalır. [Araştırma](analizler/2026-10-29-rayon-kutuphanesi-erisim.txt).
