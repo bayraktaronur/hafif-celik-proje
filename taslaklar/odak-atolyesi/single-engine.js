@@ -2307,7 +2307,7 @@ function duvarUstuSnap(cm){
       t=bb.t;lbl=bb.l;
     }
   }
-  if(!lbl){var st=G.altKey?1:5;t=Math.round(t/st)*st;t=Math.max(0,Math.min(B.L,t));}
+  if(!lbl){var st=G.altKey?1:5;if(isPref())t=Math.round(t/st)*st;t=Math.max(0,Math.min(B.L,t));}
   // prefabrik: en yakın panel ekine mesafe etiketi
   if(isPref()&&G._ekNok&&G._ekNok.length){
     var px=B.a.x+B.ux*t,py=B.a.y+B.uy*t,md=Infinity;
@@ -2462,11 +2462,11 @@ function drawPreviewPaneller(sn,ep,preview){
 }
 function snapPoint(px,py){
   G._ekKaydir=null;
-  var cm=toCm(px,py);
+  var cm=toCm(px,py);G._faceHit=null; if(!isPref()&&G.snapWall&&cizimAraci()&&!G.shiftLock){const hit=FaceDimensions.wallFaceHit(cm,G.nodes,G.segs,9/sc());if(hit){G._faceHit=hit;G.snapType='duvar';G._snapLbl=hit.label;G.snapPt=hit.anchor;G.snapNodeId=hit.node;return hit.anchor;}}
   var rx=cm.x,ry=cm.y,sType='free',snapNId=null;
 
   // Izgara snap
-  if(G.snapGrid){rx=snapGrid(cm.x);ry=snapGrid(cm.y);sType='grid';}
+  if(G.snapGrid){var gx=snapGrid(cm.x),gy=snapGrid(cm.y);if(isPref()||Math.hypot(cm.x-gx,cm.y-gy)*sc()<=12){rx=gx;ry=gy;sType='grid';}}
 
   // Düğüm snap — en yüksek öncelik
   if(G.snapWall){
@@ -2503,9 +2503,9 @@ function snapPoint(px,py){
       });
       // Eksen (X veya Y hizalama) — tüm node'larla
       if(sType!=='mid'){
-        var axBest=G.gridCm*0.6;
+        var axBest=isPref()?G.gridCm*0.6:8/sc();
         G.nodes.forEach(function(n){
-          if(Math.abs(cm.x-n.x)<axBest&&Math.abs(cm.x-n.x)<Math.abs(cm.y-n.y)){rx=n.x;sType='axis';}
+          if(!isPref()&&Math.hypot(cm.x-n.x,cm.y-n.y)*sc()>140)return; if(Math.abs(cm.x-n.x)<axBest&&Math.abs(cm.x-n.x)<Math.abs(cm.y-n.y)){rx=n.x;sType='axis';}
           if(Math.abs(cm.y-n.y)<axBest&&Math.abs(cm.y-n.y)<Math.abs(cm.x-n.x)){ry=n.y;sType='axis';}
         });
       }
@@ -3149,7 +3149,7 @@ function drawSegs(){
     ctx.lineCap='square';
     if(seg.tip==='veranda'){
       // Veranda sınırı: aynı kalınlıkta kesik çizgi (duvar değil)
-      var dl=Math.max(6,lw*1.2);
+      if(!isPref()){const r=FaceDimensions.range(seg,G.nodes,G.segs,'net'),L=Math.hypot(n2.x-n1.x,n2.y-n1.y),ux=(n2.x-n1.x)/L,uy=(n2.y-n1.y)/L;p1=toCv(n1.x+ux*r[0],n1.y+uy*r[0]);p2=toCv(n1.x+ux*r[1],n1.y+uy*r[1]);}var dl=Math.max(6,lw*1.2);
       ctx.lineCap='butt';ctx.setLineDash([dl,dl*0.75]);
       ctx.strokeStyle=isSel?'#58a6ff':TH.verandaWall;
     }
@@ -3264,7 +3264,7 @@ function drawNodes(){
     var isSel=G.secili&&G.secili.id===n.id&&G.seciliTip==='node';
     var connCount=G.segs.filter(function(s){return s.n1===n.id||s.n2===n.id;}).length;
     // Düğüm noktası — yalnızca seçiliyse veya önemli bir kavşaksa göster
-    if(isSel||connCount>2||(connCount===1&&cizimAraci())){
+    if(isSel||connCount>2||(connCount===1&&cizimAraci()&&(isPref()||G.snapNodeId===n.id&&!G._faceHit))){
       ctx.beginPath();ctx.arc(p.x,p.y,isSel?7:5,0,Math.PI*2);
       ctx.fillStyle=isSel?'#58a6ff':(connCount>2?'#f0883e':'#4a6a8a');
       ctx.fill();
@@ -3784,8 +3784,8 @@ function drawPreview(){
 }
 
 function drawSnapInd(){
-  if(!G.snapPt)return;
-  var p=toCv(G.snapPt.x,G.snapPt.y);
+  if(!G.snapPt||(!isPref()&&G.tool==='sec'&&!G.dragging))return;
+  var target=G._faceHit||G.snapPt,p=toCv(target.x,target.y);
   ctx.save();
   var col={'node':'#FFD700','end':'#FFD700','mid':'#f0883e','axis':'#3fb950','lock':'#3fb950','grid':'#4a6a8a88',
     'duvar':'#39d0d8','ek':'#58a6ff','panel':'#f0883e'}[G.snapType]||'#4a6a8a88';
@@ -3800,7 +3800,7 @@ function drawSnapInd(){
   ctx.beginPath();ctx.moveTo(p.x,p.y-12);ctx.lineTo(p.x,p.y+12);ctx.stroke();
   if(G.snapType==='axis'||G.drawing){
     // Tüm node'larla aynı X veya Y hizasında extension çizgisi göster
-    var EPS=G.gridCm*0.8;
+    var EPS=isPref()?G.gridCm*0.8:0.00001;
     var cm2=toCm(0,0); // kullanılmıyor, snapPt zaten var
     ctx.strokeStyle='#58a6ff22';ctx.lineWidth=1;ctx.setLineDash([2,6]);
     G.nodes.forEach(function(n){
@@ -5270,8 +5270,8 @@ updateStatus();
   window.updateSidebar=function(){original.updateSidebar();if($('selectionEmpty'))$('selectionEmpty').hidden=!!G.secili;};
   window.setTool=function(t){original.setTool(t);clearOrphans();draw();};
   window.numUzunluk=function(sn,dir,v){
-    if(!isPref()&&G.tool==='duvar'){
-      const ref=FaceDimensions.mode(),L=FaceDimensions.inputLength(sn,dir,v,G.defaultK,G.nodes,G.segs,ref);
+    if(!isPref()&&(G.tool==='duvar'||G.tool==='veranda')){
+      const ref=FaceDimensions.mode(),L=FaceDimensions.inputLength(sn,dir,v,G.defaultK,G.nodes,G.segs,ref,G.tool);
       return {L,acik:L>0?fmtCm(v)+' cm · '+({outer:'dıştan dışa',net:'net',axis:'aks'}[ref]):'Ölçü uç paylarından büyük olmalı'};
     }
     if(!isPref()||G.inputUnit==='cm'||G.tool==='veranda')return{L:v,acik:fmtCm(v)+' cm aks'};

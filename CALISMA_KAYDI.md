@@ -1,5 +1,7 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+2026-11-05 · DEV-189 tamam · Taslak 187. Bağlı gruplara göre dış ölçü, veranda ile duvar temas yüzü ve yakınlaştırmada yerel yakalama. Kontroller: snap-dimensions-check.cjs ve wall-input-check.cjs.
+
 2026-11-05 · DEV-188 · Taslak 186: Hafif çelik duvar sayısal uzunluğu seçili ölçü referansına göre uygulanır. 14 cm duvarda 500 cm girişi üç referansta doğrulandı.
 
 Her anlamlı teslimde yeni tarihli kayıt eklenir. Eski karar değişirse geçmiş silinmez; yeni kayıtta hangi kararın değiştiği belirtilir. Güncel açık işler DEVAM.md dosyasındadır. Bu günlük tüm sohbetin otomatik kopyası değildir.

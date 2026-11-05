@@ -1,5 +1,7 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+2026-11-05 · DEV-189 tamam · Taslak 187. Bağlı gruplara göre dış ölçü, veranda ile duvar temas yüzü ve yakınlaştırmada yerel yakalama. Kontroller: snap-dimensions-check.cjs ve wall-input-check.cjs.
+
 2026-11-05 · DEV-188 · Taslak 186: Hafif çelik duvar sayısal uzunluğu seçili ölçü referansına göre uygulanır. 14 cm duvarda 500 cm girişi üç referansta doğrulandı.
 
 Güncel Plan Studio çalışması: 29 Ekim 2026, DEV-183 tamam; taslak183 aramalı 60 sembollü 2B kütüphane ve Sıcak eskiz · koleksiyon çıktısı. DEV-178 geniş ölçme akışı açık. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt). DEV-184 Rayon erişim/lisans araştırması tamam; uygulamaya toplu katılım izni doğrulanmadı. [Araştırma](analizler/2026-10-29-rayon-kutuphanesi-erisim.txt).

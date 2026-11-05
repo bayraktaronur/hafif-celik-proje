@@ -1,5 +1,5 @@
 {
-  "task": "DEV-188",
+  "task": "DEV-189",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
