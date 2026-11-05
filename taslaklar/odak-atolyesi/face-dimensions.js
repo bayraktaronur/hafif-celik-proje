@@ -18,5 +18,19 @@ function totals(){if(isPref()||!planVisible('outerDims'))return;const b=overall(
  function hasTotal(horizontal){return mode()==='outer'&&G.segs.some(s=>{if(s.tip==='veranda')return false;const a=map.get(s.n1),z=map.get(s.n2);if(!a||!z)return false;const L=Math.hypot(z.x-a.x,z.y-a.y),r=range(s,G.nodes,G.segs,'outer');return horizontal?Math.abs(a.y-z.y)<1e-6&&Math.abs(a.y-s.k/2-b.minY)<1e-6&&Math.abs(r[1]-r[0]-(b.maxX-b.minX))<1e-6:Math.abs(a.x-z.x)<1e-6&&Math.abs(a.x+s.k/2-b.maxX)<1e-6&&Math.abs(r[1]-r[0]-(b.maxY-b.minY))<1e-6;});}
  if(!hasTotal(true))_dimLine(b.minX,b.minY,1,0,0,-1,0,b.maxX-b.minX,72,0,fmtCm(b.maxX-b.minX),DIM.txt,true);
  if(!hasTotal(false))_dimLine(b.maxX,b.minY,0,1,1,0,0,b.maxY-b.minY,72,0,fmtCm(b.maxY-b.minY),DIM.txt,true);}
-root.FaceDimensions={range,overall,mode,totals};
+function inputLength(start,dir,value,k,nodes,segs,ref){
+ if(ref==='axis')return value;
+ const probe={id:Symbol(),x:start.x+dir.x*100000,y:start.y+dir.y*100000};
+ const wall={id:Symbol(),n1:start.id,n2:probe.id,k};
+ const [lo,hi]=range(wall,[...nodes,probe],segs,ref);
+ const free=value-(hi-lo-100000);
+ for(const n of nodes){
+   const dx=n.x-start.x,dy=n.y-start.y,L=dx*dir.x+dy*dir.y;
+   if(L<=0||Math.abs(dx*dir.y-dy*dir.x)>.00001)continue;
+   const r=range({...wall,n2:n.id},nodes,segs,ref);
+   if(Math.abs(r[1]-r[0]-value)<.00001)return L;
+ }
+ return free;
+}
+root.FaceDimensions={range,overall,mode,totals,inputLength};
 })(typeof window==='undefined'?globalThis:window);

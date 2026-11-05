@@ -2351,7 +2351,7 @@ function numUygula(){
   var sn=getNode(G.drawStart);if(!sn){draw();return;}
   var dir=_cizimYon(sn),U=numUzunluk(sn,dir,v);
   var ex=sn.x+dir.x*U.L,ey=sn.y+dir.y*U.L;
-  var endId=addNode(ex,ey);
+  if(!(U.L>0))throw Error(U.acik);var endId=addNode(ex,ey,!isPref()&&G.tool==='duvar');
   pushH();
   if(isPref()&&G.tool==='duvar'&&G.inputUnit==='panel'&&window.Modular&&Modular.strict()){
     var endNode=getNode(endId),closing=G.segs.some(function(s){return s.n1===endId||s.n2===endId;});
@@ -2571,10 +2571,10 @@ function _idxGet(C,arr,id){
 function getNode(id){return _idxGet(_nIdx,G.nodes,id);}
 function getSeg(id){return _idxGet(_sIdx,G.segs,id);}
 
-function addNode(x,y){
+function addNode(x,y,exact){
   // Aynı konumda node var mı?
   // Prefab joints carry exact panel coordinates; proximity must not move them.
-  var EPS=isPref()?.001:Math.min(G.gridCm*0.1,2);
+  var EPS=(exact||isPref())?.001:Math.min(G.gridCm*0.1,2);
   var existing=G.nodes.find(function(n){return Math.abs(n.x-x)<EPS&&Math.abs(n.y-y)<EPS;});
   if(existing)return existing.id;
   var id=uid();
@@ -5270,6 +5270,10 @@ updateStatus();
   window.updateSidebar=function(){original.updateSidebar();if($('selectionEmpty'))$('selectionEmpty').hidden=!!G.secili;};
   window.setTool=function(t){original.setTool(t);clearOrphans();draw();};
   window.numUzunluk=function(sn,dir,v){
+    if(!isPref()&&G.tool==='duvar'){
+      const ref=FaceDimensions.mode(),L=FaceDimensions.inputLength(sn,dir,v,G.defaultK,G.nodes,G.segs,ref);
+      return {L,acik:L>0?fmtCm(v)+' cm · '+({outer:'dıştan dışa',net:'net',axis:'aks'}[ref]):'Ölçü uç paylarından büyük olmalı'};
+    }
     if(!isPref()||G.inputUnit==='cm'||G.tool==='veranda')return{L:v,acik:fmtCm(v)+' cm aks'};
     if(window.Modular&&Modular.strict()){
       const axis=dir.y===0?'x':'y',sign=dir[axis]>=0?1:-1;

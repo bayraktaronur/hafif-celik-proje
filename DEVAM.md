@@ -1,5 +1,7 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+2026-11-05 · DEV-188 · Taslak 186: Hafif çelik duvar sayısal uzunluğu seçili ölçü referansına göre uygulanır. 14 cm duvarda 500 cm girişi üç referansta doğrulandı.
+
 Güncel Plan Studio çalışması: 29 Ekim 2026, DEV-183 tamam; taslak183 aramalı 60 sembollü 2B kütüphane ve Sıcak eskiz · koleksiyon çıktısı. DEV-178 geniş ölçme akışı açık. [Rapor](analizler/2026-10-29-plan-kutuphanesi.txt). DEV-184 Rayon erişim/lisans araştırması tamam; uygulamaya toplu katılım izni doğrulanmadı. [Araştırma](analizler/2026-10-29-rayon-kutuphanesi-erisim.txt).
 
 Son güncelleme: 14 Ekim 2026, ev bilgisayarından iş bilgisayarına devir. Kullanıcı sonraki iş PC oturumunda devam edecek; ayrı Meta formuna geçiş onaylanmadı. Güncel CRM durumu ve sıradaki adımlar: [İş PC devir kaydı](analizler/2026-10-14-kommo-is-pc-devir.txt). Önceki uygulama ve SketchUp işleri aşağıda korunur.

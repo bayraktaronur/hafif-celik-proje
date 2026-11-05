@@ -1,10 +1,18 @@
 module.exports=function(file,s,once){
  if(file==='src/studio.js'){
+ s=once(s,'window.numUzunluk=function(sn,dir,v){',`window.numUzunluk=function(sn,dir,v){
+    if(!isPref()&&G.tool==='duvar'){
+      const ref=FaceDimensions.mode(),L=FaceDimensions.inputLength(sn,dir,v,G.defaultK,G.nodes,G.segs,ref);
+      return {L,acik:L>0?fmtCm(v)+' cm · '+({outer:'dıştan dışa',net:'net',axis:'aks'}[ref]):'Ölçü uç paylarından büyük olmalı'};
+    }`);
  s=once(s,'sheetInfo:clone(G.sheetInfo||{}),',"dimensionReference:G.dimensionReference||'outer',sheetInfo:clone(G.sheetInfo||{}),");
  s=once(s,'G.sheetInfo=clone(d.sheetInfo||{});',"G.dimensionReference=d.dimensionReference||'outer';G.sheetInfo=clone(d.sheetInfo||{});");
  }
  if(file==='src/project.js')s=once(s,'safeTree(input);',"safeTree(input);if(input.dimensionReference!=null&&!['outer','net','axis'].includes(input.dimensionReference))throw Error('Geçersiz ölçü referansı');");
  if(file==='src/engine.js'){
+ s=once(s,'var endId=addNode(ex,ey);',"if(!(U.L>0))throw Error(U.acik);var endId=addNode(ex,ey,!isPref()&&G.tool==='duvar');");
+ s=once(s,'function addNode(x,y){','function addNode(x,y,exact){');
+ s=once(s,'var EPS=isPref()?.001:', 'var EPS=(exact||isPref())?.001:');
  s=once(s,'  drawSegs();','  PlanPresentation.wallLayer(ctx,drawSegs);');
  s=once(s,'var prevEnd=0;',"var prevEnd=isPref()?0:FaceDimensions.range(seg,G.nodes,G.segs,FaceDimensions.mode())[0];");
  s=once(s,'var nextStart=dLen;',"var nextStart=isPref()?dLen:FaceDimensions.range(seg,G.nodes,G.segs,FaceDimensions.mode())[1];");
