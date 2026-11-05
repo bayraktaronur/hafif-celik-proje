@@ -2574,7 +2574,7 @@ function getSeg(id){return _idxGet(_sIdx,G.segs,id);}
 function addNode(x,y,exact){
   // Aynı konumda node var mı?
   // Prefab joints carry exact panel coordinates; proximity must not move them.
-  var EPS=(exact||isPref())?.001:Math.min(G.gridCm*0.1,2);
+  var EPS=(exact||isPref()||cizimAraci())?.001:Math.min(G.gridCm*0.1,2);
   var existing=G.nodes.find(function(n){return Math.abs(n.x-x)<EPS&&Math.abs(n.y-y)<EPS;});
   if(existing)return existing.id;
   var id=uid();
@@ -2682,7 +2682,7 @@ function splitSeg(s,nodeId){
   var a=getNode(s.n1),b=getNode(s.n2),m=getNode(nodeId);
   if(!a||!b||!m)return null;
   var L=dist(a.x,a.y,b.x,b.y),d=dist(a.x,a.y,m.x,m.y);
-  if(d<GRAPH_TOL||L-d<GRAPH_TOL)return null;
+  var splitTolerance=isPref()?GRAPH_TOL:.001;if(d<splitTolerance||L-d<splitTolerance)return null;
   var s2=Object.assign({},s,{id:uid(),n1:nodeId,n2:s.n2,elemanlar:[]});
   delete s2.pnlCfg;delete s2.pnlTers;
   if(s.panelGridAnchor){var anchor=s.panelGridAnchor;s2.panelGridAnchor={axis:anchor.axis,offset:anchor.offset+a[anchor.axis]-m[anchor.axis]};}
@@ -2701,7 +2701,7 @@ function splitSeg(s,nodeId){
 }
 
 function normalizeGraph(){
-  var GRAPH_TOL=isPref()?.001:1;
+  var GRAPH_TOL=.001;
   var changed=true,guard=0;
   while(changed&&guard++<20){
     changed=false;
@@ -3775,7 +3775,12 @@ function drawPreview(){
   drawPreviewPaneller(sn,ep,preview);
   // Uzunluk etiketi
   ctx.font='bold 11px '+FF;ctx.fillStyle='#58a6ffcc';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText(Math.round(len)+' cm'+(G.tool==='veranda'?' · veranda':''),(p1.x+p2.x)/2,(p1.y+p2.y)/2-14);
+  var previewLabel=Math.round(len)+' cm';
+  if(!isPref()){
+    const ref=FaceDimensions.mode(),r=FaceDimensions.previewRange(sn,ep,G.defaultK,G.nodes,G.segs,ref,G.tool);
+    previewLabel=fmtCm(r[1]-r[0])+' cm · '+({axis:'aks',outer:'dıştan dışa',net:'iç net'}[ref]);
+  }
+  ctx.fillText(previewLabel+(G.tool==='veranda'?' · veranda':''),(p1.x+p2.x)/2,(p1.y+p2.y)/2-14);
   if(G.shiftLock){
     ctx.fillStyle='#3fb950cc';
     ctx.fillText(G.lockAxis==='h'?'↔ Yatay':'↕ Dikey',(p1.x+p2.x)/2,(p1.y+p2.y)/2-26);

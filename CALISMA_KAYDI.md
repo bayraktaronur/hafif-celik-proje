@@ -1,5 +1,7 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+2026-11-05 · DEV-191 tamam · Taslak 188. Hafif çelikte önizleme seçili ölçü referansını izler, örtülü uç yüzü elenir, 5 mm serbest boşluk korunur ve dış ölçü zinciri T istasyonunda bölünür. [Tarayıcı kontrolü](taslaklar/odak-atolyesi/drawing-consistency-check.cjs). Prefabrik panel/köşe karşılaştırması, ölçüyle taşıma ve PNG kontrolleri geçti.
+
 2026-11-05 · DEV-190 analiz tamam · [Taslak 187 çizim ve yakalama incelemesi](analizler/2026-11-05-taslak-187-cizim-incelemesi.txt). Üç prefabrik proje iki sürümde karşılaştırıldı. DEV-191 açık: hafif çelikte fare önizlemesi, örtülü yakalama hedefi, 5 mm boşluk ve T birleşiminde ölçü zinciri. Sonraki adım önizleme ile bitmiş dış ölçüyü eşitlemek.
 
 2026-11-05 · DEV-189 tamam · Taslak 187. Bağlı gruplara göre dış ölçü, veranda ile duvar temas yüzü ve yakınlaştırmada yerel yakalama. Kontroller: snap-dimensions-check.cjs ve wall-input-check.cjs.

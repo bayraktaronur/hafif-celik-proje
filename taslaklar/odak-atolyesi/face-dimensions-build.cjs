@@ -11,8 +11,16 @@ module.exports=function(file,s,once){
  if(file==='src/project.js')s=once(s,'safeTree(input);',"safeTree(input);if(input.dimensionReference!=null&&!['outer','net','axis'].includes(input.dimensionReference))throw Error('Geçersiz ölçü referansı');");
  if(file==='src/engine.js'){
  s=once(s,'var endId=addNode(ex,ey);',"if(!(U.L>0))throw Error(U.acik);var endId=addNode(ex,ey,!isPref()&&G.tool==='duvar');");
+ s=once(s,'var GRAPH_TOL=isPref()?.001:1;', 'var GRAPH_TOL=.001;');
+ s=once(s,'if(d<GRAPH_TOL||L-d<GRAPH_TOL)return null;', 'var splitTolerance=isPref()?GRAPH_TOL:.001;if(d<splitTolerance||L-d<splitTolerance)return null;');
+ s=once(s,"ctx.fillText(Math.round(len)+' cm'+(G.tool==='veranda'?' · veranda':'')",`var previewLabel=Math.round(len)+' cm';
+  if(!isPref()){
+    const ref=FaceDimensions.mode(),r=FaceDimensions.previewRange(sn,ep,G.defaultK,G.nodes,G.segs,ref,G.tool);
+    previewLabel=fmtCm(r[1]-r[0])+' cm · '+({axis:'aks',outer:'dıştan dışa',net:'iç net'}[ref]);
+  }
+  ctx.fillText(previewLabel+(G.tool==='veranda'?' · veranda':'')`);
  s=once(s,'function addNode(x,y){','function addNode(x,y,exact){');
- s=once(s,'var EPS=isPref()?.001:', 'var EPS=(exact||isPref())?.001:');
+ s=once(s,'var EPS=isPref()?.001:', 'var EPS=(exact||isPref()||cizimAraci())?.001:');
  s=once(s,"if(G.snapGrid){rx=snapGrid(cm.x);ry=snapGrid(cm.y);sType='grid';}", "if(G.snapGrid){var gx=snapGrid(cm.x),gy=snapGrid(cm.y);if(isPref()||Math.hypot(cm.x-gx,cm.y-gy)*sc()<=12){rx=gx;ry=gy;sType='grid';}}");
  s=once(s,'var axBest=G.gridCm*0.6;', 'var axBest=isPref()?G.gridCm*0.6:8/sc();');
  s=once(s,'if(Math.abs(cm.x-n.x)<axBest', 'if(!isPref()&&Math.hypot(cm.x-n.x,cm.y-n.y)*sc()>140)return; if(Math.abs(cm.x-n.x)<axBest');
