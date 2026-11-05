@@ -13,6 +13,11 @@
  ['nativeDoor','Kapı','openings','door',[[90,10]],'çelik sac pvc alüminyum açıklık','t-kapi'],['nativeWindow','Pencere','openings','window',[[120,10]],'pvc doğrama açıklık','t-pencere'],['nativeCounter','Düz / L / U tezgâh','kitchen','counter',[[240,60]],'mutfak tezgah dolap','t-kitchen']
  ];
  const items=Object.fromEntries(entries.map(([id,name,category,shape,sizes,tags,command])=>[id,{id,name,category,shape,sizes,tags,command,underlay:shape==='rug'||shape==='rugRound'}]));
+ for(const [id,name,collection,view,size,paths] of globalThis.RayonPlanBlocks||[]){
+  const category=({Mutfak:'kitchen',Ofis:'office','Oturma odası':'living'})[collection]||
+    (/sink|toilet|bathtub|shower|basin/i.test(name)?'bath':/bed|closet/i.test(name)?'bedroom':/table|chair/i.test(name)?'dining':'living');
+  items[id]={id,name,category,collection,view,sizes:[size],paths,tags:'Rayon '+collection+' '+view};
+ }
  const palette={fixture:'#f6f3e9',wood:'#b2a18a',fabric:'#eeeade',counter:'#c2b6a3',ink:'#302e29',rug:'#d0cfc2',shadow:true};
  const fold=s=>String(s||'').toLocaleLowerCase('tr-TR').replace(/ı/g,'i').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
  function search(query='',category='all'){const terms=fold(query).split(/\s+/).filter(Boolean);return Object.values(items).filter(i=>(category==='all'||i.category===category)&&terms.every(t=>fold(i.name+' '+i.tags+' '+categories[i.category]).includes(t)));}
@@ -20,6 +25,19 @@
  function install(catalog){const nativeKinds=new Set([...fixedKinds,'vanity','shower']);for(const i of Object.values(items))if(!i.command&&!nativeKinds.has(i.id)&&!catalog.items[i.id])catalog.items[i.id]={name:i.name,sizes:i.sizes,front:60};const old=catalog.draw;catalog.draw=(c,f)=>old(c,f)||draw(c,f,{fixture:'#fff',wood:'#eee',fabric:'#fff',ink:c.strokeStyle},{technical:true});}
  function draw(c,f,p=palette,options={}){
   const item=items[f.kind];if(!item)return false;
+  if(item.paths){
+   const [width,depth]=item.sizes[0],sx=f.w/width,sy=f.d/depth;
+   c.save();
+   if(!options.selected && p.ink)c.strokeStyle=p.ink;
+   c.fillStyle=p.fixture||'#f6f3e9';
+   for(const path of item.paths){
+    c.beginPath();c.moveTo(path[0]*sx,path[1]*sy);
+    for(let j=2;j<path.length;j+=2)c.lineTo(path[j]*sx,path[j+1]*sy);
+    if(path.length>=8&&path[0]===path.at(-2)&&path[1]===path.at(-1))c.fill();
+    c.stroke();
+   }
+   c.restore();return true;
+  }
   if(typeof c.setLayer==='function'){if(options.technical){c.beginPath();c.rect(0,0,f.w,f.d);c.stroke();return true;}return false;}
   const w=Math.max(f.w,item.sizes[0][0]),d=Math.max(f.d,item.sizes[0][1]),shape=item.shape;const ink=options.selected?c.strokeStyle:(p.ink||c.strokeStyle),fabric=p.fabric,wood=p.wood,white=p.fixture;
   c.save();c.scale(f.w/w,f.d/d);c.strokeStyle=ink;c.lineJoin='round';c.lineCap='round';

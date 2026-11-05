@@ -1122,3 +1122,7 @@ Canlı planda taramayı örten opak donatılar, birleşim izi oluşturmayan topl
 
 ## 29 Ekim 2026 — DEV-184 / Rayon kütüphane erişimi
 Resmî blok erişimi ve DWG/DXF dışa aktarımı araştırıldı. Tam kütüphaneyi uygulamaya gömme/dağıtma için normal abonelik yeterli izin sayılmamalı; kullanım koşullarındaki dağıtım ve koşullu rakip platform hükümleri nedeniyle yazılı lisans önerildi. 60 mevcut sembol özgündür. Kod/sürüm ve açık çizimler değişmedi. İzin, toplu teslim ve içe aktarma hattı henüz doğrulanmadı/uygulanmadı; satın alma veya iletişim yapılmadı. DEV-178 açık kalır. [Araştırma](analizler/2026-10-29-rayon-kutuphanesi-erisim.txt).
+## 5 Kasım 2026 — DEV-185 / Taslak 184
+Dört yerel Rayon DXF koleksiyonu 396 adet yerleştirilebilir 2B blok görünüşüne dönüştürüldü. Varsayılan Plan filtresinde 141, Ön görünüşte 135, Yan görünüşte 120 kayıt var. Kaynak birimi metre, uygulama ölçüsü santimetredir. Eğriler 0,5 mm toleransla çizgiye çevrilir. Üretim uygulaması 5.9.137. DXF dosyaları ve üretilen rayon-local.js yerel teslimdedir. Diğer bilgisayarda aynı JS dosyasını taslak klasörüne kopyalayın.
+DEV-186 — Bekleyen indirme listesi: Oturma odası (ayrı koleksiyon), İnsanlar, Duşlar ve bölmeler, Pisuvarlar, Klozetler, İç mekân bitkileri, Banyolar ve ortak tuvaletler, Merdivenler ve yürüyen merdivenler. İndirme durduruldu.
+Kontrol: dört koleksiyondan birer blok plana yerleştirildi, kayıt ve yeniden açma doğrulandı. Tarayıcıda 456 sembolün çizimi ve PNG çıktı testi geçti.

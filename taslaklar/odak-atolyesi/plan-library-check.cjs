@@ -16,6 +16,20 @@ const {chromium}=require(path.resolve(path.dirname(process.execPath),'../node_mo
    Studio.loadProject({...d,sistem:'celik',n,s,e:[],r:[],fixtures:[],counters:[]}); G.fixtures=[];G.counters=[];Studio.fit();draw();
    PlanLibraryUI.open();
   });
+  if(fs.existsSync(path.join(__dirname,'rayon-local.js'))){
+   for(const collection of ['Temel bloklar','Mutfak','Oturma odası','Ofis']){
+    await p.selectOption('#libSource',collection);
+    const card=p.locator('.lib-card').first();
+    const id=await card.getAttribute('data-id');
+    assert.ok(id.startsWith('rayon-'));
+    assert.equal(await p.evaluate(id=>PlanLibraryUI.start(id,{x:500,y:350}),id),true);
+    await p.evaluate(()=>Studio.flush());
+    await p.reload();
+    assert.equal(await p.evaluate(id=>G.fixtures.some(f=>f.kind===id),id),true);
+    await p.evaluate(()=>PlanLibraryUI.open());
+   }
+   await p.selectOption('#libSource','');
+  }
   await p.locator('#libSearch').fill('buzdolabı');assert.equal(await p.locator('.lib-card').count(),1);
   await p.locator('.lib-object').click();assert.ok(await p.locator('#libWidth').getAttribute('readonly')!==null);
   await p.locator('#libSearch').fill('');await p.locator('.lib-card[data-id="desk"] .lib-object').click();
