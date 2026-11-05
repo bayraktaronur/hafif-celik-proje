@@ -1126,3 +1126,6 @@ Resmî blok erişimi ve DWG/DXF dışa aktarımı araştırıldı. Tam kütüpha
 Dört yerel Rayon DXF koleksiyonu 396 adet yerleştirilebilir 2B blok görünüşüne dönüştürüldü. Varsayılan Plan filtresinde 141, Ön görünüşte 135, Yan görünüşte 120 kayıt var. Kaynak birimi metre, uygulama ölçüsü santimetredir. Eğriler 0,5 mm toleransla çizgiye çevrilir. Üretim uygulaması 5.9.137. DXF dosyaları ve üretilen rayon-local.js yerel teslimdedir. Diğer bilgisayarda aynı JS dosyasını taslak klasörüne kopyalayın.
 DEV-186 — Bekleyen indirme listesi: Oturma odası (ayrı koleksiyon), İnsanlar, Duşlar ve bölmeler, Pisuvarlar, Klozetler, İç mekân bitkileri, Banyolar ve ortak tuvaletler, Merdivenler ve yürüyen merdivenler. İndirme durduruldu.
 Kontrol: dört koleksiyondan birer blok plana yerleştirildi, kayıt ve yeniden açma doğrulandı. Tarayıcıda 456 sembolün çizimi ve PNG çıktı testi geçti.
+
+## 5 Kasım 2026 — DEV-187 / Taslak 185
+Düzenle → Aynala ile nesne veya tüm proje merkezden sağ–sol ve üst–alt çevrilir. Metin yönü korunur. Bağlı tek duvar için tüm proje kullanılır. plan-mirror-check.cjs örnek planda iki yönde oda adları, not, kapı açılışı ve Ctrl+Z kontrolünü geçti. DEV-186 indirme listesi bekliyor.

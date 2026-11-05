@@ -1,5 +1,10 @@
 // Prototype-only integration: reuse fixture history, validation, placement and editing.
 module.exports=(file,s,once)=>{
+ if(file==='src/text-notes.js'){
+  // Rotate glyphs around their own label anchor, without changing the shape.
+  s=once(s,"if(a.text)ctx.fillText(a.text,w/2,h+6);","const labelAt=(text,y)=>{ctx.save();ctx.translate(w/2,y);if(a.angle>90&&a.angle<=270)ctx.rotate(Math.PI);ctx.fillText(text,0,0);ctx.restore();};if(a.text)labelAt(a.text,h+6);");
+  s=once(s,'ctx.fillText(label,w/2,-5);','labelAt(label,-5);');
+ }
  if(file==='src/furniture-catalog.js')s+='\nPlanLibraryCore.install(FurnitureCatalog);\n';
  if(file==='src/fixtures.js'){
   s=once(s,'PlanPresentation.fixture(c,f,PlanPresentation.surface());',"if(PlanLibraryCore.draw(c,f,PlanPresentation.surface(),{selected:color==='#ffd469'||color==='#8ee4c6'})){c.restore();return;}PlanPresentation.fixture(c,f,PlanPresentation.surface());");
