@@ -20,8 +20,7 @@ src/roof.js çatı bölümünün parapet sayısını en yüksek çatı yüzeyine
 Prefabrikte 250/280/300 cm duvar yüksekliği ile parapet üst kotu ayrı tutulur. Profil bağlantısı, pano adımı, H/köşe devamı veya ayrı karkas kullanımı firmanın seçimidir. Hafif çelikte duvar dikmesinin devamı ya da sonradan takılan çerçeve ayrı tip olarak tanımlanabilir. Rüzgâr etkisi, bağlantı kapasitesi, kesit ve vida aralığı onaylı proje detayından gelir. Çatı örtüsü, eğim ve parapet üst kotu ayrı tutulur; çatı dışarıdan görünecekse kesitte gerçek fark gösterilir.
 Metrajda iç ve dış kaplama ayrı m², üst kapak ve dere ayrı metre, köşe, uç, çıkış ve inişler ayrı kalemlerdir. Eğimli iç yüz, dere boşluğu ve gerçek kesim boyları hesaba katılır. Stok boyu, bindirme, profil aralığı ve sac açınımı imalat detayı geldiğinde kullanılır. Eski projelerde mahyaya göre girilmiş yükseklik, yeni duvar üstü referansına sessizce çevrilmemeli.
 
-Firma bilgisi beklenen konular
-1. Örnek proje için cepheler, eğim yönü, parapet üst kotunun referansı ve yüksekliği.
-2. İki sistemde mesnet, karkas/dikme, iç/dış kaplama ve üst kapak bükümü. Bir ölçülü kesit bu cevapların çoğunu verir.
-3. Açık saçak veya gizli dere, iniş güzergâhı ve gerekiyorsa taşma çıkışı.
+Firma kararları · 9 Kasım 2026
+Parapet uygulanacak cepheler tasarımda seçilir. Dış yüz kaplaması dış duvarlarda olduğu gibi tasarıma göre seçilir. Açık dere, gizli dere ve bunların projeye göre kullanımı desteklenecek.
+Beklenen imalat görsellerinde prefabrik ve hafif çelik taşıyıcı bağlantısı, iç yüz, kapak bükümü ve tahliye güzergâhı incelenecek. Eğim yönü, üst kot referansı ve ölçüler açık.
 Kabul örnekleri: üç cephe + arka açık dere; dört cephe + gizli dere; açık veranda; prefabrik ve hafif çelikte aynı dış görünüş, farklı imalat listesi; eski kayıt açma ve toplam metraj karşılaştırması.

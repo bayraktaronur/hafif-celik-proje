@@ -1,5 +1,7 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+2026-11-09 · DEV-192 · Cephe, dış kaplama ve dere çözümünün projeye göre seçilmesi kesinleşti. İmalat görselleri ve kot referansı bekleniyor. [Araştırma kaydı](analizler/2026-11-09-parapet-cati.txt).
+
 2026-11-09 · DEV-192 araştırma tamam, parapet imalat tanımı açık · [Kaynaklar, mevcut davranış ve çizim akışı](analizler/2026-11-09-parapet-cati.txt). Çatı kenarlarının seçimi, iki sistemin taşıyıcı/kaplama kesiti ve tahliye düzeni için firma bilgisi bekleniyor. Taslak 188.
 
 2026-11-05 · DEV-191 tamam · Taslak 188. Hafif çelikte önizleme seçili ölçü referansını izler, örtülü uç yüzü elenir, 5 mm serbest boşluk korunur ve dış ölçü zinciri T istasyonunda bölünür. [Tarayıcı kontrolü](taslaklar/odak-atolyesi/drawing-consistency-check.cjs). Prefabrik panel/köşe karşılaştırması, ölçüyle taşıma ve PNG kontrolleri geçti.
