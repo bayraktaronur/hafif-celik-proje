@@ -1,5 +1,7 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+2026-11-09 · İş bilgisayarı · DEV-193 tamamlandı, Taslak 189. Ortak 40 cm önerisi ve her kenarda 0 dahil ayrı saçak çıkmaları, ana parapeti izleyen açık veranda, düzenlenebilir çatı dizilimleri. İki yapı sistemi, L plan ve veranda kayıt döngüsü tarayıcıda doğrulandı. Üç eski projede panel, oda, birleşim ve metraj karşılaştırması geçti. Sıradaki DEV-192 çalışması karkas, üst kapak ve tahliye detaylarıdır. [Kararlar ve kaynaklar](analizler/2026-11-09-parapet-cati.txt).
+
 2026-11-09 · DEV-192 · Cephe, dış kaplama ve dere çözümünün projeye göre seçilmesi kesinleşti. İmalat görselleri ve kot referansı bekleniyor. [Araştırma kaydı](analizler/2026-11-09-parapet-cati.txt).
 
 2026-11-09 · DEV-192 araştırma tamam, parapet imalat tanımı açık · [Kaynaklar, mevcut davranış ve çizim akışı](analizler/2026-11-09-parapet-cati.txt). Çatı kenarlarının seçimi, iki sistemin taşıyıcı/kaplama kesiti ve tahliye düzeni için firma bilgisi bekleniyor. Taslak 188.

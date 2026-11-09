@@ -1,5 +1,7 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+2026-11-09 · Taslak 189 · DEV-193 tamamlandı. Parapet için 40 cm ortak öneri, kenar bazında sıfır dahil çıkma, açık verandada aynı üst kot ve projede saklanabilen çatı dizilimleri. [Çatı kararları ve doğrulama](analizler/2026-11-09-parapet-cati.txt).
+
 2026-11-09 · DEV-192 · Cephe, dış kaplama ve dere çözümünün projeye göre seçilmesi kesinleşti. İmalat görselleri ve kot referansı bekleniyor. [Araştırma kaydı](analizler/2026-11-09-parapet-cati.txt).
 
 2026-11-09 · DEV-192 araştırma tamam, parapet imalat tanımı açık · [Kaynaklar, mevcut davranış ve çizim akışı](analizler/2026-11-09-parapet-cati.txt). Çatı kenarlarının seçimi, iki sistemin taşıyıcı/kaplama kesiti ve tahliye düzeni için firma bilgisi bekleniyor. Taslak 188.
@@ -67,6 +69,7 @@ Program **5.9.110**. [H üzerinde pencere yerleşimi ve gerçek proje testleri](
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-193 | Parapet saçakları, açık veranda ve katman alternatifleri | TAMAMLANDI · Taslak 189. [Tarayıcı testi](taslaklar/odak-atolyesi/parapet-options-check.cjs). DEV-192 imalat kesiti ve tahliye düzeni açık. |
 | DEV-113 | Sistem ve iş akışına göre arayüz | ÖNERİ HAZIR: resmi AutoCAD/SketchUp/Tekla/FRAMECAD belgeleri incelendi; Plan/Çatı/Üretim/Metraj/Sunum düzeni. Uygulama yapılmadı. [Araştırma](analizler/2026-10-16-arayuz-arastirma-oneri.txt). |
 | DEV-112 | Malzeme bilgili antet | TAMAMLANDI 5.9.110: çatı/duvar/tavan kaplaması otomatik, ayrı renkli satır, dinamik sayfa payı. PDF/PNG ve malzeme seçenekleri testleri geçti. [Rapor](analizler/2026-10-16-antet.md). |
 | DEV-111 | Farklı Kaydet ve alçıpan stok ölçüsü | TAMAMLANDI 5.9.109: destekleyen tarayıcıda dosya seçimi; tüm alçıpan hesabı 120×250, döşeme 60×125 ayrı. save-as testi geçti; canlı işletim sistemi penceresi doğrulanmadı. [Rapor](analizler/2026-10-16-kaydet-alcipan.md). |

@@ -1,0 +1,193 @@
+/* Parapet roof assemblies and per-edge overhangs for the independent draft. */
+(function(){
+ 'use strict';
+ const defaults=[
+  {name:'Shingle · OSB + membran',material:'shingle',layers:['membran','osb']},
+  {name:'Sandviç panel',material:'sandvic',layers:[]},
+  {name:'Trapez sac · nem bariyeri',material:'trapez',layers:['nem']}
+ ];
+ const $=id=>document.getElementById(id);
+ function label(text,input){const l=document.createElement('label');l.textContent=text;l.append(input);return l;}
+ function assembly(z){
+  const material=$('rz_material'),area=material.closest('details'),select=document.createElement('select');
+  select.id='roofAssembly';select.add(new Option('Dizilim seç…',''));
+  const library=new Map(defaults.map(p=>[p.name,p]));
+  for(const saved of G.roofAssemblies||[])library.set(saved.name,saved);
+  const choices=[...library.values()];
+  choices.forEach((p,i)=>select.add(new Option(p.name,String(i))));
+  const explicitOrder=document.createElement('input');explicitOrder.type='hidden';explicitOrder.name='assemblyLayerOrder';
+  select.onchange=()=>{
+   if(select.value==='')return;
+   const p=choices[Number(select.value)];
+   explicitOrder.value='top-down';
+   if(material.value!==p.material){material.value=p.material;material.dispatchEvent(new Event('change'));}
+   const rows=$('roofLayerFields');
+   for(const row of rows.children)row.querySelector('input[type=checkbox]').checked=false;
+   for(const field of [...p.layers].reverse()){
+    const id=typeof field==='string'?field:field.id;
+    const row=rows.querySelector('[data-layer="'+id+'"]');rows.prepend(row);
+    row.querySelector('input[type=checkbox]').checked=true;
+    if(typeof field==='object')for(const key of ['width','length','overlapWidth','overlapLength','fire'])row.querySelector('[name="layer_'+id+'_'+key+'"]').value=field[key];
+   }
+   if(p.width&&$('rz_width'))$('rz_width').value=p.width;
+   const pack=$('roofForm').elements.packageArea;if(pack&&p.packageArea)pack.value=p.packageArea;
+  };
+  area.querySelector('summary').after(label('Çatı katman dizilimi',select),explicitOrder);
+  const save=document.createElement('details'),summary=document.createElement('summary'),name=document.createElement('input');
+  summary.textContent='Dizilimi projede sakla';summary.id='roofAssemblySave';name.name='assemblyName';name.maxLength=60;
+  save.append(summary,label('Alternatif adı · aynı ad güncellenir',name));area.append(save);
+ }
+ function remember(next,data){
+  const name=String(data.get('assemblyName')||'').trim();if(!name)return;
+  const value={name,material:next.material,layers:structuredClone(next.layers),width:next.width,packageArea:next.packageArea};
+  const list=[...(G.roofAssemblies||[])],idx=list.findIndex(p=>p.name===name);
+  if(idx<0)list.push(value);else list[idx]=value;
+  validate(list,G.roofMaterials);G.roofAssemblies=list;
+ }
+ function validate(list,materials){
+  if(list===undefined)return;
+  if(!Array.isArray(list)||list.length>200)throw Error('Projedeki çatı dizilimlerini kontrol edin (en fazla 200).');
+  for(const p of list){
+   if(!p||typeof p.name!=='string'||!p.name.trim()||p.name.length>60||!Array.isArray(p.layers))throw Error('Çatı dizilimi geçersiz.');
+   RoofCore.validate([RoofCore.defaults({id:'assembly',name:'Katman dizilimi',material:p.material,width:p.width,packageArea:p.packageArea,layers:p.layers})],materials||[]);
+  }
+ }
+ function edgePicker(z,polygon,fields){
+  const frame=z.attachment?.base||z,local=polygon||RoofCore.basePolygon({...frame,type:'tek'});
+  const world=local.map(p=>RoofCore.transform(frame,p)),xs=world.map(p=>p.x),ys=world.map(p=>p.y);
+  const x=Math.min(...xs),y=Math.min(...ys),w=Math.max(...xs)-x,h=Math.max(...ys)-y;
+  const scale=Math.min(218/w,104/h);
+  const points=world.map(p=>({x:(260-w*scale)/2+(p.x-x)*scale,y:(144-h*scale)/2+(p.y-y)*scale}));
+  const canvas=document.createElement('canvas');canvas.width=520;canvas.height=288;
+  canvas.className='roof-edge-picker';canvas.style.cssText='display:block;width:100%;max-width:260px;cursor:pointer';
+  canvas.setAttribute('aria-label','Plandaki kenara tıklayarak çıkma ölçüsünü seç');
+  const segments=points.map((a,i)=>({a,b:points[(i+1)%points.length],index:polygon?i:[2,1,3,0][i]}));
+  const draw=active=>{
+   const c=canvas.getContext('2d');c.setTransform(2,0,0,2,0,0);c.clearRect(0,0,260,144);
+   for(const {a,b,index} of segments){
+    const selected=index===active;c.strokeStyle=selected?'#92dfc4':'#8498a4';c.lineWidth=selected?4:2;
+    c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();
+   }
+   for(const {a,b,index} of segments){
+    const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    c.fillStyle='#253743';c.beginPath();c.arc(mx,my,9,0,Math.PI*2);c.fill();
+    c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.font='12px system-ui';c.fillText(String(index+1),mx,my);
+   }
+  };
+  const inputs=fields.querySelectorAll('input');
+  inputs.forEach((input,i)=>input.addEventListener('focus',()=>draw(i)));
+  canvas.onclick=e=>{
+   const r=canvas.getBoundingClientRect(),px=(e.clientX-r.left)*260/r.width,py=(e.clientY-r.top)*144/r.height;
+   let target=null,dist=12;
+   for(const {a,b,index} of segments){
+    const dx=b.x-a.x,dy=b.y-a.y,t=Math.max(0,Math.min(1,((px-a.x)*dx+(py-a.y)*dy)/(dx*dx+dy*dy)));
+    const d=Math.hypot(px-a.x-t*dx,py-a.y-t*dy);
+    if(d<dist&&!inputs[index].disabled){target=inputs[index];dist=d;}
+   }
+   if(target){target.focus();target.select();}
+  };
+  draw(-1);return canvas;
+ }
+ function dimensions(z){
+  const grouped=$('roofUseEaveRule'),link=z.attachment;
+  const section=$('rz_parapet').closest('details'),legacy=grouped?.closest('fieldset'),panel=document.createElement('fieldset'),legend=document.createElement('legend');
+  if(link?.followParapet){$('rz_parapet').readOnly=true;$('rz_parapet').title='Ana çatının parapet üst kotunu izler';}
+  const mode=document.createElement('select'),inputs=document.createElement('div');
+  legend.textContent='Saçak çıkması';mode.name='edgeInputMode';mode.id='edgeInputMode';
+  mode.setAttribute('aria-label','Saçak ölçü düzeni');
+  for(const [text,value] of [['Tümü aynı','all'],['Kenara özel','each'],['Alın ve yan saçak','rule']])if(value!=='rule'||grouped)mode.add(new Option(text,value));
+  const polygon=z.outline||(z.type==='bay'?RoofCore.basePolygon(z):null),values=link?link.base.eaves:polygon?(z.edgeEaves||z.bayEaves||polygon.map(()=>z.eaves[0])):z.eaves;
+  const locked=i=>link?i===3:polygon?!!z.joinEdges?.[i]:!!z.childJoin&&i===1;
+  const openValues=values.filter((_,i)=>!locked(i));
+  mode.value=z.eaveRule&&grouped?'rule':z.overhangMode==='each'||!openValues.every(v=>v===openValues[0])?'each':'all';
+  function number(caption,name,value,disabled=false){
+   const input=document.createElement('input');input.name=name;input.type='number';input.step='any';input.min=0;input.max=500;input.required=true;input.disabled=disabled;input.value=value;
+   return label(caption,input);
+  }
+  const shared=number('Tüm dış kenarlar · cm','sharedOverhang',openValues[0]??0);
+  const edges=document.createElement('div');edges.className='roof-grid';
+  values.forEach((v,i)=>{
+   const p=polygon?.[i],q=polygon?.[(i+1)%values.length];
+   const title='Kenar '+(i+1)+' · '+(p?Math.round(Math.hypot(q.x-p.x,q.y-p.y))+' cm uzunluk':['Sol / −X','Sağ / +X','Ön / −Y','Arka / +Y'][i]);
+   edges.append(number(title+(locked(i)?' · birleşim':' · çıkma (cm)'),'overhang_'+i,v,locked(i)));
+  });
+  const picker=edgePicker(z,polygon,edges);
+  function sync(){
+   picker.style.display=mode.value==='each'?'block':'none';
+   if(legacy)legacy.hidden=mode.value!=='rule';shared.hidden=mode.value!=='all';edges.hidden=mode.value!=='each';
+   shared.querySelector('input').disabled=mode.value!=='all';
+   [...edges.querySelectorAll('input')].forEach((input,i)=>input.disabled=locked(i)||mode.value!=='each');
+   if(grouped){grouped.checked=mode.value==='rule';grouped.dispatchEvent(new Event('change'));grouped.closest('label').hidden=true;}
+   for(const id of ['rz_e0','rz_e1','rz_e2','rz_e3','roofBoundaryEave','rz_link_e0','rz_link_e1','rz_link_e2']){const el=$(id);if(el)el.closest('label').hidden=true;}
+  }
+  let edited=false;panel.addEventListener('input',()=>{edited=true;});
+  mode.onchange=()=>{edited=true;if(mode.value==='each'&&!shared.hidden)for(const e of edges.querySelectorAll('input'))if(!locked(Number(e.name.slice(9))))e.value=shared.firstElementChild.value;sync();};
+  $('rz_parapet').addEventListener('input',()=>{
+   if(!edited&&!z.parapet&&Number($('rz_parapet').value)>0){shared.firstElementChild.value=40;mode.value='all';sync();}
+  });
+  inputs.append(shared,picker,edges);panel.append(legend,mode,inputs);section.querySelector('summary').after(panel);
+  if(legacy)panel.after(legacy);
+  sync();
+ }
+ function applyEdges(z,data){
+  const mode=data.get('edgeInputMode');if(!['all','each'].includes(mode))return;
+  z.overhangMode=mode;
+  const read=i=>{
+   const value=data.get(mode==='all'?'sharedOverhang':'overhang_'+i);
+   if(value===null||value===''||!Number.isFinite(Number(value))||Number(value)<0||Number(value)>500)throw Error('Saçak çıkmasını 0–500 cm arasında girin.');
+   return Number(value);
+  };
+  if(z.attachment){z.attachment.base.eaves=[read(0),read(1),read(2),0];return;}
+  if(z.outline){
+   z.edgeEaves=z.outline.map((_,i)=>z.joinEdges?.[i]?0:read(i));
+   z.eaves=Array(4).fill(z.edgeEaves.find((_,i)=>!z.joinEdges?.[i])??0);
+  }else if(z.type==='bay'){
+   z.bayEaves=RoofCore.basePolygon(z).map((_,i)=>mode==='each'&&!data.has('overhang_'+i)?z.eaves[0]:read(i));
+   z.eaves=Array(4).fill(z.bayEaves[0]);
+  }else{
+   delete z.bayEaves;
+   z.eaves=z.eaves.map((_,i)=>z.childJoin&&i===1?0:read(i));
+   if(z.childJoin)z.childJoin.requestedSideEaves=z.eaves.slice(2);
+  }
+ }
+ // Cut only the coincident part of an edge shared with a linked veranda.
+ function exposedIntervals(a,b,neighbors){
+  const dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy);
+  const project=p=>((p.x-a.x)*dx+(p.y-a.y)*dy)/(length*length);
+  const distance=p=>Math.abs((p.x-a.x)*dy-(p.y-a.y)*dx)/length;
+  let spans=[[0,1]];
+  for(const ring of neighbors)ring.forEach((p,i)=>{
+   const q=ring[(i+1)%ring.length];
+   if(distance(p)>.001||distance(q)>.001)return;
+   const low=project(q),high=project(p);
+   if(high<=low)return;
+   spans=spans.flatMap(([u,v])=>[[u,Math.min(v,low)],[Math.max(u,high),v]].filter(([s,t])=>t-s>1e-8));
+  });
+  return spans;
+ }
+ function band(z,zones,C){
+  const world=(zone,points)=>points.map(p=>C.transform(zone,p));
+  const ring=world(z,C.footprint(z)),base=world(z,C.basePolygon(z));
+  const parent=z.attachment?.followParapet?zones.find(other=>other.id===z.attachment.parentId):null;
+  const neighbors=zones.filter(other=>other===parent||other.attachment?.followParapet&&other.attachment.parentId===z.id).map(other=>world(other,C.footprint(other)));
+  const bottom=parent?.h??z.h,top=z.parapet+Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))));
+  const out=[],mix=(a,b,t)=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
+  ring.forEach((p,i)=>{
+   const q=ring[(i+1)%ring.length];
+   for(const [s,t] of exposedIntervals(p,q,neighbors)){
+    const a=mix(p,q,s),b=mix(p,q,t);
+    out.push({kind:'cladding',poly:[{...a,z:bottom},{...b,z:bottom},{...b,z:top},{...a,z:top}],color:'#b2ab9d',zone:z.id});
+   }
+   // Offset polygons share the base edge order, except for the clipped bay polygon.
+   const j=z.type==='bay'&&!z.outline?base.findIndex((a,n)=>{
+    const b=base[(n+1)%base.length],dx=q.x-p.x,dy=q.y-p.y,ex=b.x-a.x,ey=b.y-a.y;
+    return Math.abs(dx*ey-dy*ex)<1e-6*Math.hypot(dx,dy)*Math.hypot(ex,ey)&&dx*ex+dy*ey>0;
+   }):i;
+   if(j<0)return;
+   const underside=[p,q,base[(j+1)%base.length],base[j]];
+   if(C.area(underside)>.001)out.push({kind:'soffit',poly:underside.map(pt=>({...pt,z:bottom})),color:'#aaa496',zone:z.id});
+  });
+  return out;
+ }
+ window.ParapetOptions={mount(z){assembly(z);dimensions(z);},remember,validate,applyEdges,band};
+})();

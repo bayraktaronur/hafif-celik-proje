@@ -24,3 +24,16 @@ Firma kararları · 9 Kasım 2026
 Parapet uygulanacak cepheler tasarımda seçilir. Dış yüz kaplaması dış duvarlarda olduğu gibi tasarıma göre seçilir. Açık dere, gizli dere ve bunların projeye göre kullanımı desteklenecek.
 Beklenen imalat görsellerinde prefabrik ve hafif çelik taşıyıcı bağlantısı, iç yüz, kapak bükümü ve tahliye güzergâhı incelenecek. Eğim yönü, üst kot referansı ve ölçüler açık.
 Kabul örnekleri: üç cephe + arka açık dere; dört cephe + gizli dere; açık veranda; prefabrik ve hafif çelikte aynı dış görünüş, farklı imalat listesi; eski kayıt açma ve toplam metraj karşılaştırması.
+
+Taslak 189 · DEV-193 uygulaması
+Çatı > Model > Saçaklar ve birleşim altında ortak çıkma veya kenara özel değer girilir. Numaralı krokide ilgili kenara tıklanır. Uzunluk cm olarak mesnet sınırından yatay ve kenara dik ölçülür. Bitmiş dış yüze oturan sınırda 0 cm cepheyle sıfır bitiştir. Parapet ilk açıldığında öneri 40 cm'dir. Ana çatıya bağlanan ortak kenar kilitlidir. Özel L sınırında dış ve iç köşeler komşu kenarların yeni hatlarının kesişimidir. Geçersiz öz kesişimler mevcut çatı doğrulamasına gider.
+Malzeme panelinde üç başlangıç dizilimi, üstten alta katman düzeni ve projeye özel adla alternatif saklama vardır. Açık veranda seçeneği mevcut dikme/kiriş geometrisini kullanır, üst bandı ana parapetin kotuna bağlar ve ortak kenardaki bandı keser. Veranda çıkmaları mesnet planından ölçülür. Harpuşta sacının taşması 40 cm ölçüsüne eklenmiş değildir. Bağımsız üst kot referansı, cephe bazında parapet bulunması, ayrı karkas/kapak imalat detayı ve gizli tahliye DEV-192 kapsamındadır.
+Kontrol: taslaklar/odak-atolyesi/parapet-options-check.cjs. İki sistemde L plan, tümü 0 ve karışık 0/40, saçak altı yüzeyi, 3 dizilim, projeye özel 80 kapatır, kaydet/aç, verandada iki dikme ve ortak üst kot. roof-workspace-check.cjs eski sürümle üç kayıtlı projede panel, birleşim, oda alanları ve metrajı karşılaştırır.
+
+Firma görsel referansları · konuşma ekleri (PNG), SHA-256
+codex-clipboard-5e0218ab-609a-42d7-8d2e-e8f741ba3051.png 96D4B6BB93C2B0A95B5D67D6FE5AB5814CD4284178D3E280636563022AC7DA4E
+codex-clipboard-d1947b91-873b-4acd-bd43-872acbcf0dff.png 29291AEFFC6634E1294D32230E7F628701EAF2DFE73E3BD5F8B5F430A097758C
+codex-clipboard-2f1ce6da-b5c1-486a-a521-f23d704a69c4.png 3044B77A0D9A06EA21F347EFA53D926911A7A30B50308B87BB59D55DA2297592
+codex-clipboard-ab7942b2-df84-4156-a5e8-1e6932d22930.png F203A8DD1A213E8EE98E8CF90A3010A3DA836E8F4A8A9A379CE943EAC9D52A4A
+codex-clipboard-8657b6de-26df-4571-b24e-8a851cad8778.png DDDCA1EEF1EDDBEA5A70C180073EB4707EE83FB0D0832F1A1FF4FBF60253B592
+codex-clipboard-9dbea833-7123-43c2-b5a2-0d0c677a076a.png 30F4CE1F27BA46FF205AA9C1098A3D7B02CD07FF5618B1A3A0E580BCE5794055

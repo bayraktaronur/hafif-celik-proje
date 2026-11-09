@@ -53,8 +53,11 @@ const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-7,`${a} != ${b}`);
  // parity with that app for their shared panel, joint and room calculations.
  const revision='26bd0bcc5188fae0a215c0cae884651e66301fca',dir=artifact('roof-baseline-171');fs.mkdirSync(dir,{recursive:true});
  const git=path.resolve(root,'../.sync-tools/git/cmd/git.exe'),show=f=>require('node:child_process').execFileSync(git,['show',revision+':taslaklar/odak-atolyesi/'+f],{cwd:root,maxBuffer:30*1024*1024,encoding:'utf8'});
- let html=show('index.html').replace('<head>','<head><base href="'+pathToFileURL(__dirname+path.sep).href+'">');
- for(const f of ['single-engine.js','single-storey.js','presentation-ui.js']){fs.writeFileSync(path.join(dir,f),show(f));html=html.replace('src="'+f+'"','src="'+pathToFileURL(path.join(dir,f)).href+'"');}fs.writeFileSync(path.join(dir,'index.html'),html);results.baselineRevision=revision;
+ const html=show('index.html');
+ // Mixing this baseline's engine with today's toolbars removes controls it expects.
+ const resources=new Set([...html.matchAll(/(?:src|href)="([\w.-]+\.(?:js|css))"/g)].map(match=>match[1]));
+ for(const f of resources)fs.writeFileSync(path.join(dir,f),show(f));
+ fs.writeFileSync(path.join(dir,'index.html'),html);results.baselineRevision=revision;
  const base=await browser.newPage();await base.goto(pathToFileURL(path.join(dir,'index.html')).href);
  const read=()=>({panels:pfAnaliz().runs.map(r=>r.slots.map(s=>s.w)),joints:pfAnaliz().bag.map(j=>j.tip),bill:metrajKalemleri(),areas:G.rooms.map(r=>r.area)});
  for(const file of ['cizimler/2026-10-07-yavru-baglanti/orijinal.json','cizimler/2026-10-08-panel-kapanis/orijinal.json','cizimler/gulsum-84m2/veranda-kirisli-ornek-5.9.98.json']){
