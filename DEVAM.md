@@ -1,5 +1,7 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+2026-11-09 · Taslak 190. Parapet saçak altında ahşap, sıva ve adı/rengi tanımlanan özel kaplama seçilebilir. Çatı raporunda kenar bazında imalat, genel metrajda malzeme toplamı bulunur. Sıfır çıkmada dış cephe yüksekliği ve kaplama sıraları parapete kadar sürer. [Uygulama ve çıktı kontrolü](taslaklar/odak-atolyesi/parapet-options-check.cjs).
+
 2026-11-09 · Taslak 189 · DEV-193 tamamlandı. Parapet için 40 cm ortak öneri, kenar bazında sıfır dahil çıkma, açık verandada aynı üst kot ve projede saklanabilen çatı dizilimleri. [Çatı kararları ve doğrulama](analizler/2026-11-09-parapet-cati.txt).
 
 2026-11-09 · DEV-192 · Cephe, dış kaplama ve dere çözümünün projeye göre seçilmesi kesinleşti. İmalat görselleri ve kot referansı bekleniyor. [Araştırma kaydı](analizler/2026-11-09-parapet-cati.txt).
@@ -69,6 +71,7 @@ Program **5.9.110**. [H üzerinde pencere yerleşimi ve gerçek proje testleri](
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-194 | Parapet saçak altı ve sıfır çıkmada cephe devamı | TAMAMLANDI · Taslak 190. İki sistemde malzeme seçimi, kayıt, net alan, imalat CSV’si ve sıfır saçakta 3D PNG kontrol edildi. |
 | DEV-193 | Parapet saçakları, açık veranda ve katman alternatifleri | TAMAMLANDI · Taslak 189. [Tarayıcı testi](taslaklar/odak-atolyesi/parapet-options-check.cjs). DEV-192 imalat kesiti ve tahliye düzeni açık. |
 | DEV-113 | Sistem ve iş akışına göre arayüz | ÖNERİ HAZIR: resmi AutoCAD/SketchUp/Tekla/FRAMECAD belgeleri incelendi; Plan/Çatı/Üretim/Metraj/Sunum düzeni. Uygulama yapılmadı. [Araştırma](analizler/2026-10-16-arayuz-arastirma-oneri.txt). |
 | DEV-112 | Malzeme bilgili antet | TAMAMLANDI 5.9.110: çatı/duvar/tavan kaplaması otomatik, ayrı renkli satır, dinamik sayfa payı. PDF/PNG ve malzeme seçenekleri testleri geçti. [Rapor](analizler/2026-10-16-antet.md). |

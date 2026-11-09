@@ -16,9 +16,70 @@ const {chromium}=require(path.resolve(path.dirname(process.execPath),'../node_mo
  await p.click('#roof-task-model');await openEaves();await p.selectOption('#edgeInputMode','all');await p.fill('[name=sharedOverhang]','0');await p.click('#roofApply');
  assert.deepEqual(await p.evaluate(()=>G.roofs[0].edgeEaves),Array(6).fill(0));
  assert.ok(await p.evaluate(()=>{const z=G.roofs[0];return RoofCore.footprint(z).every((p,i)=>Math.hypot(p.x-z.outline[i].x,p.y-z.outline[i].y)<.001);}));
+ assert.equal(await p.evaluate(()=>RoofStudio.billRows().filter(r=>r.kalem.startsWith('Saçak altı ·')).length),0);
  await openEaves();await p.selectOption('#edgeInputMode','each');await p.fill('[name=overhang_4]','40');await p.click('#roofApply');
  assert.deepEqual(await p.evaluate(()=>G.roofs[0].edgeEaves),[0,0,0,0,40,0]);
  assert.equal(await p.evaluate(()=>ParapetOptions.band(G.roofs[0],G.roofs,RoofCore).filter(v=>v.kind==='soffit').length),1);
+ for(const type of ['wood','custom','plaster']){
+  await openEaves();await p.selectOption('[name=soffitType]',type);
+  if(type==='custom'){
+   await p.fill('[name=soffitName]','Metal lamel');await p.fill('[name=soffitColor]','#735034');
+  }
+  await p.click('#roofApply');
+  const result=await p.evaluate(()=>{
+   const copy=JSON.parse(JSON.stringify(Studio.state()));Studio.loadProject(copy);RoofStudio.select(G.roofs[0].id);
+   const row=RoofStudio.billRows().find(r=>r.kalem.startsWith('Saçak altı ·'));
+   const items=ParapetOptions.band(G.roofs[0],G.roofs,RoofCore).filter(i=>i.kind==='soffit');
+   RoofStudio.setView('report');
+   const hasReport=document.getElementById('roofReport').textContent.includes(row.kalem);
+   RoofStudio.setView('plan');
+   return {area:row.miktar,cellArea:items.reduce((sum,i)=>sum+RoofCore.area(i.poly)/10000,0),material:items[0].soffitMaterial,count:items.length,color:items[0].color,hasReport,
+    hasCsv:RoofStudio.csv().includes(row.kalem),hasBill:metrajKalemleri().some(r=>r.kalem===row.kalem)};
+  });
+  assert.ok(Math.abs(result.area-1.2)<1e-8&&Math.abs(result.cellArea-result.area)<1e-8);
+  assert.equal(result.material,type);assert.equal(result.count,type==='wood'?4:1);
+  if(type==='custom')assert.equal(result.color,'#735034');
+  assert.ok(result.hasReport&&result.hasBill&&result.hasCsv,JSON.stringify(result));
+ }
+ const courses=await p.evaluate(()=>{
+  const coords=[[0,0],[600,0],[600,400],[0,400]];
+  const z=RoofCore.defaults({id:'flush',name:'Sıfır saçak',x:-5,y:-5,w:610,d:410,type:'tek',eaves:[0,0,0,0],parapet:30,h:250,wallTop:250});
+  const copy=Studio.state();
+  Studio.loadProject({...copy,n:coords.map(([x,y],i)=>({id:'n'+i,x,y})),s:coords.map((_,i)=>({id:'s'+i,n1:'n'+i,n2:'n'+((i+1)%4),k:10})),r:[],e:[],opt:{...copy.opt,h:250},roofs:[z]});
+  const results=[];
+  for(const facade of ['yok','tasonit','yalipan']){
+   G.opt.cephe=facade;
+   const band=ParapetOptions.band(z,G.roofs,RoofCore),flush=band.find(i=>i.flush&&i.firstFacadeCourse!==false);
+   const walls=Wall3D.build().surfaces;
+   const hidden=ParapetOptions.flushJoinFilter(band);
+   const p=flush.poly[0],q=flush.poly[1];
+   // Sample the finished front elevation above, below and directly on the wall top.
+   // A separately outlined fascia shows up here even if the areas are correct.
+   SingleStorey.show('model');
+   G.scenePresentation={...Presentation3D.defaults,mode:'presentation',outlines:65,textures:false,shadows:false};
+   RoofStudio.setCamera({...RoofStudio.getCamera(),yaw:0,pitch:0,projection:'parallel'});
+   const image=document.createElement('canvas');image.width=800;image.height=500;
+   const draw=Scene3D.render;let sample;
+   try{
+    Scene3D.render=function(ctx,w,h,items,edges,project,options){
+     if(options?.exactPixels)sample=project({x:168,y:405,z:250+(G.foundation?.height||0)});
+     return draw.apply(this,arguments);
+    };
+    RoofStudio.renderImage(image,{frame:'fit',background:'light',grid:false});
+   }finally{Scene3D.render=draw;}
+   const ctx=image.getContext('2d'),luma=dy=>{
+    const pixels=ctx.getImageData(Math.round(sample.x)-2,Math.round(sample.y)+dy,5,1).data;
+    return (pixels[4]+pixels[8]+pixels[12])/3;
+   };
+   const samples=[-2,0,2].map(luma);
+   results.push({soffit:band.some(i=>i.kind==='soffit'),seam:hidden(p,q),
+    continuous:facade==='yok'||walls.some(i=>i.facade===facade&&i.courseIndex===flush.courseIndex&&i.poly.some(pt=>pt.z===250)),
+    rendered:Math.max(...samples)-Math.min(...samples)<8&&Math.min(...samples)>70,samples,
+    row:ParapetOptions.schedule(G.roofs,RoofCore).some(r=>r.olcu.includes('0 cm, cephe devamı'))});
+  }
+  Studio.loadProject(copy);SingleStorey.show('roof');RoofStudio.select(G.roofs[0].id);return results;
+ });
+ for(const {samples,...r} of courses)assert.deepEqual(r,{soffit:false,seam:true,continuous:true,row:true,rendered:true},JSON.stringify({system,samples}));
  await p.click('#roof-task-material');
  for(const [i,material,layers] of [[0,'shingle',['membran','osb']],[1,'sandvic',[]],[2,'trapez',['nem']]]){
   await p.selectOption('#roofAssembly',String(i));
@@ -60,6 +121,6 @@ const {chromium}=require(path.resolve(path.dirname(process.execPath),'../node_mo
   return {equal:Math.abs(top(host)-top(child))<.001,childSides:sides(child).length,posts:RoofStudio.verandaMembers(child).filter(p=>p.kind==='post').length,eaves:G.roofs[1].attachment.base.eaves,follow:G.roofs[1].attachment.followParapet};
  });
  assert.deepEqual(porch,{equal:true,childSides:3,posts:2,eaves:[0,40,40,0],follow:true});
- assert.deepEqual(errors,[]);console.log('PASS both systems: zero/common/mixed L-outline eaves, 3 assemblies and takeoff, veranda shared fascia, two posts, zero on one porch edge, 3D and project round trip.');
+ assert.deepEqual(errors,[]);console.log('PASS both systems: zero/common/mixed eaves, wood/plaster/custom in 3D, report, bill and CSV, flush facade PNG and courses, veranda, roof assemblies and project round trip.');
  }finally{await b.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

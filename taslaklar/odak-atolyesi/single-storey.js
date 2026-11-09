@@ -12,7 +12,7 @@
  const action=(host,text,id,run)=>{const b=document.createElement('button');b.type='button';if(id)b.id=id;b.textContent=text;b.onclick=run;host.append(b);return b;};
  for(const [id,label]of Object.entries(labels)){const b=action(viewNav,label,'single-'+id,()=>show(id));b.dataset.singleView=id;}
  const more=document.createElement('details');more.className='single-more';more.innerHTML='<summary>Diğer çalışmalar</summary><div><a href="arakat.html">Arakat ve katman incelemesi ↗</a><p>Önceki taslak ayrı sayfada korunur.</p></div>';nav.append(more);
- const badge=document.createElement('span');badge.className='draft-badge';badge.textContent='BAĞIMSIZ TASLAK · 189';q('.project-title').after(badge);
+ const badge=document.createElement('span');badge.className='draft-badge';badge.textContent='BAĞIMSIZ TASLAK · 190';q('.project-title').after(badge);
  q('.identity small').textContent='PREFABRİKTEN / ODAK ATÖLYESİ';
  $('workflowToggle').hidden=true;if($('hcBtn'))$('hcBtn').hidden=true;
  const header=q('.header-actions');header.querySelector('[onclick="yeniPlan()"]').textContent='＋ Boş plan';

@@ -7,6 +7,39 @@
   {name:'Trapez sac · nem bariyeri',material:'trapez',layers:['nem']}
  ];
  const $=id=>document.getElementById(id);
+ const finishes={
+  plaster:{name:'Sıva',color:'#e3e0d3'},
+  wood:{name:'Ahşap',color:'#916e4f'},
+  custom:{name:'Özel kaplama',color:'#aba59b'}
+ };
+ function validateFinish(value){
+  if(value===undefined)return;
+  if(!value||!Object.hasOwn(finishes,value.type))throw Error('Saçak altı kaplamasını seçin.');
+  if(value.type==='custom'&&
+     (typeof value.name!=='string'||!value.name.trim()||value.name.length>80||!/^#[0-9a-f]{6}$/i.test(value.color)))
+   throw Error('Özel saçak altı kaplaması için ad ve renk girin.');
+ }
+ function finishOf(z){
+  const type=z.soffitFinish?.type||'plaster';
+  return {type,...finishes[type],...z.soffitFinish};
+ }
+ function finishFields(z,section){
+  const saved=finishOf(z),group=document.createElement('fieldset'),legend=document.createElement('legend');
+  legend.textContent='Saçak altı kaplaması';
+  const select=document.createElement('select'),name=document.createElement('input'),color=document.createElement('input');
+  select.name='soffitType';for(const [key,finish] of Object.entries(finishes))select.add(new Option(finish.name,key));
+  select.value=saved.type;name.name='soffitName';name.maxLength=80;name.required=true;
+  name.value=saved.type==='custom'?saved.name:'';color.name='soffitColor';color.type='color';
+  color.value=saved.type==='custom'?saved.color:finishes.custom.color;
+  const nameField=label('Malzeme adı',name),colorField=label('Görünüş rengi',color);
+  group.append(legend,label('Malzeme',select),nameField,colorField);section.append(group);
+  function sync(){
+   group.hidden=!(Number($('rz_parapet').value)>0);
+   group.disabled=group.hidden;
+   nameField.hidden=colorField.hidden=name.disabled=color.disabled=select.value!=='custom';
+  }
+  $('rz_parapet').addEventListener('input',sync);select.onchange=sync;sync();
+ }
  function label(text,input){const l=document.createElement('label');l.textContent=text;l.append(input);return l;}
  function assembly(z){
   const material=$('rz_material'),area=material.closest('details'),select=document.createElement('select');
@@ -127,9 +160,15 @@
   });
   inputs.append(shared,picker,edges);panel.append(legend,mode,inputs);section.querySelector('summary').after(panel);
   if(legacy)panel.after(legacy);
+  finishFields(z,section);
   sync();
  }
  function applyEdges(z,data){
+  if(data.has('soffitType')){
+   const finish={type:data.get('soffitType')};
+   if(finish.type==='custom'){finish.name=String(data.get('soffitName')||'').trim();finish.color=data.get('soffitColor');}
+   validateFinish(finish);z.soffitFinish=finish;
+  }
   const mode=data.get('edgeInputMode');if(!['all','each'].includes(mode))return;
   z.overhangMode=mode;
   const read=i=>{
@@ -165,7 +204,7 @@
   });
   return spans;
  }
- function band(z,zones,C){
+ function bandFaces(z,zones,C){
   const world=(zone,points)=>points.map(p=>C.transform(zone,p));
   const ring=world(z,C.footprint(z)),base=world(z,C.basePolygon(z));
   const parent=z.attachment?.followParapet?zones.find(other=>other.id===z.attachment.parentId):null;
@@ -174,20 +213,83 @@
   const out=[],mix=(a,b,t)=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
   ring.forEach((p,i)=>{
    const q=ring[(i+1)%ring.length];
-   for(const [s,t] of exposedIntervals(p,q,neighbors)){
-    const a=mix(p,q,s),b=mix(p,q,t);
-    out.push({kind:'cladding',poly:[{...a,z:bottom},{...b,z:bottom},{...b,z:top},{...a,z:top}],color:'#b2ab9d',zone:z.id});
-   }
    // Offset polygons share the base edge order, except for the clipped bay polygon.
    const j=z.type==='bay'&&!z.outline?base.findIndex((a,n)=>{
     const b=base[(n+1)%base.length],dx=q.x-p.x,dy=q.y-p.y,ex=b.x-a.x,ey=b.y-a.y;
     return Math.abs(dx*ey-dy*ex)<1e-6*Math.hypot(dx,dy)*Math.hypot(ex,ey)&&dx*ex+dy*ey>0;
    }):i;
-   if(j<0)return;
+   const index=z.type==='bay'||z.outline?j:[2,1,3,0][j];
+   const edge=index+1;
+   let depth=0;
+   if(j>=0){
+    const start=base[j],end=base[(j+1)%base.length];
+    depth=Math.abs((p.x-start.x)*(end.y-start.y)-(p.y-start.y)*(end.x-start.x))/Math.hypot(end.x-start.x,end.y-start.y);
+   }
+   const flush=j>=0&&depth<1e-6;
+   const low=flush&&!z.sourceRoomId?Math.min(bottom,z.wallTop??bottom):bottom;
+   for(const [s,t] of exposedIntervals(p,q,neighbors)){
+    const a=mix(p,q,s),b=mix(p,q,t);
+    out.push({kind:'cladding',parapetBand:true,openPorch:!!z.sourceRoomId,flush,edge,depth,poly:[{...a,z:low},{...b,z:low},{...b,z:top},{...a,z:top}],color:Wall3D.panelColor,zone:z.id});
+   }
+   if(j<0||flush)return;
    const underside=[p,q,base[(j+1)%base.length],base[j]];
-   if(C.area(underside)>.001)out.push({kind:'soffit',poly:underside.map(pt=>({...pt,z:bottom})),color:'#aaa496',zone:z.id});
+   if(C.area(underside)>.001)out.push({kind:'soffit',edge,depth,poly:underside.map(pt=>({...pt,z:bottom})),zone:z.id});
   });
   return out;
  }
- window.ParapetOptions={mount(z){assembly(z);dimensions(z);},remember,validate,applyEdges,band};
+ function band(z,zones,C){
+  const finish=finishOf(z);
+  const faces=bandFaces(z,zones,C).flatMap(face=>{
+   if(face.kind==='cladding')return face;
+   if(finish.type!=='wood')return {...face,color:finish.color,soffitMaterial:finish.type};
+   // Split only the preview into longitudinal boards; quantities use the uncut footprint.
+   const [a,b,c,d]=face.poly,rows=Math.max(1,Math.ceil(face.depth/10));
+   const at=(p,q,t)=>({x:p.x+(q.x-p.x)*t,y:p.y+(q.y-p.y)*t,z:p.z});
+   return Array.from({length:rows},(_,i)=>{
+    const t=i/rows,u=(i+1)/rows;
+    return {...face,soffitMaterial:'wood',color:['#916e4f','#a17e5d','#967453'][i%3],
+     poly:[at(a,d,t),at(b,c,t),at(b,c,u),at(a,d,u)]};
+   });
+  });
+  return ProjectSpecs.facade(faces);
+ }
+ function schedule(zones,C){
+  const rows=[],facade={tasonit:'Taşonit',yalipan:'Yalıpan'}[G.opt.cephe]||'Standart dış cephe';
+  for(const z of zones.filter(zone=>zone.parapet>0)){
+   for(const face of bandFaces(z,zones,C)){
+    const [a,b,c]=face.poly,location=z.name+' · Kenar '+face.edge;
+    if(face.kind==='soffit'){
+     rows.push({grup:'Parapet imalatı',kalem:'Saçak altı · '+finishOf(z).name,olcu:location+' · '+formatCm(face.depth)+' cm çıkma',birim:'m²',miktar:C.area(face.poly)/10000});
+    }else{
+     rows.push({grup:'Parapet imalatı',kalem:'Parapet dış yüzü · '+facade,olcu:location+(face.flush?' · 0 cm, cephe devamı':' · alın kaplaması'),birim:'m²',miktar:Math.hypot(b.x-a.x,b.y-a.y)*(c.z-b.z)/10000});
+    }
+   }
+  }
+  return rows;
+ }
+ const formatCm=n=>n.toLocaleString('tr-TR',{maximumFractionDigits:2});
+ function materialRows(zones,C){
+  const totals=new Map();
+  for(const row of schedule(zones,C))totals.set(row.kalem,(totals.get(row.kalem)||0)+row.miktar);
+  return Array.from(totals,([kalem,area])=>({grup:'Parapet malzemeleri',kalem,olcu:'Tüm kenarların net kaplama alanı',birim:'m²',miktar:Number(area.toFixed(3))}));
+ }
+ // Compare in scene coordinates so the same join is hidden after a foundation lift.
+ function flushJoinFilter(items){
+  const spans=items.filter(item=>item.flush&&item.parapetBand&&!item.openPorch&&item.firstFacadeCourse!==false).map(item=>item.poly)
+   .filter(poly=>poly.length>=3).map(poly=>{
+    const z=Math.min(...poly.map(p=>p.z)),edge=poly.filter(p=>Math.abs(p.z-z)<1e-5);
+    const p=edge[0],q=edge.find(v=>Math.hypot(v.x-p.x,v.y-p.y)>.001);
+    return q?[p,q]:null;
+   }).filter(Boolean);
+  return (a,b)=>Math.abs(a.z-b.z)<1e-5&&spans.some(edge=>{
+   const [p,q]=edge,dx=q.x-p.x,dy=q.y-p.y,length=Math.hypot(dx,dy);
+   if(length<.001||Math.abs(a.z-p.z)>1e-5)return false;
+   const on=v=>{
+    const along=((v.x-p.x)*dx+(v.y-p.y)*dy)/length;
+    return along>=-.21&&along<=length+.21&&Math.abs((v.x-p.x)*dy-(v.y-p.y)*dx)<=.21*length;
+   };
+   return on(a)&&on(b);
+  });
+ }
+ window.ParapetOptions={mount(z){assembly(z);dimensions(z);},remember,validate,validateFinish,applyEdges,band,schedule,materialRows,flushJoinFilter};
 })();

@@ -13,6 +13,8 @@
  const rgb=hex=>[1,3,5].map(i=>parseInt((hex||'#a0a0a0').slice(i,i+2),16)/255);
  function normal(poly){const a=poly[0];for(let i=1;i<poly.length-1;i++){const b=poly[i],c=poly[i+1],n=cross([b.x-a.x,b.y-a.y,b.z-a.z],[c.x-a.x,c.y-a.y,c.z-a.z]);if(Math.hypot(...n)>1e-7)return unit(n);}return [0,0,1];}
  function material(item){
+  if(item.soffitMaterial==='wood')return [0,.84,0];
+  if(item.soffitMaterial==='plaster')return [1,.87,0];
   if(item.material==='glass'||item.alpha<1)return [4,.12,0];
   if(item.kind?.startsWith('foundation'))return [2,.93,0];
   if(item.roof||['ridgeCap','vergeTrim','vergeBottom','gableOmega'].includes(item.kind))return [3,.38,.25];
@@ -91,7 +93,8 @@
   // Remove paired internal faces before finding edges. Coplanar STL triangles stay invisible.
   for(const {item,n,count} of faceMap.values()){if(count%2===0)continue;for(let i=0;i<item.poly.length;i++){const a=item.poly[i],b=item.poly[(i+1)%item.poly.length],ka=key(a),kb=key(b);if(ka===kb)continue;const k=ka<kb?ka+'|'+kb:kb+'|'+ka,old=edgeMap.get(k);if(old){old.count++;if(Math.abs(dot(old.n,n))<.94)old.feature=true;}else edgeMap.set(k,{a,b,n,count:1});}}
   const seen=new Set();function edge(a,b){const ka=key(a),kb=key(b),k=ka<kb?ka+'|'+kb:kb+'|'+ka;if(ka===kb||seen.has(k))return;seen.add(k);for(const [t,side] of [[0,-1],[1,-1],[1,1],[0,-1],[1,1],[0,1]])outlines.push(a.x,a.y,a.z,b.x,b.y,b.z,t,side);}
-  for(const e of edgeMap.values())if(e.count===1||e.feature)edge(e.a,e.b);
+  const hideJoin=ParapetOptions.flushJoinFilter(items);
+  for(const e of edgeMap.values())if((e.count===1||e.feature)&&!hideJoin(e.a,e.b))edge(e.a,e.b);
   for(const e of edges)edge(e.p,e.q);
   if(!items.length)Object.assign(bounds,{x0:0,y0:0,z0:0,x1:100,y1:100,z1:100});
   const span=Math.max(500,bounds.x1-bounds.x0,bounds.y1-bounds.y0),ground=[],z=Math.min(0,bounds.z0)-.12,x=bounds.x0-span*3,y=bounds.y0-span*3,X=bounds.x1+span*3,Y=bounds.y1+span*3;

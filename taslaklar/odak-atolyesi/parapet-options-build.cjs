@@ -6,6 +6,7 @@ module.exports=function(file,s,once){
  }
  if(file==='src/project.js')edit('if(roofCore)roofCore.validate','ParapetOptions.validate(d.roofAssemblies,d.roofMaterials);if(roofCore)roofCore.validate');
  if(file==='src/roof-core.js'){
+  edit("if(!Array.isArray(z.eaves)||", "if(z.soffitFinish!==undefined)ParapetOptions.validateFinish(z.soffitFinish);if(!Array.isArray(z.eaves)||");
   edit('    z.frontClearance=Math.min',`    if(link.followParapet){
       if(link.mode!=='tek'||!parent.parapet)throw Error('Bu veranda için parapeti olan bir ana çatı seçin.');
       // The veranda meets the outer fascia; its supports remain at the plan axes.
@@ -21,6 +22,16 @@ module.exports=function(file,s,once){
   edit('if(z.outline){checkOutline(z.outline);',"if(z.bayEaves&&(!Array.isArray(z.bayEaves)||z.bayEaves.length!==6||!z.bayEaves.every(n=>num(n,0,500))))fail('çokgen saçakları geçersiz');if(z.outline){checkOutline(z.outline);");
  }
  if(file==='src/roof.js'){
+  edit('function billRows(){const m=model(),rows=[],','function billRows(){const m=model(),rows=ParapetOptions.materialRows(G.roofs,C),');
+  edit("const profiles=billRows().filter",`const finishes=ParapetOptions.schedule(G.roofs,C);
+    if(finishes.length)html+='<h3>Parapet imalatı</h3><table><tr><th>Malzeme</th><th>Bölüm ve kenar</th><th>Net alan</th></tr>'+finishes.map(r=>'<tr><td>'+escape(r.kalem)+'</td><td>'+escape(r.olcu)+'</td><td>'+number(r.miktar,2)+' m²</td></tr>').join('')+'</table>';
+    const profiles=billRows().filter`);
+  edit("rows.push([],['Veranda profili'",`const finishes=ParapetOptions.schedule(G.roofs,C);
+    if(finishes.length){rows.push([],['Parapet imalatı','Bölüm ve kenar','Birim','Net miktar']);finishes.forEach(r=>rows.push([r.kalem,r.olcu,r.birim,r.miktar]));}
+    rows.push([],['Veranda profili'`);
+  edit("if(z.type!=='besik'||z.sourceRoomId)continue;const base=", "if(z.parapet||z.type!=='besik'||z.sourceRoomId)continue;const base=");
+  edit("function edges3D(m){return m.edges.map", "function edges3D(m){return m.edges.filter(e=>!(['verge','eave'].includes(e.type)&&G.roofs.find(z=>z.id===e.zoneId)?.parapet)).map");
+  edit("]:planStructure();if(wallModel)","]:ProjectSpecs.facade(planStructure());if(wallModel)");
   edit('<select id="roofVerandaType">','<select id="roofVerandaType"><option value="tek-parapet">Açık veranda · ana parapeti sürdür</option>');
   edit('<option value="tek">Sundurma · tek eğim','<option selected value="tek">Sundurma · tek eğim');
   edit("choice=$('roofVerandaType').value;", "followParapet=$('roofVerandaType').value==='tek-parapet',choice=followParapet?'tek':$('roofVerandaType').value;");
@@ -32,6 +43,28 @@ module.exports=function(file,s,once){
   if(start<0)throw Error('Parapet görünüm bağlantısı bulunamadı');
   edit(s.slice(start,s.indexOf('\n',start)).trimEnd(),"if(z.parapet)items.push(...ParapetOptions.band(z,G.roofs,C));");
   edit("Yönler bölümün dönmeden önceki yerel yönleridir. Çokgen çıkmada tüm kenarlar için “Sol” değeri kullanılır.","Çıkma, mesnet sınırından dışarı doğru ölçülür. Duvar dış yüzünden çizilen sınırda 0 cm, cepheyle aynı hizadır.");
+ }
+ if(file==='src/project-specs.js'){
+  edit("if(item.kind!=='wallPanel'&&item.material!=='panel')", "if(!item.parapetBand&&!(item.segmentId&&!item.kind)&&item.kind!=='wallPanel'&&item.material!=='panel')");
+  edit("if(!rooms.length||rooms.some(r=>ptInPolygon(c.x,c.y,r)))","if(!item.parapetBand&&(!rooms.length||rooms.some(r=>ptInPolygon(c.x,c.y,r))))");
+  edit("const step=Math.max(1,(plakaOlcu()?.en||40)-(G.opt.cephe==='yalipan'?(+G.opt.bindirme||0):0));",
+   "const firstWidth=plakaOlcu()?.en||40,step=Math.max(1,firstWidth-(G.opt.cephe==='yalipan'?(+G.opt.bindirme||0):0));");
+  edit("for(let z=Math.floor(lo/step)*step;z<hi;z+=step){const poly=clip(clip(item.poly,z,true),z+step,false);",
+   `const first=lo<firstWidth?0:1+Math.floor((lo-firstWidth)/step);
+   for(let course=first;;course++){
+    const z=course===0?0:firstWidth+(course-1)*step;
+    if(z>=hi)break;
+    const end=course===0?firstWidth:z+step;
+    const poly=clip(clip(item.poly,z,true),end,false);`);
+  edit("poly,facade:G.opt.cephe,shade:(item.shade||1)*(Math.round(z/step)%2?.97:1)",
+   "poly,facade:G.opt.cephe,courseIndex:course,firstFacadeCourse:course===first,shade:item.shade||1");
+ }
+ if(file==='src/paint-3d.js'){
+  edit("return hex?{...item,color:hex,painted:true","if(hex&&item.facade&&item.courseIndex%2)hex=tint(hex,.96);return hex?{...item,color:hex,painted:true");
+ }
+ if(file==='src/scene-3d.js'){
+  edit("prepared={items,outlines:state.outlines,entries,edges:[...edgeMap.values()].filter(e=>e.count===1||e.feature)",
+   "const hideJoin=ParapetOptions.flushJoinFilter(items);prepared={items,outlines:state.outlines,entries,edges:[...edgeMap.values()].filter(e=>(e.count===1||e.feature)&&!hideJoin(e.a,e.b))");
  }
  if(file==='src/roof-workflow.js'){
   edit('if(!z.eaveRule)return z;', 'if(!z.eaveRule)return z;delete z.bayEaves;');

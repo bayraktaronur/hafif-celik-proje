@@ -1,5 +1,7 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+2026-11-09 · İş bilgisayarı · DEV-194 · Taslak 190. Parapetli çatı bölümünde saçak altı malzemesi, özel malzeme rengi ve adı projede saklanır. Ahşap görünüşündeki lameller temsilîdir. Miktar, köşelerdeki dönüşler dahil yatay kaplama yüzeyinin net m² alanıdır. Kenar imalatı Çatı raporu ve CSV’de, malzeme toplamları genel metrajdadır. Sıfır çıkmada alt kaplama miktarı sıfırdır. Taşonit ve Yalıpan sıraları duvarın başlangıç kotunu kullanır. İki yapı sistemi ve gerçek PNG çıktısı [tarayıcı testinde](taslaklar/odak-atolyesi/parapet-options-check.cjs) kontrol edildi. DEV-192 kapsamındaki karkas, harpuşta ve tahliye detayları açık.
+
 2026-11-09 · İş bilgisayarı · DEV-193 tamamlandı, Taslak 189. Ortak 40 cm önerisi ve her kenarda 0 dahil ayrı saçak çıkmaları, ana parapeti izleyen açık veranda, düzenlenebilir çatı dizilimleri. İki yapı sistemi, L plan ve veranda kayıt döngüsü tarayıcıda doğrulandı. Üç eski projede panel, oda, birleşim ve metraj karşılaştırması geçti. Sıradaki DEV-192 çalışması karkas, üst kapak ve tahliye detaylarıdır. [Kararlar ve kaynaklar](analizler/2026-11-09-parapet-cati.txt).
 
 2026-11-09 · DEV-192 · Cephe, dış kaplama ve dere çözümünün projeye göre seçilmesi kesinleşti. İmalat görselleri ve kot referansı bekleniyor. [Araştırma kaydı](analizler/2026-11-09-parapet-cati.txt).
