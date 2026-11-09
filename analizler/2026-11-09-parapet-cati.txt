@@ -1,0 +1,27 @@
+PARAPETLİ ÇATI • ÖN ARAŞTIRMA VE ÇİZİM KARARLARI
+9 Kasım 2026 | Taslak 188 | DEV-192
+
+Bugünkü davranış
+src/roof.js çatı bölümünün parapet sayısını en yüksek çatı yüzeyine ekler, bölümün taban kotu ile bu üst kot arasında bütün çevrede yüzey üretir. Dolayısıyla 60 cm girişi “duvar üstünden 60 cm” anlamına gelmez. src/roof-core.js değeri 0–300 cm aralığında kabul eder. taslaklar/odak-atolyesi/drainage-core.js parapet değeri olan bölümün açık saçak derelerini atlar. Gizli dere, parapet kesimleri ve kaplama miktarı için imalat tanımı gerekiyor. Taslaktaki fotoğraf rehberi 20 ve 37 numaralı örnekleri parapet olarak sınıflandırır.
+İncelenen iş kopyasında src/roof.js SHA-256 F6F520A69CA19ADCB2327E4D565DF96F58CEBC61454CDC5C268B055353E8A73B; drainage-core.js SHA-256 47842A64511A14260CDE8B5D6E7C3FAD87A4523C66121D68B542B44476D28349.
+
+İmalat ve uygulama kaynakları
+• Karmod, Mersin hizmet ofisinde panel sistem prefabrik binayı çevreleyen parapet uygulamasını belgeliyor. Bu örnek görünüş ve kapsamı doğrular. Direğin kesiti ve bağlantısı için firmanın kendi imalat kesiti gerekir. https://www.karmod.com/projeler/lojistik-devine-hizmet-ofisi/
+• Tepe Betopan, betopanplus levhaların kullanım alanları arasında parapeti gösteriyor. Kaplama seçimi ile taşıyıcı seçimi ayrı girdilerdir. https://www.betopan.com.tr/media/download/57e4a9-betopan-plus-tr-.pdf
+• Hafif çelikte AWCI’nin parapet detayında cephedeki hava/su bariyeri parapet üzerinden çatı membranına bağlanır. Dikme, kaplama ve yalıtım sürekliliği kesitte birlikte okunur. Bu örnek membranlı birleşime aittir. Trapez sac için su yönü ve büküm ayrı detaylandırılır. https://www.awci.org/technical-resources/library/exterior-system-details-general/
+• Mekpan’ın metal panel detayında örtü, eğimin indiği kenarda iç dereye uzanır. Dere kendi eğimiyle inişe çalışır, üstte harpuşta cephe ucunu örter. Dere kapasitesinin belirlenmesi çatı alanına ve yerel yağışa bağlıdır. https://mekpanpanel.com/sandvic-panel-montaji
+• Assan Panel kütüphanesinde duvar dibi, gizli dere ve harpuşta ayrı birleşim çizimleridir. https://www.assanpanel.com/tr-tr/kutuphane/birlesim-detaylari
+• IBHS, üst kapamada suyun tipik olarak çatıya yönlendirilmesini ve eklerden su girişinin kontrolünü tarif eder. https://ibhs.org/guidance/ricowi-roof-guide-metal-flashing/
+
+Önerilen çalışma akışı
+Çatı bölümünü seç → Parapet → cephe kenarlarını işaretle → üst kotun referansını seç → suyun aktığı kenarda dere ve çıkışı yerleştir. Veranda ve yavru çatı için kenar seçimi bağımsız olmalı. Ortak iç birleşim iki kez üretilmemeli. Harpuşta köşe dönüşü, iç yüzde çatıya birleşim ve su çıkışı 3B kesitte ayrı görünmeli. Açık saçak bulunan kenarda normal dere/iniş çalışmalı. Dört yanı kapalı ve su çıkışı tanımsız bölüm plan kontrolünde işaretlenmeli. Ana tahliye ve projede öngörülen emniyet taşması ayrı konum ve kotla belirtilmeli.
+
+Üretim bağlantısı
+Prefabrikte 250/280/300 cm duvar yüksekliği ile parapet üst kotu ayrı tutulur. Profil bağlantısı, pano adımı, H/köşe devamı veya ayrı karkas kullanımı firmanın seçimidir. Hafif çelikte duvar dikmesinin devamı ya da sonradan takılan çerçeve ayrı tip olarak tanımlanabilir. Rüzgâr etkisi, bağlantı kapasitesi, kesit ve vida aralığı onaylı proje detayından gelir. Çatı örtüsü, eğim ve parapet üst kotu ayrı tutulur; çatı dışarıdan görünecekse kesitte gerçek fark gösterilir.
+Metrajda iç ve dış kaplama ayrı m², üst kapak ve dere ayrı metre, köşe, uç, çıkış ve inişler ayrı kalemlerdir. Eğimli iç yüz, dere boşluğu ve gerçek kesim boyları hesaba katılır. Stok boyu, bindirme, profil aralığı ve sac açınımı imalat detayı geldiğinde kullanılır. Eski projelerde mahyaya göre girilmiş yükseklik, yeni duvar üstü referansına sessizce çevrilmemeli.
+
+Firma bilgisi beklenen konular
+1. Örnek proje için cepheler, eğim yönü, parapet üst kotunun referansı ve yüksekliği.
+2. İki sistemde mesnet, karkas/dikme, iç/dış kaplama ve üst kapak bükümü. Bir ölçülü kesit bu cevapların çoğunu verir.
+3. Açık saçak veya gizli dere, iniş güzergâhı ve gerekiyorsa taşma çıkışı.
+Kabul örnekleri: üç cephe + arka açık dere; dört cephe + gizli dere; açık veranda; prefabrik ve hafif çelikte aynı dış görünüş, farklı imalat listesi; eski kayıt açma ve toplam metraj karşılaştırması.
