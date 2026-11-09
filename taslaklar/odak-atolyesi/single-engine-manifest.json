@@ -1,8 +1,9 @@
 {
-  "task": "DEV-195",
+  "task": "DEV-196",
   "engineRevision": "5.9.137",
   "storage": "prefabrikten.odak.tek-kat.*; odak-tek-kat-opening-last-*",
   "prototypeExtensions": [
+    "solid parapet perimeter, fixed wall-relative height and inside roof covering",
     "parapet soffit finishes, per-edge fabrication areas and continuous flush facades",
     "contextual roof and 3D tasks; validated per-project camera bookmarks",
     "light-steel mitred corners and exterior solid faces; persisted 0-100 presentation outlines with live GPU preview and 4K output",

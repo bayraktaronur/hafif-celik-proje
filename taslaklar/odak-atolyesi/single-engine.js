@@ -197,6 +197,8 @@
       if(z.fasciaDepth!==undefined&&!num(z.fasciaDepth,0,50))fail('görsel alın / saçak kapaması 0–50 cm olmalı.');
       if(z.supports){for(const k of ['post','beam']){const p=z.supports[k];if(!p||!num(p.width,10,1000)||!num(p.depth,10,1000)||!num(p.thickness,.1,100)||2*p.thickness>=Math.min(p.width,p.depth))fail('veranda profil kesiti geçersiz.');}if(typeof z.supports.beam.enabled!=='boolean')fail('veranda kiriş seçimi geçersiz.');}
       if(z.attachment){const l=z.attachment,b=l.base;if(!l||!['tek','besik','karga'].includes(l.mode)||typeof l.parentId!=='string'||!b||!num(b.x,-1e6,1e6)||!num(b.y,-1e6,1e6)||!num(b.w,10,20000)||!num(b.d,10,20000)||!num(b.angle,0,360)||!Array.isArray(b.eaves)||b.eaves.length!==4||b.eaves.some(e=>!num(e,0,500))||!num(l.pitch,1,200)||!num(l.gap,0,100)||!num(l.minClearance,100,500))fail('veranda bağlantı ayarları geçersiz.');}
+      if(z.parapetThickness!==undefined&&!num(z.parapetThickness,.1,100))fail('parapet kalınlığını 0,1–100 cm arasında girin.');
+      if(z.parapetHeightRef!==undefined&&!['wall','roof'].includes(z.parapetHeightRef))fail('parapet yükseklik referansı geçersiz.');
       if(z.wallTop!==undefined&&!num(z.wallTop,0,20000))fail('duvar üst kotu geçersiz.');
       if(z.floorLevel!==undefined&&(!num(z.floorLevel,0,20000)||z.floorLevel>=(z.wallTop??z.h)))fail('döşeme kotu duvar üstünden aşağıda olmalı.');
       const m=mat.get(z.material);if(!m||!num(z.width,10,500)||(m.unit==='sheet'&&!m.widths.includes(z.width))||!num(z.packageArea,.1,100)||!num(z.fire,0,100)||!num(z.allowance,0,100)||!num(z.maxLength,0,20000)||!num(z.lap,0,200)||z.maxLength>0&&z.maxLength<=z.lap)fail('kaplama eni, boyu veya bindirmesi geçersiz.');
@@ -334,7 +336,8 @@
       z.d=edge;
       z.h=parent.h+z.pitch*b.eaves[2]/100;
       const crest=zone=>Math.max(...zoneFaces(zone).flatMap(face=>face.poly.map(p=>height(face,p))));
-      z.parapet=crest(parent)+parent.parapet-crest(z);
+      z.parapetHeightRef='roof';z.parapetThickness=parent.parapetThickness??10;
+      z.parapet=ParapetOptions.topLevel(parent,crest(parent))-crest(z);
       if(z.parapet<=0||z.parapet>300)throw Error('Veranda eğimini veya ana parapet yüksekliğini düzenleyin. Veranda örtüsü ortak bandın altında kalmalı.');
     }
     z.frontClearance=Math.min(...[-b.eaves[0],b.w+b.eaves[1]].map(x=>{const p=transform(b,{x,y:-b.eaves[2]});return Math.min(...zoneFaces(z).map(f=>height(f,p)));}))-(z.floorLevel||0);
@@ -374,10 +377,14 @@
     return {top:top.length?{...face,poly:top}:null,surfaces,order};
   }
   function calculate(zones,custom=[],legacyOSB=false){
-    validate(zones,custom);const materials=[...clone(MATERIALS),...clone(custom)],fs=faces(zones),edges=topology(fs),cutList=cuts(fs,zones,materials),warnings=[];
+    validate(zones,custom);const materials=[...clone(MATERIALS),...clone(custom)],structureFaces=faces(zones),
+      parapetLayout=zones.some(z=>z.parapet)?ParapetOptions.shellLayout(zones,{footprint,transform}):null,
+      fs=parapetLayout?ParapetOptions.coverFaces(structureFaces,parapetLayout,subtract):structureFaces,edges=topology(fs),cutList=cuts(fs,zones,materials),warnings=[];
     const byZone=zones.map(z=>{const visible=fs.filter(f=>f.zoneId===z.id),net=visible.reduce((s,f)=>s+area(f.poly)*Math.sqrt(1+f.a*f.a+f.b*f.b)/10000,0),plan=visible.reduce((s,f)=>s+area(f.poly)/10000,0),m=materials.find(m=>m.id===z.material);
       if(!visible.length)warnings.push(z.name+': aynı gruptaki diğer çatının altında kaldı.');
       if(m.minPitch&&visible.some(f=>Math.hypot(f.a,f.b)*100<m.minPitch-EPS))warnings.push(z.name+': seçili shingle ürününde üretici en az %'+m.minPitch+' eğim öneriyor.');
+      if(z.parapetHeightRef==='wall'&&z.parapet&&visible.some(f=>f.poly.some(p=>height(f,p)+(z.material==='trapez'?2.7*Math.hypot(1,f.a,f.b):0)>ParapetOptions.topLevel(z,0)+.001)))
+        warnings.push(z.name+': iç çatı örtüsü parapet üst kotunu aşıyor. Parapet yüksekliğini artırabilir veya iç çatı eğimini azaltabilirsiniz.');
       if(z.parapet)warnings.push(z.name+': parapetli çatı; iç süzgeç, taşma ve parapet kaplaması ayrıca projelendirilir.');
       return {id:z.id,name:z.name,material:z.material,area:net,planArea:plan,purchaseArea:net*(1+z.fire/100),pieces:cutList.filter(c=>c.zoneId===z.id).length};});
     // Package quantities aggregate by actual coverage value, so mixed products are never rounded together.
@@ -392,7 +399,7 @@
       layerTotals.push({zoneId:z.id,zoneName:z.name,layer:l.id,name:def.name,unit:def.unit,width:l.width,length:l.length,netArea,pieces:rows.length,quantity,fire:l.fire,purchaseArea:quantity*l.width*l.length/10000});
       rows.forEach(r=>layerCuts.push({...r,layer:l.id,material:def.name,stockWidth:l.width,stockLength:l.length}));
     }
-    return {faces:fs,edges,cutList,layerCuts,layerTotals,byZone,materials,totals:[...totals.values()],area:byZone.reduce((s,z)=>s+z.area,0),planArea:byZone.reduce((s,z)=>s+z.planArea,0),lengths,warnings};
+    return {faces:fs,structureFaces,parapetLayout,edges,cutList,layerCuts,layerTotals,byZone,materials,totals:[...totals.values()],area:byZone.reduce((s,z)=>s+z.area,0),planArea:byZone.reduce((s,z)=>s+z.planArea,0),lengths,warnings};
   }
 
   // Millimetres along the slope, starting at the eave ear reference.
@@ -409,7 +416,7 @@
     for(const z of zones){const spacing=layers(z,legacyOSB).some(l=>l.id==='osb')?400:z.material==='trapez'?800:null;
      const poly=footprint(z),ys=poly.map(p=>p.y),lo=Math.min(...ys),hi=Math.max(...ys),ridge=z.d*z.ridge/100;
      if(z.type!=='besik'||z.outline||!spacing){pending.push({zoneId:z.id,name:z.name,reason:'Bu çatı biçimi veya kaplama için aşık sıra yerleşimi kontrol edilmeli.'});continue;}
-     const localFaces=roofModel.faces.filter(f=>f.zoneId===z.id).map(f=>({...f,local:f.poly.map(p=>untransform(z,p))}));
+     const localFaces=(roofModel.structureFaces??roofModel.faces).filter(f=>f.zoneId===z.id).map(f=>({...f,local:f.poly.map(p=>untransform(z,p))}));
      let rowNo=0;
      for(const [eave,slope] of [[lo,z.pitch/100],[hi,(z.pitch/100)*ridge/(z.d-ridge)]]){
       const factor=Math.sqrt(1+slope*slope),L=Math.abs(ridge-eave)*factor*10,stations=purlinStations(L,spacing);
@@ -6907,7 +6914,7 @@ window.Wall3D={build,panelColor};
     try{settings=ParapetOptions.drawingSettings();}catch(error){notice(error.message,true);return;}
     const {type,pitch,parapet,eave,eaveRule}=settings;
     const ends=eaveRule?eaveRule.gableMm/10:eave;
-    add(make({x,y,w,d,datum:'trim',fasciaDepth:12,eaveRule,vergeWidth:eaveRule?.gableMm??220,eaves:[ends,ends,eave,eave],type,pitch,parapet,name:parapet?'Parapet çatı '+(G.roofs.length+1):G.roofs.length?'Yeni ana çatı':'Ana çatı'}));notice('Dış sınırların dikdörtgen zarfı oluşturuldu. L / T planlarda bölümleri ölçülerine göre düzenleyip birleştirin.');
+    add(make({x,y,w,d,datum:'trim',fasciaDepth:12,eaveRule,vergeWidth:eaveRule?.gableMm??220,eaves:[ends,ends,eave,eave],type,pitch,parapet,parapetHeightRef:settings.parapetHeightRef,parapetThickness:settings.parapetThickness,name:parapet?'Parapet çatı '+(G.roofs.length+1):G.roofs.length?'Yeni ana çatı':'Ana çatı'}));notice('Dış sınırların dikdörtgen zarfı oluşturuldu. L / T planlarda bölümleri ölçülerine göre düzenleyip birleştirin.');
   }
   function fromVeranda(){
     const room=G.rooms.find(r=>r.id===$('roofVerandaRoom').value);if(!room){notice('Kat planında önce veranda alanını tanımlayın.',true);return;}
@@ -7090,7 +7097,7 @@ window.Wall3D={build,panelColor};
   }
   // Building walls belong to the floor plan, never to a roof's bounding box.
   function planStructure(){
-    const items=[],top=Number(G.opt.h)||280,roofFaces=model().faces,betopan=Wall3D.panelColor;
+    const items=[],top=Number(G.opt.h)||280,roofFaces=model().structureFaces,betopan=Wall3D.panelColor;
     const claddingShade=poly=>{const a=poly[0],b=poly.find(p=>Math.hypot(p.x-a.x,p.y-a.y)>.001)||a;return .78+.18*Math.abs(b.x-a.x)/Math.max(.001,Math.hypot(b.x-a.x,b.y-a.y));};
     for(const z of G.roofs){if(!z.childJoin)continue;const parent=G.roofs.find(p=>p.id===z.production?.parentId);if(!parent)continue;const joined=C.connectChild(z,parent);for(const poly of joined.childJoin.cladding||[])items.push({kind:'cladding',zone:z.id,poly,color:betopan,shade:claddingShade(poly)});}
     for(const s of G.segs){
@@ -7221,7 +7228,7 @@ window.Wall3D={build,panelColor};
       const sceneKey=JSON.stringify([G.sistem,G.nodes,G.segs,G.elemanlar,G.rooms,G.opt,G.catiYon,G.roofs,G.roofMaterials,G.foundation,G.paint3D,G.rainDrainage,showWallDetails,hideRoof,cutaway,showStrips,selected,$('roofLayoutLayer').value]);
       let scene;if(sceneCache&&sceneKey===sceneKeyCache){scene=sceneCache;sceneStats.hits++;}else{
       const wallModel=(showWallDetails||!isPref())?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&['cladding','gableOmega'].includes(s.kind))]:ProjectSpecs.facade(planStructure());if(wallModel)$('roofHint').textContent='Sol sürükle: döndür · Tekerlek: yakınlaş · Shift/orta tuş: kaydır · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId)items.push(...verandaStructure(z));
-        if(z.parapet)items.push(...ParapetOptions.band(z,G.roofs,C));
+        if(z.parapet)items.push(...ParapetOptions.band(z,G.roofs,C,m.parapetLayout));
       });
       const ceiling=CeilingPanels.build();if(!hideRoof)items.push(...ceiling.surfaces);
       if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),view=C.roofLayerView(f,z,cutaway,!!G.opt.osb);items.push(...view.surfaces);if(!view.top)return;f=view.top;if(z.material==='trapez')items.push(...C.trapezSurfaces(f).map(item=>({...item,color:roofColor(z.id),shade:roofShade(f)*(item.profileShade||1)})));else items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:roofColor(z.id),zone:z.id,shade:roofShade(f),roof:true});});
@@ -7235,7 +7242,7 @@ window.Wall3D={build,panelColor};
     }else{
       const step=100*view.scale;ctx.strokeStyle='#182737';ctx.lineWidth=1;if(step>12){for(let x=view.x%step;x<w;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}for(let y=view.y%step;y<h;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}}
       G.segs.forEach(s=>{const a=getNode(s.n1),b=getNode(s.n2);if(!a||!b)return;ctx.save();ctx.beginPath();const p=at(a),q=at(b);ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='#697f92';ctx.lineWidth=Math.max(1,s.k*view.scale);if(s.tip==='veranda'){const dash=Math.max(6,ctx.lineWidth*1.2);ctx.lineCap='butt';ctx.setLineDash([dash,dash*.75]);}ctx.stroke();ctx.restore();});
-      G.roofs.forEach(z=>{const mat=materials().find(m=>m.id===z.material);ctx.beginPath();m.faces.filter(f=>f.zoneId===z.id).forEach(f=>{f.poly.forEach((p,i)=>{const q=at(p);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();});ctx.globalAlpha=z.id===selected?.72:.43;ctx.fillStyle=mat.color;ctx.fill();ctx.globalAlpha=1;});m.edges.forEach(e=>drawEdge(e,at));G.roofs.filter(z=>z.sourceRoomId).forEach(z=>{const b=z.attachment?.base||z;verandaMembers(z).forEach(p=>{const poly=[[-p.w/2,-p.d/2],[p.w/2,-p.d/2],[p.w/2,p.d/2],[-p.w/2,p.d/2]].map(([x,y])=>C.transform(b,{x:p.x+x,y:p.y+y}));path(ctx,poly,at);ctx.fillStyle='#aebdcc';ctx.fill();ctx.strokeStyle='#23384d';ctx.lineWidth=1;ctx.stroke();});});
+      G.roofs.forEach(z=>{const mat=materials().find(m=>m.id===z.material);ctx.beginPath();m.faces.filter(f=>f.zoneId===z.id).forEach(f=>{f.poly.forEach((p,i)=>{const q=at(p);if(i)ctx.lineTo(q.x,q.y);else ctx.moveTo(q.x,q.y);});ctx.closePath();});ctx.globalAlpha=z.id===selected?.72:.43;ctx.fillStyle=mat.color;ctx.fill();ctx.globalAlpha=1;});m.edges.forEach(e=>drawEdge(e,at));ParapetOptions.drawPlan(ctx,m.parapetLayout,at);G.roofs.filter(z=>z.sourceRoomId).forEach(z=>{const b=z.attachment?.base||z;verandaMembers(z).forEach(p=>{const poly=[[-p.w/2,-p.d/2],[p.w/2,-p.d/2],[p.w/2,p.d/2],[-p.w/2,p.d/2]].map(([x,y])=>C.transform(b,{x:p.x+x,y:p.y+y}));path(ctx,poly,at);ctx.fillStyle='#aebdcc';ctx.fill();ctx.strokeStyle='#23384d';ctx.lineWidth=1;ctx.stroke();});});
       if(showStrips&&get()){
         const layer=$('roofLayoutLayer').value,rows=(layer==='top'?m.cutList:m.layerCuts.filter(r=>r.layer===layer)).filter(r=>r.zoneId===selected);
         ctx.lineWidth=1;ctx.strokeStyle='#dceaf4';ctx.font='bold 12px system-ui';ctx.textAlign='center';
@@ -7253,15 +7260,15 @@ window.Wall3D={build,panelColor};
     const fs=model().faces.filter(f=>f.zoneId===z.id),u=z.w/2,segments=[];
     fs.forEach(f=>{const ps=f.poly.map(p=>C.untransform(z,p)),ys=[];ps.forEach((a,i)=>{const b=ps[(i+1)%ps.length];if(Math.abs(b.x-a.x)>.00001&&u>=Math.min(a.x,b.x)-.001&&u<=Math.max(a.x,b.x)+.001)ys.push(a.y+(u-a.x)*(b.y-a.y)/(b.x-a.x));});if(ys.length>=2){const lo=Math.min(...ys),hi=Math.max(...ys);if(hi-lo>.001)segments.push([lo,hi].map(y=>({x:y,y:C.height(f,C.transform(z,{x:u,y}))})));}});
     if(!segments.length){ctx.fillStyle='#d4e2ef';ctx.fillText('Kesit doğrusu bu bölümün yüzeyinden geçmiyor.',30,80);return;}
-    const pts=segments.flat(),min=Math.min(...pts.map(p=>p.x)),max=Math.max(...pts.map(p=>p.x)),top=Math.max(...pts.map(p=>p.y)),scale=Math.min((w-100)/(max-min),(h-150)/Math.max(100,top)),at=p=>({x:50+(p.x-min)*scale,y:h-60-p.y*scale});
+    const bands=ParapetOptions.sectionBands(z,model(),C,G.roofs),pts=segments.flat(),min=Math.min(...pts.map(p=>p.x),...bands.map(b=>b.lo)),max=Math.max(...pts.map(p=>p.x),...bands.map(b=>b.hi)),top=Math.max(...pts.map(p=>p.y),...bands.map(b=>b.top)),scale=Math.min((w-100)/(max-min),(h-150)/Math.max(100,top)),at=p=>({x:50+(p.x-min)*scale,y:h-60-p.y*scale});
     ctx.strokeStyle='#f8d286';ctx.lineWidth=3;ctx.font='12px system-ui';ctx.fillStyle='#d4e2ef';segments.forEach(s=>{path(ctx,s,at);ctx.stroke();});ctx.fillText('Seçili bölüm: yerel Y kesiti · yalnız gerçek çatı yüzeyleri · cm',20,30);
-    const base=C.basePolygon(z);base.forEach((a,i)=>{const b=base[(i+1)%base.length];if(Math.abs(b.x-a.x)<.001||u<Math.min(a.x,b.x)||u>Math.max(a.x,b.x))return;const y=a.y+(u-a.x)*(b.y-a.y)/(b.x-a.x),p=at({x:y,y:z.wallTop??G.opt.h}),q=at({x:y,y:z.floorLevel||0});ctx.strokeStyle='#8199af';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();});
+    ParapetOptions.drawSection(ctx,bands,at);const base=C.basePolygon(z);base.forEach((a,i)=>{const b=base[(i+1)%base.length];if(Math.abs(b.x-a.x)<.001||u<Math.min(a.x,b.x)||u>Math.max(a.x,b.x))return;const y=a.y+(u-a.x)*(b.y-a.y)/(b.x-a.x),p=at({x:y,y:z.wallTop??G.opt.h}),q=at({x:y,y:z.floorLevel||0});ctx.strokeStyle='#8199af';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();});
   }
   function section(ctx,w,h){const z=get();if(!z){ctx.fillStyle='#aebed0';ctx.font='14px system-ui';ctx.fillText('Kesit için bir çatı bölümü seçin.',30,70);return;}
     if(z.outline){sectionOutline(ctx,w,h,z);return;}
     const fs=C.zoneFaces(z),outline=C.footprint(z),min=Math.min(...outline.map(p=>p.y)),max=Math.max(...outline.map(p=>p.y)),vals=[min,max],u=z.w/2;
     fs.forEach(f=>{const ps=f.poly.map(p=>C.untransform(z,p));ps.forEach((p,i)=>{const q=ps[(i+1)%ps.length];if((p.x-u)*(q.x-u)<=0&&Math.abs(q.x-p.x)>1e-8){const v=p.y+(u-p.x)*(q.y-p.y)/(q.x-p.x);vals.push(v);}});});
-    vals.sort((a,b)=>a-b);const pts=vals.filter((v,i)=>!i||v-vals[i-1]>.001).map(v=>{const p=C.transform(z,{x:u,y:v});return {x:v,y:Math.min(...fs.map(f=>C.height(f,p)))};});const high=Math.max(...pts.map(p=>p.y)),low=Math.min(...pts.map(p=>p.y)),s=Math.min((w-110)/Math.max(100,max-min),(h-200)/Math.max(100,high+40,(z.wallTop??(+G.opt.h||250))+40)),base=h-65,project=p=>({x:55+(p.x-min)*s,y:base-p.y*s});
+    vals.sort((a,b)=>a-b);const pts=vals.filter((v,i)=>!i||v-vals[i-1]>.001).map(v=>{const p=C.transform(z,{x:u,y:v});return {x:v,y:Math.min(...fs.map(f=>C.height(f,p)))};});const bands=ParapetOptions.sectionBands(z,model(),C,G.roofs),high=Math.max(...pts.map(p=>p.y),...bands.map(b=>b.top)),low=Math.min(...pts.map(p=>p.y)),s=Math.min((w-110)/Math.max(100,max-min),(h-200)/Math.max(100,high+40,(z.wallTop??(+G.opt.h||250))+40)),base=h-65,project=p=>({x:55+(p.x-min)*s,y:base-p.y*s});
     ctx.fillStyle='#263542';ctx.strokeStyle='#7891a4';ctx.lineWidth=1;
     const wall=z.wallTop??(+G.opt.h||250),floor=z.floorLevel??0;for(const x of [0,z.d]){const p=project({x,y:wall}),q=project({x,y:floor});ctx.fillRect(p.x-3,p.y,6,q.y-p.y);ctx.strokeRect(p.x-3,p.y,6,q.y-p.y);}
     const floorA=project({x:0,y:floor}),floorB=project({x:z.d,y:floor});ctx.beginPath();ctx.moveTo(floorA.x-15,floorA.y);ctx.lineTo(floorB.x+15,floorB.y);ctx.stroke();ctx.font='12px system-ui';ctx.fillStyle='#a8d8ed';ctx.textAlign='left';ctx.fillText('Döşeme +'+number(floor)+' cm',floorA.x,floorA.y+20);ctx.fillText('Duvar üstü +'+number(wall)+' cm',floorA.x,project({x:0,y:wall}).y+20);
@@ -7275,7 +7282,7 @@ window.Wall3D={build,panelColor};
        ctx.textAlign='left';ctx.font='11px system-ui';ctx.fillText('Aşık sıra taslağı · '+spacing+' mm · mahya 120 mm · saçak 0 / 342 mm',25,116);ctx.fillText(info.join(' | '),25,133);ctx.restore();
       }
     }
-    ctx.textAlign='center';ctx.font='12px system-ui';ctx.fillStyle='#dce9f2';pts.forEach(p=>{const q=project(p);ctx.fillText((Math.abs(p.x-min)<.01||Math.abs(p.x-max)<.01?'Saçak +':'Mahya +')+number(p.y,1),q.x,q.y-14);});ctx.textAlign='left';ctx.fillText(z.name+' · yerel Y kesiti / X = '+number(u,1),25,75);ctx.fillText((z.datum==='trim'?'Saçak kapaması alt kotu +':z.datum==='eave'?'Çatı yüzeyi alt kotu +':'Duvar yüzünde çatı kotu +')+number(z.h)+' cm · açıklık '+number(z.d)+' cm',25,h-25);ctx.font='11px system-ui';ctx.fillStyle='#9eb2c5';ctx.fillText('Seçili bölümün yerel Y kesiti; birleşen diğer bölümler gösterilmez.',25,96);
+    ParapetOptions.drawSection(ctx,bands,project);ctx.textAlign='center';ctx.font='12px system-ui';ctx.fillStyle='#dce9f2';pts.forEach(p=>{const q=project(p);ctx.fillText((Math.abs(p.x-min)<.01||Math.abs(p.x-max)<.01?'Saçak +':'Mahya +')+number(p.y,1),q.x,q.y-14);});ctx.textAlign='left';ctx.fillText(z.name+' · yerel Y kesiti / X = '+number(u,1),25,75);ctx.fillText((z.datum==='trim'?'Saçak kapaması alt kotu +':z.datum==='eave'?'Çatı yüzeyi alt kotu +':'Duvar yüzünde çatı kotu +')+number(z.h)+' cm · açıklık '+number(z.d)+' cm',25,h-25);ctx.font='11px system-ui';ctx.fillStyle='#9eb2c5';ctx.fillText('Seçili bölümün yerel Y kesiti; birleşen diğer bölümler gösterilmez.',25,96);
   }
   function layerReport(m){if(!m.layerTotals.length)return '';
     let html='<h3>Alt katmanlar · üstten alta</h3><table><tr><th>Bölüm / katman</th><th>Net m²</th><th>Yerleşim</th><th>Fireli sipariş</th><th>Ürün cm</th></tr>';
@@ -7467,13 +7474,13 @@ window.Wall3D={build,panelColor};
   if(options.settingsError)throw Error(options.settingsError);
   if(options.parentId&&options.openU){
    const parent=options.previewParent||G.roofs.find(z=>z.id===options.parentId);
-   let z=R.make({name:'Yavru çatı '+(G.roofs.length+1),type:options.type,parapet:options.parapet??0,pitch:options.pitch,h:options.h,...(options.roofElevation!==undefined?{roofElevation:options.roofElevation}:{}),...(options.levelControl?{levelControl:options.levelControl}:{}),eaves:[options.eave,0,options.eave,options.eave],childJoin:{points:points.map(p=>({x:p.x,y:p.y}))},production:{role:'child',parentId:options.parentId,relative:0}});
+   let z=R.make({name:'Yavru çatı '+(G.roofs.length+1),type:options.type,parapet:options.parapet??0,parapetHeightRef:options.parapetHeightRef,parapetThickness:options.parapetThickness,pitch:options.pitch,h:options.h,...(options.roofElevation!==undefined?{roofElevation:options.roofElevation}:{}),...(options.levelControl?{levelControl:options.levelControl}:{}),eaves:[options.eave,0,options.eave,options.eave],childJoin:{points:points.map(p=>({x:p.x,y:p.y}))},production:{role:'child',parentId:options.parentId,relative:0}});
    z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;R.seat(z);applyEaveRule(z);z=C.connectChild(z,parent,{frameOnly:!!options.frameOnly});if(options.frameOnly)return z;z.production.relative=((z.angle-parent.angle)%180+180)%180;C.validate([...G.roofs,z],G.roofMaterials);return z;
   }
   const ps=simplify(points),world=ps;const x=Math.min(...ps.map(p=>p.x)),y=Math.min(...ps.map(p=>p.y)),w=Math.max(...ps.map(p=>p.x))-x,d=Math.max(...ps.map(p=>p.y))-y;
   const parent=G.roofs.find(z=>z.id===options.parentId),local=ps.map(p=>({x:p.x-x,y:p.y-y}));C.checkOutline(local);
   const joins=ps.map((a,i)=>{if(!parent)return false;const b=ps[(i+1)%ps.length],base=C.basePolygon(parent).map(p=>C.transform(parent,p));return [a,b,{x:(a.x+b.x)/2,y:(a.y+b.y)/2}].every(mid=>C.pointIn(base,mid)||base.some((p,j)=>{const q=base[(j+1)%base.length],dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy);return L&&Math.abs(dx*(mid.y-p.y)-dy*(mid.x-p.x))/L<.01&&(mid.x-p.x)*(mid.x-q.x)+(mid.y-p.y)*(mid.y-q.y)<=.01;}));});
-  let z=R.make({name:(options.parapet?'Parapet çatı':parent?'Yavru çatı':'Ana çatı')+' '+(G.roofs.length+1),parapet:options.parapet??0,x,y,w,d,outline:local,boundaryRefs:ps.map(p=>p.ref||null),eaves:[options.eave,options.eave,options.eave,options.eave],edgeEaves:joins.map(j=>j?0:options.eave),joinEdges:joins,type:options.type,pitch:options.pitch,h:options.h,group:parent?.group,production:{role:parent?'child':'main',parentId:parent?.id||'',relative:options.relative||0}});
+  let z=R.make({name:(options.parapet?'Parapet çatı':parent?'Yavru çatı':'Ana çatı')+' '+(G.roofs.length+1),parapet:options.parapet??0,parapetHeightRef:options.parapetHeightRef,parapetThickness:options.parapetThickness,x,y,w,d,outline:local,boundaryRefs:ps.map(p=>p.ref||null),eaves:[options.eave,options.eave,options.eave,options.eave],edgeEaves:joins.map(j=>j?0:options.eave),joinEdges:joins,type:options.type,pitch:options.pitch,h:options.h,group:parent?.group,production:{role:parent?'child':'main',parentId:parent?.id||'',relative:options.relative||0}});
   if(parent){const pp=C.footprint(parent).map(p=>C.transform(parent,p));if(!C.triangulate(pp).some(a=>C.triangulate(world).some(b=>C.intersect(a,b).length)))throw Error('Yavru çatı ana çatıyla birleşmiyor. Sınırı ana çatı yüzeyine kadar uzatın.');}
   z=align(z,((parent?parent.angle:mainAngle())+(options.relative||0))%180);z.eaveRule=options.eaveRule?copy(options.eaveRule):undefined;applyEaveRule(z);C.validate(parent?[parent,z]:[z],G.roofMaterials);C.calculate(parent?[parent,z]:[z],G.roofMaterials);return z;
  }

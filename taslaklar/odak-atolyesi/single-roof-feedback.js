@@ -30,7 +30,7 @@
   return true;
  }
  $('roofBoundaryType').closest('section').addEventListener('input',e=>{
-  if(!['roofDrawPitch','roofBoundaryType','roofDrawGable','roofDrawSide','parapetDrawHeight','parapetDrawOffset','parapetDrawInner'].includes(e.target.id))return;
+  if(!['roofDrawPitch','roofBoundaryType','roofDrawGable','roofDrawSide','parapetDrawHeight','parapetDrawThickness','parapetDrawRef','parapetDrawOffset','parapetDrawInner'].includes(e.target.id))return;
   const d=W.getDraft();if(!d)return;
   try{Object.assign(d,ParapetOptions.drawingSettings());delete d.settingsError;}
   catch(error){d.settingsError=error.message;}

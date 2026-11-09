@@ -6,6 +6,56 @@ const {chromium}=require(path.resolve(path.dirname(process.execPath),'../node_mo
  const p=await b.newPage({viewport:{width:1600,height:1050}});p.setDefaultTimeout(5000);
  const errors=[];p.on('pageerror',e=>errors.push(e.message));
  await p.goto(pathToFileURL(path.join(__dirname,'index.html')).href);
+ // Check the supplied recessed plan in elevation: neither the sloping contact
+ // line nor the 27/200 crests may leave a stroke on the outside of the wall.
+ const shell=await p.evaluate(()=>{
+  const outline=[[0,0],[600,0],[600,400],[320,400],[320,300],[0,300]].map(([x,y])=>({x,y}));
+  const out=[];
+  for(const thickness of [10,12]){
+   const z=RoofCore.defaults({id:'shell',w:600,d:400,h:250,wallTop:250,datum:'trim',type:'tek',pitch:5,outline,
+    edgeEaves:outline.map(()=>40),parapet:70,parapetHeightRef:'wall',parapetThickness:thickness});
+   Studio.loadProject({v:'5',sistem:'celik',n:[],s:[],e:[],r:[],roofs:[z]});
+   SingleStorey.show('model');RoofStudio.select(z.id);
+   const m=RoofCore.calculate([z]),rim=m.parapetLayout.get(z.id);
+   const capArea=rim.local.reduce((a,e)=>a+RoofCore.area(e.strip),0);
+   const outside=RoofCore.area(rim.ring),vertices=m.faces.flatMap(f=>RoofCore.trapezSurfaces(f).flatMap(s=>s.poly));
+   const leaked=vertices.some(pt=>rim.local.some(({strip})=>RoofCore.contains(strip,pt)&&
+    strip.every((a,i)=>{const b=strip[(i+1)%strip.length];return Math.abs((b.x-a.x)*(pt.y-a.y)-(b.y-a.y)*(pt.x-a.x))>.001;})));
+   const capWidth=rim.local.map(e=>(e.innerA.y-e.a.y)*e.ux-(e.innerA.x-e.a.x)*e.uy);
+   const samples=[];
+   for(const [mode,yaw] of [['working',0],['presentation',0],['presentation',90]]){
+    G.scenePresentation={...Presentation3D.defaults,mode,outlines:75,textures:false,shadows:false};
+    RoofStudio.setCamera({...RoofStudio.getCamera(),yaw,pitch:0,projection:'parallel'});
+    const image=document.createElement('canvas');image.width=mode==='working'?1000:3840;image.height=image.width*9/16;
+    const draw=Scene3D.render;let probes=[];
+    try{
+     Scene3D.render=function(ctx,w,h,items,edges,project,options){
+      if(options?.exactPixels)for(const [x,y] of (yaw===0?[[120,340],[440,440]]:[[640,120]])){
+       // Read a whole patch spanning several corrugations, including their base line.
+       for(let d=0;d<73;d++){
+        const pt={x:x+(yaw===0?d:0),y:y+(yaw===90?d:0)};
+        const f=m.structureFaces.find(f=>RoofCore.contains(f.poly,pt)),crest=RoofCore.height(f,pt);
+        probes.push(...[-6,-3,0,1,2,3,6].map(dz=>project({...pt,z:crest+dz})));
+       }
+      }
+      return draw.apply(this,arguments);
+     };
+     RoofStudio.renderImage(image,{frame:'fit',background:'light',grid:false});
+    }finally{Scene3D.render=draw;}
+    const ctx=image.getContext('2d'),pixels=ctx.getImageData(0,0,image.width,image.height).data;
+    const light=probes.map(p=>pixels[4*(Math.round(p.y)*image.width+Math.round(p.x))]);
+    samples.push({mode,count:probes.length,min:Math.min(...light),spread:Math.max(...light)-Math.min(...light)});
+   }
+   RoofStudio.setView('section');
+   const cut=ParapetOptions.sectionBands(z,m,RoofCore,[z]);
+   out.push({thickness,capWidth,cut,leaked,error:Math.abs(outside-capArea-m.planArea*10000),samples});
+  }return out;
+ });
+ for(const row of shell){
+  assert.ok(!row.leaked&&row.error<1e-5&&row.capWidth.every(w=>Math.abs(w-row.thickness)<1e-6),JSON.stringify(row));
+  assert.ok(row.cut.length===2&&row.cut.every(s=>Math.abs(s.hi-s.lo-row.thickness)<1e-6&&s.top===320),JSON.stringify(row));
+  for(const s of row.samples)assert.ok(s.count>0&&s.min>60&&s.min<238&&s.spread<8,JSON.stringify(row));
+ }
  for(const system of ['prefabrik','celik']){
  await p.evaluate(system=>{
    const outline=[{x:0,y:0},{x:600,y:0},{x:600,y:400},{x:300,y:400},{x:300,y:200},{x:0,y:200}];

@@ -8,6 +8,27 @@
  ];
  const $=id=>document.getElementById(id);
  const designName='Parapet çatı',initialHeight=30;
+ const defaultThickness=10;
+ function heightReference(id,reference){
+  const select=document.createElement('select');select.id=id;select.name='parapetHeightRef';
+  select.add(new Option('Duvar üstünden · sabit','wall'));
+  select.add(new Option('En yüksek çatı örtüsünden','roof'));
+  select.value=reference;return select;
+ }
+ function thicknessField(id,value){
+  const input=document.createElement('input');input.type='number';input.id=id;input.name='parapetThickness';
+  input.min=0.1;input.max=100;input.step='any';input.required=true;input.value=value;
+  return label('Parapet duvar kalınlığı · cm',input);
+ }
+ function topLevel(z,crest){
+  return (z.parapetHeightRef==='wall'?(z.wallTop??z.h):crest)+z.parapet;
+ }
+ function bandLevels(z,zones,C){
+  const host=z.attachment?.followParapet?zones.find(other=>other.id===z.attachment.parentId)||z:z;
+  const bottom=host.parapetHeightRef==='wall'?(host.wallTop??host.h):host.h;
+  const crest=host.parapetHeightRef==='wall'?0:Math.max(...C.zoneFaces(host).flatMap(f=>f.poly.map(p=>C.height(f,p))));
+  return {bottom,top:topLevel(host,crest)};
+ }
  function drawingSettings(){
   const style=$('roofBoundaryType').value;
   function value(id,min,max){
@@ -18,6 +39,7 @@
   const pitch=value('roofDrawPitch',1,200);
   if(style==='parapet'){
    return {type:$('parapetDrawInner').value,parapet:value('parapetDrawHeight',.01,300),
+    parapetHeightRef:$('parapetDrawRef').value,parapetThickness:value('parapetDrawThickness',.1,100),
     pitch,eave:value('parapetDrawOffset',0,500),eaveRule:undefined};
   }
   const gableMm=value('roofDrawGable',1,5000),sideMm=value('roofDrawSide',0,5000);
@@ -29,9 +51,12 @@
   panel.querySelector('h3').after(styleLabel);
   const fields=document.createElement('div');
   fields.innerHTML='<label>İç çatı biçimi<select id="parapetDrawInner"><option value="tek">Tek eğim</option><option value="besik">Beşik</option><option value="kirma">Kırma</option></select></label>'+
-   '<label>Örtünün üstünden parapet yüksekliği · cm<input id="parapetDrawHeight" type="number" min="0.01" max="300" step="any" required></label>'+
+   '<label>Parapet yüksekliği · cm<input id="parapetDrawHeight" type="number" min="0.01" max="300" step="any" required></label>'+
    '<label>Saçak çıkması · cm<input id="parapetDrawOffset" type="number" min="0" max="500" step="any" value="40" required></label>';
   styleLabel.after(fields);$('parapetDrawHeight').value=initialHeight;
+  const drawHeight=$('parapetDrawHeight').closest('label');
+  drawHeight.before(label('Yükseklik referansı',heightReference('parapetDrawRef','wall')));
+  drawHeight.after(thicknessField('parapetDrawThickness',defaultThickness));
   const gable=$('roofDrawGable').closest('label'),side=$('roofDrawSide').closest('label');
   const note=side.nextElementSibling;
   const shortcut=document.createElement('button');shortcut.id='drawParapetRoof';shortcut.type='button';
@@ -60,14 +85,29 @@
   const innerField=label('İç çatı biçimi',inner),styleField=style.closest('label');
   const heightField=height.closest('label'),heightPlace=document.createComment('parapet height');
   heightField.before(heightPlace);
-  heightField.firstChild.textContent='Örtünün üstünden parapet yüksekliği · cm';
+  heightField.firstChild.textContent='Parapet yüksekliği · cm';
+  const reference=heightReference('parapetEditRef',z.parapetHeightRef||(z.parapet?'roof':'wall'));
+  const refField=label('Yükseklik referansı',reference);
+  const thickField=thicknessField('parapetEditThickness',z.parapetThickness??defaultThickness);
+  const linked=!!z.attachment?.followParapet;
+  const note=document.createElement('p');
+  if(z.parapet>0&&z.parapetHeightRef==='wall'){
+   const top=topLevel(z,0);
+   note.textContent='Parapet üst kotu +'+formatCm(top)+' cm · beton üstünden.';
+   const model=RoofStudio.model(),warning=model.warnings.find(w=>w.startsWith(z.name+': iç çatı örtüsü'));
+   if(warning)note.textContent+=' '+warning.slice(z.name.length+2);
+  }
   styleField.after(innerField);style.add(new Option(designName,'parapet'));
   if(z.parapet>0)style.value='parapet';
   let underlying=z.type;
   function sync(){
    const on=style.value==='parapet';
    innerField.hidden=!on;inner.disabled=!on||style.disabled;
-   if(on)innerField.after(heightField);else heightPlace.after(heightField);
+   refField.hidden=thickField.hidden=!on;reference.disabled=!on||linked;
+   thickField.firstElementChild.disabled=!on||linked;
+   if(on)innerField.after(refField,heightField,thickField,note);else heightPlace.after(heightField);
+   note.hidden=!on||!note.textContent;
+   if(linked)heightField.firstChild.textContent='Ana parapete bağlı yükseklik · cm';
    const shape=on?inner.value:style.value;
    ridge.disabled=shape!=='besik';underlying=shape;
   }
@@ -78,6 +118,8 @@
    height.dispatchEvent(new Event('input'));sync();
   });
   inner.addEventListener('change',sync);
+  // The displayed elevation describes the applied model, until the next edit.
+  style.closest('form').addEventListener('input',()=>{note.textContent='';note.hidden=true;});
   height.addEventListener('input',()=>{
    if(height.valueAsNumber>0&&style.value!=='parapet'){inner.value=style.value;style.value='parapet';}
    else if(height.valueAsNumber===0&&style.value==='parapet')style.value=inner.value;
@@ -242,6 +284,10 @@
   sync();
  }
  function applyEdges(z,data){
+  if(z.parapet>0&&!z.attachment?.followParapet){
+   if(data.has('parapetHeightRef'))z.parapetHeightRef=data.get('parapetHeightRef');
+   if(data.has('parapetThickness'))z.parapetThickness=Number(data.get('parapetThickness'));
+  }else if(!z.parapet){delete z.parapetHeightRef;delete z.parapetThickness;}
   if(data.has('soffitType')){
    const finish={type:data.get('soffitType')};
    if(finish.type==='custom'){finish.name=String(data.get('soffitName')||'').trim();finish.color=data.get('soffitColor');}
@@ -282,13 +328,96 @@
   });
   return spans;
  }
- function bandFaces(z,zones,C){
-  const world=(zone,points)=>points.map(p=>C.transform(zone,p));
-  const ring=world(z,C.footprint(z)),base=world(z,C.basePolygon(z));
-  const parent=z.attachment?.followParapet?zones.find(other=>other.id===z.attachment.parentId):null;
-  const neighbors=zones.filter(other=>other===parent||other.attachment?.followParapet&&other.attachment.parentId===z.id).map(other=>world(other,C.footprint(other)));
-  const bottom=parent?.h??z.h,top=z.parapet+Math.max(...C.zoneFaces(z).flatMap(f=>f.poly.map(p=>C.height(f,p))));
-  const out=[],mix=(a,b,t)=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
+ // Build one outside contour for parapets which continue around a linked veranda.
+ // The two offset edge lines meet at the same point, including at an inside corner.
+ function shellLayout(zones,C){
+  const shell=new Map(),groups=new Map(),key=p=>Math.round(p.x*10000)+','+Math.round(p.y*10000);
+  for(const z of zones.filter(zone=>zone.parapet>0)){
+   let root=z;
+   const visited=new Set([z.id]);
+   while(root.attachment?.followParapet){
+    const parent=zones.find(v=>v.id===root.attachment.parentId);
+    if(!parent||visited.has(parent.id))break;visited.add(parent.id);root=parent;
+   }
+   if(!groups.has(root.id))groups.set(root.id,[]);
+   const ring=C.footprint(z).map(p=>C.transform(z,p));
+   groups.get(root.id).push({z,ring});
+  }
+  for(const group of groups.values()){
+   const segments=[],starts=new Map(),ends=new Map();
+   for(const {z,ring} of group){
+    const local=[],width=z.parapetThickness??defaultThickness;
+    const neighbors=group.filter(v=>v.z!==z).map(v=>v.ring);
+    ring.forEach((p,i)=>{
+     const q=ring[(i+1)%ring.length],dx=q.x-p.x,dy=q.y-p.y,len=Math.hypot(dx,dy);
+     const at=t=>({x:p.x+t*dx,y:p.y+t*dy});
+     for(const [s,t] of exposedIntervals(p,q,neighbors)){
+      const e={a:at(s),b:at(t),i,ux:dx/len,uy:dy/len,width};
+      starts.set(key(e.a),e);ends.set(key(e.b),e);local.push(e);segments.push(e);
+     }
+    });
+    shell.set(z.id,{ring,local,segments});
+   }
+   function corner(p,e,adj){
+    const x=p.x-e.uy*e.width,y=p.y+e.ux*e.width;
+    if(!adj)return {x,y};
+    const cross=e.ux*adj.uy-e.uy*adj.ux;
+    if(Math.abs(cross)<1e-8)return {x,y};
+    const t=(e.width*(e.ux*adj.ux+e.uy*adj.uy)-adj.width)/cross;
+    return {x:x+e.ux*t,y:y+e.uy*t};
+   }
+   for(const e of segments){
+    e.innerA=corner(e.a,e,ends.get(key(e.a)));e.innerB=corner(e.b,e,starts.get(key(e.b)));
+    if((e.innerB.x-e.innerA.x)*e.ux+(e.innerB.y-e.innerA.y)*e.uy<=0)
+     throw Error('Bu kısa kenarda parapet iç köşeleri çakışıyor. Parapet kalınlığını veya çatı sınırını düzenleyin.');
+    e.strip=[e.a,e.b,e.innerB,e.innerA];
+   }
+  }
+  return shell;
+ }
+ function coverFaces(faces,layout,subtract){
+  return faces.flatMap(f=>{
+   const shell=layout.get(f.zoneId);if(!shell)return f;
+   let parts=[f.poly];
+   for(const {strip} of shell.segments)parts=parts.flatMap(p=>subtract(p,strip));
+   return parts.map(poly=>({...f,poly}));
+  });
+ }
+ function drawPlan(ctx,layout,at){
+  if(!layout)return;
+  ctx.save();ctx.fillStyle='#72818a';ctx.strokeStyle='#c0c9ce';ctx.lineWidth=1;
+  for(const {local} of layout.values())for(const e of local){
+   ctx.beginPath();e.strip.forEach((pt,i)=>{const p=at(pt);if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);});ctx.closePath();ctx.fill();
+   const a=at(e.a),b=at(e.b);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+  }
+  ctx.restore();
+ }
+ function sectionBands(z,model,C,zones){
+  const shell=model.parapetLayout?.get(z.id);if(!shell)return [];
+  const x=z.w/2,spans=[];
+  for(const e of shell.local){
+   const poly=e.strip.map(p=>C.untransform(z,p)),ys=[];
+   poly.forEach((a,i)=>{
+    const b=poly[(i+1)%poly.length];
+    if((a.x<=x&&b.x>x)||(b.x<=x&&a.x>x))ys.push(a.y+(b.y-a.y)*(x-a.x)/(b.x-a.x));
+   });
+   if(ys.length===2)spans.push({lo:Math.min(...ys),hi:Math.max(...ys)});
+  }
+  const {top,bottom}=bandLevels(z,zones,C);
+  return spans.map(s=>({...s,top,bottom}));
+ }
+ function drawSection(ctx,spans,at){
+  ctx.save();ctx.fillStyle='#82929d';ctx.strokeStyle='#d5dfe4';ctx.lineWidth=1;
+  for(const {lo,hi,top,bottom} of spans){
+   const a=at({x:lo,y:top}),b=at({x:hi,y:bottom});
+   ctx.fillRect(a.x,a.y,b.x-a.x,b.y-a.y);ctx.strokeRect(a.x,a.y,b.x-a.x,b.y-a.y);
+  }
+  ctx.restore();
+ }
+ function bandFaces(z,zones,C,layout){
+  const {ring,local}=layout.get(z.id),base=C.basePolygon(z).map(p=>C.transform(z,p));
+  const {bottom,top}=bandLevels(z,zones,C);
+  const out=[];
   ring.forEach((p,i)=>{
    const q=ring[(i+1)%ring.length];
    // Offset polygons share the base edge order, except for the clipped bay polygon.
@@ -305,9 +434,10 @@
    }
    const flush=j>=0&&depth<1e-6;
    const low=flush&&!z.sourceRoomId?Math.min(bottom,z.wallTop??bottom):bottom;
-   for(const [s,t] of exposedIntervals(p,q,neighbors)){
-    const a=mix(p,q,s),b=mix(p,q,t);
+   for(const {a,b,innerA,innerB,strip} of local.filter(e=>e.i===i)){
     out.push({kind:'cladding',parapetBand:true,openPorch:!!z.sourceRoomId,flush,edge,depth,poly:[{...a,z:low},{...b,z:low},{...b,z:top},{...a,z:top}],color:Wall3D.panelColor,zone:z.id});
+    out.push({kind:'parapetInside',zone:z.id,edge,color:'#bcbab3',poly:[{...innerB,z:low},{...innerA,z:low},{...innerA,z:top},{...innerB,z:top}]});
+    out.push({kind:'parapetTop',zone:z.id,edge,color:'#474b4d',poly:strip.map(p=>({...p,z:top}))});
    }
    if(j<0||flush)return;
    const underside=[p,q,base[(j+1)%base.length],base[j]];
@@ -315,10 +445,10 @@
   });
   return out;
  }
- function band(z,zones,C){
+ function band(z,zones,C,layout=shellLayout(zones,C)){
   const finish=finishOf(z);
-  const faces=bandFaces(z,zones,C).flatMap(face=>{
-   if(face.kind==='cladding')return face;
+  const faces=bandFaces(z,zones,C,layout).flatMap(face=>{
+   if(face.kind!=='soffit')return face;
    if(finish.type!=='wood')return {...face,color:finish.color,soffitMaterial:finish.type};
    // Split only the preview into longitudinal boards; quantities use the uncut footprint.
    const [a,b,c,d]=face.poly,rows=Math.max(1,Math.ceil(face.depth/10));
@@ -333,12 +463,15 @@
  }
  function schedule(zones,C){
   const rows=[],facade={tasonit:'Taşonit',yalipan:'Yalıpan'}[G.opt.cephe]||'Standart dış cephe';
+  const layout=shellLayout(zones,C);
   for(const z of zones.filter(zone=>zone.parapet>0)){
-   for(const face of bandFaces(z,zones,C)){
+   for(const face of bandFaces(z,zones,C,layout)){
     const [a,b,c]=face.poly,location=z.name+' · Kenar '+face.edge;
     if(face.kind==='soffit'){
      rows.push({grup:'Parapet imalatı',kalem:'Saçak altı · '+finishOf(z).name,olcu:location+' · '+formatCm(face.depth)+' cm çıkma',birim:'m²',miktar:C.area(face.poly)/10000});
-    }else{
+    }else if(face.kind==='parapetTop'){
+     rows.push({grup:'Parapet imalatı',kalem:'Parapet üst yüzü',olcu:location+' · '+formatCm(z.parapetThickness??defaultThickness)+' cm kalınlık',birim:'m²',miktar:C.area(face.poly)/10000});
+    }else if(face.parapetBand){
      rows.push({grup:'Parapet imalatı',kalem:'Parapet dış yüzü · '+facade,olcu:location+(face.flush?' · 0 cm, cephe devamı':' · alın kaplaması'),birim:'m²',miktar:Math.hypot(b.x-a.x,b.y-a.y)*(c.z-b.z)/10000});
     }
    }
@@ -369,5 +502,5 @@
    return on(a)&&on(b);
   });
  }
- window.ParapetOptions={mount(z){assembly(z);dimensions(z);designFields(z);},drawingControls,drawingSettings,remember,validate,validateFinish,applyEdges,band,schedule,materialRows,flushJoinFilter};
+ window.ParapetOptions={mount(z){assembly(z);dimensions(z);designFields(z);},drawingControls,drawingSettings,remember,validate,validateFinish,applyEdges,topLevel,shellLayout,coverFaces,drawPlan,sectionBands,drawSection,band,schedule,materialRows,flushJoinFilter};
 })();

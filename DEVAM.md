@@ -1,5 +1,7 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+2026-11-09 · Taslak 192. Parapet duvarı 10 cm kalınlıkla başlar. Yeni çatıda yükseklik duvar üstünden girilir. Eski projelerde örtüden girilmiş ölçü korunur. İç yüz, çatı kaplamasının ve kesim listesinin sınırıdır. [Çizim ve yükseklik kontrolü](taslaklar/odak-atolyesi/parapet-drawing-check.cjs) · [L planda cephe ve PNG kontrolü](taslaklar/odak-atolyesi/parapet-options-check.cjs).
+
 2026-11-09 · Taslak 191. Çatı ekranındaki **Parapet çatı çiz** komutuyla doğrudan sınır çizilir. İç çatı biçimi, eğim, parapet yüksekliği ve saçak çıkması ayrı girilir. Mevcut bölüm sağda **Çatı biçimi → Parapet çatı** ile dönüştürülür. [Çizim ve kayıt kontrolü](taslaklar/odak-atolyesi/parapet-drawing-check.cjs).
 
 2026-11-09 · Taslak 190. Parapet saçak altında ahşap, sıva ve adı/rengi tanımlanan özel kaplama seçilebilir. Çatı raporunda kenar bazında imalat, genel metrajda malzeme toplamı bulunur. Sıfır çıkmada dış cephe yüksekliği ve kaplama sıraları parapete kadar sürer. [Uygulama ve çıktı kontrolü](taslaklar/odak-atolyesi/parapet-options-check.cjs).
@@ -73,6 +75,7 @@ Program **5.9.110**. [H üzerinde pencere yerleşimi ve gerçek proje testleri](
 
 | Kimlik | İş | Durum |
 |---|---|---|
+| DEV-196 | Kalın parapet, bağımsız yükseklik ve dış yüzde sac izleri | TAMAMLANDI · Taslak 192. 10/12 cm, L köşeleri, sabit kot, eski kot referansı, kesit ve iki cepheden 4K PNG doğrulandı. |
 | DEV-195 | Parapet çatı çizme ve mevcut bölümün biçimini değiştirme | TAMAMLANDI · Taslak 191. Prefabrik ve hafif çelikte köşelerden çizim, dikdörtgen çatı, biçim dönüşümü ve yeniden açma doğrulandı. |
 | DEV-194 | Parapet saçak altı ve sıfır çıkmada cephe devamı | TAMAMLANDI · Taslak 190. İki sistemde malzeme seçimi, kayıt, net alan, imalat CSV’si ve sıfır saçakta 3D PNG kontrol edildi. |
 | DEV-193 | Parapet saçakları, açık veranda ve katman alternatifleri | TAMAMLANDI · Taslak 189. [Tarayıcı testi](taslaklar/odak-atolyesi/parapet-options-check.cjs). DEV-192 imalat kesiti ve tahliye düzeni açık. |

@@ -6,6 +6,17 @@ module.exports=function(file,s,once){
  }
  if(file==='src/project.js')edit('if(roofCore)roofCore.validate','ParapetOptions.validate(d.roofAssemblies,d.roofMaterials);if(roofCore)roofCore.validate');
  if(file==='src/roof-core.js'){
+  edit('if(z.wallTop!==undefined', `if(z.parapetThickness!==undefined&&!num(z.parapetThickness,.1,100))fail('parapet kalınlığını 0,1–100 cm arasında girin.');
+      if(z.parapetHeightRef!==undefined&&!['wall','roof'].includes(z.parapetHeightRef))fail('parapet yükseklik referansı geçersiz.');
+      if(z.wallTop!==undefined`);
+  edit('fs=faces(zones),edges=topology(fs)',`structureFaces=faces(zones),
+      parapetLayout=zones.some(z=>z.parapet)?ParapetOptions.shellLayout(zones,{footprint,transform}):null,
+      fs=parapetLayout?ParapetOptions.coverFaces(structureFaces,parapetLayout,subtract):structureFaces,edges=topology(fs)`);
+  edit('return {faces:fs,edges,cutList','return {faces:fs,structureFaces,parapetLayout,edges,cutList');
+  edit('const localFaces=roofModel.faces.filter','const localFaces=(roofModel.structureFaces??roofModel.faces).filter');
+  edit("if(z.parapet)warnings.push",`if(z.parapetHeightRef==='wall'&&z.parapet&&visible.some(f=>f.poly.some(p=>height(f,p)+(z.material==='trapez'?2.7*Math.hypot(1,f.a,f.b):0)>ParapetOptions.topLevel(z,0)+.001)))
+        warnings.push(z.name+': iç çatı örtüsü parapet üst kotunu aşıyor. Parapet yüksekliğini artırabilir veya iç çatı eğimini azaltabilirsiniz.');
+      if(z.parapet)warnings.push`);
   edit("if(!Array.isArray(z.eaves)||", "if(z.soffitFinish!==undefined)ParapetOptions.validateFinish(z.soffitFinish);if(!Array.isArray(z.eaves)||");
   edit('    z.frontClearance=Math.min',`    if(link.followParapet){
       if(link.mode!=='tek'||!parent.parapet)throw Error('Bu veranda için parapeti olan bir ana çatı seçin.');
@@ -13,7 +24,8 @@ module.exports=function(file,s,once){
       z.d=edge;
       z.h=parent.h+z.pitch*b.eaves[2]/100;
       const crest=zone=>Math.max(...zoneFaces(zone).flatMap(face=>face.poly.map(p=>height(face,p))));
-      z.parapet=crest(parent)+parent.parapet-crest(z);
+      z.parapetHeightRef='roof';z.parapetThickness=parent.parapetThickness??10;
+      z.parapet=ParapetOptions.topLevel(parent,crest(parent))-crest(z);
       if(z.parapet<=0||z.parapet>300)throw Error('Veranda eğimini veya ana parapet yüksekliğini düzenleyin. Veranda örtüsü ortak bandın altında kalmalı.');
     }
     z.frontClearance=Math.min`);
@@ -29,7 +41,7 @@ module.exports=function(file,s,once){
     const {type,pitch,parapet,eave,eaveRule}=settings;
     const ends=eaveRule?eaveRule.gableMm/10:eave;`);
   edit("eaveRule:{gableMm,sideMm},vergeWidth:gableMm,eaves:[gableMm/10,gableMm/10,sideMm/10,sideMm/10],type:$('roofBoundaryType')?.value||'besik',pitch:Number($('roofDrawPitch')?.value||G.opt.egim||33),name:G.roofs.length?'Yeni ana çatı':'Ana çatı'",
-   "eaveRule,vergeWidth:eaveRule?.gableMm??220,eaves:[ends,ends,eave,eave],type,pitch,parapet,name:parapet?'Parapet çatı '+(G.roofs.length+1):G.roofs.length?'Yeni ana çatı':'Ana çatı'");
+   "eaveRule,vergeWidth:eaveRule?.gableMm??220,eaves:[ends,ends,eave,eave],type,pitch,parapet,parapetHeightRef:settings.parapetHeightRef,parapetThickness:settings.parapetThickness,name:parapet?'Parapet çatı '+(G.roofs.length+1):G.roofs.length?'Yeni ana çatı':'Ana çatı'");
   edit("if(data.get('vergeWidth')==='custom')", "if(next.type==='parapet')next.type=data.get('parapetInner')||z.type;\n    if(data.get('vergeWidth')==='custom')");
   edit(' · ${TYPES[z.type]} · Alt',' · ${z.parapet?\'Parapet çatı · \':\'\'}${TYPES[z.type]} · Alt');
   edit('function billRows(){const m=model(),rows=[],','function billRows(){const m=model(),rows=ParapetOptions.materialRows(G.roofs,C),');
@@ -53,7 +65,14 @@ module.exports=function(file,s,once){
   edit("if(z.sourceRoomId){items.push(...verandaStructure(z));return;}","if(z.sourceRoomId)items.push(...verandaStructure(z));");
   const bandStart='if(z.parapet){const poly=C.footprint(z)', start=s.indexOf(bandStart);
   if(start<0)throw Error('Parapet görünüm bağlantısı bulunamadı');
-  edit(s.slice(start,s.indexOf('\n',start)).trimEnd(),"if(z.parapet)items.push(...ParapetOptions.band(z,G.roofs,C));");
+  edit(s.slice(start,s.indexOf('\n',start)).trimEnd(),"if(z.parapet)items.push(...ParapetOptions.band(z,G.roofs,C,m.parapetLayout));");
+  edit('roofFaces=model().faces','roofFaces=model().structureFaces');
+  edit('m.edges.forEach(e=>drawEdge(e,at));','m.edges.forEach(e=>drawEdge(e,at));ParapetOptions.drawPlan(ctx,m.parapetLayout,at);');
+  edit('const pts=segments.flat(),min=Math.min(...pts.map(p=>p.x)),max=Math.max(...pts.map(p=>p.x)),top=Math.max(...pts.map(p=>p.y))',
+   'const bands=ParapetOptions.sectionBands(z,model(),C,G.roofs),pts=segments.flat(),min=Math.min(...pts.map(p=>p.x),...bands.map(b=>b.lo)),max=Math.max(...pts.map(p=>p.x),...bands.map(b=>b.hi)),top=Math.max(...pts.map(p=>p.y),...bands.map(b=>b.top))');
+  edit("const base=C.basePolygon(z);base.forEach((a,i)=>","ParapetOptions.drawSection(ctx,bands,at);const base=C.basePolygon(z);base.forEach((a,i)=>");
+  edit('const high=Math.max(...pts.map(p=>p.y)),low=', 'const bands=ParapetOptions.sectionBands(z,model(),C,G.roofs),high=Math.max(...pts.map(p=>p.y),...bands.map(b=>b.top)),low=');
+  edit("ctx.textAlign='center';ctx.font='12px system-ui';ctx.fillStyle='#dce9f2';pts.forEach","ParapetOptions.drawSection(ctx,bands,project);ctx.textAlign='center';ctx.font='12px system-ui';ctx.fillStyle='#dce9f2';pts.forEach");
   edit("Yönler bölümün dönmeden önceki yerel yönleridir. Çokgen çıkmada tüm kenarlar için “Sol” değeri kullanılır.","Çıkma, mesnet sınırından dışarı doğru ölçülür. Duvar dış yüzünden çizilen sınırda 0 cm, cepheyle aynı hizadır.");
  }
  if(file==='src/project-specs.js'){
@@ -88,9 +107,9 @@ module.exports=function(file,s,once){
    "if(!draft||e.button!==0)return;e.stopImmediatePropagation();e.preventDefault();cv.tabIndex=-1;cv.focus({preventScroll:true});");
   edit("try{const z=makeOutline(draft.points,draft);","try{if(!draft.openU)Object.assign(draft,ParapetOptions.drawingSettings());const z=makeOutline(draft.points,draft);");
   edit("name:parent?'Yavru çatı '+(G.roofs.length+1):'Ana çatı '+(G.roofs.length+1),x,y,w,d,outline:local",
-   "name:(options.parapet?'Parapet çatı':parent?'Yavru çatı':'Ana çatı')+' '+(G.roofs.length+1),parapet:options.parapet??0,x,y,w,d,outline:local");
+   "name:(options.parapet?'Parapet çatı':parent?'Yavru çatı':'Ana çatı')+' '+(G.roofs.length+1),parapet:options.parapet??0,parapetHeightRef:options.parapetHeightRef,parapetThickness:options.parapetThickness,x,y,w,d,outline:local");
   edit("let z=R.make({name:'Yavru çatı '+(G.roofs.length+1),type:options.type,",
-   "let z=R.make({name:'Yavru çatı '+(G.roofs.length+1),type:options.type,parapet:options.parapet??0,");
+   "let z=R.make({name:'Yavru çatı '+(G.roofs.length+1),type:options.type,parapet:options.parapet??0,parapetHeightRef:options.parapetHeightRef,parapetThickness:options.parapetThickness,");
   edit("function makeOutline(points,options){","function makeOutline(points,options){\n  if(options.settingsError)throw Error(options.settingsError);");
   edit("'Mesnet sınırı: '+draft.points.length", "(draft.parapet?'Parapet sınırı: ':'Mesnet sınırı: ')+draft.points.length");
   edit('if(!z.eaveRule)return z;', 'if(!z.eaveRule)return z;delete z.bayEaves;');
