@@ -41,6 +41,8 @@
  const create=document.createElement('details');create.className='roof-create-group';create.innerHTML='<summary>Yeni çatı oluştur</summary>';left.append(create);
  move(create,['roofFromPlan']);
  for(const d of [...left.querySelectorAll(':scope > details')])if(d!==create&&d.querySelector('#roofBoundaryType,#roofVerandaRoom'))create.append(d);
+ ParapetOptions.drawingControls(create);
+ create.open=!G.roofs.length;
  // Keep pending form values when changing task. Only visibility changes; no render().
  function classify(){
   const form=$('roofForm');if(!form)return;

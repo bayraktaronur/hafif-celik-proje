@@ -7,6 +7,84 @@
   {name:'Trapez sac · nem bariyeri',material:'trapez',layers:['nem']}
  ];
  const $=id=>document.getElementById(id);
+ const designName='Parapet çatı',initialHeight=30;
+ function drawingSettings(){
+  const style=$('roofBoundaryType').value;
+  function value(id,min,max){
+   const el=$(id),n=el.valueAsNumber;
+   if(!Number.isFinite(n)||n<min||n>max)throw Error(el.labels[0].firstChild.textContent+' için '+min.toLocaleString('tr-TR')+'–'+max.toLocaleString('tr-TR')+' arasında bir değer girin.');
+   return n;
+  }
+  const pitch=value('roofDrawPitch',1,200);
+  if(style==='parapet'){
+   return {type:$('parapetDrawInner').value,parapet:value('parapetDrawHeight',.01,300),
+    pitch,eave:value('parapetDrawOffset',0,500),eaveRule:undefined};
+  }
+  const gableMm=value('roofDrawGable',1,5000),sideMm=value('roofDrawSide',0,5000);
+  return {type:style,parapet:0,pitch,eave:sideMm/10,eaveRule:{gableMm,sideMm}};
+ }
+ function drawingControls(create){
+  const style=$('roofBoundaryType'),styleLabel=style.closest('label'),panel=style.closest('section');
+  style.add(new Option(designName,'parapet'));
+  panel.querySelector('h3').after(styleLabel);
+  const fields=document.createElement('div');
+  fields.innerHTML='<label>İç çatı biçimi<select id="parapetDrawInner"><option value="tek">Tek eğim</option><option value="besik">Beşik</option><option value="kirma">Kırma</option></select></label>'+
+   '<label>Örtünün üstünden parapet yüksekliği · cm<input id="parapetDrawHeight" type="number" min="0.01" max="300" step="any" required></label>'+
+   '<label>Saçak çıkması · cm<input id="parapetDrawOffset" type="number" min="0" max="500" step="any" value="40" required></label>';
+  styleLabel.after(fields);$('parapetDrawHeight').value=initialHeight;
+  const gable=$('roofDrawGable').closest('label'),side=$('roofDrawSide').closest('label');
+  const note=side.nextElementSibling;
+  const shortcut=document.createElement('button');shortcut.id='drawParapetRoof';shortcut.type='button';
+  shortcut.textContent='Parapet çatı çiz';create.querySelector('summary').after(shortcut);
+  function sync(){
+   const on=style.value==='parapet';fields.hidden=!on;gable.hidden=side.hidden=on;
+   if(note?.tagName==='P')note.hidden=on;
+   $('roofBoundaryMain').textContent=on?'Parapet sınırını çiz':'Ana çatı sınırını çiz';
+  }
+  style.addEventListener('change',sync);sync();
+  shortcut.onclick=()=>{
+   const draft=RoofWorkflow.getDraft();
+   if(draft?.openU&&draft.points.length){RoofStudio.notice('Önce yavru çatı sınırını tamamlayın veya Esc ile iptal edin.',true);return;}
+   create.open=true;panel.closest('details').open=true;style.value='parapet';sync();
+   if(draft&&!draft.openU){
+    style.dispatchEvent(new Event('input',{bubbles:true}));
+    RoofStudio.setView('plan');
+   }else RoofWorkflow.start(false);
+   styleLabel.scrollIntoView({block:'nearest'});
+  };
+ }
+ function designFields(z){
+  const style=$('rz_type'),height=$('rz_parapet'),ridge=$('rz_ridge');
+  const inner=style.cloneNode(true);
+  inner.id='parapetEditInner';inner.name='parapetInner';
+  const innerField=label('İç çatı biçimi',inner),styleField=style.closest('label');
+  const heightField=height.closest('label'),heightPlace=document.createComment('parapet height');
+  heightField.before(heightPlace);
+  heightField.firstChild.textContent='Örtünün üstünden parapet yüksekliği · cm';
+  styleField.after(innerField);style.add(new Option(designName,'parapet'));
+  if(z.parapet>0)style.value='parapet';
+  let underlying=z.type;
+  function sync(){
+   const on=style.value==='parapet';
+   innerField.hidden=!on;inner.disabled=!on||style.disabled;
+   if(on)innerField.after(heightField);else heightPlace.after(heightField);
+   const shape=on?inner.value:style.value;
+   ridge.disabled=shape!=='besik';underlying=shape;
+  }
+  style.addEventListener('change',()=>{
+   if(style.value==='parapet'){
+    inner.value=underlying;if(!(height.valueAsNumber>0))height.value=initialHeight;
+   }else height.value=0;
+   height.dispatchEvent(new Event('input'));sync();
+  });
+  inner.addEventListener('change',sync);
+  height.addEventListener('input',()=>{
+   if(height.valueAsNumber>0&&style.value!=='parapet'){inner.value=style.value;style.value='parapet';}
+   else if(height.valueAsNumber===0&&style.value==='parapet')style.value=inner.value;
+   sync();
+  });
+  sync();
+ }
  const finishes={
   plaster:{name:'Sıva',color:'#e3e0d3'},
   wood:{name:'Ahşap',color:'#916e4f'},
@@ -291,5 +369,5 @@
    return on(a)&&on(b);
   });
  }
- window.ParapetOptions={mount(z){assembly(z);dimensions(z);},remember,validate,validateFinish,applyEdges,band,schedule,materialRows,flushJoinFilter};
+ window.ParapetOptions={mount(z){assembly(z);dimensions(z);designFields(z);},drawingControls,drawingSettings,remember,validate,validateFinish,applyEdges,band,schedule,materialRows,flushJoinFilter};
 })();

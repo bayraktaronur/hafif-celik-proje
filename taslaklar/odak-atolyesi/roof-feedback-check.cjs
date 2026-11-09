@@ -30,7 +30,10 @@ const protectedNames=[...Object.keys(JSON.parse(fs.readFileSync(path.join(__dirn
   SingleStorey.show('roof');RoofStudio.add(RoofStudio.make({id:'parent',name:'Ana çatı 1',x:1000,y:0,angle:90,w:1892.5,d:753.5,h:250,wallTop:250,pitch:33,eaves:[22,22,30,30],eaveRule:{gableMm:220,sideMm:300},production:{role:'main',parentId:'',relative:0}}));RoofStudio.fit();
  });
  const saved=await page.evaluate(()=>Studio.state());
- await page.locator('details').filter({has:page.locator('#roofBoundaryChild')}).locator('summary').first().click();
+ for(const selector of ['.roof-create-group','.single-roof-group:has(#roofBoundaryChild)']){
+  const section=page.locator(selector);
+  if(!await section.evaluate(el=>el.open))await section.locator(':scope > summary').click();
+ }
  await page.click('#roofBoundaryChild');
  async function click(x,y){const p=await page.evaluate(p=>{const v=RoofStudio.canvasPoint(p),r=document.getElementById('roofCanvas').getBoundingClientRect();return{x:v.x+r.left,y:v.y+r.top};},{x,y});await page.mouse.click(p.x,p.y);}
  for(const [x,y]of [[1030,0],[1135,0],[1135,1014]])await click(x,y);
