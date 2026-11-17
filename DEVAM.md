@@ -1,5 +1,9 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+## 17 Kasım 2026 — SAY-194 · İmalat sayımı
+
+250 ve 280 cm örneklerinde 39 satırın Excel aktarımı doğrulandı. Dış stok pano, iç kapı panel eni ve metal sevk farklarının atölye incelemesi açık. [Sayım raporu](analizler/2026-11-17-tuna84-saglama.md).
+
 ## 17 Kasım 2026 — SYS-194 · Prefabrik arayüzü
 
 Tamamlandı. Prefabrik panel adı sabitlendi. Hafif çelik ölçü ayarı ve aktarım düğmesi prefabrik girişinden çıkarıldı. Başlangıç ve boş plan metinleri güncellendi. [Edge kontrolü](taslaklar/odak-atolyesi/system-check.cjs) prefabrik ve hafif çelik girişlerinde geçti.
