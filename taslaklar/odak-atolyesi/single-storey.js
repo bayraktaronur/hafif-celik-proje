@@ -3,7 +3,7 @@
  'use strict';
  const $=id=>document.getElementById(id),q=s=>document.querySelector(s),all=s=>[...document.querySelectorAll(s)];
  const clone=x=>JSON.parse(JSON.stringify(x));let active='plan',ready=false;
- let hadSaved=false;try{hadSaved=!!(localStorage.getItem('prefabrikten.odak.tek-kat.documents.v1')||localStorage.getItem('prefabrikten.odak.tek-kat.recovery.v1'));}catch{}
+ let hadSaved=false;try{hadSaved=!!(localStorage.getItem(draftStorageKey('prefabrikten.odak.tek-kat.documents.v1'))||localStorage.getItem(draftStorageKey('prefabrikten.odak.tek-kat.recovery.v1')));}catch{}
  const labels={plan:'Zemin kat',roof:'Çatı',model:'3D',ceiling:'Tavan',bill:'Metraj',export:'Çıktı'};
  document.body.classList.add('single-storey');
  const nav=q('.workspace-bar');nav.replaceChildren();nav.setAttribute('aria-label','Tek katlı proje görünümleri');
@@ -12,9 +12,10 @@
  const action=(host,text,id,run)=>{const b=document.createElement('button');b.type='button';if(id)b.id=id;b.textContent=text;b.onclick=run;host.append(b);return b;};
  for(const [id,label]of Object.entries(labels)){const b=action(viewNav,label,'single-'+id,()=>show(id));b.dataset.singleView=id;}
  const more=document.createElement('details');more.className='single-more';more.innerHTML='<summary>Diğer çalışmalar</summary><div><a href="arakat.html">Arakat ve katman incelemesi ↗</a><p>Önceki taslak ayrı sayfada korunur.</p></div>';nav.append(more);
- const badge=document.createElement('span');badge.className='draft-badge';badge.textContent='BAĞIMSIZ TASLAK · 192';q('.project-title').after(badge);
+ const badge=document.createElement('span');badge.className='draft-badge';badge.textContent=draftSystem?'BAĞIMSIZ TASLAK · 193':'BAĞIMSIZ TASLAK · 192';q('.project-title').after(badge);
  q('.identity small').textContent='PREFABRİKTEN / ODAK ATÖLYESİ';
  $('workflowToggle').hidden=true;if($('hcBtn'))$('hcBtn').hidden=true;
+ if(draftSystem)$('sistemSel').disabled=true;
  const header=q('.header-actions');header.querySelector('[onclick="yeniPlan()"]').textContent='＋ Boş plan';
  action(header,'Örnek plan','singleExample',()=>loadExample(true)).className='tb';
  for(const b of header.querySelectorAll('button'))if(/çıktı|yükleme/i.test(b.textContent))b.hidden=true;
@@ -22,7 +23,7 @@
  const formats=document.createElement('dialog');formats.id='singleExport';formats.innerHTML='<h2>Çıktı biçimi</h2><p>Aynı planın ölçülerini ve proje bilgilerini kullanır.</p><div></div><button type="button" class="sib" id="singleExportCancel">Vazgeç</button>';document.body.append(formats);
  for(const [type,label]of [['pdf','PDF · Baskı ve müşteri sunumu'],['png','PNG · Görsel çıktı'],['dxf','DXF · CAD çizimi']]){const b=action(formats.querySelector('div'),label,'single-format-'+type,()=>{formats.close();PlanExport.open(type);});b.className='sib';}
  $('singleExportCancel').onclick=()=>formats.close();
- const newPlan=window.yeniPlan;window.yeniPlan=function(){newPlan();if(G.segs.length===0)setSistem('prefabrik',true);show('plan');};
+ const newPlan=window.yeniPlan;window.yeniPlan=function(){newPlan();if(G.segs.length===0)setSistem(draftSystem || 'prefabrik',true);show('plan');};
  Studio.demo=()=>loadExample(G.segs.length>0);
  // Keep real command buttons/listeners; secondary editing commands move to a compact menu.
  const ribbon=q('.tool-ribbon'),overflow=document.createElement('details');overflow.id='singleTools';overflow.innerHTML='<summary>Düzenle · diğer araçlar</summary><div></div>';
@@ -65,7 +66,16 @@
   if(roof.open)RoofStudio.close();mark('plan');
   if(id==='bill')metrajAc();else if(id==='export')formats.showModal();else{setTool('sec');resize();}
  }
- function loadExample(append){const data=clone(SINGLE_EXAMPLE);data.projectName='Tuna 84 · Tek kat örneği';data.opt.h=280;data.ky=280;
+ function loadExample(append){
+  if(draftSystem==='celik'){
+   const corners=[[0,0],[600,0],[600,400],[0,400]];
+   const nodes=corners.map(([x,y],i)=>({id:'n'+i,x,y}));
+   const walls=nodes.map((node,i)=>({id:'w'+i,n1:node.id,n2:nodes[(i+1)%4].id,k:14}));
+   const project={v:'5',sistem:'celik',projectName:'Hafif çelik · Tek kat örneği',n:nodes,s:walls,e:[],r:[],ky:280,dy:320,opt:clone(PlanProject.DEFAULT_OPTIONS)};
+   if(append)Studio.openDocument(project);else Studio.loadProject(project);
+   show('plan');Studio.fit();Studio.flush();return;
+  }
+  const data=clone(SINGLE_EXAMPLE);data.projectName='Tuna 84 · Tek kat örneği';data.opt.h=280;data.ky=280;
   data.settings={...data.settings,pnlEtiket:false,makasGoster:false,viewFilters:{grid:true,rooms:true,outerDims:true,innerDims:true,chains:false,architecturalDims:true,openings:true,panelColors:false}};
   if(append)Studio.openDocument(data);else Studio.loadProject(data);show('plan');Studio.fit();Studio.flush();
  }
@@ -81,3 +91,40 @@
  window.addEventListener('load',()=>{ready=true;if(!hadSaved&&!G.segs.length&&Studio.documents().documents.length===1)loadExample(false);mark('plan');sync();resize();Studio.fit();$('sistemSel').setAttribute('aria-label','Yapı sistemi');});
  window.addEventListener('resize',()=>{document.documentElement.style.setProperty('--single-top',nav.getBoundingClientRect().bottom+'px');});
 })();
+function steelWallSchedule() {
+  return G.segs.filter(wall => wall.tip !== 'veranda').map(wall => {
+    const a = getNode(wall.n1), b = getNode(wall.n2);
+    const openings = G.elemanlar.filter(item => item.segId === wall.id);
+    return {
+      id: wall.id, location: wall.dis ? 'Dış' : 'İç', thickness: wall.k,
+      axisMm: Math.round(Math.hypot(b.x-a.x,b.y-a.y)*10),
+      openings: openings.map(item => (item.tip_==='kapi'?'Kapı':'Pencere')+' '+item.en+' × '+item.yuk+' cm')
+    };
+  });
+}
+
+if (draftSystem === 'celik') {
+  const quantities = window.metrajKalemleri;
+  window.metrajKalemleri = function() {
+    const lengths = new Map();
+    for (const wall of steelWallSchedule()) {
+      const key = wall.location+' duvar · '+wall.thickness+' cm';
+      lengths.set(key,(lengths.get(key)||0)+wall.axisMm);
+    }
+    return quantities().concat(Array.from(lengths, ([kalem,mm]) => ({
+      grup:'Hafif çelik duvarlar', kalem, olcu:'Aks boyu', birim:'m', adet:mm/1000
+    })));
+  };
+  const button = document.getElementById('singleLoading');
+  button.textContent = 'Duvar imalat listesi (CSV)';
+  button.onclick = () => {
+    const rows = [['Duvar','Konum','Kalınlık (cm)','Aks boyu (mm)','Açıklıklar (en × yükseklik)']];
+    for (const wall of steelWallSchedule()) rows.push([wall.id,wall.location,wall.thickness,wall.axisMm,wall.openings.join(', ')]);
+    const cell = value => '"'+String(value).replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';
+    const csv = rows.map(row => row.map(cell).join(';')).join('\r\n');
+    const url = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));
+    const link = document.createElement('a');
+    link.href=url; link.download='hafif-celik-duvar-listesi.csv'; link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  };
+}

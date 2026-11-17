@@ -1,6 +1,6 @@
 /* Independent prototype library. All placement uses native project/history tools. */
 (()=>{
- const C=PlanLibraryCore,$=s=>document.querySelector(s),key='prefabrikten.odak.tek-kat.library.v1';
+ const C=PlanLibraryCore,$=s=>document.querySelector(s),key=draftStorageKey('prefabrikten.odak.tek-kat.library.v1');
  let saved={favorites:[],recent:[]};try{Object.assign(saved,JSON.parse(localStorage.getItem(key)||'{}'));}catch{}
  for(const k of ['favorites','recent'])saved[k]=Array.isArray(saved[k])?saved[k].filter(id=>C.items[id]):[];
  let category='all',selected='bedDouble',angle=0,mirror=false;

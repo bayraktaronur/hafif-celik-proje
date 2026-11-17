@@ -1,3 +1,5 @@
+const draftSystem = document.documentElement.dataset.system || '';
+function draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : key; }
 // src/roof-core.js
 /* Centimetre roof geometry. Convex plane patches, exact upper-envelope joins,
    separate groups for physically separate roofs; no structural design. */
@@ -634,6 +636,7 @@ PlanLibraryCore.install(FurnitureCatalog);
     d.loading=(typeof LoadingCore!=='undefined'?LoadingCore:require('./loading-core.js')).validate(d.loading);
     if(d.sistem&&!['celik','prefabrik'].includes(d.sistem))fail('Bilinmeyen yapı sistemi.');
     d.sistem=d.sistem||'celik';
+    if(draftSystem && d.sistem!==draftSystem)fail('Bu projeyi '+(d.sistem==='celik'?'Hafif Çelik':'Prefabrik')+' taslağında açın.');
     for(const k of ['n','s','e','r','fixtures','counters','annotations']){
       if(d[k]===undefined)d[k]=[];
       if(!Array.isArray(d[k])||d[k].length>20000)fail('Geçersiz veya aşırı büyük nesne listesi: '+k);
@@ -5021,11 +5024,11 @@ updateStatus();
   'use strict';
   const $=id=>document.getElementById(id);
   const original={draw,updateSidebar,setSistem,setTool,snapPoint,modalOk,elemanKonumla,elemanKaydir,splitSeg,optUygula,resizeSeg,upKapiTip,hafifCeligeAktar,numUygula,updateStatus};
-  const STORAGE='prefabrikten.odak.tek-kat.recovery.v1',BACKUPS=STORAGE+'.history',BACKUP_MS=10000;
+  const STORAGE=draftStorageKey('prefabrikten.odak.tek-kat.recovery.v1'),BACKUPS=STORAGE+'.history',BACKUP_MS=10000;
   let lastCheckpoint=0,allowReload=false;
   let future=[],restoring=false,autoTimer,toastTimer,analysisTimer,lastStored='',fileSnapshot='',storageReady=true,pendingRecovery=null,gesture=null;
   let projectName='Yeni proje',activeTab='properties',lastAnalysis='';
-  const WORKSPACE='prefabrikten.odak.tek-kat.documents.v1';
+  const WORKSPACE=draftStorageKey('prefabrikten.odak.tek-kat.documents.v1');
   let documents=[],documentIndex=-1,documentsReady=false,lastWorkspace='',draggedDocument=null;
   G.ortho=false;G.inputUnit='panel';
   const clone=o=>JSON.parse(JSON.stringify(o));
@@ -5281,6 +5284,7 @@ updateStatus();
     if(k==='dis'){PF.DIS=v;G.segs.forEach(s=>{if(s.dis&&s.tip!=='veranda')delete s.kSabit;});}
   });optPanelGuncelle();};
   window.setSistem=function(v,silent){
+    if(draftSystem && v!==draftSystem)return;
     if(silent){original.setSistem(v,true);sync();return;}
     if(v===G.sistem)return;
     if(G.segs.length&&!confirm('Yapı sistemi değiştirilsin mi? Prefabrik modunda otomatik duvar kalınlıkları ve panel kuralları uygulanır. İşlemi geri alabilirsiniz.')){$('sistemSel').value=G.sistem;return;}
@@ -5464,7 +5468,7 @@ updateStatus();
   document.querySelectorAll('.mbg').forEach(m=>{m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});});
   // Startup never overwrites a recoverable record with the initial blank canvas.
   storageReady=false;
-  original.setSistem('celik',true);updateSidebar();sync();resize();lastStored=snapshot();
+  original.setSistem(draftSystem || 'celik',true);updateSidebar();sync();resize();lastStored=snapshot();
   window.addEventListener('load',()=>{
     let saved=null;
     try{const raw=localStorage.getItem(STORAGE);if(raw){saved=JSON.parse(raw);PlanProject.validate(saved.project);}}catch{saved=backupList()[0]||null;}
@@ -6340,7 +6344,7 @@ window.OpeningCatalog=(function(){
  const $=id=>document.getElementById(id),types={'surme':'Sürgülü','cift-kanat':'Çift kanatlı','tek-kanat':'Tek kanatlı',sabit:'Sabit',vasistas:'Vasistas'},last={};
  let choices=[],selectedId=null,templateId=null;
  const valid=p=>p&&Number.isFinite(p.en)&&p.en>0&&p.en<=5000&&Number.isFinite(p.yuk)&&p.yuk>0&&p.yuk<=5000;
- for(const tip of ['pencere','kapi'])try{const p=JSON.parse(localStorage.getItem('odak-tek-kat-opening-last-'+tip)||(tip==='pencere'?localStorage.getItem('odak-tek-kat-window-last'):null));if(valid(p))last[tip]=p;}catch{}
+ for(const tip of ['pencere','kapi'])try{const p=JSON.parse(localStorage.getItem(draftStorageKey('odak-tek-kat-opening-last-')+tip)||(tip==='pencere'?localStorage.getItem(draftStorageKey('odak-tek-kat-window-last')):null));if(valid(p))last[tip]=p;}catch{}
  const key=p=>[p.catalogId,p.en,p.yuk,p.penTip,p.kapiTip,p.hand].join('|');
  function elevation(p){
   if(!valid(p))return '<p>Önizleme için geçerli ölçüler girin.</p>';
@@ -6391,7 +6395,7 @@ window.OpeningCatalog=(function(){
   if(last[tip]){$('windowPreset').value='0';apply(last[tip]);}else preview();
  };
  const ok=modalOk;
- window.modalOk=function(){const tip=_mT,count=G.elemanlar.length,p=current();ok();if(G.elemanlar.length===count+1&&valid(p)){const e=G.elemanlar.at(-1);e.catalogId=p.catalogId||null;e.hand=p.hand;last[tip]=p;try{localStorage.setItem('odak-tek-kat-opening-last-'+tip,JSON.stringify(p));}catch{}updateSidebar();draw();}};
+ window.modalOk=function(){const tip=_mT,count=G.elemanlar.length,p=current();ok();if(G.elemanlar.length===count+1&&valid(p)){const e=G.elemanlar.at(-1);e.catalogId=p.catalogId||null;e.hand=p.hand;last[tip]=p;try{localStorage.setItem(draftStorageKey('odak-tek-kat-opening-last-')+tip,JSON.stringify(p));}catch{}updateSidebar();draw();}};
  const sidebar=updateSidebar;
  window.updateSidebar=function(){sidebar();if(G.seciliTip==='eleman'&&G.secili){$('sbSelIc').insertAdjacentHTML('beforeend','<div class="sb-t">'+(G.secili.tip_==='kapi'?'Kapı':'Pencere')+' görünüşü</div>'+elevation(G.secili));if(isPref()&&G.secili.tip_==='pencere'&&Math.abs(G.secili.en-160)<.01)$('sbSelIc').insertAdjacentHTML('beforeend','<button class="sib" onclick="Prefab.fitWideWindow()">166 cm panoya uyarla</button><p class="panel-help">160 cm açıklık + iki yanda 3 cm pano payı. Pencere konumu ve makaslar korunur.</p>');}};
  window.OpeningViews={elevation};
@@ -8104,7 +8108,7 @@ window.Wall3D={build,panelColor};
 
 // src/plan-clipboard-ui.js
 (function(){
- const C=PlanClipboardCore,KEY='prefabrikten.odak.tek-kat.clipboard.v1';let selection=null,drag=null,clip=null,pending=null,ghost=null;
+ const C=PlanClipboardCore,KEY=draftStorageKey('prefabrikten.odak.tek-kat.clipboard.v1');let selection=null,drag=null,clip=null,pending=null,ghost=null;
  const stop=e=>{e.preventDefault();e.stopImmediatePropagation();};
  const group=document.createElement('div');group.className='tool-group';document.querySelector('.tool-ribbon').append(group);
  function button(id,label,action){const b=document.createElement('button');b.id=id;b.className='t';b.textContent=label;b.onclick=action;group.append(b);return b;}

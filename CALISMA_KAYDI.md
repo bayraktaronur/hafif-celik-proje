@@ -1,5 +1,9 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 17 Kasım 2026 — SYS-193 · Ayrı sistem taslakları
+
+Tamamlandı. [Prefabrik](taslaklar/odak-atolyesi/prefabrik.html) ve [hafif çelik](taslaklar/odak-atolyesi/hafif-celik.html) girişleri ayrı kayıt, yedek ve pano kullanır. Eski karma girişindeki çizimler Kaydet/Aç ile ilgili sisteme taşınabilir. [Edge testi](taslaklar/odak-atolyesi/system-check.cjs) her sistemde yeni proje, duvar çizimi, kaydet/aç, metraj ve üretim listesini doğruladı. Prefabrik örneği 49 panel, hafif çelik örneği 4 duvar ve 20 m aks verdi. Önceki açık işler ve yerel müşteri çizimlerinin aktarım durumu korunur.
+
 2026-11-09 · İş bilgisayarı · DEV-196 · Taslak 192. Parapetin dış ve iç yüzü ile üst yüzeyi aynı köşe geometrisinden üretilir. Örtü ve alt katmanlar iç yüzde sonlanır. Taşıyıcı geometri dış sınırı kullanır. Duvar üstünden sabit yükseklik ve örtünün en yüksek noktasından yükseklik seçenekleri projeye kaydedilir. Üst yüz alanı net geometrik metrajdır. [Taslak tarayıcı testi](taslaklar/odak-atolyesi/parapet-options-check.cjs) üzerinde içe girintili planda 10/12 cm, saçaklar, açık veranda, çatı kesiti ve gerçek PNG pikselleri kontrol edildi. [Form ve kayıt testi](taslaklar/odak-atolyesi/parapet-drawing-check.cjs) iki yapı sisteminde sabit yüksekliği doğrular. DEV-192 imalat bağlantıları ve tahliye ayrıntıları açıktır.
 
 2026-11-09 · İş bilgisayarı · DEV-195 · Taslak 191. Parapet çatı çizimi doğrudan Yeni çatı oluştur menüsüne ve çatı tipi seçimine eklendi. İç örtünün geometrisi ve eğimi bağımsızdır. Çizim başlangıcındaki düzenlenebilir değerler, örtünün en üst noktasından 30 cm parapet yüksekliği ve dış kenarda 40 cm saçak çıkmasıdır. [Tarayıcı kontrolü](taslaklar/odak-atolyesi/parapet-drawing-check.cjs) iki sistemde köşe tıklama, Enter, biçim değiştirme ve dosya döngüsünü kapsar. DEV-192 kapsamındaki imalat detayları açıktır.

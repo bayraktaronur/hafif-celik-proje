@@ -1,5 +1,9 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+## 17 Kasım 2026 — SYS-193 · Ayrı sistem taslakları
+
+Tamamlandı. [Prefabrik](taslaklar/odak-atolyesi/prefabrik.html) ve [hafif çelik](taslaklar/odak-atolyesi/hafif-celik.html) girişleri ayrı kayıt, yedek ve pano kullanır. Eski karma girişindeki çizimler Kaydet/Aç ile ilgili sisteme taşınabilir. [Edge testi](taslaklar/odak-atolyesi/system-check.cjs) her sistemde yeni proje, duvar çizimi, kaydet/aç, metraj ve üretim listesini doğruladı. Prefabrik örneği 49 panel, hafif çelik örneği 4 duvar ve 20 m aks verdi. Önceki açık işler ve yerel müşteri çizimlerinin aktarım durumu korunur.
+
 2026-11-09 · Taslak 192. Parapet duvarı 10 cm kalınlıkla başlar. Yeni çatıda yükseklik duvar üstünden girilir. Eski projelerde örtüden girilmiş ölçü korunur. İç yüz, çatı kaplamasının ve kesim listesinin sınırıdır. [Çizim ve yükseklik kontrolü](taslaklar/odak-atolyesi/parapet-drawing-check.cjs) · [L planda cephe ve PNG kontrolü](taslaklar/odak-atolyesi/parapet-options-check.cjs).
 
 2026-11-09 · Taslak 191. Çatı ekranındaki **Parapet çatı çiz** komutuyla doğrudan sınır çizilir. İç çatı biçimi, eğim, parapet yüksekliği ve saçak çıkması ayrı girilir. Mevcut bölüm sağda **Çatı biçimi → Parapet çatı** ile dönüştürülür. [Çizim ve kayıt kontrolü](taslaklar/odak-atolyesi/parapet-drawing-check.cjs).
