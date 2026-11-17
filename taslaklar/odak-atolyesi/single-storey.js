@@ -12,10 +12,14 @@
  const action=(host,text,id,run)=>{const b=document.createElement('button');b.type='button';if(id)b.id=id;b.textContent=text;b.onclick=run;host.append(b);return b;};
  for(const [id,label]of Object.entries(labels)){const b=action(viewNav,label,'single-'+id,()=>show(id));b.dataset.singleView=id;}
  const more=document.createElement('details');more.className='single-more';more.innerHTML='<summary>Diğer çalışmalar</summary><div><a href="arakat.html">Arakat ve katman incelemesi ↗</a><p>Önceki taslak ayrı sayfada korunur.</p></div>';nav.append(more);
- const badge=document.createElement('span');badge.className='draft-badge';badge.textContent=draftSystem?'BAĞIMSIZ TASLAK · 193':'BAĞIMSIZ TASLAK · 192';q('.project-title').after(badge);
+ const badge=document.createElement('span');badge.className='draft-badge';badge.textContent=draftSystem==='prefabrik'?'PREFABRİK TASLAK · 194':draftSystem?'BAĞIMSIZ TASLAK · 193':'BAĞIMSIZ TASLAK · 192';q('.project-title').after(badge);
  q('.identity small').textContent='PREFABRİKTEN / ODAK ATÖLYESİ';
  $('workflowToggle').hidden=true;if($('hcBtn'))$('hcBtn').hidden=true;
- if(draftSystem)$('sistemSel').disabled=true;
+ if(draftSystem==='prefabrik'){
+  const label=document.createElement('strong');
+  label.id='sistemSel';label.textContent='Prefabrik panel';
+  $('sistemSel').replaceWith(label);
+ }else if(draftSystem)$('sistemSel').disabled=true;
  const header=q('.header-actions');header.querySelector('[onclick="yeniPlan()"]').textContent='＋ Boş plan';
  action(header,'Örnek plan','singleExample',()=>loadExample(true)).className='tb';
  for(const b of header.querySelectorAll('button'))if(/çıktı|yükleme/i.test(b.textContent))b.hidden=true;
@@ -88,7 +92,7 @@
  const prevDraw=window.draw;window.draw=function(...args){const r=prevDraw.apply(this,args);sync();return r;};
  const specRender=ProjectSpecs.render;ProjectSpecs.render=function(...a){const r=specRender.apply(this,a);sync();return r;};
  window.SingleStorey={show,markRoof:v=>mark(v==='3d'?'model':v==='ceiling'?'ceiling':'roof'),loadExample,sourceRevision:'5.9.137',task:'DEV-187'};
- window.addEventListener('load',()=>{ready=true;if(!hadSaved&&!G.segs.length&&Studio.documents().documents.length===1)loadExample(false);mark('plan');sync();resize();Studio.fit();$('sistemSel').setAttribute('aria-label','Yapı sistemi');});
+ window.addEventListener('load',()=>{ready=true;if(!hadSaved&&!G.segs.length&&Studio.documents().documents.length===1)loadExample(false);mark('plan');sync();resize();Studio.fit();});
  window.addEventListener('resize',()=>{document.documentElement.style.setProperty('--single-top',nav.getBoundingClientRect().bottom+'px');});
 })();
 function steelWallSchedule() {

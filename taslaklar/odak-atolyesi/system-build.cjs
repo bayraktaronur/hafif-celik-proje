@@ -16,8 +16,15 @@ function engine(source) {
 
 function entries(folder, html) {
   for (const [name, system, label] of [['prefabrik','prefabrik','Prefabrik'], ['hafif-celik','celik','Hafif çelik']]) {
-    const page = html.replace('<html lang="tr"', '<html lang="tr" data-system="' + system + '"')
+    let page = html.replace('<html lang="tr"', '<html lang="tr" data-system="' + system + '"')
       .replace(/<title>[^<]*<\/title>/, '<title>Plan Studio · ' + label + ' taslağı</title>');
+    if (system === 'prefabrik') {
+      page = page.replace('Prefabrik & hafif çelik tasarım','Prefabrik panel tasarımı')
+        .replace(/<button[^>]+id="hcBtn"[^>]*>[^<]*<\/button>/,'')
+        .replace('id="canvasSystem">Hafif çelik','id="canvasSystem">Prefabrik panel')
+        .replace('Serbest profil yerleşimi','Prefabrik panel yerleşimi')
+        .replace('Yapı sistemini seçin, duvarları çizin.','Prefabrik duvarları çizerek başlayın.');
+    }
     fs.writeFileSync(path.join(folder, name + '.html'), page);
   }
 }

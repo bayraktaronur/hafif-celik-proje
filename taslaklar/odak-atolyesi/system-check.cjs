@@ -24,7 +24,16 @@ async function run() {
       p.on('dialog',d=>d.accept());
       await p.goto('http://127.0.0.1:'+server.address().port+'/'+entry+'.html');
       assert.equal(await p.evaluate(()=>G.sistem),system);
-      assert.equal(await p.locator('#sistemSel').isDisabled(),true);
+      if(system==='prefabrik'){
+        assert.equal(await p.locator('#sistemSel').innerText(),'Prefabrik panel');
+        assert.equal(await p.locator('select#sistemSel,#hcBtn').count(),0);
+        await p.click('#commandSettingsTab');
+        assert.equal(await p.locator('#faceDimensionSettings,#dimensionReference').count(),0);
+        assert.doesNotMatch(await p.locator('body').innerText(),/hafif çelik/i);
+      }else{
+        assert.equal(await p.locator('#sistemSel').isDisabled(),true);
+        assert.equal(await p.locator('#dimensionReference').count(),1);
+      }
       const sample=await p.evaluate(()=>Studio.state());
       assert.ok(sample.s.length>=4);
       await p.click('#single-bill');

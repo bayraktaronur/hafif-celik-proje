@@ -1,5 +1,9 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+## 17 Kasım 2026 — SYS-194 · Prefabrik arayüzü
+
+Tamamlandı. Prefabrik panel adı sabitlendi. Hafif çelik ölçü ayarı ve aktarım düğmesi prefabrik girişinden çıkarıldı. Başlangıç ve boş plan metinleri güncellendi. [Edge kontrolü](taslaklar/odak-atolyesi/system-check.cjs) prefabrik ve hafif çelik girişlerinde geçti.
+
 ## 17 Kasım 2026 — SYS-193 · Ayrı sistem taslakları
 
 Tamamlandı. [Prefabrik](taslaklar/odak-atolyesi/prefabrik.html) ve [hafif çelik](taslaklar/odak-atolyesi/hafif-celik.html) girişleri ayrı kayıt, yedek ve pano kullanır. Eski karma girişindeki çizimler Kaydet/Aç ile ilgili sisteme taşınabilir. [Edge testi](taslaklar/odak-atolyesi/system-check.cjs) her sistemde yeni proje, duvar çizimi, kaydet/aç, metraj ve üretim listesini doğruladı. Prefabrik örneği 49 panel, hafif çelik örneği 4 duvar ve 20 m aks verdi. Önceki açık işler ve yerel müşteri çizimlerinin aktarım durumu korunur.
