@@ -1,5 +1,13 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+## 25 Kasım 2026 — VIS-200 · Montaj görünümü ve PVC doğrama
+
+Taslak 200 kaynak kodu. Saçak altı montaj yüzeyleri örtü sınırı eksi taşıyıcı alan birleşiminden üretilir. Eski taşan alın alt dönüş yüzeyi yalnız 3B sahneden çıkarılır; üretim/geometri/metraj hesapları değiştirilmez. Yerel önce/sonra tarayıcı kontrolünde bütün LoadingList satırları, RoofStudio.summary ve proje durumu birebir aynı.
+
+Sürgülü pencere/kapılar için iki ray, örtüşen kanat, cam, kasa ve kol gösterimi; tam camlı ve yarım camlı PVC kapı katalog seçenekleri eklendi. Kullanıcının “yapı” ifadesi için kapı/cephe sorusu soruldu; mevcut kapılar dönüştürülmedi. Kesitler parametrik görsel temsil; Egepen üretici kesiti iddiası yok. Mevcut kaynak STL kapı modelleri korunur. Genel 3B görünüm ve PVC cam/dolgu ayrımı kontrol edildi.
+
+199 kaynakları da bu kod teslimine dahil: ana çatı altındaki veranda için planVerandaBeams alanı, 100×100 mm görsel kirişler. Müşteri çizim dosyalarının GitHub aktarımı otomatik inceleme tarafından açık izin beklediği için durdurulmuştu; bu işlem yalnız uygulama kaynaklarını aktarır. Yerel güncel müşteri çizimi ortak depoya aktarılmış sayılmaz. DETAIL-199 kapama referansı ve nihai Excel karşılaştırması açık.
+
 ## 25 Kasım 2026 — VIEW-198 tamam · Çatı kaplaması taraması
 
 Prefabrik taslak 198. Teknik pafta her çatı bölümünün kaplamasına bağlı sembolik yüzey taraması üretir: sandviç/tek kat/trapez eğim yönünde çizgiler; metal kiremit sıralı, shingle şaşırtmalı. Çatı yüzey sınırında kesilir, derinlik kontrolüyle gizlenen yüzey çizgileri örtülür. Tarama aralıkları gösterim amaçlıdır; üretici profil geometrisi veya metraj değildir. Bilinmeyen malzemeye tarama uydurulmaz. [Kontrol](taslaklar/odak-atolyesi/roof-hatch-check.cjs): beş malzeme, 0/37/90 derece, sınırlar ve eğim yönü. Beş pafta tarayıcı testi ve Tuna görsel kontrolü geçti.

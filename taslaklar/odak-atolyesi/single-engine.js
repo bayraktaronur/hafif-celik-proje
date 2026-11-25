@@ -185,6 +185,7 @@ function draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : k
       if(!Array.isArray(m.widths)||m.widths.length>10||m.widths.some(w=>!num(w,10,500))||(m.unit==='sheet'&&!m.widths.length)||(m.unit==='package'&&!num(m.packageArea,.1,100)))fail('kaplama ölçüsü geçersiz.');mat.set(m.id,m);}
     const ids=new Set();for(const z of zones){if(!z||!/^[-a-zA-Z0-9_]{1,80}$/.test(z.id)||ids.has(z.id)||typeof z.name!=='string'||z.name.length>100||typeof z.group!=='string'||!z.group.trim()||z.group.length>80)fail('bölüm adı / kimliği geçersiz.');ids.add(z.id);
       if(!['besik','kirma','tek','bay'].includes(z.type)||!num(z.x,-1e6,1e6)||!num(z.y,-1e6,1e6)||!num(z.w,10,20000)||!num(z.d,10,20000)||!num(z.h,0,20000)||!num(z.angle,0,359)||!num(z.pitch,1,200)||!num(z.ridge,10,90))fail('konum, ölçü veya eğim geçersiz.');
+      if(z.planVerandaBeams!==undefined&&(!Array.isArray(z.planVerandaBeams)||z.planVerandaBeams.length>24||z.planVerandaBeams.some(id=>typeof id!=='string'||id.length>80)))fail('ana çatı veranda kiriş seçimi geçersiz.');
       if(z.soffitFinish!==undefined)ParapetOptions.validateFinish(z.soffitFinish);if(!Array.isArray(z.eaves)||z.eaves.length!==4||z.eaves.some(e=>!num(e,0,500))||!num(z.parapet,0,300)||typeof z.gutters!=='boolean')fail('saçak / parapet geçersiz.');
       if(z.bayEaves&&(!Array.isArray(z.bayEaves)||z.bayEaves.length!==6||!z.bayEaves.every(n=>num(n,0,500))))fail('çokgen saçakları geçersiz');if(z.outline){checkOutline(z.outline);if(z.edgeEaves&&(!Array.isArray(z.edgeEaves)||z.edgeEaves.length!==z.outline.length||z.edgeEaves.some(e=>!num(e,0,500))))fail('kenar saçakları geçersiz.');if(z.joinEdges&&(!Array.isArray(z.joinEdges)||z.joinEdges.length!==z.outline.length||z.joinEdges.some(e=>typeof e!=='boolean')))fail('birleşim kenarları geçersiz.');if(z.boundaryRefs&&(!Array.isArray(z.boundaryRefs)||z.boundaryRefs.length!==z.outline.length||z.boundaryRefs.some(r=>r!==null&&(!r||typeof r.nodeId!=='string'||!num(r.dx,-500,500)||!num(r.dy,-500,500)))))fail('mesnet referansı geçersiz.');checkOutline(footprint(z));}
       if(z.childJoin&&(!z.production||z.production.role!=='child'||!Array.isArray(z.childJoin.points)||z.childJoin.points.length!==4||z.childJoin.points.some(p=>!p||!num(p.x,-1e6,1e6)||!num(p.y,-1e6,1e6))||!Array.isArray(z.childJoin.support)||z.childJoin.support.length!==4||z.childJoin.support.some(p=>!p||!num(p.x,-1e6,1e6)||!num(p.y,-1e6,1e6))))fail('U bağlantı sınırı geçersiz.');
@@ -6334,6 +6335,8 @@ window.OpeningCatalog=(function(){
  door('p1-special','P1 Özel · Çift kanat açılır',120,200,'double-glass');door('p2-special','P2 Özel · Çift kanat açılır',160,200,'double-glass');door('p2-sliding','P2 Özel · Sürgülü kapı',160,200,'sliding');
  for(const hand of ['sol','sag']){const name=hand==='sol'?'Sol':'Sağ';door('al-'+hand,name+' alüminyum kapı',90,205,'al',hand);door('sheet-'+hand,name+' sac kapı',90,205,'sheet',hand);door('steel-'+hand,name+' çelik kapı',90,205,'steel',hand);door('pvc-'+hand,name+' PVC kapı',90,205,'pvc',hand);door('panic-'+hand,name+' panik barlı sac kapı',90,200,'panic',hand);door('american-'+hand,name+' iç Amerikan kapı',80,205,'american',hand);}
  door('double-al','Double alüminyum veya PVC kapı',160,200,'double','sol',{material:'al'});door('double-sheet','Double sac kapı',160,200,'double');
+ for(const hand of ['sol','sag']){door('pvc-full-'+hand,'PVC tam camlı · '+hand,90,205,'pvc-full',hand);door('pvc-half-'+hand,'PVC yarım camlı · '+hand,90,205,'pvc-half',hand);}
+ win('p-sliding','PVC sürgülü · iki ray',120,120,2,0,'sliding',{penTip:'surme'});
  return list;
 })();
 
@@ -6675,7 +6678,7 @@ if(meta.steelSolid)surfaces.push({...meta,poly:poly.slice().reverse().map(p=>({.
  function openings(r){return r.items.flatMap(it=>G.elemanlar.filter(e=>e.segId===it.seg.id).map(e=>{const a=it.rev?it.off+it.L-e.t*it.L-e.en:it.off+e.t*it.L,z=e.tip_==='kapi'?0:210-e.yuk;return {e,a,b:a+e.en,z,top:z+e.yuk};}));}
  for(const r of A.runs){const holes=openings(r),models=[];
   SteelDoor3D.append({r,holes,models,height,prefab,surfaces,parts,warnings,panelColor});
-  for(const o of holes){if(!prefab||o.e.tip_!=='pencere')continue;
+  for(const o of holes){if(!prefab||o.e.tip_!=='pencere'||(o.e.penTip==='surme'&&o.e.yuk>60))continue;
    const label=Number(o.e.en)+'×'+Number(o.e.yuk)+' cm';
    const mesh=(window.WindowSTLModels||[]).find(m=>m.key===Number(o.e.en)+'x'+Number(o.e.yuk));
    if(!mesh){warnings.add(label+': gerçek STL henüz bağlı değil; şematik pencere.');continue;}
@@ -6714,6 +6717,7 @@ if(meta.steelSolid)surfaces.push({...meta,poly:poly.slice().reverse().map(p=>({.
    }
   }
   for(const o of holes){if(models.some(m=>m.o===o))continue;const e=o.e,door=e.tip_==='kapi',cat=OpeningCatalog.find(c=>c.id===e.catalogId),style=cat?.style||e.kapiTip,cols=cat?.cols||(['surme','cift-kanat'].includes(e.penTip)||['cift','double','double-glass','sliding'].includes(style)?2:1),meta={kind:'opening',partId:'opening:'+e.id,openingId:e.id,schematic:true};
+   if(window.PvcOpening3D&&PvcOpening3D.append({o,r,surfaces,parts}))continue;
    warnings.add('PVC/kapı kasa ve kanat kesitleri temsilî; pencere üst kotu210 cm.');
    if(o.z<0||o.top>height){warnings.add('Açıklık yüksekliği210 cm üst kotuna veya duvar yüksekliğine sığmıyor.');continue;}
    parts.push({...meta,widthMm:e.en*10,heightMm:e.yuk*10,sillMm:o.z*10,cols,type:cat?.opening||e.penTip||style});
@@ -7113,6 +7117,7 @@ window.Wall3D={build,panelColor};
   }
   // Close only exposed eave strips, from the support face to the fascia bottom.
   function soffitSurfaces(m){
+    if(window.MountedSoffit)return MountedSoffit.build(m,G.roofs,C);
     const out=[];
     for(const e of m.edges.filter(e=>['eave','high'].includes(e.type))){
       const z=G.roofs.find(z=>z.id===e.zoneId);if(!z||z.parapet)continue;
@@ -7261,12 +7266,12 @@ window.Wall3D={build,panelColor};
 
       const sceneKey=JSON.stringify([G.sistem,G.nodes,G.segs,G.elemanlar,G.rooms,G.opt,G.catiYon,G.roofs,G.roofMaterials,G.foundation,G.paint3D,G.rainDrainage,G.loading,showWallDetails,hideRoof,cutaway,showStrips,selected,$('roofLayoutLayer').value]);
       let scene;if(sceneCache&&sceneKey===sceneKeyCache){scene=sceneCache;sceneStats.hits++;}else{
-      const wallModel=(showWallDetails||!isPref())?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&['cladding','gableOmega'].includes(s.kind))]:ProjectSpecs.facade(planStructure());items.push(...planVerandaPosts());if(wallModel)$('roofHint').textContent='Sol sürükle: döndür · Tekerlek: yakınlaş · Shift/orta tuş: kaydır · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId)items.push(...verandaStructure(z));
+      const wallModel=(showWallDetails||!isPref())?Wall3D.build():null;const items=wallModel?[...wallModel.surfaces,...planStructure().filter(s=>!hideRoof&&['cladding','gableOmega'].includes(s.kind))]:ProjectSpecs.facade(planStructure());items.push(...planVerandaPosts());if(window.PlanVerandaBeams)items.push(...PlanVerandaBeams.build(G));if(wallModel)$('roofHint').textContent='Sol sürükle: döndür · Tekerlek: yakınlaş · Shift/orta tuş: kaydır · '+(wallModel.warnings.join(' ')||'Plan ölçülerinden üretilir; sürgü ile döndürün.');G.roofs.forEach(z=>{if(hideRoof)return;if(z.sourceRoomId)items.push(...verandaStructure(z));
         if(z.parapet)items.push(...ParapetOptions.band(z,G.roofs,C,m.parapetLayout));
       });
       const ceiling=CeilingPanels.build();if(!hideRoof)items.push(...ceiling.surfaces);
       if(!hideRoof)m.faces.forEach(f=>{const z=G.roofs.find(z=>z.id===f.zoneId),view=C.roofLayerView(f,z,cutaway,!!G.opt.osb);items.push(...view.surfaces);if(!view.top)return;f=view.top;if(z.material==='trapez')items.push(...C.trapezSurfaces(f).map(item=>({...item,color:roofColor(z.id),shade:roofShade(f)*(item.profileShade||1)})));else items.push({poly:f.poly.map(p=>({...p,z:C.height(f,p)})),color:roofColor(z.id),zone:z.id,shade:roofShade(f),roof:true});});
-      if(!hideRoof&&!cutaway){const rain=RainDrainage.mesh(m,G.roofs,C,G.rainDrainage);items.push(...fasciaSurfaces(m),...soffitSurfaces(m),...trimSurfaces(m),...rain.items);if(rain.warnings.length)$('roofHint').textContent+=' · Dere / iniş: '+rain.warnings.join(' ');}if(cutaway&&!hideRoof)$('roofHint').textContent='3B kesit · Üst örtü → nem bariyeri / membran → OSB (yalnız seçilen katmanlar) · Kalınlıklar temsili; metraj değişmez.';
+      if(!hideRoof&&!cutaway){const rain=RainDrainage.mesh(m,G.roofs,C,G.rainDrainage);items.push(...fasciaSurfaces(m),...soffitSurfaces(m),...trimSurfaces(m).filter(i=>!window.MountedSoffit||i.kind!=="vergeBottom"),...rain.items);if(rain.warnings.length)$('roofHint').textContent+=' · Dere / iniş: '+rain.warnings.join(' ');}if(cutaway&&!hideRoof)$('roofHint').textContent='3B kesit · Üst örtü → nem bariyeri / membran → OSB (yalnız seçilen katmanlar) · Kalınlıklar temsili; metraj değişmez.';
       scene=FoundationData.compose(items,[...(!hideRoof&&!cutaway&&showStrips?panelEdges3D(m,selected,$('roofLayoutLayer').value):[]),...(hideRoof||cutaway?[]:edges3D(m)),...(hideRoof?[]:ceiling.lines)],G.foundation);
 
        if(window.Paint3D)scene.items=Paint3D.decorate(scene.items);scene.points=scene.items.flatMap(i=>i.poly);scene.hint=$('roofHint').textContent;sceneCache=scene;sceneKeyCache=sceneKey;sceneStats.builds++;
