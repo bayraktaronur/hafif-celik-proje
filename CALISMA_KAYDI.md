@@ -1,5 +1,13 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 25 Kasım 2026 — VIEW-197 tamam · Pafta tasarımları ve alt başlıklar
+
+Prefabrik taslak 197. Beş seçenek: Teknik çizim, Sıcak eskiz, Mimari sunum, Gri ve ahşap, Siyah beyaz. Görünüş adları çizimin altında ortalı: Ön/Arka/Sol yan/Sağ yan görünüş. Teknik seçenekte üst görünüş paralel aksonometrik, diğerlerinde perspektif; cepheler paralel. Teknik çıktı beyaz yüzeyler, siyah görünür kenarlar ve panel sınırları kullanır. Alt antet: pafta adı, pafta no, ölçek, izdüşüm, sayfa/boyut. Ölçeksiz çıktı; tam ISO uygunluk veya ölçülendirilmiş imalat paftası iddiası yok.
+
+[Beş tasarım testi](taslaklar/odak-atolyesi/elevation-styles-check.cjs): başlık konumları, teknik siyah-beyaz piksel kontrolü, beş paralel teknik kamera, proje/kamera/görünüm korunması. Önceki PNG/yazdırma testi korunur. Düzenleme referansları: [ISO 7200 antet alanları](https://www.iso.org/standard/35446.html), [ISO 5456-2 dik izdüşüm](https://www.iso.org/standard/11502.html). Tam standart metni incelenmedi; yerleşim tasarım kararıdır.
+
+SUN-196 yan sundurma eğimi ve Excel karşılaştırması açık. Kullanıcının tarayıcıda yaptığı son çatı ekleri ayrıca dosyaya aktarılmadı; pafta açık modelden üretilir. Diğer açık işler korunur.
+
 ## 25 Kasım 2026 — VIEW-196 tamam · Beş görünüş paftası
 
 Prefabrik taslak 196: başlangıç izdüşümü Perspektif. 3B → Çıktı → Görünüş çıkart ile üstte hafif üst çapraz perspektif, altta dört paralel cephe; ön yönü seçimi, PNG ve A3 yatay yazdır/PDF akışı. Pafta ölçeksiz; cepheler ayrı kadraja sığar. Güncel açık modelden üretilir, kayıtlı bakışlar/proje geometrisi ve mevcut kamera korunur. [Tarayıcı testi](taslaklar/odak-atolyesi/elevation-sheet-check.cjs): başlangıç seçimi, beş kamera açısı, model/kamera korunması, PNG indirme, yazdırma sayfası ve odağın geri dönmesi. Pafta görsel kontrolü geçti.
