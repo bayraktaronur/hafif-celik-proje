@@ -1,5 +1,13 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 26 Kasım 2026 — RAIN-201 tamam · 3B yağmur inişi düzenleme
+
+Prefabrik taslak 201. Model > İnişleri düzenle: üst işaret veya boru gövdesinden seçim, dere güzergâhına X/Y bağlı sürükleme, ölçülü konum, dereye tıklayarak ekleme, silme. Dirsek/boru bir bütün; taşıma önizlemesi, köşe uç payı/direk hizası yakalama, Escape iptali. Arkadaki inişler düzenleme işaretleriyle açıkça gösterilir. Gezinme modu kamerayı korur.
+
+Mevcut rainDrainage.runs custom positions ve Studio.edit kullanılır; silinen otomatik iniş yeniden üretilmez. drainage-core.js ve tüm hesap tarifleri değişmedi. Test: başlangıç tüm proje/yükleme/çatı sonuçları aynı; sürükleme ve mesafe, ekle/sil, tek adım geri al/yinele, JSON Kaydet indirme yolu, yeniden yükleme ve proje açma, geçersiz konum ve Escape iptali. [Tekrarlanabilir tarayıcı kontrolü](taslaklar/odak-atolyesi/drainage-edit-check.cjs) uygulama, proje ve önceki uygulama yollarını argüman olarak alır. Yerel Tuna kontrolünde 47 yükleme satırı aynı; iniş adedi ekle/sil ile beklenen şekilde değişir, dere uzunluğu korunur.
+
+Kaynak kod ve bu kayıt GitHub aktarımına dahildir. Son müşteri çizimi yereldedir; önceki otomatik onay incelemesinin istediği müşteri çizimi yayın izni alınmadığı için çizim depoya kopyalanmaz. Yerel çıktı: outputs/Tuna92-montaj.html; aynı otomatik kayıt anahtarı korunur. DETAIL-199 kapama referansları, SUN-196 eğim/Excel karşılaştırması ve diğer açık işler korunur.
+
 ## 25 Kasım 2026 — VIS-200 · Montaj görünümü ve PVC doğrama
 
 Taslak 200 kaynak kodu. Saçak altı montaj yüzeyleri örtü sınırı eksi taşıyıcı alan birleşiminden üretilir. Eski taşan alın alt dönüş yüzeyi yalnız 3B sahneden çıkarılır; üretim/geometri/metraj hesapları değiştirilmez. Yerel önce/sonra tarayıcı kontrolünde bütün LoadingList satırları, RoofStudio.summary ve proje durumu birebir aynı.
