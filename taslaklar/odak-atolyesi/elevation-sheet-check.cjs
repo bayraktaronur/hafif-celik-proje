@@ -1,0 +1,20 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const {chromium}=require(require.resolve('playwright',{paths:[path.dirname(process.execPath)]}));
+(async()=>{const b=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});try{
+const p=await b.newPage({viewport:{width:1500,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
+await p.goto(require('node:url').pathToFileURL(path.join(__dirname,'prefabrik.html')).href);
+assert.equal(await p.evaluate(()=>Camera3D.state.projection),'perspective');assert.equal(await p.inputValue('#roofProjection'),'perspective');
+await p.evaluate(d=>Studio.loadProject(d),JSON.parse(fs.readFileSync(path.join(__dirname,'../../cizimler/2026-11-25-tuna92-dwg-kontrol.json'),'utf8')));
+await p.click('#single-model');await p.click('#roof-task-output');
+const before=await p.evaluate(()=>({project:Studio.snapshot(),camera:RoofStudio.getCamera()}));
+await p.click('#roofElevationSheet');await p.waitForFunction(()=>!document.getElementById('elevationPNG').disabled);
+assert.deepEqual(await p.evaluate(()=>({project:Studio.snapshot(),camera:RoofStudio.getCamera()})),before);
+const result=await p.evaluate(()=>{const c=document.createElement('canvas');return ElevationSheet.render(c,90);});
+assert.deepEqual(result.map(r=>[r.yaw,r.pitch,r.projection]),[[125,25,'perspective'],[90,0,'parallel'],[270,0,'parallel'],[180,0,'parallel'],[0,0,'parallel']]);
+assert.ok(result.every(r=>r.triangles>0));
+const download= p.waitForEvent('download');await p.click('#elevationPNG');assert.equal((await download).suggestedFilename(),'gorunus-paftasi.png');
+const popupPromise=p.waitForEvent('popup');await p.click('#elevationPrint');const popup=await popupPromise;await popup.waitForLoadState();assert.equal(await popup.title(),'Görünüş paftası');await popup.close();
+await p.click('#elevationClose');assert.equal(await p.evaluate(()=>document.activeElement.id),'roofElevationSheet');
+await p.evaluate(()=>RoofStudio.setCamera({...RoofStudio.getCamera(),projection:'parallel'}));await p.click('#roofElevationSheet');await p.waitForFunction(()=>!document.getElementById('elevationPNG').disabled);assert.equal(await p.evaluate(()=>RoofStudio.getCamera().projection),'parallel');
+assert.deepEqual(errors,[]);console.log('PASS perspective default, five orientations, camera/project preservation, PNG download, print page, focus return',result.map(r=>({label:r.label,bounds:r.bounds})));
+}finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1});

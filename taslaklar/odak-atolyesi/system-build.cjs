@@ -20,6 +20,7 @@ function entries(folder, html) {
     let page = html.replace('<html lang="tr"', '<html lang="tr" data-system="' + system + '"')
       .replace(/<title>[^<]*<\/title>/, '<title>Plan Studio · ' + label + ' taslağı</title>');
     if (system === 'prefabrik') {
+      page = page.replace('</body>', '<script src="elevation-sheet.js"></script></body>');
       page = page.replace('Prefabrik & hafif çelik tasarım','Prefabrik panel tasarımı')
         .replace(/<button[^>]+id="hcBtn"[^>]*>[^<]*<\/button>/,'')
         .replace('id="canvasSystem">Hafif çelik','id="canvasSystem">Prefabrik panel')

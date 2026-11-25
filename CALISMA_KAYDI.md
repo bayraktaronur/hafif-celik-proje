@@ -1,5 +1,11 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 25 Kasım 2026 — VIEW-196 tamam · Beş görünüş paftası
+
+Prefabrik taslak 196: başlangıç izdüşümü Perspektif. 3B → Çıktı → Görünüş çıkart ile üstte hafif üst çapraz perspektif, altta dört paralel cephe; ön yönü seçimi, PNG ve A3 yatay yazdır/PDF akışı. Pafta ölçeksiz; cepheler ayrı kadraja sığar. Güncel açık modelden üretilir, kayıtlı bakışlar/proje geometrisi ve mevcut kamera korunur. [Tarayıcı testi](taslaklar/odak-atolyesi/elevation-sheet-check.cjs): başlangıç seçimi, beş kamera açısı, model/kamera korunması, PNG indirme, yazdırma sayfası ve odağın geri dönmesi. Pafta görsel kontrolü geçti.
+
+SUN-196 yan sundurma eğimi ve ardından Excel karşılaştırması açık. SUN-198 100×100 mm kesit onayı ve SUN-197 hizalama korunur. Kullanıcının tarayıcıda eklediği çatı değişiklikleri bu teslimde çizim dosyasına aktarılmadı; uygulama açık projeden pafta alır. Diğer açık işler korunur.
+
 ## 25 Kasım 2026 — SUN-198 tamam · Veranda kolon/direk kesiti
 
 Kullanıcı kesinleştirdi: veranda saçak altı kolon ve direkleri 100 mm × 100 mm (10 × 10 cm) olacak. Önceki 100 cm ifadesi birim yazım hatasıdır. Mevcut 2B/3B model ve yükleme hesabı bu kesiti kullanır; geometri değişmedi. Uygulama sürümü 195. SUN-197 merkez hizalaması korunur. SUN-196 yan sundurma eğimi ve ardından malzeme/Excel karşılaştırması açık kalır.
