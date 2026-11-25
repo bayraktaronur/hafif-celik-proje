@@ -1,5 +1,11 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+## 26 Kasım 2026 — DOOR-203 tamam · Özgün çelik kapı bağlantısı
+
+Taslak 203: katalog kimliği olmayan eski dış kapı (kapiTip dis) kaydı, özgün çelik kapı adaptörüne bağlandı. Açık katalog/style seçimi önceliklidir; kaynak 90/205 ölçü, pano, çakışma ve duvar kalınlığı korumaları devam eder. Orijinal referans: referanslar/2026-10-26-celik-kapi/250cm-280cm-300cm-celik-kapi.stl; SHA256 fd5cdbcbb14800b0950c5c443e5b00c715d8bd2c73ea5c8106752b693ac8472b doğrulandı.
+
+legacy-steel-door-check.cjs: özgün steel-280 modeli ve 9000 üzeri kaynak yüzeyi, çift gösterim yok, proje/47 yükleme satırı/çatı özeti aynı, uyumsuz ölçüde şematik dönüş ve açık PVC katalog önceliği geçti. Çizim verisi değiştirilmedi. Kaynak kod GitHub aktarımına dahildir; son müşteri çizimi yerelde, önceki yayın izni bekleme durumu korunur. RAIN-202 ve önceki açık işler korunur.
+
 ## 26 Kasım 2026 — RAIN-202 tamam · Otomatik montaj yüzeyi yakalama
 
 Prefabrik taslak 202. Sürüklerken öncelik: veranda direği, köşe direği, H/H3/X, duvar. Aynı 3B modelin düşey yüzeylerinden aday üretilir; dereye göre önünde duvar/parça olan hedef elenir. Direk/H yakalama ekran üzerinde 16 piksel ve dünyada en fazla 35 cm; duvar sürekli yüzey hedefidir. Yeşil yüzey ve hedef adı gösterilir. Üst ağız dere hattında kalır, düşey boru/dirsekler montaj yüzeyine olan mesafeyi kullanır.

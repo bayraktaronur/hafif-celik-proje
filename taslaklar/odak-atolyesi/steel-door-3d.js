@@ -7,7 +7,9 @@
   if(!prefab)return;
   for(const o of holes){
    const e=o.e,cat=window.OpeningCatalog?.find(c=>c.id===e.catalogId);
-   const style=cat?.style||e.style||e.kapiTip,family=({steel:'steel',sheet:'sheet',al:'al-pvc',pvc:'al-pvc'})[style];
+   // Legacy imported exterior doors predate catalogue IDs. Use the supplied
+   // steel assembly, subject to the same size/panel/overlap checks below.
+   const style=cat?.style||e.style||(e.kapiTip==='dis'?'steel':e.kapiTip),family=({steel:'steel',sheet:'sheet',al:'al-pvc',pvc:'al-pvc'})[style];
    if(e.tip_!=='kapi'||!family)continue;
    const list=family==='steel'?(window.SteelDoorSTLModels||[]):(window.OtherDoorSTLModels||[]).filter(m=>m.family===family);
    const mesh=list.find(m=>m.height===height),template=mesh||list[0],reasons=[],label=({steel:'Çelik kapı',sheet:'Sac kapı',al:'Alüminyum kapı',pvc:'PVC kapı'})[style];
