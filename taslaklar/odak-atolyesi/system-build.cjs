@@ -25,6 +25,7 @@ function entries(folder, html) {
     let page = html.replace('<html lang="tr"', '<html lang="tr" data-system="' + system + '"')
       .replace(/<title>[^<]*<\/title>/, '<title>Plan Studio · ' + label + ' taslağı</title>');
     if (system === 'prefabrik') {
+      page = page.replace('<script src="single-engine.js">','<script src="drainage-mount.js"></script><script src="single-engine.js">');
       page = page.replace('</body>', '<script src="drainage-edit-3d.js"></script><script src="mounted-soffit.js"></script><script src="pvc-opening-3d.js"></script><script src="plan-veranda-beams.js"></script><script src="roof-hatch.js"></script><script src="elevation-sheet.js"></script></body>');
       page = page.replace('Prefabrik & hafif çelik tasarım','Prefabrik panel tasarımı')
         .replace(/<button[^>]+id="hcBtn"[^>]*>[^<]*<\/button>/,'')

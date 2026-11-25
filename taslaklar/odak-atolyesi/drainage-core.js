@@ -3,7 +3,7 @@
  'use strict';
  const clone=x=>JSON.parse(JSON.stringify(x)),defaults={version:1,color:'#ecece7',outlet:5,wallGap:6,runs:{}};
  const settings=v=>({...clone(defaults),...clone(v||{}),runs:clone(v?.runs||{})});
- function validate(v){if(v==null)return;if(v.version!==1||!/^#[0-9a-f]{6}$/i.test(v.color)||!Number.isFinite(v.outlet)||v.outlet<0||v.outlet>300||!Number.isFinite(v.wallGap)||v.wallGap<4.5||v.wallGap>100||!v.runs||typeof v.runs!=='object'||Array.isArray(v.runs))throw Error('Dere / iniş ayarları geçersiz.');if(Object.keys(v.runs).length>500)throw Error('En fazla 500 saçak ayarı saklanabilir.');for(const c of Object.values(v.runs)){if(typeof c.enabled!=='boolean'||!['both','start','end','custom','none'].includes(c.mode)||!Array.isArray(c.positions)||c.positions.length>30||c.positions.some(p=>!Number.isFinite(p)||p<0||p>20000))throw Error('İniş konumları geçersiz.');}}
+ function validate(v){if(v==null)return;root.RainMount?.validate(v);if(v.version!==1||!/^#[0-9a-f]{6}$/i.test(v.color)||!Number.isFinite(v.outlet)||v.outlet<0||v.outlet>300||!Number.isFinite(v.wallGap)||v.wallGap<4.5||v.wallGap>100||!v.runs||typeof v.runs!=='object'||Array.isArray(v.runs))throw Error('Dere / iniş ayarları geçersiz.');if(Object.keys(v.runs).length>500)throw Error('En fazla 500 saçak ayarı saklanabilir.');for(const c of Object.values(v.runs)){if(typeof c.enabled!=='boolean'||!['both','start','end','custom','none'].includes(c.mode)||!Array.isArray(c.positions)||c.positions.length>30||c.positions.some(p=>!Number.isFinite(p)||p<0||p>20000))throw Error('İniş konumları geçersiz.');}}
  function runs(model,zones,C){
   const out=[];
   for(const e of model.edges.filter(e=>e.type==='eave')){
@@ -43,7 +43,9 @@
    const inset=Math.min(r.len/2,Math.max(20,r.overhang+8)),[a,b]=automaticOffsets(r,inset,r.len-inset);
    const positions=opt.mode==='none'?[]:opt.mode==='custom'?opt.positions:opt.mode==='start'?[a]:opt.mode==='end'?[b]:b-a<12?[(a+b)/2]:[a,b];
    for(const offset of positions){if(offset<4.5||offset>r.len-4.5){warnings.push(r.label+': '+offset+' cm iniş konumu saçak dışında; konumu düzenleyin.');continue;}if(r.pipes.some(p=>Math.abs(p.offset-offset)<12)){warnings.push(r.label+': inişler birbirine çok yakın.');continue;}
-    const wall=wallDistance(r,offset);
+    const mounted=root.RainMount?.distance(r,offset,cfg);
+    if(opt.mounts?.[String(offset)]&&mounted==null)warnings.push(r.label+': kayıtlı montaj yüzeyi değişti; inişi yeniden yakalayın.');
+    const wall=mounted??wallDistance(r,offset);
     if(wall-cfg.wallGap<9.19512){warnings.push(r.label+': saçak mesafesi bu STL dirseğine dar geliyor; iniş yerleşimini kontrol edin.');continue;}
     const top=r.p.z+1,extra=Math.max(0,wall-cfg.wallGap-9.19512),height=top-251.0739746+216-extra-(cfg.outlet+13);
     if(height<15){warnings.push(r.label+': iniş için yeterli düşey mesafe yok; alt uç kotunu kontrol edin.');continue;}

@@ -1,5 +1,13 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 26 Kasım 2026 — RAIN-202 tamam · Otomatik montaj yüzeyi yakalama
+
+Prefabrik taslak 202. Sürüklerken öncelik: veranda direği, köşe direği, H/H3/X, duvar. Aynı 3B modelin düşey yüzeylerinden aday üretilir; dereye göre önünde duvar/parça olan hedef elenir. Direk/H yakalama ekran üzerinde 16 piksel ve dünyada en fazla 35 cm; duvar sürekli yüzey hedefidir. Yeşil yüzey ve hedef adı gösterilir. Üst ağız dere hattında kalır, düşey boru/dirsekler montaj yüzeyine olan mesafeyi kullanır.
+
+Hedef run.mounts[offset] içinde tür ve yüzey kimliği olarak kaydedilir; Studio.edit ile tek geri alma adımıdır. Eksilen/değişen hedef için uyarı verilir. Eski sayısal dere penceresi mevcut hedefleri korur. Üretim reçeteleri değişmedi; sadece bağlı inişin yerleşim mesafesi için isteğe bağlı yüzey girdisi eklendi, hedef bulunmayan eski projelerin hesabı aynı. 47 yükleme satırı/çatı özeti başlangıçla eşit. [Kontrol](taslaklar/odak-atolyesi/drainage-mount-check.cjs): dört kategori otomatik seçimi, gerçek fareyle direğe sürükleme, dört yüzeyin mesafe eşitliği, kayıt/yeniden açma ve geri al/yinele. Önceki RAIN-201 ekle/sil/JSON indirme/Escape kontrolleri de tekrarlandı.
+
+Uygulama kaynakları ve kayıtlar GitHub aktarımına dahil; son müşteri çizimi önceki yayın izni bekleme durumu nedeniyle yerelde kalır. Yerel outputs/Tuna92-montaj.html aynı otomatik kayıt anahtarıyla güncellendi. DETAIL-199, SUN-196 ve diğer açık işler korunur.
+
 ## 26 Kasım 2026 — RAIN-201 tamam · 3B yağmur inişi düzenleme
 
 Prefabrik taslak 201. Model > İnişleri düzenle: üst işaret veya boru gövdesinden seçim, dere güzergâhına X/Y bağlı sürükleme, ölçülü konum, dereye tıklayarak ekleme, silme. Dirsek/boru bir bütün; taşıma önizlemesi, köşe uç payı/direk hizası yakalama, Escape iptali. Arkadaki inişler düzenleme işaretleriyle açıkça gösterilir. Gezinme modu kamerayı korur.
