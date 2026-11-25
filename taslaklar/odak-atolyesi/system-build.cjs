@@ -13,6 +13,7 @@ function engine(source) {
   replace("window.setSistem=function(v,silent){", "window.setSistem=function(v,silent){\n    if(draftSystem && v!==draftSystem)return;");
   source = require('./veranda-posts-build.cjs')(source);
   source = require('./technical-output-build.cjs')(source);
+  source = require('./roof-hatch-build.cjs')(source);
   return "const draftSystem = document.documentElement.dataset.system || '';\nfunction draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : key; }\n" + source;
 }
 
@@ -21,7 +22,7 @@ function entries(folder, html) {
     let page = html.replace('<html lang="tr"', '<html lang="tr" data-system="' + system + '"')
       .replace(/<title>[^<]*<\/title>/, '<title>Plan Studio · ' + label + ' taslağı</title>');
     if (system === 'prefabrik') {
-      page = page.replace('</body>', '<script src="elevation-sheet.js"></script></body>');
+      page = page.replace('</body>', '<script src="roof-hatch.js"></script><script src="elevation-sheet.js"></script></body>');
       page = page.replace('Prefabrik & hafif çelik tasarım','Prefabrik panel tasarımı')
         .replace(/<button[^>]+id="hcBtn"[^>]*>[^<]*<\/button>/,'')
         .replace('id="canvasSystem">Hafif çelik','id="canvasSystem">Prefabrik panel')

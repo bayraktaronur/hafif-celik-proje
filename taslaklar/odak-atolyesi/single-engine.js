@@ -7380,7 +7380,7 @@ window.Wall3D={build,panelColor};
     const scale=Math.min(out.width/w,out.height/h),dx=(out.width-w*scale)/2,dy=(out.height-h*scale)/2,p=Camera3D.project(fit?Presentation3D.framingPoints(sceneCache.points):sceneCache.points,w,h,fit?{padding:[64,64],fill:.96}:{}),project=v=>{const q=p(v);return {...q,x:dx+q.x*scale,y:dy+q.y*scale};};
     if(p.matrix){project.matrix=p.matrix.map((v,i)=>i%4===0?v*w*scale/out.width:i%4===1?v*h*scale/out.height:v);project.eye=p.eye;project.perspective=p.perspective;}
     const ctx=out.getContext('2d');if(!ctx)throw Error('PNG tuvali oluşturulamadı.');
-    if(!Scene3D.render(ctx,out.width,out.height,sceneCache.items,sceneCache.edges,project,{exactPixels:true,background:options.background,lineScale:scale,technical:!!options.technical}))throw Error('Yüksek çözünürlüklü çıktı için 3D grafik desteği kullanılamıyor.');
+    if(!Scene3D.render(ctx,out.width,out.height,sceneCache.items,[...sceneCache.edges,...(options.technical&&!hideRoof&&!cutaway&&window.RoofHatch?RoofHatch.edges(model(),G.roofs):[])],project,{exactPixels:true,background:options.background,lineScale:scale,technical:!!options.technical}))throw Error('Yüksek çözünürlüklü çıktı için 3D grafik desteği kullanılamıyor.');
     let x=Infinity,y=Infinity,X=-Infinity,Y=-Infinity;for(const v of sceneCache.points){const q=project(v);x=Math.min(x,q.x);y=Math.min(y,q.y);X=Math.max(X,q.x);Y=Math.max(Y,q.y);}
     return {width:out.width,height:out.height,bounds:{x,y,X,Y},triangles:Scene3D.stats.triangles,presentation:Presentation3D.active()};
    }finally{Object.assign(Camera3D.state,camera);Object.assign(Scene3D.state,display);}

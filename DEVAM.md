@@ -1,5 +1,11 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+## 25 Kasım 2026 — VIEW-198 tamam · Çatı kaplaması taraması
+
+Prefabrik taslak 198. Teknik pafta her çatı bölümünün kaplamasına bağlı sembolik yüzey taraması üretir: sandviç/tek kat/trapez eğim yönünde çizgiler; metal kiremit sıralı, shingle şaşırtmalı. Çatı yüzey sınırında kesilir, derinlik kontrolüyle gizlenen yüzey çizgileri örtülür. Tarama aralıkları gösterim amaçlıdır; üretici profil geometrisi veya metraj değildir. Bilinmeyen malzemeye tarama uydurulmaz. [Kontrol](taslaklar/odak-atolyesi/roof-hatch-check.cjs): beş malzeme, 0/37/90 derece, sınırlar ve eğim yönü. Beş pafta tarayıcı testi ve Tuna görsel kontrolü geçti.
+
+DETAIL-199 açık: kullanıcı köşe direği kapamaları ve diğer bitişlerin görünmesini istedi. Mevcut model parçaları korunur; gerçek kapama detayları doğrulanmadı. Yerel DWG incelemesinde makas ve sundurma detayları görüldü; dört cephe/kapama görünüşü henüz doğrulanmadı. Kullanıcıdan varsa ayrı cephe/kapama çizimi istendi. SUN-196 yan eğim ve Excel karşılaştırması açık. Tarayıcıdaki son kullanıcı çatı ekleri ayrıca dosyaya aktarılmadı; diğer açık işler korunur.
+
 ## 25 Kasım 2026 — VIEW-197 tamam · Pafta tasarımları ve alt başlıklar
 
 Prefabrik taslak 197. Beş seçenek: Teknik çizim, Sıcak eskiz, Mimari sunum, Gri ve ahşap, Siyah beyaz. Görünüş adları çizimin altında ortalı: Ön/Arka/Sol yan/Sağ yan görünüş. Teknik seçenekte üst görünüş paralel aksonometrik, diğerlerinde perspektif; cepheler paralel. Teknik çıktı beyaz yüzeyler, siyah görünür kenarlar ve panel sınırları kullanır. Alt antet: pafta adı, pafta no, ölçek, izdüşüm, sayfa/boyut. Ölçeksiz çıktı; tam ISO uygunluk veya ölçülendirilmiş imalat paftası iddiası yok.
