@@ -1,5 +1,9 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 25 Kasım 2026 — SUN-198 tamam · Veranda kolon/direk kesiti
+
+Kullanıcı kesinleştirdi: veranda saçak altı kolon ve direkleri 100 mm × 100 mm (10 × 10 cm) olacak. Önceki 100 cm ifadesi birim yazım hatasıdır. Mevcut 2B/3B model ve yükleme hesabı bu kesiti kullanır; geometri değişmedi. Uygulama sürümü 195. SUN-197 merkez hizalaması korunur. SUN-196 yan sundurma eğimi ve ardından malzeme/Excel karşılaştırması açık kalır.
+
 ## 25 Kasım 2026 — SUN-197 · Yan veranda merkez hizası
 
 SUN-197 tamam. Kullanıcı talimatıyla alt veranda kirişi w16_0 duvarın n11 merkezine bağlandı; n24 direği 559,75 cm'den 564,75 cm'ye taşındı. DWG'den bilinçli 5 cm revizyon. Yan kenar 241 → 246 cm, veranda alanı 3,08115 m². 2B birleşim ve 3B direk merkezi 564,75 cm doğrulandı; 52 panel ve 17 açıklık korunuyor. Uygulama sürümü 195; yalnız müşteri çizimi revize edildi.
