@@ -1,5 +1,9 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 26 Kasım 2026 — JOINERY-204 açık · Özgün sürgü sistemi
+
+Fıratpen özgün profil/imalat sistemi veya mevcut SketchUp Doğrama Atölyesi Egepen kapı, pencere, sürgü kaynaklarının Plan Studio içinde kullanılması araştırılacak. Eklenti ve Legend/Legend Sürme/HS76 dosyaları bulundu. [Ön araştırma ve kaynaklar](analizler/2026-11-26-surgu-sistemi-arastirma.md). Tam doğrulama/aktarım bekliyor. 26 Kasım 09:00 için tek seferlik hatırlatma kuruldu. Uygulama 203, çizim ve hesaplar değişmedi; önceki açık işler ve müşteri çizimi yayın izni bekleme durumu korunur.
+
 ## 26 Kasım 2026 — DOOR-203 tamam · Özgün çelik kapı bağlantısı
 
 Taslak 203: katalog kimliği olmayan eski dış kapı (kapiTip dis) kaydı, özgün çelik kapı adaptörüne bağlandı. Açık katalog/style seçimi önceliklidir; kaynak 90/205 ölçü, pano, çakışma ve duvar kalınlığı korumaları devam eder. Orijinal referans: referanslar/2026-10-26-celik-kapi/250cm-280cm-300cm-celik-kapi.stl; SHA256 fd5cdbcbb14800b0950c5c443e5b00c715d8bd2c73ea5c8106752b693ac8472b doğrulandı.
