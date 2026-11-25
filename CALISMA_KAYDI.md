@@ -1,5 +1,13 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 25 Kasım 2026 — SUN-195 · Ön sundurma 3B direkleri
+
+Taslak 195. SUN-195 tamam: ana çatı altında kalan ön sundurmanın iki serbest direği 3B çizilir. Mevcut yan sundurmanın iki serbest direği de aynı kuralla görünür. Kesit 100×100 mm, yükseklik 2800 mm; bağlı veranda çatısının zaten çizdiği direkler tekrarlanmaz. Direk geometrisi mevcut yükleme hesabını kullanır. [Tarayıcı kontrolü](taslaklar/odak-atolyesi/veranda-posts-check.cjs): dört direk, ön iki direğin ölçüleri, 3B açılışı, yeniden yükleme ve malzeme miktarlarının değişmemesi.
+
+SUN-196 açık: kullanıcı yan sundurmanın eğimini netleştirecek; ardından malzeme listesi yeniden çıkarılacak ve verilen Excel ile karşılaştırılacak. Bu teslimde karşılaştırma yenilenmedi. Önceki açık işler korunur.
+
+[DWG esaslı Tuna92 kontrol planı](cizimler/2026-11-25-tuna92-dwg-kontrol.json) ortak depoya alındı. Kaynak: bu sohbetin outputs/Tuna92-proje.json dosyası; tarayıcıda sonradan yapılmış kullanıcı değişikliklerini içerdiği doğrulanmadı. SHA-256: eb71746ec5385ed2bc7b814a0dc1321296bed77c7bbcefb8a0e2430b820aa657.
+
 ## 17 Kasım 2026 — SAY-194 · İmalat sayımı
 
 250 ve 280 cm örneklerinde 39 satırın Excel aktarımı doğrulandı. Dış stok pano, iç kapı panel eni ve metal sevk farklarının atölye incelemesi açık. [Sayım raporu](analizler/2026-11-17-tuna84-saglama.md).

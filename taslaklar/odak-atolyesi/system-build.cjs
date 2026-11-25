@@ -11,6 +11,7 @@ function engine(source) {
   replace("original.setSistem('celik',true);updateSidebar();sync();resize();", "original.setSistem(draftSystem || 'celik',true);updateSidebar();sync();resize();");
   replace("d.sistem=d.sistem||'celik';", "d.sistem=d.sistem||'celik';\n    if(draftSystem && d.sistem!==draftSystem)fail('Bu projeyi '+(d.sistem==='celik'?'Hafif Çelik':'Prefabrik')+' taslağında açın.');");
   replace("window.setSistem=function(v,silent){", "window.setSistem=function(v,silent){\n    if(draftSystem && v!==draftSystem)return;");
+  source = require('./veranda-posts-build.cjs')(source);
   return "const draftSystem = document.documentElement.dataset.system || '';\nfunction draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : key; }\n" + source;
 }
 

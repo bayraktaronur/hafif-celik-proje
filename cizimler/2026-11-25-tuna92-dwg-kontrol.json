@@ -1,0 +1,998 @@
+{
+  "v": "5",
+  "revision": "5.9.137",
+  "projectName": "Tuna 92 · SP 202600245 · DWG kontrolü",
+  "paint3D": {},
+  "dimensionReference": "outer",
+  "sheetInfo": {},
+  "loading": {
+    "adjustments": [],
+    "manual": []
+  },
+  "sistem": "prefabrik",
+  "catiYon": "dikey",
+  "opt": {
+    "windowColor": "beyaz",
+    "hCover": false,
+    "ceilingBoard": true,
+    "ceilingMode": "standard",
+    "h": 280,
+    "dis": 10,
+    "ic": 6,
+    "alciDuvar": "yok",
+    "cephe": "yok",
+    "plaka": "40x250",
+    "bindirme": 3,
+    "cepheFire": 5,
+    "cati": "besik",
+    "egim": 28.2,
+    "sacak": 30,
+    "trapezEn": 100,
+    "kaplama": "sandvic",
+    "osb": false,
+    "catiFire": 5,
+    "suRulo": 75,
+    "suBindirme": 10,
+    "parcaBoy": 200,
+    "parcaBind": 10,
+    "vidaM2": 5,
+    "inisAralik": 10,
+    "aksAcik": false
+  },
+  "n": [
+    {
+      "id": "n1",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "n2",
+      "x": 381.5,
+      "y": 0
+    },
+    {
+      "id": "n3",
+      "x": 700.25,
+      "y": 0
+    },
+    {
+      "id": "n4",
+      "x": 0,
+      "y": 251
+    },
+    {
+      "id": "n5",
+      "x": 0,
+      "y": 376.5
+    },
+    {
+      "id": "n6",
+      "x": 0,
+      "y": 627.5
+    },
+    {
+      "id": "n7",
+      "x": 0,
+      "y": 1004
+    },
+    {
+      "id": "n8",
+      "x": 700.25,
+      "y": 318.75
+    },
+    {
+      "id": "n9",
+      "x": 700.25,
+      "y": 376.5
+    },
+    {
+      "id": "n10",
+      "x": 700.25,
+      "y": 559.75
+    },
+    {
+      "id": "n11",
+      "x": 700.25,
+      "y": 564.75
+    },
+    {
+      "id": "n12",
+      "x": 700.25,
+      "y": 1004
+    },
+    {
+      "id": "n13",
+      "x": 318.75,
+      "y": 1004
+    },
+    {
+      "id": "n14",
+      "x": 381.5,
+      "y": 376.5
+    },
+    {
+      "id": "n15",
+      "x": 193.25,
+      "y": 376.5
+    },
+    {
+      "id": "n16",
+      "x": 256,
+      "y": 376.5
+    },
+    {
+      "id": "n17",
+      "x": 256,
+      "y": 251
+    },
+    {
+      "id": "n18",
+      "x": 193.25,
+      "y": 564.75
+    },
+    {
+      "id": "n19",
+      "x": 193.25,
+      "y": 627.5
+    },
+    {
+      "id": "n20",
+      "x": 318.75,
+      "y": 564.75
+    },
+    {
+      "id": "n21",
+      "x": 0,
+      "y": 1254
+    },
+    {
+      "id": "n22",
+      "x": 700.25,
+      "y": 1254
+    },
+    {
+      "id": "n23",
+      "x": 825.5,
+      "y": 318.75
+    },
+    {
+      "id": "n24",
+      "x": 825.5,
+      "y": 559.75
+    }
+  ],
+  "s": [
+    {
+      "id": "w0_0",
+      "n1": "n1",
+      "n2": "n2",
+      "k": 10,
+      "kSabit": true,
+      "dis": true,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          125.5,
+          125.5,
+          125.5,
+          62.75,
+          125.5,
+          125.5
+        ]
+      }
+    },
+    {
+      "id": "w0_1",
+      "n1": "n2",
+      "n2": "n3",
+      "k": 10,
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "w1_0",
+      "n1": "n1",
+      "n2": "n4",
+      "k": 10,
+      "kSabit": true,
+      "dis": true,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          62.75,
+          125.5,
+          62.75,
+          125.5,
+          125.5,
+          125.5,
+          125.5,
+          125.5,
+          125.5
+        ]
+      }
+    },
+    {
+      "id": "w1_1",
+      "n1": "n4",
+      "n2": "n5",
+      "k": 10,
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "w1_2",
+      "n1": "n5",
+      "n2": "n6",
+      "k": 10,
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "w1_3",
+      "n1": "n6",
+      "n2": "n7",
+      "k": 10,
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "w2_0",
+      "n1": "n3",
+      "n2": "n8",
+      "k": 10,
+      "kSabit": true,
+      "dis": true,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          125.5,
+          125.5,
+          125.5,
+          125.5,
+          125.5,
+          125.5,
+          125.5,
+          125.5
+        ]
+      }
+    },
+    {
+      "id": "w2_1",
+      "n1": "n8",
+      "n2": "n9",
+      "k": 10,
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "w2_2",
+      "n1": "n9",
+      "n2": "n10",
+      "k": 10,
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "w2_3",
+      "n1": "n10",
+      "n2": "n11",
+      "k": 10,
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "w2_4",
+      "n1": "n11",
+      "n2": "n12",
+      "k": 10,
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "w3_0",
+      "n1": "n7",
+      "n2": "n13",
+      "k": 10,
+      "kSabit": true,
+      "dis": true,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          96.5,
+          186,
+          125.5,
+          186,
+          96.25
+        ]
+      }
+    },
+    {
+      "id": "w3_1",
+      "n1": "n13",
+      "n2": "n12",
+      "k": 10,
+      "kSabit": true,
+      "dis": true
+    },
+    {
+      "id": "w4_0",
+      "n1": "n2",
+      "n2": "n14",
+      "k": 6,
+      "kSabit": true,
+      "dis": false,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          120.5,
+          125.5,
+          122.5
+        ]
+      }
+    },
+    {
+      "id": "w5_0",
+      "n1": "n5",
+      "n2": "n15",
+      "k": 6,
+      "kSabit": true,
+      "dis": false,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          125.5,
+          125.5,
+          125.5,
+          125.5,
+          62.75,
+          125.5
+        ]
+      }
+    },
+    {
+      "id": "w5_1",
+      "n1": "n15",
+      "n2": "n16",
+      "k": 6,
+      "kSabit": true,
+      "dis": false
+    },
+    {
+      "id": "w5_2",
+      "n1": "n16",
+      "n2": "n14",
+      "k": 6,
+      "kSabit": true,
+      "dis": false
+    },
+    {
+      "id": "w5_3",
+      "n1": "n14",
+      "n2": "n9",
+      "k": 6,
+      "kSabit": true,
+      "dis": false
+    },
+    {
+      "id": "w6_0",
+      "n1": "n17",
+      "n2": "n16",
+      "k": 6,
+      "kSabit": true,
+      "dis": false,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          122.5
+        ]
+      }
+    },
+    {
+      "id": "w7_0",
+      "n1": "n4",
+      "n2": "n17",
+      "k": 6,
+      "kSabit": true,
+      "dis": false,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          125.5,
+          122.5
+        ]
+      }
+    },
+    {
+      "id": "w8_0",
+      "n1": "n15",
+      "n2": "n18",
+      "k": 6,
+      "kSabit": true,
+      "dis": false,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          122.5,
+          125.5
+        ]
+      }
+    },
+    {
+      "id": "w8_1",
+      "n1": "n18",
+      "n2": "n19",
+      "k": 6,
+      "kSabit": true,
+      "dis": false
+    },
+    {
+      "id": "w9_0",
+      "n1": "n6",
+      "n2": "n19",
+      "k": 6,
+      "kSabit": true,
+      "dis": false,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          125.5,
+          59.75
+        ]
+      }
+    },
+    {
+      "id": "w10_0",
+      "n1": "n18",
+      "n2": "n20",
+      "k": 6,
+      "kSabit": true,
+      "dis": false,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          122.5,
+          125.5,
+          125.5,
+          125.5
+        ]
+      }
+    },
+    {
+      "id": "w10_1",
+      "n1": "n20",
+      "n2": "n11",
+      "k": 6,
+      "kSabit": true,
+      "dis": false
+    },
+    {
+      "id": "w11_0",
+      "n1": "n20",
+      "n2": "n13",
+      "k": 6,
+      "kSabit": true,
+      "dis": false,
+      "pnlCfg": {
+        "explicit": true,
+        "dizi": [
+          59.75,
+          125.5,
+          125.5,
+          120.5
+        ]
+      }
+    },
+    {
+      "id": "w12_0",
+      "n1": "n7",
+      "n2": "n21",
+      "k": 10,
+      "kSabit": true,
+      "tip": "veranda",
+      "dis": false
+    },
+    {
+      "id": "w13_0",
+      "n1": "n12",
+      "n2": "n22",
+      "k": 10,
+      "kSabit": true,
+      "tip": "veranda",
+      "dis": false
+    },
+    {
+      "id": "w14_0",
+      "n1": "n21",
+      "n2": "n22",
+      "k": 10,
+      "kSabit": true,
+      "tip": "veranda",
+      "dis": false
+    },
+    {
+      "id": "w15_0",
+      "n1": "n8",
+      "n2": "n23",
+      "k": 10,
+      "kSabit": true,
+      "tip": "veranda",
+      "dis": false
+    },
+    {
+      "id": "w16_0",
+      "n1": "n10",
+      "n2": "n24",
+      "k": 10,
+      "kSabit": true,
+      "tip": "veranda",
+      "dis": false
+    },
+    {
+      "id": "w17_0",
+      "n1": "n23",
+      "n2": "n24",
+      "k": 10,
+      "kSabit": true,
+      "tip": "veranda",
+      "dis": false
+    }
+  ],
+  "e": [
+    {
+      "id": "o1",
+      "tip_": "kapi",
+      "segId": "w10_0",
+      "t": 0.18725099601593626,
+      "en": 80,
+      "yuk": 200,
+      "kapiTip": "ic",
+      "penTip": "surme",
+      "ad": "ic"
+    },
+    {
+      "id": "o2",
+      "tip_": "kapi",
+      "segId": "w10_1",
+      "t": 0.0655307994757536,
+      "en": 80,
+      "yuk": 200,
+      "kapiTip": "ic",
+      "penTip": "surme",
+      "ad": "ic"
+    },
+    {
+      "id": "o3",
+      "tip_": "kapi",
+      "segId": "w5_2",
+      "t": 0.16334661354581673,
+      "en": 80,
+      "yuk": 200,
+      "kapiTip": "ic",
+      "penTip": "surme",
+      "ad": "ic"
+    },
+    {
+      "id": "o4",
+      "tip_": "kapi",
+      "segId": "w5_3",
+      "t": 0.0784313725490196,
+      "en": 80,
+      "yuk": 200,
+      "kapiTip": "ic",
+      "penTip": "surme",
+      "ad": "ic"
+    },
+    {
+      "id": "o5",
+      "tip_": "kapi",
+      "segId": "w8_0",
+      "t": 0.13280212483399734,
+      "en": 80,
+      "yuk": 200,
+      "kapiTip": "ic",
+      "penTip": "surme",
+      "ad": "ic"
+    },
+    {
+      "id": "o6",
+      "tip_": "kapi",
+      "segId": "w6_0",
+      "t": 0.1752988047808765,
+      "en": 80,
+      "yuk": 200,
+      "kapiTip": "ic",
+      "penTip": "surme",
+      "ad": "ic"
+    },
+    {
+      "id": "o7",
+      "tip_": "kapi",
+      "segId": "w2_2",
+      "t": 0.10914051841746249,
+      "en": 90,
+      "yuk": 205,
+      "kapiTip": "dis",
+      "penTip": "surme",
+      "ad": "dis"
+    },
+    {
+      "id": "o8",
+      "tip_": "kapi",
+      "segId": "w3_0",
+      "t": 0.32784313725490194,
+      "en": 180,
+      "yuk": 210,
+      "kapiTip": "surme",
+      "penTip": "surme",
+      "ad": "surme"
+    },
+    {
+      "id": "o9",
+      "tip_": "kapi",
+      "segId": "w3_1",
+      "t": 0.2549148099606815,
+      "en": 180,
+      "yuk": 210,
+      "kapiTip": "surme",
+      "penTip": "surme",
+      "ad": "surme"
+    },
+    {
+      "id": "o10",
+      "tip_": "pencere",
+      "segId": "w0_0",
+      "t": 0.3505897771952818,
+      "en": 119,
+      "yuk": 120,
+      "kapiTip": null,
+      "penTip": "surme",
+      "ad": "PVC"
+    },
+    {
+      "id": "o11",
+      "tip_": "pencere",
+      "segId": "w0_1",
+      "t": 0.20705882352941177,
+      "en": 119,
+      "yuk": 120,
+      "kapiTip": null,
+      "penTip": "surme",
+      "ad": "PVC"
+    },
+    {
+      "id": "o12",
+      "tip_": "pencere",
+      "segId": "w1_0",
+      "t": 0.26294820717131473,
+      "en": 119,
+      "yuk": 120,
+      "kapiTip": null,
+      "penTip": "surme",
+      "ad": "PVC"
+    },
+    {
+      "id": "o13",
+      "tip_": "pencere",
+      "segId": "w1_1",
+      "t": 0.26095617529880477,
+      "en": 60,
+      "yuk": 40,
+      "kapiTip": null,
+      "penTip": "surme",
+      "ad": "PVC"
+    },
+    {
+      "id": "o14",
+      "tip_": "pencere",
+      "segId": "w1_2",
+      "t": 0.13047808764940239,
+      "en": 60,
+      "yuk": 40,
+      "kapiTip": null,
+      "penTip": "surme",
+      "ad": "PVC"
+    },
+    {
+      "id": "o15",
+      "tip_": "pencere",
+      "segId": "w1_3",
+      "t": 0.34196547144754313,
+      "en": 119,
+      "yuk": 100,
+      "kapiTip": null,
+      "penTip": "surme",
+      "ad": "PVC"
+    },
+    {
+      "id": "o16",
+      "tip_": "pencere",
+      "segId": "w2_0",
+      "t": 0.403921568627451,
+      "en": 119,
+      "yuk": 120,
+      "kapiTip": null,
+      "penTip": "surme",
+      "ad": "PVC"
+    },
+    {
+      "id": "o17",
+      "tip_": "pencere",
+      "segId": "w2_4",
+      "t": 0.4359704040978941,
+      "en": 119,
+      "yuk": 120,
+      "kapiTip": null,
+      "penTip": "surme",
+      "ad": "PVC"
+    }
+  ],
+  "r": [
+    {
+      "id": "e162",
+      "sig": "n1,n14,n16,n17,n2,n4",
+      "nodeIds": [
+        "n14",
+        "n16",
+        "n17",
+        "n4",
+        "n1",
+        "n2"
+      ],
+      "area": 11.150675,
+      "cx": 208.82990996060778,
+      "cy": 152.09018007878447,
+      "ad": "Oda 1",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 208.82990996060778,
+      "ly": 152.09018007878447
+    },
+    {
+      "id": "e163",
+      "sig": "n14,n2,n3,n8,n9",
+      "nodeIds": [
+        "n8",
+        "n9",
+        "n14",
+        "n2",
+        "n3"
+      ],
+      "area": 12.0009375,
+      "cx": 540.875,
+      "cy": 188.25,
+      "ad": "Oda 2",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 540.875,
+      "ly": 188.25
+    },
+    {
+      "id": "e164",
+      "sig": "n15,n16,n17,n4,n5",
+      "nodeIds": [
+        "n17",
+        "n16",
+        "n15",
+        "n5",
+        "n4"
+      ],
+      "area": 3.2128,
+      "cx": 128,
+      "cy": 313.75,
+      "ad": "Oda 3",
+      "ozelAd": null,
+      "tip": "wc",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 128,
+      "ly": 313.75
+    },
+    {
+      "id": "e165",
+      "sig": "n15,n18,n19,n5,n6",
+      "nodeIds": [
+        "n15",
+        "n18",
+        "n19",
+        "n6",
+        "n5"
+      ],
+      "area": 4.850575,
+      "cx": 96.625,
+      "cy": 502,
+      "ad": "Oda 4",
+      "ozelAd": null,
+      "tip": "banyo",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 96.625,
+      "ly": 502
+    },
+    {
+      "id": "e166",
+      "sig": "n13,n18,n19,n20,n6,n7",
+      "nodeIds": [
+        "n19",
+        "n18",
+        "n20",
+        "n13",
+        "n7",
+        "n6"
+      ],
+      "area": 12.78845,
+      "cx": 165.32516560353287,
+      "cy": 802.2254968105987,
+      "ad": "Oda 5",
+      "ozelAd": null,
+      "tip": "mutfak",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 165.32516560353287,
+      "ly": 802.2254968105987
+    },
+    {
+      "id": "e167",
+      "sig": "n10,n23,n24,n8,n9",
+      "nodeIds": [
+        "n23",
+        "n24",
+        "n10",
+        "n9",
+        "n8"
+      ],
+      "area": 3.018525,
+      "cx": 762.875,
+      "cy": 439.25,
+      "ad": "Veranda 1",
+      "ozelAd": null,
+      "tip": "veranda",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 762.875,
+      "ly": 439.25
+    },
+    {
+      "id": "e168",
+      "sig": "n10,n11,n14,n15,n16,n18,n20,n9",
+      "nodeIds": [
+        "n11",
+        "n20",
+        "n18",
+        "n15",
+        "n16",
+        "n14",
+        "n9",
+        "n10"
+      ],
+      "area": 9.544275,
+      "cx": 446.75,
+      "cy": 470.625,
+      "ad": "Oda 6",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 446.75,
+      "ly": 470.625
+    },
+    {
+      "id": "e169",
+      "sig": "n11,n12,n13,n20",
+      "nodeIds": [
+        "n13",
+        "n20",
+        "n11",
+        "n12"
+      ],
+      "area": 16.7573875,
+      "cx": 509.5,
+      "cy": 784.375,
+      "ad": "Oda 7",
+      "ozelAd": null,
+      "tip": "",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 509.5,
+      "ly": 784.375
+    },
+    {
+      "id": "e170",
+      "sig": "n12,n13,n21,n22,n7",
+      "nodeIds": [
+        "n12",
+        "n22",
+        "n21",
+        "n7",
+        "n13"
+      ],
+      "area": 17.50625,
+      "cx": 350.125,
+      "cy": 1129,
+      "ad": "Veranda 2",
+      "ozelAd": null,
+      "tip": "veranda",
+      "lblDx": 0,
+      "lblDy": 0,
+      "duvarAlci": false,
+      "lx": 350.125,
+      "ly": 1129
+    }
+  ],
+  "annotations": [],
+  "fixtures": [],
+  "counters": [],
+  "roofs": [
+    {
+      "id": "ana92",
+      "name": "Ana beşik çatı",
+      "type": "besik",
+      "group": "ana",
+      "x": 700.25,
+      "y": 0,
+      "w": 1254,
+      "d": 700.25,
+      "h": 280,
+      "angle": 90,
+      "pitch": 28.2,
+      "ridge": 50,
+      "eaves": [
+        27,
+        27,
+        34,
+        34
+      ],
+      "material": "sandvic",
+      "width": 100,
+      "packageArea": 2.52,
+      "fire": 5,
+      "allowance": 0,
+      "maxLength": 0,
+      "lap": 20,
+      "parapet": 0,
+      "gutters": true,
+      "wallTop": 280,
+      "datum": "trim",
+      "fasciaDepth": 12
+    }
+  ],
+  "roofMaterials": [],
+  "roofAssemblies": [],
+  "ky": 280,
+  "dy": 280,
+  "fire": 10,
+  "settings": {
+    "moduleAxisSnap": true,
+    "panelDrawMode": "mixed",
+    "trussOverrides": [],
+    "snapTargets": {},
+    "moveAlign": false,
+    "moveModule": false,
+    "gridCm": 62.75,
+    "defaultK": 10,
+    "snapGrid": true,
+    "snapWall": true,
+    "elStep": 5,
+    "duvarYakala": "h",
+    "pnlEtiket": true,
+    "catiYon": "dikey",
+    "makasGoster": true,
+    "olcuModu": "panel",
+    "ortho": false,
+    "inputUnit": "panel",
+    "selectionMode": "wall",
+    "panelSync": true,
+    "freeSnapStep": 5
+  }
+}
