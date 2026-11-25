@@ -1,5 +1,13 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 25 Kasım 2026 — SUN-197 · Yan veranda merkez hizası
+
+SUN-197 tamam. Kullanıcı talimatıyla alt veranda kirişi w16_0 duvarın n11 merkezine bağlandı; n24 direği 559,75 cm'den 564,75 cm'ye taşındı. DWG'den bilinçli 5 cm revizyon. Yan kenar 241 → 246 cm, veranda alanı 3,08115 m². 2B birleşim ve 3B direk merkezi 564,75 cm doğrulandı; 52 panel ve 17 açıklık korunuyor. Uygulama sürümü 195; yalnız müşteri çizimi revize edildi.
+
+SUN-196 açık: yan çatı eğimi ardından malzeme/Excel karşılaştırması. SUN-198 açık: kullanıcı saçak altı kolon/direk kesitini “100 cm × 100 cm” yazdı; mevcut 100 mm × 100 mm ile birim farkı soruldu, yanıt beklenirken kesit değiştirilmedi. Önceki açık işler korunur.
+
+Plan: [Tuna92](cizimler/2026-11-25-tuna92-dwg-kontrol.json); kaynak outputs/Tuna92-proje.json, SHA-256 292ea0d8686a41b94eb45e1b2bcaa7d70af7bf439945a6a4416b5d816bc82def. Yerel teslim outputs/Tuna92-hizali.html; kontrol görselleri outputs/Tuna92-hizali-2B.png ve outputs/Tuna92-hizali-3B.png.
+
 ## 25 Kasım 2026 — SUN-195 · Ön sundurma 3B direkleri
 
 Taslak 195. SUN-195 tamam: ana çatı altında kalan ön sundurmanın iki serbest direği 3B çizilir. Mevcut yan sundurmanın iki serbest direği de aynı kuralla görünür. Kesit 100×100 mm, yükseklik 2800 mm; bağlı veranda çatısının zaten çizdiği direkler tekrarlanmaz. Direk geometrisi mevcut yükleme hesabını kullanır. [Tarayıcı kontrolü](taslaklar/odak-atolyesi/veranda-posts-check.cjs): dört direk, ön iki direğin ölçüleri, 3B açılışı, yeniden yükleme ve malzeme miktarlarının değişmemesi.
