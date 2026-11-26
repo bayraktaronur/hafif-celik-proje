@@ -1,5 +1,13 @@
 # Çalışma ve bilgisayar devir geçmişi
 
+## 26 Kasım 2026 — JOINERY-204 profil aktarımı · Taslak 204
+
+Egepen standart çift ray sürme: Doğrama Atölyesi kaynak kesitleri ve yerleşim formülleri aktarıldı. 12660 kasa, 12671 kanat, 12648 çıta, 24 mm cam; mm kesitleri esnetilmez. Sekiz mevcut sürgü nesnesi gösteriliyor. 3B Model > Sürgülü doğrama detayları kesit ve net profil listesi/CSV verir. Bu liste kaynak paylı kesim siparişi değildir.
+
+Kontroller: egepen-sliding-check.cjs sekiz nesne, üç farklı ölçü, sonlu geometri, çift gösterim yok, 47 yükleme satırı/proje/çatı özeti aynı, detay ekranı/CSV/Escape geçti. legacy-steel-door-check.cjs özgün çelik kapı ve açık PVC seçim önceliği geçti. Yerel teslim outputs/Tuna92-montaj.html; son müşteri çizimi GitHub kapsamı dışında korunuyor.
+
+JOINERY-204 kısmen tamam: standart sürme profil/3B aktarımı bitti; üretici donanımı (kol/kilit/tekerlek/conta/fırça), kaynak ve imalat payları, tam/yarım camlı PVC kapıların özgün sistem aktarımı AÇIK. Bunlar mevcut temsilî kapı geometrisinden üretim onayı çıkarılarak tamamlanmış sayılmaz. Kaynak ve kapsam: analizler/2026-11-26-egepen-surme-aktarimi.md. Diğer açık işler korunur.
+
 ## 26 Kasım 2026 — JOINERY-204 açık · Özgün sürgü sistemi
 
 Fıratpen özgün profil/imalat sistemi veya mevcut SketchUp Doğrama Atölyesi Egepen kapı, pencere, sürgü kaynaklarının Plan Studio içinde kullanılması araştırılacak. Eklenti ve Legend/Legend Sürme/HS76 dosyaları bulundu. [Ön araştırma ve kaynaklar](analizler/2026-11-26-surgu-sistemi-arastirma.md). Tam doğrulama/aktarım bekliyor. 26 Kasım 09:00 için tek seferlik hatırlatma kuruldu. Uygulama 203, çizim ve hesaplar değişmedi; önceki açık işler ve müşteri çizimi yayın izni bekleme durumu korunur.

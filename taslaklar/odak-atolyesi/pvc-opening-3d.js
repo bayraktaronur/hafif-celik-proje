@@ -1,7 +1,8 @@
 /* Parametric visual joinery, not a manufacturer profile or production recipe. */
 (function(){
- function append({o,r,surfaces,parts}){const e=o.e,cat=window.OpeningCatalog.find(c=>c.id===e.catalogId),style=cat?.style||e.kapiTip;
+ function append({o,r,surfaces,parts,warnings}){const e=o.e,cat=window.OpeningCatalog.find(c=>c.id===e.catalogId),style=cat?.style||e.kapiTip;
   const sliding=(e.tip_==='pencere'&&e.penTip==='surme'&&e.yuk>60)||(e.tip_==='kapi'&&(e.kapiTip==='surme'||style==='sliding'));
+  if(sliding&&window.EgepenSliding3D&&EgepenSliding3D.append({o,r,surfaces,parts,warnings}))return true;
   const pvc=['pvc-full','pvc-half'].includes(style);if(!sliding&&!pvc)return false;
   const color=window.ProjectSpecs?.windowHex()||'#ffffff',meta={kind:'opening',partId:'opening:'+e.id,openingId:e.id,schematic:true,system:sliding?'pvc-sliding':style};
   function box(x0,x1,y0,y1,z0,z1,material='pvc'){if(x1<=x0||z1<=z0)return;const p=[[x0,y0],[x1,y0],[x1,y1],[x0,y1]].map(([x,y])=>({x:r.ax+r.ux*x-r.uy*y,y:r.ay+r.uy*x+r.ux*y})),lo=p.map(v=>({...v,z:z0})),hi=p.map(v=>({...v,z:z1}));const m={...meta,material,color:material==='glass'?'#728083':material==='hardware'?'#56616b':color,alpha:material==='glass'?.32:1};surfaces.push({...m,poly:lo.slice().reverse()},{...m,poly:hi});for(let i=0;i<4;i++){const j=(i+1)%4;surfaces.push({...m,poly:[lo[i],lo[j],hi[j],hi[i]]});}}

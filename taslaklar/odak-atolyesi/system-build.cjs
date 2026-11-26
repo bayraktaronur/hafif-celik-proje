@@ -26,7 +26,7 @@ function entries(folder, html) {
       .replace(/<title>[^<]*<\/title>/, '<title>Plan Studio · ' + label + ' taslağı</title>');
     if (system === 'prefabrik') {
       page = page.replace('<script src="single-engine.js">','<script src="drainage-mount.js"></script><script src="single-engine.js">');
-      page = page.replace('</body>', '<script src="drainage-edit-3d.js"></script><script src="mounted-soffit.js"></script><script src="pvc-opening-3d.js"></script><script src="plan-veranda-beams.js"></script><script src="roof-hatch.js"></script><script src="elevation-sheet.js"></script></body>');
+      page = page.replace('</body>', '<script src="drainage-edit-3d.js"></script><script src="mounted-soffit.js"></script><script src="egepen-sliding-source.js"></script><script src="egepen-sliding-3d.js"></script><script src="egepen-sliding-ui.js"></script><script src="pvc-opening-3d.js"></script><script src="plan-veranda-beams.js"></script><script src="roof-hatch.js"></script><script src="elevation-sheet.js"></script></body>');
       page = page.replace('Prefabrik & hafif çelik tasarım','Prefabrik panel tasarımı')
         .replace(/<button[^>]+id="hcBtn"[^>]*>[^<]*<\/button>/,'')
         .replace('id="canvasSystem">Hafif çelik','id="canvasSystem">Prefabrik panel')
