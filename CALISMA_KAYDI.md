@@ -1,4 +1,9 @@
 
+## GABLE-207-AUDIT · AÇIK · 26 Kasım 2026
+
+Kullanıcı metrajın korunmasını tekrar vurguladı; 206/207 gerçek liste karşılaştırması istedi. Ayrı testte Alın V 11→14, ona bağlı aşık kapama U 11→14, 1000×3284 mm yavru sandviç panel 4→6 çıktı. Bu miktar artışı onaylanmış üretim değişikliği değildir; önceki tamam kaydı metraj korunması anlamına GELMEZ. [Denetim](analizler/2026-11-26-gable207-metraj-denetimi.md). Kullanıcının 14:39 Downloads/Balkan 92 · Görselden prefabrik plan.json kaydı çatısız (roofs boş), 40 satırı iki sürümde aynı. Ekrandaki iki çatılı JSON istendi; kesin müşteri karşılaştırması BEKLİYOR. Program ve çizim bu denetimde değiştirilmedi. Sonraki adım: çatılı dosya ile satır karşılaştırması, iç birleşim kenarının yanlış alın/kapama sayımına etkisinin çözümü. Diğer açık işler korunur.
+
+
 ## GABLE-207 · 26 Kasım 2026 · Başmakas kaplamasına yavru bağlantısı
 
 Tamamlandı, taslak 207. U ile başmakas alnına bağlanan yavru çatı artık ana çatı dış Alın V sınırında bitmez; ana başmakas kaplama/mesnet düzlemine uzanır. Eski U noktaları tekrar bağlama için korunur, gerçek w ve support bu düzleme göre üretilir. Üst zarf, alt yavru kaplamasını ana saçak taşması altında yanlışlıkla kesmez. Aynı veri 2B/3B ve metrajı besler. Reçeteler, paylar ve kesim formülleri değişmedi; düzeltilen yavru geometrisinin boy/alan/metrajı değişebilir, eski yanlış boy sabit tutulmaz.
