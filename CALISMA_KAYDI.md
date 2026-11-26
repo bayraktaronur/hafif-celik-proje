@@ -1,4 +1,9 @@
 
+## TUNA74-3D-AUDIT · 26 Kasım 2026 · Taslak 211, kısmen giderildi
+
+Çatı birleşimi örtü devamı, kiriş üst kotu ve yatay saçak altı düzeltildi. Proje, çatı hesabı ve 61 malzeme satırı aynı; yeniden açma ve yakın görünüş kontrolleri geçti. [Kanıt ve açık profil işi](analizler/2026-11-26-montaj-gorunumu211.md). Gerçek saçak/Alın V özgün 3B kaynak araması açık; montaj görselleri arşivde. Müşteri çizimi ayrı yerel kopyada, Git aktarımı yalnız kaynak ve teknik kayıt. Diğer açık işler korunur.
+
+
 ## TUNA74-3D-AUDIT · 26 Kasım 2026 · Açık
 
 Kullanıcının yakın planlarında çatı birleşim açıklığı, kiriş kotu ve gerçek saçak profili eksikliği bulundu. [Denetim](analizler/2026-11-26-veranda-3b-yakin-plan-denetimi.md). Kayıtlı projede cumba bağımsız çatı; kiriş h..h+10, direk 0..sevk boyu; saçak düz yüzey. Genel görsel test bu detayları kapsamamış. Bu adım teşhistir, düzeltme yapılmadı; hesap/malzeme listesi değişmedi. Gerçek profil bağlantısı ve yakın plan regresyonu yapılmalı. Önceki açık işler korunur.

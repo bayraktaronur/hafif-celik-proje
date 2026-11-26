@@ -1,0 +1,14 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
+const C=require('./src/roof-core.js'),window={};
+for(const name of ['mounted-soffit','plan-veranda-beams'])vm.runInNewContext(fs.readFileSync('taslaklar/odak-atolyesi/'+name+'.js','utf8'),{window});
+const zones=[C.defaults({id:'main',group:'a',x:0,y:0,w:800,d:600,type:'besik',h:250,wallTop:250,datum:'trim'}),C.defaults({id:'porch',group:'a',x:800,y:100,w:160,d:300,type:'besik',h:250,wallTop:250,datum:'trim'})];
+const raw=C.zoneFaces(zones[1])[0],cut={...raw,poly:C.clip(raw.poly,1,0,-820)},m={faces:[cut]},saved=JSON.stringify({m,zones});
+const faces=window.MountedSoffit.roofFaces(m,zones,C);
+assert(faces.some(f=>f.mountedContinuation));assert.equal(JSON.stringify({m,zones}),saved);
+const sameZone=faces.filter(f=>f.zoneId==='porch');
+assert(Math.abs(sameZone.reduce((s,f)=>s+C.area(f.poly),0)-C.zoneFaces(zones[1]).reduce((s,f)=>s+C.area(f.poly),0))<.001);
+assert.equal(window.MountedSoffit.roofFaces(m,[zones[1]],C).length,1);
+const roof={...zones[0],planVerandaBeams:['v']},G={roofs:[roof],opt:{h:280},rooms:[{id:'v',tip:'veranda',nodeIds:['a','b']}],nodes:[{id:'a',x:0,y:0},{id:'b',x:300,y:0}],segs:[{id:'s',n1:'a',n2:'b',tip:'veranda'}]};
+const beams=window.PlanVerandaBeams.build(G);assert.equal(beams.length,6);assert(beams.every(f=>f.poly.every(p=>p.z===240||p.z===250)));
+const soffits=window.MountedSoffit.build({faces:C.zoneFaces(zones[0])},[zones[0]],C);assert(soffits.length>0);assert(soffits.every(f=>f.poly.every(p=>p.z===250)));
+console.log('PASS mounted roof continuity, immutable inputs, single-roof isolation, beam top and horizontal underside');
