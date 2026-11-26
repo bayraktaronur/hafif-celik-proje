@@ -22,9 +22,9 @@
    if(m.unit==='package')add((m.name||m.material)+' — paket hesabı','Mevcut çatı metrajı','paket',m.packages,source('roof-total:'+(m.material||m.id||m.name),{roofTransfer:'cover-total',total:m}),'Mevcut çatı paket hesabı; sevk/sipariş teyidi bekliyor.');
   }
   for(const f of data.frames||[]){const z=zones.get(f.zoneId);if(!z)continue;
-   add('Makas — yerleşim',`${z.name} · mesnet açıklığı ${number(Math.hypot(f.q.x-f.p.x,f.q.y-f.p.y)*10)} mm`,'adet',1,
+   add((f.trussKind==='head'?'Baş makas':f.trussKind==='middle'?'Orta makas':'Makas')+' — yerleşim',`${z.name} · mesnet açıklığı ${number(Math.hypot(f.q.x-f.p.x,f.q.y-f.p.y)*10)} mm`,'adet',1,
     source('roof-frame:'+f.zoneId+':'+JSON.stringify([f.p,f.q]),{roofTransfer:'frame',frame:f}),
-    'Mevcut makas yerleşiminden aktarıldı. Mesnet açıklığı imalat makas boyu değildir. Baş/orta makas sınıfı, imalat ölçüsü ve mesnet uygunluğu teyit bekliyor; sevk adedi verilmedi.');
+    'Mevcut makas yerleşiminden aktarıldı. Çatı sınırındaki uçlar, veranda birleşim ucu dahil baş makastır; aradakiler orta makastır. Mesnet açıklığı imalat makas boyu değildir. İmalat ölçüsü ve mesnet uygunluğu teyit bekliyor; sevk adedi verilmedi.');
   }
   for(const [kind,name] of [['ridge','Düz mahya — net uzunluk'],['hip','Eğik mahya — net uzunluk']]){
    const edges=(data.model.edges||[]).filter(e=>e.type===kind);

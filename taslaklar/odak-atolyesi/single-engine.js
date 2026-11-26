@@ -426,7 +426,7 @@ function draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : k
 
   function purlinRuns(zones,roofModel,legacyOSB=false){
     const runs=[],pending=[];
-    for(const z of zones){const spacing=layers(z,legacyOSB).some(l=>l.id==='osb')?400:z.material==='trapez'?800:null;
+    for(const z of zones){const spacing=layers(z,legacyOSB).some(l=>l.id==='osb')?400:['trapez','sandvic'].includes(z.material)?800:null;
      const poly=footprint(z),ys=poly.map(p=>p.y),lo=Math.min(...ys),hi=Math.max(...ys),ridge=z.d*z.ridge/100;
      if(z.type!=='besik'||z.outline||!spacing){pending.push({zoneId:z.id,name:z.name,reason:'Bu çatı biçimi veya kaplama için aşık sıra yerleşimi kontrol edilmeli.'});continue;}
      const localFaces=(roofModel.structureFaces??roofModel.faces).filter(f=>f.zoneId===z.id).map(f=>({...f,local:f.poly.map(p=>untransform(z,p))}));
@@ -7630,7 +7630,7 @@ window.Wall3D={build,panelColor};
    for(let i=1;i<cuts.length;i++){if(cuts[i]-cuts[i-1]<.01)continue;const p={x:Math.max(lo+.0001,Math.min(hi-.0001,x)),y:(cuts[i]+cuts[i-1])/2};if(!C.pointIn(poly,p))continue;
     const supports=[];G.segs.filter(s=>s.tip!=='veranda').forEach(s=>{const a=C.untransform(z,getNode(s.n1)),b=C.untransform(z,getNode(s.n2));if(Math.abs(a.x-b.x)<.001)return;const t=(x-a.x)/(b.x-a.x);if(t>=-.001&&t<=1.001)supports.push(a.y+t*(b.y-a.y));});
     const near=v=>supports.filter(y=>Math.abs(y-v)<=15).sort((a,b)=>Math.abs(a-v)-Math.abs(b-v))[0],a=near(cuts[i-1]),b=near(cuts[i]);
-    out.push({p:C.transform(z,{x,y:a??cuts[i-1]}),q:C.transform(z,{x,y:b??cuts[i]}),zoneId:z.id,defaultPos,supported:a!==undefined&&b!==undefined});}
+    out.push({p:C.transform(z,{x,y:a??cuts[i-1]}),q:C.transform(z,{x,y:b??cuts[i]}),zoneId:z.id,trussKind:(Math.abs(original-positions[0])<.01||Math.abs(original-positions.at(-1))<.01)?'head':'middle',defaultPos,supported:a!==undefined&&b!==undefined});}
   }return out;
  }
  function paint(ctx,project){
@@ -8526,9 +8526,9 @@ LoadingReference.rows.push({id:"tuna-92",row:92,group:"Metal",name:"Yeşil alç�
    if(m.unit==='package')add((m.name||m.material)+' — paket hesabı','Mevcut çatı metrajı','paket',m.packages,source('roof-total:'+(m.material||m.id||m.name),{roofTransfer:'cover-total',total:m}),'Mevcut çatı paket hesabı; sevk/sipariş teyidi bekliyor.');
   }
   for(const f of data.frames||[]){const z=zones.get(f.zoneId);if(!z)continue;
-   add('Makas — yerleşim',`${z.name} · mesnet açıklığı ${number(Math.hypot(f.q.x-f.p.x,f.q.y-f.p.y)*10)} mm`,'adet',1,
+   add((f.trussKind==='head'?'Baş makas':f.trussKind==='middle'?'Orta makas':'Makas')+' — yerleşim',`${z.name} · mesnet açıklığı ${number(Math.hypot(f.q.x-f.p.x,f.q.y-f.p.y)*10)} mm`,'adet',1,
     source('roof-frame:'+f.zoneId+':'+JSON.stringify([f.p,f.q]),{roofTransfer:'frame',frame:f}),
-    'Mevcut makas yerleşiminden aktarıldı. Mesnet açıklığı imalat makas boyu değildir. Baş/orta makas sınıfı, imalat ölçüsü ve mesnet uygunluğu teyit bekliyor; sevk adedi verilmedi.');
+    'Mevcut makas yerleşiminden aktarıldı. Çatı sınırındaki uçlar, veranda birleşim ucu dahil baş makastır; aradakiler orta makastır. Mesnet açıklığı imalat makas boyu değildir. İmalat ölçüsü ve mesnet uygunluğu teyit bekliyor; sevk adedi verilmedi.');
   }
   for(const [kind,name] of [['ridge','Düz mahya — net uzunluk'],['hip','Eğik mahya — net uzunluk']]){
    const edges=(data.model.edges||[]).filter(e=>e.type===kind);

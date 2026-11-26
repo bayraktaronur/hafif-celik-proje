@@ -1,5 +1,7 @@
 const fs=require('fs'),path=require('path');
 module.exports=function(file,s,replaceOnce){
+ if(file==='src/roof-core.js')return replaceOnce(s,"z.material==='trapez'?800:null","['trapez','sandvic'].includes(z.material)?800:null");
+ if(file==='src/roof-workflow.js')return replaceOnce(s,'zoneId:z.id,defaultPos,supported:',"zoneId:z.id,trussKind:(Math.abs(original-positions[0])<.01||Math.abs(original-positions.at(-1))<.01)?'head':'middle',defaultPos,supported:");
  if(file!=='src/loading-ui.js')return s;
  s=replaceOnce(s,'LoadingCore.build(items(),G.loading)',"LoadingRoofBridge.append(LoadingCore.build(items(),G.loading),{model:RoofStudio.model(),zones:G.roofs,frames:window.RoofWorkflow?G.roofs.flatMap(RoofWorkflow.trusses):[]},G.loading,LoadingCore)");
  s=replaceOnce(s,'<option>Kaplama</option>','<option>Kaplama</option><option>Çatı</option>');

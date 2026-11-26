@@ -1,4 +1,9 @@
 
+## ROOF-209 · 26 Kasım 2026 · Kullanıcının aşık ve makas kararları
+
+Sandviç panel aşıkları kullanıcı onayıyla trapez sacla aynı: 800 mm sıra aralığı, ilk aralık 342 mm ve mahya uç payı 120 mm. OSB varsa mevcut 400 mm önceliği korunur. Verandanın birleşim ucundaki makas baş makastır; dizilimin uçları baş, arası orta olarak listelenir. İmalat boyu ve mesnet kontrolü hâlâ ayrıca gereklidir. Mahya için verilen 20 cm notu: her ek bindirmesi mi toplam pay mı, ayrıca yedek var mı soruldu; hesap henüz değiştirilmedi. Çatı panel/sac sipariş boyu sorusu açıklandı, yanıt bekleniyor. Geometri ve ilgisiz liste satırlarının eşitliği, sandviç/trapez aşık eşitliği, makas uçları, geri al/yinele ve Kaydet/yeniden açma testleri geçti. Kaynaklar gönderilir; müşteri verisi yereldedir. GABLE-207-AUDIT açık kalır.
+
+
 ## ROOF-208 · 26 Kasım 2026 · Çatı yükleme aktarımı
 
 Taslak 208: mevcut çatı kesimleri, makas yerleşimleri, net düz/eğik mahya ve alt katman metrajı yükleme listesinin Çatı grubuna bağlandı. Hesaplama kuralları, geometri ve eski yükleme satırları değiştirilmedi. Kesim/yerleşim miktarı kesin sevk adedi değildir; eksik üretim kuralları açıkça beklemede. Sandviç panel aşık aralığı, mahya stok/bindirme/yedek, kaplama sipariş boyu ve baş/orta makas ayrımı kullanıcı yanıtını bekliyor. [Teknik kayıt](analizler/2026-11-26-cati-yukleme-aktarimi.md). GABLE-207-AUDIT ve diğer açık işler korunur. Kaynaklar ve bu teknik kayıt gönderilir; müşteri çizimi/Excel ve yerel karşılaştırmalar bu gönderime dahil değildir.
