@@ -1,4 +1,9 @@
 
+## ROOF-208 · 26 Kasım 2026 · Çatı yükleme aktarımı
+
+Taslak 208: mevcut çatı kesimleri, makas yerleşimleri, net düz/eğik mahya ve alt katman metrajı yükleme listesinin Çatı grubuna bağlandı. Hesaplama kuralları, geometri ve eski yükleme satırları değiştirilmedi. Kesim/yerleşim miktarı kesin sevk adedi değildir; eksik üretim kuralları açıkça beklemede. Sandviç panel aşık aralığı, mahya stok/bindirme/yedek, kaplama sipariş boyu ve baş/orta makas ayrımı kullanıcı yanıtını bekliyor. [Teknik kayıt](analizler/2026-11-26-cati-yukleme-aktarimi.md). GABLE-207-AUDIT ve diğer açık işler korunur. Kaynaklar ve bu teknik kayıt gönderilir; müşteri çizimi/Excel ve yerel karşılaştırmalar bu gönderime dahil değildir.
+
+
 ## GABLE-207-AUDIT · AÇIK · 26 Kasım 2026
 
 Kullanıcı metrajın korunmasını tekrar vurguladı; 206/207 gerçek liste karşılaştırması istedi. Ayrı testte Alın V 11→14, ona bağlı aşık kapama U 11→14, 1000×3284 mm yavru sandviç panel 4→6 çıktı. Bu miktar artışı onaylanmış üretim değişikliği değildir; önceki tamam kaydı metraj korunması anlamına GELMEZ. [Denetim](analizler/2026-11-26-gable207-metraj-denetimi.md). Kullanıcının 14:39 Downloads/Balkan 92 · Görselden prefabrik plan.json kaydı çatısız (roofs boş), 40 satırı iki sürümde aynı. Ekrandaki iki çatılı JSON istendi; kesin müşteri karşılaştırması BEKLİYOR. Program ve çizim bu denetimde değiştirilmedi. Sonraki adım: çatılı dosya ile satır karşılaştırması, iç birleşim kenarının yanlış alın/kapama sayımına etkisinin çözümü. Diğer açık işler korunur.
