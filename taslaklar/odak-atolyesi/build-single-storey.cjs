@@ -59,6 +59,7 @@ html=html.replace(/<script src="(src\/[^"<>]+)"><\/script>/g,(_,file)=>{let s=fs
  s=require('./face-dimensions-build.cjs')(file,s,replaceOnce);
  s=require('./plan-library-build.cjs')(file,s,replaceOnce);
  s=require('./parapet-options-build.cjs')(file,s,replaceOnce);
+ s=require('./roof-project-finish-build.cjs')(file,s,replaceOnce);
  js.push('// '+file+'\n'+s);return '';});
 html=html.replace('<title>Plan Studio · Prefabrikten</title>','<title>Plan Studio · Tek katlı prefabrik taslağı</title>');
 html=html.replace('</head>','<link rel="stylesheet" href="single-engine.css"><link rel="stylesheet" href="single-storey.css"><link rel="stylesheet" href="single-reference.css"><link rel="stylesheet" href="single-wall-move.css"><link rel="stylesheet" href="single-command-ui.css"><link rel="stylesheet" href="single-roof-feedback.css"><link rel="stylesheet" href="single-roof-level.css"></head>');

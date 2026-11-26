@@ -1,5 +1,15 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+## 26 Kasım 2026 — ROOF-205 tamam · Ortak proje kaplama ve renk seçimi
+
+Kullanıcının kalıcı kuralı: 3B ekrandaki proje değişiklikleri ilgili 2B, hesap/analiz, çıktı ve kayıtlarla aynı proje verisinden çalışmalı. Görsel saçak montaj kesimi ile üretim payı ayrımı korunur; senkronizasyon üretim payını silmez.
+
+Taslak 205: 3B > Model > Çatı kaplaması ve rengi. Trapez/sandviç, net kapatma eni, standart renk/RAL seçimi tüm proje çatılarında tek işlem. Mevcut G.opt, G.roofs ve G.paint3D.roof kullanılır; ikinci bir görsel malzeme kaydı yok. Var olan proje kaplama kontrolleri aynı alanlara bağlı kalır. Yalnız renk miktarları değiştirmez. Renk 2B çatı planı, 3B, çatı metrajı/CSV, yükleme listesi özet ve CSV/Excel anteti, görünüş paftası bilgisine taşındı. Teknik siyah-beyaz paftada tarama kaplama türünden gelir.
+
+roof-project-finish-check.cjs: 204 ile başlangıç proje/tüm yükleme satırları/çatı modeli eşit; renk 2B fill ve 3B yüzeyde aynı, boy/adet değişmez; kaplama türü ve 80 cm net en tüm çatılara aktarılır, kesim adedi yenilenir; eski ortak kontrol yeni arayüzü günceller; geri al/yinele, Kaydet JSON indirme, otomatik kayıttan yeniden açma, JSON tekrar yükleme ve hatalı girişte proje koruma geçti. Aynı seçimi yeniden uygulamak boş tarihçe adımı üretmez. Hesap tariflerine müdahale yok.
+
+Yerel teslim outputs/Tuna92-montaj.html, eski otomatik kayıt anahtarı korunur. Güncel müşteri çizimi depoya dahil edilmedi; sadece kaynaklar ve bu kayıt gönderilir. JOINERY-204 donanım/imalat payları ve tam/yarım cam PVC aktarımı ile diğer açık işler devam ediyor.
+
 ## 26 Kasım 2026 — JOINERY-204 profil aktarımı · Taslak 204
 
 Egepen standart çift ray sürme: Doğrama Atölyesi kaynak kesitleri ve yerleşim formülleri aktarıldı. 12660 kasa, 12671 kanat, 12648 çıta, 24 mm cam; mm kesitleri esnetilmez. Sekiz mevcut sürgü nesnesi gösteriliyor. 3B Model > Sürgülü doğrama detayları kesit ve net profil listesi/CSV verir. Bu liste kaynak paylı kesim siparişi değildir.

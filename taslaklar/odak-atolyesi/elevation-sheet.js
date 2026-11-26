@@ -28,7 +28,7 @@
   ctx.strokeStyle=theme.rule;ctx.lineWidth=technical?3:2;ctx.strokeRect(30,30,2340,1637);
   if(design==='graywood'){ctx.fillStyle=theme.ink;ctx.fillRect(30,30,2340,105);ctx.fillStyle='#ffffff';}else ctx.fillStyle=theme.ink;
   ctx.font='bold 32px sans-serif';ctx.fillText('GÖRÜNÜŞ PAFTASI',65,83);
-  ctx.font='22px sans-serif';const title=Studio.state().projectName||'Prefabrik konut';ctx.fillText(title,65,120,2150);
+  ctx.font='22px sans-serif';const title=Studio.state().projectName||'Prefabrik konut';ctx.fillText(title,65,120,2150);ctx.font='18px sans-serif';ctx.fillText('Çatı: '+(window.RoofProjectFinish?.description()||''),65,149,2150);
   const cells=[[technical?'AKSONOMETRİK GÖRÜNÜŞ':'PERSPEKTİF GÖRÜNÜŞ',front+(technical?45:35),technical?35.264:25,technical?'parallel':'perspective',480,145,1440,480],['ÖN GÖRÜNÜŞ',front,0,'parallel',65,720,1110,330],['ARKA GÖRÜNÜŞ',front+180,0,'parallel',1225,720,1110,330],['SOL YAN GÖRÜNÜŞ',front+90,0,'parallel',65,1140,1110,330],['SAĞ YAN GÖRÜNÜŞ',front+270,0,'parallel',1225,1140,1110,330]];
   const results=[];
   try{
