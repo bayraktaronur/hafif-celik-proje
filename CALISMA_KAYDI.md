@@ -1,4 +1,9 @@
 
+## TUNA74-COMPARE · 26 Kasım 2026
+
+Yeni sipariş ayrı projeye çizildi ve referans yükleme listesiyle karşılaştırıldı; hesap motoru/sürüm210 değişmedi. [Teknik kayıt](analizler/2026-11-26-yeni-dwg-karsilastirma-is-akisi.md). Yerel teslimler outputs/Tuna74-plan.html, Tuna74-proje.json ve outputs/tuna74/Tuna74-karsilastirma.xlsx. Veranda direkleri kullanıcı kararıyla model/listede2500mm. Kaydet/yeniden açma ve kaynak panel boyu kontrolleri geçti. Kiriş kesim boyu, panel artık kullanımı ve özel mahya eşliği açık; panel/mahya soruları bekliyor. Müşteri dosyaları yerelde; yalnız teknik devir kaydı gönderilir. Önceki açık işler korunur.
+
+
 ## ROOF-210 · 26 Kasım 2026 · Mahya stok adedi listede
 
 Tamamlandı: önce raporda kalan düz mahya2800mm/en az200mmbindirme hesabı artık uygulama yükleme listesi, CSV ve Excel’de otomatik adet olarak bulunur. Sürekli hatlar birleştirilir; yedek eklenmez. Geometri ve diğer malzeme satırları korunur. [Teknik kayıt](analizler/2026-11-26-mahya-stok-aktarimi.md). DWG veranda/ana makas ölçüleri tekrar kontrol edildi; yan sundurmanın düşey kotu/eğimi ve çatı türü belirsiz. Kullanıcıya soruldu, mevcut çizim tahminle değiştirilmedi. Yerel teslim:Tuna92-yukleme210.html; ayrıntı:Tuna92-DWG-kontrol210.md ve DWG sundurma görseli. Müşteri verisi yerelde, yalnız kaynak/teknik kayıt gönderilir. Kaydet/yeniden açma/geri al ve gerçekExcel kontrolleri geçti. GABLE-207-AUDIT ve kısa veranda aşık/panel eşleme işleri açık kalır.
