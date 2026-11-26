@@ -16,6 +16,7 @@ function engine(source) {
   source = require('./roof-hatch-build.cjs')(source);
   source = require('./plan-veranda-beams-build.cjs')(source);
   source = require('./mounted-details-build.cjs')(source);
+  source = require('./hip-eaves-build.cjs')(source);
   source = require('./drainage-edit-build.cjs')(source);
   return "const draftSystem = document.documentElement.dataset.system || '';\nfunction draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : key; }\n" + source;
 }

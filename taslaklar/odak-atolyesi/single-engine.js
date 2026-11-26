@@ -91,7 +91,7 @@ function draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : k
       const inside=(a,b)=>pointIn(poly,{x:(xs[a]+xs[a+1])/2,y:(ys[b]+ys[b+1])/2});let good=true;
       for(let a=i;a<j&&good;a++)for(let b=k;b<l;b++)if(!inside(a,b)){good=false;break;}if(!good)continue;
       if(i>0&&Array.from({length:l-k},(_,b)=>inside(i-1,k+b)).every(Boolean)||j<xs.length-1&&Array.from({length:l-k},(_,b)=>inside(j,k+b)).every(Boolean)||k>0&&Array.from({length:j-i},(_,a)=>inside(i+a,k-1)).every(Boolean)||l<ys.length-1&&Array.from({length:j-i},(_,a)=>inside(i+a,l)).every(Boolean))continue;
-      const origin=transform(z,{x:xs[i],y:ys[k]});rects.push({...z,...origin,id:z.id+'_hip'+rects.length,outline:undefined,edgeEaves:undefined,w:xs[j]-xs[i],d:ys[l]-ys[k],eaves:[0,0,0,0],datum:'wall'});
+      const origin=transform(z,{x:xs[i],y:ys[k]});rects.push({...z,...origin,id:z.id+'_hip'+rects.length,outline:undefined,edgeEaves:undefined,w:xs[j]-xs[i],d:ys[l]-ys[k],eaves:[0,0,0,0],h:z.h+(z.datum==='trim'?Math.max(12,z.fasciaDepth??12):0),datum:'wall'});
     }
     if(rects.length>40)throw Error('Kırma çatı çok karmaşık; ana/yavru bölümlere ayırın.');
     return faces(rects).map(f=>({...f,zoneId:z.id,key:z.id+'_'+[f.a,f.b,f.c].map(v=>v.toFixed(6)).join('_')}));
@@ -7112,7 +7112,7 @@ window.Wall3D={build,panelColor};
   function fasciaSurfaces(m){
     return m.edges.filter(e=>['eave','high'].includes(e.type)).flatMap(e=>{
       const z=G.roofs.find(z=>z.id===e.zoneId),depth=z?.fasciaDepth??15;if(!depth||z?.parapet)return [];
-      return [{kind:'fascia',zone:e.zoneId,poly:[e.p,e.q,{...e.q,z:e.q.z-depth},{...e.p,z:e.p.z-depth}],color:'#d8dedc',shade:e.type==='verge'?.87:1}];
+      return [{kind:'fascia',zone:e.zoneId,poly:[e.p,e.q,{...e.q,z:z.type==='kirma'&&z.datum==='trim'?z.h:e.q.z-depth},{...e.p,z:z.type==='kirma'&&z.datum==='trim'?z.h:e.p.z-depth}],color:'#d8dedc',shade:e.type==='verge'?.87:1}];
     });
   }
   // Close only exposed eave strips, from the support face to the fascia bottom.

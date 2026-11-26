@@ -1,5 +1,13 @@
 # Prefabrikten Plan Studio — ortak devam kaydı
 
+## 26 Kasım 2026 — HIP-206 tamam · Yatay kırma çatı saçağı
+
+Kullanıcı kuralı: kırma çatının saçak altı bina/duvar üst kotunda yatay, duvara 90 derece olmalı; örtü eğimini takip ederek aşağı sarkmamalı. Trim referanslı kırma çatıda MountedSoffit z.h düzleminde kapanır; fascia alt kenarı aynı kotta biter. Özel çokgen kırma çatı üst zarfına, dikdörtgenle aynı fasciaDepth (en az 12 cm) kot payı uygulandı. Elle seçilmiş diğer datum türleri ve özel kotlar değiştirilmedi. İçbükey mesnet poligonu çıkarımı üçgenlere ayrılarak yapılır.
+
+hip-eaves-check.cjs: 250/280/300 cm, 0/90 derece, dikdörtgen/L plan toplam 12 durum; saçak altı yatay, dış saçak üstü h+12, fascia altı h. Önceki hesapla alan, kenar boyları ve kesim en/boy/adetleri eşit. Mevcut Tuna kayıt ve tüm yükleme satırları aynı; beşik çatı hesapları aynı. Üretim payı/reçetesi değişmedi. Özel kotlu veya başka çatılarla birleşen çatılarda gerçek geometrinin düzelmesi birleşim sonucunu etkileyebilir; tüm olası birleşimler doğrulanmış sayılmaz.
+
+Yerel outputs/Tuna92-montaj.html sürüm 206; aynı tarayıcı kayıt anahtarı korunur. Kullanıcının Opera içindeki son kırma çatı denemesi okunamadı (bilgisayar erişim aracı zaman aşımı); test çizimi kullanıcının projesinin üzerine kaydedilmedi. Genel düzeltme ayrı test projeleriyle doğrulandı. Kaynaklar gönderilir, son müşteri çizimi yerelde kalır. ROOF-205 ortak veri kuralı, JOINERY-204 ve diğer açık işler korunur.
+
 ## 26 Kasım 2026 — ROOF-205 tamam · Ortak proje kaplama ve renk seçimi
 
 Kullanıcının kalıcı kuralı: 3B ekrandaki proje değişiklikleri ilgili 2B, hesap/analiz, çıktı ve kayıtlarla aynı proje verisinden çalışmalı. Görsel saçak montaj kesimi ile üretim payı ayrımı korunur; senkronizasyon üretim payını silmez.
