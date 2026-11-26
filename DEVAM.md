@@ -1,4 +1,9 @@
 
+## FIRATPEN-SYSTEM · 26 Kasım 2026 · 213: 3B entegrasyon tamam, imalat reçetesi açık
+
+Garnet70/Klasik Sürme70, 20mm cam ve genel çift açılım kararı uygulandı. [Kanıt ve sınırlar](analizler/2026-11-26-firatpen-3b213.md). 7/7 pencere yeni katalog kesitleriyle; proje/çatı/61 liste satırı aynı; kaydet-yeniden aç/geri al ve bağımsız dağıtım testleri geçti. Sürme camı yaklaşık ölçü onaylı, üretim hesabına aktarılmaz. Donanım, çıta/conta/destek reçetesi ve PVC kapı geçişi açık; eski saçak kaynak işi ve diğer açık işler korunur. Müşteri dosyası yerel outputs/Tuna74-firatpen213.html; kaynak/teknik kayıt Git ile paylaşılır.
+
+
 ## FIRATPEN-SYSTEM · 26 Kasım 2026 · Açık
 
 Tüm pencere tipleri gerçek Fıratpen üretim sistemine geçirilecek. [Kapsam ve resmi kaynaklar](analizler/2026-11-26-firatpen-gecis-kapsami.md). Açılır/sabit/vasistas ve sürgü serisi kullanıcıya soruldu; yanıt bekleniyor. 212 STL uyarlaması bu sistem olarak sunulmaz. Henüz geçiş uygulanmadı; hesaplar/çizimler aynı. Önceki açık saçak ve diğer işler korunur.

@@ -6688,7 +6688,7 @@ if(meta.steelSolid)surfaces.push({...meta,poly:poly.slice().reverse().map(p=>({.
  function openings(r){return r.items.flatMap(it=>G.elemanlar.filter(e=>e.segId===it.seg.id).map(e=>{const a=it.rev?it.off+it.L-e.t*it.L-e.en:it.off+e.t*it.L,z=e.tip_==='kapi'?0:210-e.yuk;return {e,a,b:a+e.en,z,top:z+e.yuk};}));}
  for(const r of A.runs){const holes=openings(r),models=[];
   SteelDoor3D.append({r,holes,models,height,prefab,surfaces,parts,warnings,panelColor});
-  for(const o of holes){if(!prefab||o.e.tip_!=='pencere'||(o.e.penTip==='surme'&&o.e.yuk>60))continue;
+  for(const o of holes){if(!prefab||o.e.tip_!=='pencere'||window.Firatpen3D||(o.e.penTip==='surme'&&o.e.yuk>60))continue;
    const label=Number(o.e.en)+'×'+Number(o.e.yuk)+' cm';
    const mesh=window.PvcOpening3D?.resolve(o.e)||(window.WindowSTLModels||[]).find(m=>m.key===Number(o.e.en)+'x'+Number(o.e.yuk));
    if(!mesh){warnings.add(label+': gerçek STL henüz bağlı değil; şematik pencere.');continue;}
@@ -6727,6 +6727,7 @@ if(meta.steelSolid)surfaces.push({...meta,poly:poly.slice().reverse().map(p=>({.
    }
   }
   for(const o of holes){if(models.some(m=>m.o===o))continue;const e=o.e,door=e.tip_==='kapi',cat=OpeningCatalog.find(c=>c.id===e.catalogId),style=cat?.style||e.kapiTip,cols=cat?.cols||(['surme','cift-kanat'].includes(e.penTip)||['cift','double','double-glass','sliding'].includes(style)?2:1),meta={kind:'opening',partId:'opening:'+e.id,openingId:e.id,schematic:true};
+   if(window.Firatpen3D&&Firatpen3D.append({o,r,surfaces,parts,warnings}))continue;
    if(window.PvcOpening3D&&PvcOpening3D.append({o,r,surfaces,parts,warnings}))continue;
    warnings.add('PVC/kapı kasa ve kanat kesitleri temsilî; pencere üst kotu210 cm.');
    if(o.z<0||o.top>height){warnings.add('Açıklık yüksekliği210 cm üst kotuna veya duvar yüksekliğine sığmıyor.');continue;}
