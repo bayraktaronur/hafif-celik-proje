@@ -1,4 +1,9 @@
 
+## FIRATPEN-PERF · 26 Kasım 2026 · 214
+
+[3B hızlandırma](analizler/2026-11-26-firatpen-performans214.md): 59.400 pencere yüzeyi10.874’e indirildi; görünmeyen iç odalar yalnız dış görünüşten çıkarıldı, tam kaynak korundu. Dünya koordinatı önbelleği eklendi. Aynı testte kamera çizimi297ms→130ms. Proje/çatı/61 malzeme satırı, kaydet-yeniden aç ve geri al kontrolleri geçti. Müşteri214 kopyası yerel; kaynak/teknik kayıt Git ile. Önceki açık imalat/saçak işleri korunur.
+
+
 ## FIRATPEN-SYSTEM · 26 Kasım 2026 · 213: 3B entegrasyon tamam, imalat reçetesi açık
 
 Garnet70/Klasik Sürme70, 20mm cam ve genel çift açılım kararı uygulandı. [Kanıt ve sınırlar](analizler/2026-11-26-firatpen-3b213.md). 7/7 pencere yeni katalog kesitleriyle; proje/çatı/61 liste satırı aynı; kaydet-yeniden aç/geri al ve bağımsız dağıtım testleri geçti. Sürme camı yaklaşık ölçü onaylı, üretim hesabına aktarılmaz. Donanım, çıta/conta/destek reçetesi ve PVC kapı geçişi açık; eski saçak kaynak işi ve diğer açık işler korunur. Müşteri dosyası yerel outputs/Tuna74-firatpen213.html; kaynak/teknik kayıt Git ile paylaşılır.
