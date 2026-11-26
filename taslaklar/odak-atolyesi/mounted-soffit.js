@@ -6,7 +6,15 @@
   for(const face of m.faces){const z=zones.find(z=>z.id===face.zoneId);if(!z||z.parapet)continue;
    const supports=zones.filter(other=>other.group===z.group).map(other=>ccw(other.childJoin?.support||C.basePolygon(other.attachment?.base||other).map(p=>C.transform(other.attachment?.base||other,p))));
    let pieces=[ccw(face.poly)];for(const support of supports.flatMap(p=>C.triangulate(p)))pieces=pieces.flatMap(p=>subtract(p,support));
-   for(const poly of pieces){if(C.area(poly)<.001)continue;out.push({kind:'soffit',zone:z.id,mounted:true,poly:poly.map(p=>({...p,z:['besik','kirma'].includes(z.type)&&z.datum==='trim'?(z.wallTop??z.h):C.height(face,p)-(z.fasciaDepth??12)})),color:'#d8dedc',shade:.88});}
+   const bands=[];
+   for(const poly of pieces){
+    if(z.type==='besik'&&!z.outline&&!z.childJoin&&!z.attachment){
+     const t=z.angle*Math.PI/180,a=Math.cos(t),b=Math.sin(t),c=-a*z.x-b*z.y;
+     bands.push({poly:C.clip(C.clip(poly,a,b,c),-a,-b,z.w-c),gable:false});
+     bands.push({poly:C.clip(poly,-a,-b,-c),gable:true},{poly:C.clip(poly,a,b,c-z.w),gable:true});
+    }else bands.push({poly,gable:false});
+   }
+   for(const {poly,gable} of bands){if(C.area(poly)<.001)continue;out.push({kind:gable?'vergeBottom':'soffit',zone:z.id,mounted:true,poly:poly.map(p=>({...p,z:!gable&&['besik','kirma'].includes(z.type)&&z.datum==='trim'?(z.wallTop??z.h):C.height(face,p)-(z.fasciaDepth??12)})),color:'#d8dedc',shade:.88});}
   }return out;
  }
  // Continue installed covering beneath an adjacent overhang. These patches

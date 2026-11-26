@@ -1,4 +1,9 @@
 
+## WINDOW-212 / TUNA74-3D-AUDIT · 26 Kasım 2026
+
+212: eksik ölçüler özgün pencere STL profillerinden uyarlanır; DWG açılış türü değiştirilmez. Baş makas altında 211 ile oluşan yatay raf kaldırıldı, eğimli alın dönüşü düzeltildi. [Kontroller ve sınırlar](analizler/2026-11-26-pencere-ve-alin-donus212.md). 7 pencere STL tabanlı; 61 malzeme satırı ve proje aynı. Gerçek saçak büküm kaynağı/diğer önceki açık işler sürer. Müşteri dosyası yerel, kaynak/teknik kayıt Git ile aktarılır.
+
+
 ## TUNA74-3D-AUDIT · 26 Kasım 2026 · Taslak 211, kısmen giderildi
 
 Çatı birleşimi örtü devamı, kiriş üst kotu ve yatay saçak altı düzeltildi. Proje, çatı hesabı ve 61 malzeme satırı aynı; yeniden açma ve yakın görünüş kontrolleri geçti. [Kanıt ve açık profil işi](analizler/2026-11-26-montaj-gorunumu211.md). Gerçek saçak/Alın V özgün 3B kaynak araması açık; montaj görselleri arşivde. Müşteri çizimi ayrı yerel kopyada, Git aktarımı yalnız kaynak ve teknik kayıt. Diğer açık işler korunur.

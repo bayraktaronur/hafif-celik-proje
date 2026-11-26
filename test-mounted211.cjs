@@ -10,5 +10,5 @@ assert(Math.abs(sameZone.reduce((s,f)=>s+C.area(f.poly),0)-C.zoneFaces(zones[1])
 assert.equal(window.MountedSoffit.roofFaces(m,[zones[1]],C).length,1);
 const roof={...zones[0],planVerandaBeams:['v']},G={roofs:[roof],opt:{h:280},rooms:[{id:'v',tip:'veranda',nodeIds:['a','b']}],nodes:[{id:'a',x:0,y:0},{id:'b',x:300,y:0}],segs:[{id:'s',n1:'a',n2:'b',tip:'veranda'}]};
 const beams=window.PlanVerandaBeams.build(G);assert.equal(beams.length,6);assert(beams.every(f=>f.poly.every(p=>p.z===240||p.z===250)));
-const soffits=window.MountedSoffit.build({faces:C.zoneFaces(zones[0])},[zones[0]],C);assert(soffits.length>0);assert(soffits.every(f=>f.poly.every(p=>p.z===250)));
+const soffits=window.MountedSoffit.build({faces:C.zoneFaces(zones[0])},[zones[0]],C);assert(soffits.length>0);assert(soffits.filter(f=>f.kind==='soffit').every(f=>f.poly.every(p=>p.z===250)));const gables=soffits.filter(f=>f.kind==='vergeBottom');assert(gables.length>0);assert(gables.some(f=>Math.max(...f.poly.map(p=>p.z))-Math.min(...f.poly.map(p=>p.z))>10));
 console.log('PASS mounted roof continuity, immutable inputs, single-roof isolation, beam top and horizontal underside');
