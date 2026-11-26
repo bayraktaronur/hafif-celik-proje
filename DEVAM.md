@@ -1,4 +1,9 @@
 
+## TUNA74-3D-AUDIT · 26 Kasım 2026 · Açık
+
+Kullanıcının yakın planlarında çatı birleşim açıklığı, kiriş kotu ve gerçek saçak profili eksikliği bulundu. [Denetim](analizler/2026-11-26-veranda-3b-yakin-plan-denetimi.md). Kayıtlı projede cumba bağımsız çatı; kiriş h..h+10, direk 0..sevk boyu; saçak düz yüzey. Genel görsel test bu detayları kapsamamış. Bu adım teşhistir, düzeltme yapılmadı; hesap/malzeme listesi değişmedi. Gerçek profil bağlantısı ve yakın plan regresyonu yapılmalı. Önceki açık işler korunur.
+
+
 ## TUNA40-COMPARE · 26 Kasım 2026
 
 Ayrı DWG projesi ve tam referans karşılaştırması oluşturuldu. Hesap kuralları/sürüm210 değişmedi. [Teknik kayıt](analizler/2026-11-26-ayri-siparis-cizim-karsilastirma.md). Yerel teslim: outputs/Tuna40-plan.html, Tuna40-proje.json, outputs/tuna40/Tuna40-karsilastirma.xlsx ve Tuna40-kontrol.md. Kaydet/yeniden açma, bağımsız ilk açılış, panel dizisi ve görsel kontroller geçti. Kullanıcı panel üst açıklığının mahya ile kapanmasını ve DWG makas yerleşimini korumayı istedi. Mahyada özel boy/standart stok tercihi; panel parça/sevk ve yardımcı malzeme farkları açık. Müşteri verileri yerelde; yalnız teknik kayıt gönderildi. Önceki açık işler düşürülmedi.
