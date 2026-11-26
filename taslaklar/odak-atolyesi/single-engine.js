@@ -102,7 +102,7 @@ function draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : k
     const cm=n=>n.toLocaleString('tr-TR',{maximumFractionDigits:1})+' cm';
     if(!parent)fail('parent','Bağlanacağı çatı bulunamadı. Ana çatıyı listeden seçin.');const z=clone(input),ps=z.childJoin.points;
     if(!Array.isArray(ps)||ps.length!==4||ps.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))fail('points','U sınırı için dört köşe seçin; ilk ve son köşe aynı ana çatı kenarında olmalı.');
-    const [a,b,c,d]=ps,mid={x:(a.x+d.x)/2,y:(a.y+d.y)/2},front={x:(b.x+c.x)/2,y:(b.y+c.y)/2},depth=Math.hypot(mid.x-front.x,mid.y-front.y),width=Math.hypot(a.x-d.x,a.y-d.y);
+    const [a,b,c,d]=ps,mid={x:(a.x+d.x)/2,y:(a.y+d.y)/2},front={x:(b.x+c.x)/2,y:(b.y+c.y)/2},width=Math.hypot(a.x-d.x,a.y-d.y);let depth=Math.hypot(mid.x-front.x,mid.y-front.y);
     if(depth<10||width<10)fail('size','Yavru çatı eni ve dışarı uzanımı en az 10 cm olmalı.');const angle=(Math.round(Math.atan2(mid.y-front.y,mid.x-front.x)*180/Math.PI)+360)%360;if(angle%90)fail('direction','U sınırını yatay/dikey kenarlar boyunca çizin.');
     const frame={x:front.x,y:front.y,angle},loc=ps.map(p=>untransform(frame,p));
     if(Math.abs(loc[0].x-depth)>.01||Math.abs(loc[3].x-depth)>.01||Math.abs(loc[1].x)>.01||Math.abs(loc[2].x)>.01||Math.abs(loc[0].y-loc[1].y)>.01||Math.abs(loc[2].y-loc[3].y)>.01)fail('rectangle','U sınırının karşılıklı kenarları hizalı değil. Son köşeyi silip duvar hizasına yakalayın.');
@@ -132,6 +132,16 @@ function draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : k
     // Its ridge remains parallel to the parent ridge; do not look for a
     // non-existent uphill intersection or rotate either production direction.
     if(mouth.length&&mouth.every(f=>Math.abs(f.a*dir.x+f.b*dir.y)<1e-7)){
+      // Keep the drawn U anchors for reanchoring and old project compatibility.
+      // The actual roof/support end reaches the vertical gable infill plane.
+      const seatBase=(parent.childJoin?.support||basePolygon(parent).map(p=>transform(parent,p))).map(p=>untransform(z,p));
+      const seats=seatBase.flatMap((p,i)=>{const q=seatBase[(i+1)%seatBase.length];return Math.abs(p.x-q.x)<.001&&p.x>=depth-.001&&width/2>=Math.min(p.y,q.y)-.001&&width/2<=Math.max(p.y,q.y)+.001?[p.x]:[];});
+      if(!seats.length)fail('gable-seat','Başmakas kaplaması bağlantı düzlemi bulunamadı. Ana çatı sınırını kontrol edin.');
+      const seat=Math.min(...seats),inset=Math.max(0,seat-depth);
+      depth+=inset;z.w=depth;
+      z.childJoin.seatInset=inset;
+      z.childJoin.support=ps.map((p,i)=>i===0||i===3?{x:p.x+dir.x*inset,y:p.y+dir.y*inset}:{...p});
+
       const cuts=[-z.eaves[2],width+z.eaves[3],width*z.ridge/100];
       host.forEach(f=>f.poly.forEach((p,i)=>{const a=untransform(z,p),b=untransform(z,f.poly[(i+1)%f.poly.length]);if(Math.abs(b.x-a.x)<EPS){if(Math.abs(a.x-depth)<.01)cuts.push(a.y,b.y);return;}const t=(depth-a.x)/(b.x-a.x);if(t>=0&&t<=1)cuts.push(a.y+t*(b.y-a.y));}));
       const sorted=[...new Set(cuts.filter(y=>y>=-z.eaves[2]&&y<=width+z.eaves[3]))].sort((a,b)=>a-b),panels=[];
@@ -142,7 +152,7 @@ function draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : k
         const ts=dp*dq<0?[0,dp/(dp-dq),1]:[0,1];
         for(let j=1;j<ts.length;j++){const a={x:p.x+(q.x-p.x)*ts[j-1],y:p.y+(q.y-p.y)*ts[j-1]},b={x:p.x+(q.x-p.x)*ts[j],y:p.y+(q.y-p.y)*ts[j]};if(Math.max(Math.abs(height(hf,a)-height(cf,a)),Math.abs(height(hf,b)-height(cf,b)))<.001)continue;panels.push([{...a,z:height(cf,a)},{...b,z:height(cf,b)},{...b,z:height(hf,b)},{...a,z:height(hf,a)}]);}
       }
-      z.childJoin.mode='gable';z.childJoin.cladding=panels;z.childJoin.support=ps.map(p=>({...p}));return z;
+      z.childJoin.mode='gable';z.childJoin.cladding=panels;return z;
     }
     z.childJoin.mode='valley';delete z.childJoin.cladding;
     for(const y of ys){const p=transform(z,{x:depth+.0001,y}),roof=Math.min(...planes.map(f=>height(f,p))),here=host.filter(f=>contains(f.poly,p));if(here.length&&Math.max(...here.map(f=>height(f,p)))>roof+.01&&(z.roofElevation!==undefined||parent.roofElevation!==undefined)){roots.push(depth);continue;}
@@ -219,7 +229,7 @@ function draftStorageKey(key) { return draftSystem ? key + '.' + draftSystem : k
         const child=zones.find(z=>z.id===f.zoneId);
         // A lower gable veranda continues beneath the host overhang up to
         // its betopan support plane. Coplanar sheets still have one owner.
-        if(child?.attachmentJoin==='gable'&&child.attachment.parentId===g.zoneId&&Math.abs(a)+Math.abs(b)+Math.abs(c)>EPS){
+        if(((child?.attachmentJoin==='gable'&&child.attachment.parentId===g.zoneId)||(child?.childJoin?.mode==='gable'&&child.production?.parentId===g.zoneId))&&Math.abs(a)+Math.abs(b)+Math.abs(c)>EPS){
           const parent=zones.find(z=>z.id===g.zoneId);
           const support=basePolygon(parent).map(p=>transform(parent,p));
           cutters=triangulate(support).map(p=>intersect(cutters[0],p));

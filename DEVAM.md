@@ -1,4 +1,13 @@
 
+## GABLE-207 · 26 Kasım 2026 · Başmakas kaplamasına yavru bağlantısı
+
+Tamamlandı, taslak 207. U ile başmakas alnına bağlanan yavru çatı artık ana çatı dış Alın V sınırında bitmez; ana başmakas kaplama/mesnet düzlemine uzanır. Eski U noktaları tekrar bağlama için korunur, gerçek w ve support bu düzleme göre üretilir. Üst zarf, alt yavru kaplamasını ana saçak taşması altında yanlışlıkla kesmez. Aynı veri 2B/3B ve metrajı besler. Reçeteler, paylar ve kesim formülleri değişmedi; düzeltilen yavru geometrisinin boy/alan/metrajı değişebilir, eski yanlış boy sabit tutulmaz.
+
+Kontrol: gable-seat-check.cjs 48 durum (4 yön, iki alın, ters U, 0/22/40 cm taşma), kaplama düzleminde bitiş, saçak altında yüzey devamı ve tekrar hesap kararlılığı; yan saplanma ve bağımsız ana çatı sonuçları 206 ile aynı. gable-seat-browser-check.cjs eski proje açılışı, duvar/açıklık korunması, 40 cm bağlantı uzaması, gerçek Kaydet indirme, yeniden açma, geri al/yinele geçti. Ayrı test projesiyle 3B görsel kontrol yapıldı.
+
+Yerel Balkan92-plan.html mevcut yolu ve prefabrikten.balkan92.gorsel206 kayıt anahtarını koruyarak güncellendi. HTML 206 yedeği outputs/Balkan92-plan-v206-yedek.html. Kullanıcının açık Opera çizimi okunmadı/değiştirilmedi; yeni test çatısı müşteri JSON’una yazılmadı. Açık sayfada Kaydet ardından yenileme ile yeni motor mevcut otomatik kaydı yükler. Kaynak/karar kayıtları GitHub’a gönderilir; müşteri çizimi yereldedir. Diğer açık işler korunur.
+
+
 ## PLAN-207 · 2026-11-26 · Görselden ayrı prefabrik plan
 
 Tamamlandı: onaylanan dış 10 / iç 6 cm duvar, 280 cm yükseklik; 80×200 iç ve 90×205 dış kapılarla ayrı yerel proje oluşturuldu. 7 mekân, 7 kapı, 7 pencere, veranda ve donatılar doğrulandı. Kaydet/yeniden açma ve 2B/3B kontrolleri geçti. Uygulama kaynakları ve hesaplama kuralları değişmedi; sürüm 206. Dış ölçüler esas alındı; kaynak iç ölçü tutarsızlıkları teslim notunda. İmalat için iç aks/açıklık teyidi ve çatı tanımı açık.
