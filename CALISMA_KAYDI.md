@@ -1,4 +1,9 @@
 
+## TUNA40-COMPARE · 26 Kasım 2026
+
+Ayrı DWG projesi ve tam referans karşılaştırması oluşturuldu. Hesap kuralları/sürüm210 değişmedi. [Teknik kayıt](analizler/2026-11-26-ayri-siparis-cizim-karsilastirma.md). Yerel teslim: outputs/Tuna40-plan.html, Tuna40-proje.json, outputs/tuna40/Tuna40-karsilastirma.xlsx ve Tuna40-kontrol.md. Kaydet/yeniden açma, bağımsız ilk açılış, panel dizisi ve görsel kontroller geçti. Kullanıcı panel üst açıklığının mahya ile kapanmasını ve DWG makas yerleşimini korumayı istedi. Mahyada özel boy/standart stok tercihi; panel parça/sevk ve yardımcı malzeme farkları açık. Müşteri verileri yerelde; yalnız teknik kayıt gönderildi. Önceki açık işler düşürülmedi.
+
+
 ## TUNA74-COMPARE karar güncellemesi · 26 Kasım 2026
 
 Kullanıcı: panelde DWG esas; özel mahya bu proje için düz mahyayla aynı grupta karşılaştırılır. Bu iki soru yanıtlandı. Boy farkları ve diğer açık üretim reçeteleri korunur. Yerel HTML başlangıç yüksekliği250cm; boş tarayıcıda açılış ile kayıtlı JSON malzeme satırları birebir doğrulandı. Motor ve sürüm210 değişmedi.
