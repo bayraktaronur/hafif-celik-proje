@@ -1,4 +1,9 @@
 
+## ROOF-210 · 26 Kasım 2026 · Mahya stok adedi listede
+
+Tamamlandı: önce raporda kalan düz mahya2800mm/en az200mmbindirme hesabı artık uygulama yükleme listesi, CSV ve Excel’de otomatik adet olarak bulunur. Sürekli hatlar birleştirilir; yedek eklenmez. Geometri ve diğer malzeme satırları korunur. [Teknik kayıt](analizler/2026-11-26-mahya-stok-aktarimi.md). DWG veranda/ana makas ölçüleri tekrar kontrol edildi; yan sundurmanın düşey kotu/eğimi ve çatı türü belirsiz. Kullanıcıya soruldu, mevcut çizim tahminle değiştirilmedi. Yerel teslim:Tuna92-yukleme210.html; ayrıntı:Tuna92-DWG-kontrol210.md ve DWG sundurma görseli. Müşteri verisi yerelde, yalnız kaynak/teknik kayıt gönderilir. Kaydet/yeniden açma/geri al ve gerçekExcel kontrolleri geçti. GABLE-207-AUDIT ve kısa veranda aşık/panel eşleme işleri açık kalır.
+
+
 ## RPT-209 · 26 Kasım 2026 · Güncel liste / referans karşılaştırması
 
 Kayıtlı müşteri projesi uygulama 209 ile yeniden hesaplandı; kaynak Excel hücreleri tekrar kontrol edildi. Boy/adet/maliyet karşılaştırması ve güncel yükleme listesi yerel Excel raporunda. Mahya stok boyu kullanıcı talimatıyla referans Excel’den; her ekte en az 20 cm bindirme. Fiziksel sürekli hatlar önce birleştirilerek adet raporda hesaplandı. Ek yedek tanımlanmadı. Uygulama kodu değişmedi; stok mahya aktarımının uygulamaya alınması açık. Kısa veranda aşık satırları stok adetlerinden ayrı bekliyor; önceki stok özeti tüm ihtiyacı kapsamıyor. Özel mahya ürün kimliği ve kısa aşık kesim/artık kuralı soruldu. Tarayıcıdaki kaydedilmemiş proje erişilemedi; rapor kayıtlı proje kapsamındadır. Yerel kanıt: outputs/Tuna92-karsilastirma209/denetim-kaydi.md ve Tuna92-guncel-karsilastirma.xlsx (Codex çalışma klasörü). Finansal rapor/çizim GitHub’a gönderilmez; yalnız bu teknik devir kaydı. GABLE-207-AUDIT dahil açık işler korunur.

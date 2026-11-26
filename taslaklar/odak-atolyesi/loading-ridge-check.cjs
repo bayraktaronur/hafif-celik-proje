@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),b=require('./loading-roof-bridge.js');
+const e=(a,c,z='a',height=300)=>({p:{x:a/10,y:0,z:height},q:{x:c/10,y:0,z:height},zoneId:z,type:'ridge'});
+assert.equal(b.ridgeStock([e(0,2800)]).qty,1);assert.equal(b.ridgeStock([e(0,2800.01)]).qty,2);assert.equal(b.ridgeStock([e(0,5400)]).qty,2);assert.equal(b.ridgeStock([e(0,5400.01)]).qty,3);
+assert.equal(b.ridgeStock([e(0,6862.5),e(6862.5,10145.0227),e(13080,10145.0227)]).qty,5);
+assert.equal(b.ridgeStock([e(0,1000),e(2000,3000)]).qty,2);assert.equal(b.ridgeStock([e(0,2800),e(0,2800,'a',310)]).qty,2);
+assert.equal(b.ridgeStock([e(0,2800),e(2800,0)]).qty,1);assert.equal(b.ridgeStock([]).qty,0);assert.equal(b.ridgeStock([{p:{x:1},q:{x:2}}]),null);assert.throws(()=>b.ridgeStock([],200,200));
+const data={zones:[{id:'a',name:'Ana'}],frames:[],model:{materials:[],cutList:[],totals:[],layerTotals:[],edges:[e(0,13080)],lengths:{ridge:13.08}}},base={rows:[{key:'old',qty:3}],orphan:[]},core={validate:c=>c||{adjustments:[]},fingerprint:s=>s};
+const before=JSON.stringify({data,base}),r=b.append(base,data,null,core).rows.at(-1);assert.equal(r.qty,5);assert.equal(r.status,'Otomatik düz mahya');assert.equal(JSON.stringify({data,base}),before);
+const cfg={adjustments:[{key:r.key,basis:r.basis,qty:6,reason:'Manual'}]};assert.equal(b.append(base,data,cfg,core).rows.at(-1).qty,6);
+const changed=structuredClone(data);changed.model.edges=[e(0,15000)];changed.model.lengths.ridge=15;assert.equal(b.append(base,changed,cfg,core).rows.at(-1).qty,null);
+console.log('PASS ridge stock boundaries, continuous/reversed/duplicate/disconnected/height-separated edges, invalid data, unchanged sources, automatic/manual/stale rows.');
