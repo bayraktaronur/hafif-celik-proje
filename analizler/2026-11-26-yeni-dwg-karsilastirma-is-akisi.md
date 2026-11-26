@@ -5,3 +5,5 @@ Uygulama210 hesap motoru değiştirilmeden yeni kaynak DWG ayrı Plan Studio pro
 Açık işler: kiriş eksen/net boy ayrımı; kısa aşıkların stok kesimi; panel son şerit/artık kullanımı; özel mahya ürün eşliği; çizimdeki açıklıkların kesin sevk reçetesi. Kullanıcıya panel net eni/artık kullanımı ve özel mahya soruldu. Önceki GABLE-207-AUDIT ve Tuna92 açık kararları korunur.
 
 Yerel rapor: Codex/2026-11-17/files-mentioned-by-the-user-codex/outputs/tuna74/Tuna74-kontrol.md. Kaynak yolları/hash ve müşteri miktarları yalnız bu yerel rapordadır. Kaynak DWG/Excel ve müşteri çizimi depoya eklenmedi. Uygulama sürümü210 olarak kaldı.
+
+Son karar: panel miktarlarında DWG esas; özel mahya yalnız bu proje için düz mahya grubuyla birlikte karşılaştırılabilir. Boy farkı korunur. Önceki panel/mahya soruları yanıtlandı. Bağımsız HTML örnek başlatıcısının sabit yüksekliği yeni projenin250cm değeriyle yerel pakette düzeltildi; genel motor değişmedi. Temiz tarayıcıda doğrudan açılış ile JSON yüklemesi aynı61satırı verir.

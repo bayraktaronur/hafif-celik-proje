@@ -1,4 +1,9 @@
 
+## TUNA74-COMPARE karar güncellemesi · 26 Kasım 2026
+
+Kullanıcı: panelde DWG esas; özel mahya bu proje için düz mahyayla aynı grupta karşılaştırılır. Bu iki soru yanıtlandı. Boy farkları ve diğer açık üretim reçeteleri korunur. Yerel HTML başlangıç yüksekliği250cm; boş tarayıcıda açılış ile kayıtlı JSON malzeme satırları birebir doğrulandı. Motor ve sürüm210 değişmedi.
+
+
 ## TUNA74-COMPARE · 26 Kasım 2026
 
 Yeni sipariş ayrı projeye çizildi ve referans yükleme listesiyle karşılaştırıldı; hesap motoru/sürüm210 değişmedi. [Teknik kayıt](analizler/2026-11-26-yeni-dwg-karsilastirma-is-akisi.md). Yerel teslimler outputs/Tuna74-plan.html, Tuna74-proje.json ve outputs/tuna74/Tuna74-karsilastirma.xlsx. Veranda direkleri kullanıcı kararıyla model/listede2500mm. Kaydet/yeniden açma ve kaynak panel boyu kontrolleri geçti. Kiriş kesim boyu, panel artık kullanımı ve özel mahya eşliği açık; panel/mahya soruları bekliyor. Müşteri dosyaları yerelde; yalnız teknik devir kaydı gönderilir. Önceki açık işler korunur.
