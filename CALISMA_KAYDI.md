@@ -1,4 +1,9 @@
 
+## SOFFIT-JOIN · 26 Kasım 2026 · 215
+
+[Alın/saçak birleşimi düzeltmesi](analizler/2026-11-26-alin-sacak-birlesim215.md): alt verandanın XY desteğinin üst alın altını silmesi giderildi, montaj örtüsü/alt dönüş sınırı eşlendi, 6 açık köşe kapandı. Proje/çatı/61 satır aynı; sandviç ve trapez ayrı karşılaştırıldı. Kaydet/yeniden aç ve geometri testleri geçti. 214 hızlandırma korunur. Müşteri215 dosyası yerel; kaynak ve teknik kayıt Git ile. Gerçek saçak kaynağı ve önceki imalat işleri açık.
+
+
 ## FIRATPEN-PERF · 26 Kasım 2026 · 214
 
 [3B hızlandırma](analizler/2026-11-26-firatpen-performans214.md): 59.400 pencere yüzeyi10.874’e indirildi; görünmeyen iç odalar yalnız dış görünüşten çıkarıldı, tam kaynak korundu. Dünya koordinatı önbelleği eklendi. Aynı testte kamera çizimi297ms→130ms. Proje/çatı/61 malzeme satırı, kaydet-yeniden aç ve geri al kontrolleri geçti. Müşteri214 kopyası yerel; kaynak/teknik kayıt Git ile. Önceki açık imalat/saçak işleri korunur.
