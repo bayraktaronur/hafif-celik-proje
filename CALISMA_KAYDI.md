@@ -1,4 +1,9 @@
 
+## RPT-209 · 26 Kasım 2026 · Güncel liste / referans karşılaştırması
+
+Kayıtlı müşteri projesi uygulama 209 ile yeniden hesaplandı; kaynak Excel hücreleri tekrar kontrol edildi. Boy/adet/maliyet karşılaştırması ve güncel yükleme listesi yerel Excel raporunda. Mahya stok boyu kullanıcı talimatıyla referans Excel’den; her ekte en az 20 cm bindirme. Fiziksel sürekli hatlar önce birleştirilerek adet raporda hesaplandı. Ek yedek tanımlanmadı. Uygulama kodu değişmedi; stok mahya aktarımının uygulamaya alınması açık. Kısa veranda aşık satırları stok adetlerinden ayrı bekliyor; önceki stok özeti tüm ihtiyacı kapsamıyor. Özel mahya ürün kimliği ve kısa aşık kesim/artık kuralı soruldu. Tarayıcıdaki kaydedilmemiş proje erişilemedi; rapor kayıtlı proje kapsamındadır. Yerel kanıt: outputs/Tuna92-karsilastirma209/denetim-kaydi.md ve Tuna92-guncel-karsilastirma.xlsx (Codex çalışma klasörü). Finansal rapor/çizim GitHub’a gönderilmez; yalnız bu teknik devir kaydı. GABLE-207-AUDIT dahil açık işler korunur.
+
+
 ## ROOF-209-RULES · 26 Kasım 2026 · Mahya ve kaplama açıklaması
 
 Kullanıcı: mahya 20 cm her iki parçanın birleşimindeki bindirmedir; fazla boy, örneğin 50 cm bindirme olarak kalabilir. Kaplama boyu mahyadan saçak sonuna kadar olan mesafedir. Eğimli yüzeydeki mesafe esas alınır. Mevcut RoofCore cuts eğim faktörü ile bu mesafeyi hesaplıyor; kayıtlı projede ek kesim payı ve maksimum boy sınırı sıfır. Ancak çatı kesişimleri kesim listesini küçük parçalara ayırabilir: kesim parçasını doğrudan sipariş levhası sayma, aynı levha/şerit kimliğini koru; bu aktarım hâlâ açık. Mahya 2800 mm stok boyunun kullanılacağı ve ayrıca yedek eklenip eklenmediği kullanıcıya soruldu. 209 uygulamasında mahya sevk adedi henüz otomatikleştirilmedi. Sonraki adım: bu yanıtla kesintisiz fiziksel mahya hatlarını birleştirerek (çatı topolojisinin yapay bölünmelerini ayrı sipariş saymadan) stok adet hesabı ve test; panel kesim/sipariş eşleştirmesi. Diğer açık işler korunur.
