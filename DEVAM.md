@@ -1,3 +1,12 @@
+
+## PLAN-207 · 2026-11-26 · Görselden ayrı prefabrik plan
+
+Tamamlandı: onaylanan dış 10 / iç 6 cm duvar, 280 cm yükseklik; 80×200 iç ve 90×205 dış kapılarla ayrı yerel proje oluşturuldu. 7 mekân, 7 kapı, 7 pencere, veranda ve donatılar doğrulandı. Kaydet/yeniden açma ve 2B/3B kontrolleri geçti. Uygulama kaynakları ve hesaplama kuralları değişmedi; sürüm 206. Dış ölçüler esas alındı; kaynak iç ölçü tutarsızlıkları teslim notunda. İmalat için iç aks/açıklık teyidi ve çatı tanımı açık.
+
+Yerel teslim: `C:/Users/ONUR/Documents/Codex/2026-11-17/files-mentioned-by-the-user-codex/outputs/Balkan92-plan.html`, `Balkan92-proje.json`, `Balkan92-cizim-notlari.md`. Müşteri çizimi GitHub aktarımı yapılmadı; yalnız bu devir kaydı gönderilir. JSON SHA-256: `82591347de97d37aa0c25851ec1dd48ef484283c93b7f2d75cd9eefb58d3ffd7`. Kaynak: `codex-clipboard-155c5ab8-a52c-430c-b330-86c3f0dfc1ab.png`, SHA-256 `5577658f3d9479659bb8de6a0489a864c4b5efdc01b07a5283f8eae3c7aff041`.
+
+Kalıcı karar: Kullanıcının verdiği ölçülü 3B Alın V referans görselleri (8 cm üst, 12 cm yükseklik, 22/40 cm alt kanat) ve dere/iniş STL kaynağı sonraki model çalışmalarında esas alınacak. Alın V görseli STL olarak tanımlanmayacak; ölçüsüz küçük bükümler tahminle kesinleştirilmeyecek. Hesaplama kuralları korunacak.
+
 # Prefabrikten Plan Studio — ortak devam kaydı
 
 ## 26 Kasım 2026 — HIP-206 tamam · Yatay kırma çatı saçağı
