@@ -1,4 +1,9 @@
 
+## ROOF-209-RULES · 26 Kasım 2026 · Mahya ve kaplama açıklaması
+
+Kullanıcı: mahya 20 cm her iki parçanın birleşimindeki bindirmedir; fazla boy, örneğin 50 cm bindirme olarak kalabilir. Kaplama boyu mahyadan saçak sonuna kadar olan mesafedir. Eğimli yüzeydeki mesafe esas alınır. Mevcut RoofCore cuts eğim faktörü ile bu mesafeyi hesaplıyor; kayıtlı projede ek kesim payı ve maksimum boy sınırı sıfır. Ancak çatı kesişimleri kesim listesini küçük parçalara ayırabilir: kesim parçasını doğrudan sipariş levhası sayma, aynı levha/şerit kimliğini koru; bu aktarım hâlâ açık. Mahya 2800 mm stok boyunun kullanılacağı ve ayrıca yedek eklenip eklenmediği kullanıcıya soruldu. 209 uygulamasında mahya sevk adedi henüz otomatikleştirilmedi. Sonraki adım: bu yanıtla kesintisiz fiziksel mahya hatlarını birleştirerek (çatı topolojisinin yapay bölünmelerini ayrı sipariş saymadan) stok adet hesabı ve test; panel kesim/sipariş eşleştirmesi. Diğer açık işler korunur.
+
+
 ## ROOF-209 · 26 Kasım 2026 · Kullanıcının aşık ve makas kararları
 
 Sandviç panel aşıkları kullanıcı onayıyla trapez sacla aynı: 800 mm sıra aralığı, ilk aralık 342 mm ve mahya uç payı 120 mm. OSB varsa mevcut 400 mm önceliği korunur. Verandanın birleşim ucundaki makas baş makastır; dizilimin uçları baş, arası orta olarak listelenir. İmalat boyu ve mesnet kontrolü hâlâ ayrıca gereklidir. Mahya için verilen 20 cm notu: her ek bindirmesi mi toplam pay mı, ayrıca yedek var mı soruldu; hesap henüz değiştirilmedi. Çatı panel/sac sipariş boyu sorusu açıklandı, yanıt bekleniyor. Geometri ve ilgisiz liste satırlarının eşitliği, sandviç/trapez aşık eşitliği, makas uçları, geri al/yinele ve Kaydet/yeniden açma testleri geçti. Kaynaklar gönderilir; müşteri verisi yereldedir. GABLE-207-AUDIT açık kalır.
